@@ -49,7 +49,9 @@ def user_logout(request):
 
 
 def import_employer(request):
-    with open('/home/akimmel/work/table extracts/employers.csv') as csvfile:
+    path = '/home/akimmel/work/table extracts/employers.csv'
+    path = '/root/work/Enterprise/data/employers.csv'
+    with open(path) as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             try:
@@ -87,7 +89,10 @@ def import_employer(request):
 
 
 def import_life(request):
-    with open('/home/akimmel/work/table extracts/life.csv') as csvfile:
+    path = '/home/akimmel/work/table extracts/life.csv'
+    path = '/root/work/Enterprise/data/life.csv'
+
+    with open(path) as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             try:
@@ -107,7 +112,10 @@ def import_life(request):
 
 
 def import_std(request):
-    with open('/home/akimmel/work/table extracts/STD.csv') as csvfile:
+    path = '/home/akimmel/work/table extracts/STD.csv'    
+    path = '/root/work/Enterprise/data/STD.csv'
+
+    with open(path) as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             try:
