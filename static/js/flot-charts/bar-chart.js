@@ -22,7 +22,8 @@ function draw_bar_chart(id, data) {
                     style: "normal",
                     color: "#9f9f9f",
                 },
-                shadowSize: 0
+                shadowSize: 0,
+                autoscaleMargin: 0.7
             },
             
             xaxis: {
@@ -36,6 +37,7 @@ function draw_bar_chart(id, data) {
                 },
                 shadowSize: 0,
                 mode: 'categories',
+                min: 0
             },
     
             legend:{
@@ -53,7 +55,7 @@ function draw_bar_chart(id, data) {
             if (el[1] != 0.0) {
                 $('<div class="data-point-label">' + el[1] + '%</div>').css( {
                     position: 'absolute',
-                    left: o.left - 12,
+                    left: o.left - 24,
                     top: o.top - 20,
                     display: 'none'
                 }).appendTo(p.getPlaceholder()).fadeIn('slow');                

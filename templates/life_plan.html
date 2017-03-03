@@ -189,75 +189,6 @@
                 </tr>
             </tbody>
         </table>
-        <table class="table table-striped">
-            <col width="50%">
-            <col width="35%">
-            <col width="15%">
-            <thead>
-                <tr>
-                    <th>Flat Amount Distributions</th>
-                    <th>Percent of Plans</th>
-                    <th>Count</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Flat Amount <$10k</td>
-                    <td>{{ flat_array_.0.0 }}</td>
-                    <td>{{ flat_array_.0.1 }}</td>
-                </tr>
-                <tr>
-                    <td>Flat Amount $10k to $20k</td>
-                    <td>{{ flat_array_.1.0 }}</td>
-                    <td>{{ flat_array_.1.1 }}</td>
-                </tr>
-                <tr>
-                    <td>Flat Amount $20k and $30k</td>
-                    <td>{{ flat_array_.2.0 }}</td>
-                    <td>{{ flat_array_.2.1 }}</td>
-                </tr>
-                <tr>
-                    <td>Flat Amount $30k and $40k</td>
-                    <td>{{ flat_array_.3.0 }}</td>
-                    <td>{{ flat_array_.3.1 }}</td>
-                </tr>
-                <tr>
-                    <td>Flat Amount $40k and $50k</td>
-                    <td>{{ flat_array_.4.0 }}</td>
-                    <td>{{ flat_array_.4.1 }}</td>
-                </tr>
-                <tr>
-                    <td>Flat Amount $50k and $60k</td>
-                    <td>{{ flat_array_.5.0 }}</td>
-                    <td>{{ flat_array_.5.1 }}</td>
-                </tr>
-                <tr>
-                    <td>Flat Amount $60k and $70k</td>
-                    <td>{{ flat_array_.6.0 }}</td>
-                    <td>{{ flat_array_.6.1 }}</td>
-                </tr>
-                <tr>
-                    <td>Flat Amount $70k and $80k</td>
-                    <td>{{ flat_array_.7.0 }}</td>
-                    <td>{{ flat_array_.7.1 }}</td>
-                </tr>
-                <tr>
-                    <td>Flat Amount $80k and $90k</td>
-                    <td>{{ flat_array_.8.0 }}</td>
-                    <td>{{ flat_array_.8.1 }}</td>
-                </tr>
-                <tr>
-                    <td>Flat Amount $90k and $100k</td>
-                    <td>{{ flat_array_.9.0 }}</td>
-                    <td>{{ flat_array_.9.1 }}</td>
-                </tr>
-                <tr>
-                    <td>Flat Amount $100k+</td>
-                    <td>{{ flat_array_.10.0 }}</td>
-                    <td>{{ flat_array_.10.1 }}</td>
-                </tr>
-            </tbody>
-        </table>
     </div>
     <div class="section-graph">
         <p class="exhibit-text">Exhibit L5: Flat Amount Distributions</p>
@@ -330,16 +261,16 @@
 
     var flat_array = {{ flat_array }};
     var l5_data = [{
-            data : flat_array,
-            bars : {
-                show : true,
-                barWidth : 0.36,
-                order : 1,
-                lineWidth: 0,
-                fillColor: '#8BC34A',
-                align: "center"
-            }
-        }];    
+        data : flat_array,
+        bars : {
+            show : true,
+            barWidth : 0.75,
+            order : 1,
+            lineWidth: 0,
+            fillColor: '#8BC34A',
+            align: "right"
+        }
+    }];    
 
     var d0 = [{{ mn_flat_amount }}, {{ sdv_flat_amount }}];
     var d1 = [];
@@ -348,8 +279,8 @@
         d1.push([flat_array[i][0], NormalDensityZx(i * 10000,d0[0],d0[1]) * 4000000]);
 
     l5_data.push({
-            data : d1,
-            color: "#0062FF",
+        data : d1,
+        color: "#0062FF",
     });
 
 </script>
