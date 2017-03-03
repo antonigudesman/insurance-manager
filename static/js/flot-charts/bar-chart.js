@@ -5,7 +5,6 @@ function NormalDensityZx(x, Mean, StdDev)
 }
 
 function draw_bar_chart(id, data) {        
-    /* Let's create the chart */
     if ($('#'+id)[0]) {
         var p = $.plot($('#'+id), data, {
             grid : {
@@ -59,8 +58,6 @@ function draw_bar_chart(id, data) {
                     display: 'none'
                 }).appendTo(p.getPlaceholder()).fadeIn('slow');                
             }
-        });
-
-        
+        });        
     }    
 }

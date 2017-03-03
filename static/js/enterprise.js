@@ -130,8 +130,4 @@ $(document).ready(function(){
         $(this).addClass('active');
         get_body();
     });
-
-    // $('#industries option:first').attr('selected', 'selected');
-    // $('#head-counts option:first').attr('selected', true);
-    // $('#regions option:first').attr('selected', true);
 });
