@@ -95,9 +95,9 @@ function get_body() {
                 load_employers();
                 // $("#data-table-employer").bootgrid('reload');        
             } else if(benefit == 'LIFE') {
-                draw_donut_chart();
-                draw_bar_chart('L-1', barData);
-                draw_bar_chart('L-5', flatData);                
+                draw_easy_pie_chart();
+                draw_donut_chart('L-1', l1_data);
+                draw_bar_chart('L-5', l5_data);                
             }
         })
 
