@@ -3,6 +3,10 @@ var head_counts = [];
 var others = [];
 var regions = [];
 
+var industries_label = [];
+var head_counts_label = [];
+var others_label = [];
+var regions_label = [];
 
 $(document).ready(function(){
     load_employers();
@@ -36,7 +40,7 @@ function load_employers() {
             cache: false
         },
         requestHandler: function (request) {
-            get_fiters();
+            get_filters();
 
             var model = {
                 current: request.current,
@@ -52,8 +56,7 @@ function load_employers() {
     });        
 }    
 
-
-function get_fiters() {
+function get_filters() {
     industries = [];
     head_counts = [];
     others = [];
@@ -76,9 +79,33 @@ function get_fiters() {
     });   
 }
 
+function get_filters_label() {
+    industries_label = [];
+    head_counts_label = [];
+    others_label = [];
+    regions_label = [];
+
+    $('#industries :selected').each(function() {
+        industries_label.push($(this).html());
+    });
+
+    $('#head-counts :selected').each(function() {
+        head_counts_label.push($(this).html());
+    });   
+
+    $('.other_filter:checked').each(function() {
+        others_label.push($(this).next().html());
+    });   
+
+    $('#regions :selected').each(function() {
+        regions_label.push($(this).html());
+    });   
+}
+
 function get_body() {
     benefit = $('.enterprise-navbar li.active a').html();
-    get_fiters();
+    get_filters();
+    get_filters_label();
 
     $.post(
         '/_enterprise',
@@ -97,7 +124,12 @@ function get_body() {
             } else if(benefit == 'LIFE') {
                 draw_easy_pie_chart();
                 draw_donut_chart('L-1', l1_data);
-                draw_bar_chart('L-5', l5_data);                
+                draw_bar_chart('L-5', l5_data);        
+
+                $('#lbl_ft_industries').html(industries_label.toString());
+                $('#lbl_ft_regions').html(regions_label.toString());
+                $('#lbl_ft_headcounts').html(head_counts_label.toString());
+                $('#lbl_ft_other').html(others_label.toString());
             }
         })
 

@@ -1,258 +1,267 @@
 {% load humanize %}
+{% load pages_tags mezzanine_tags i18n staticfiles %}
 
-{% if num_employers %}
-<div class="section-header">
-    <h4>Basic Life: Prevalence</h4>
-</div>
+<div class="benefit-content">
 
-<div class="section">
-    <div class="section-content">
-        <table class="table table-striped">
-            <col width="50%">
-            <col width="35%">
-            <col width="15%">
-            <thead>
-                <tr>
-                    <th>Number of Plans Offered</th>
-                    <th>Percent of Employers</th>
-                    <th>Count</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Not Offered</td>
-                    <td>{{ prcnt_plan0 }}%</td>
-                    <td>{{ num_plan0 }}</td>
-                </tr>
-                <tr>
-                    <td>1 Plan</td>
-                    <td>{{ prcnt_plan1 }}%</td>
-                    <td>{{ num_plan1 }}</td>
-                </tr>
-                <tr>
-                    <td>2 Plans</td>
-                    <td>{{ prcnt_plan2 }}%</td>
-                    <td>{{ num_plan2 }}</td>
-                </tr>
-                <tr>
-                    <td>3 or More Plans</td>
-                    <td>{{ prcnt_plan3_or_more }}%</td>
-                    <td>{{ num_plan3_or_more }}</td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-striped">
-            <col width="50%">
-            <col width="35%">
-            <col width="15%">
-            <thead>
-                <tr>
-                    <th>Type of Plans Offered</th>
-                    <th>Percent of Employers</th>
-                    <th>Count</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Multiple of Salary Plan(s) Only</td>
-                    <td>{{ prcnt_type_plan_mul }}%</td>
-                    <td>{{ cnt_type_plan_mul }}</td>
-                </tr>
-                <tr>
-                    <td>Flat Amount Plan(s) Only</td>
-                    <td>{{ prcnt_type_plan_flat }}%</td>
-                    <td>{{ cnt_type_plan_flat }}</td>
-                </tr>
-                <tr>
-                    <td>Both Multiple of Salary & Flat Amount Plans</td>
-                    <td>{{ prcnt_type_plan_mul_flat }}%</td>
-                    <td>{{ cnt_type_plan_mul_flat }}</td>
-                </tr>
-                <tr>
-                    <td>Not Reported</td>
-                    <td>{{ prcnt_type_non_reported }}%</td>
-                    <td>{{ cnt_type_non_reported }}</td>
-                </tr>
-                <tr>
-                    <td>Not Offered</td>
-                    <td>{{ prcnt_type_plan_none }}%</td>
-                    <td>{{ cnt_type_plan_none }}</td>
-                </tr>
-            </tbody>
-        </table>  
-    </div>
-    <div class="section-graph">
-        <p class="exhibit-text">Exhibit L1: Number of Plans Offered</p>
-        <div id="L-1" class="flot-chart-pie"></div>
-        <div class="flc-donut hidden-xs"></div>
-    </div>
-</div>
-
-<div class="section-header">
-    <h4>Basic Life: Cost Share</h4>
-</div>
-
-<div class="section">
-    <div class="section-content">
-        <table class="table table-striped">
-            <col width="50%">
-            <col width="35%">
-            <col width="15%">
-            <thead>
-                <th>Cost Share</th>
-                <th>Percent of Employers</th>
-                <th>Count</th>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>100% Employer Paid Only</td>
-                    <td>{{ prcnt_paid }}%</td>
-                    <td>{{ cnt_paid }}</td>
-                </tr>
-                <tr>
-                    <td>Employee Cost Share Only</td>
-                    <td>{{ prcnt_share }}%</td>
-                    <td>{{ cnt_share }}</td>
-                </tr>
-                <tr>
-                    <td>Core & Buy Up Plans</td>
-                    <td>{{ prcnt_paid_share }}%</td>
-                    <td>{{ cnt_paid_share }}</td>
-                </tr>
-                <tr>
-                    <td>Not Reported</td>
-                    <td>{{ prcnt_non_reported }}%</td>
-                    <td>{{ cnt_non_reported }}</td>
-                </tr>
-                <tr>
-                    <td>Not Offered</td>
-                    <td>{{ prcnt_type_plan_none }}%</td>
-                    <td>{{ cnt_type_plan_none }}</td>
-                </tr>
-            </tbody>
-        </table>  
-    </div>
-    <div class="section-graph">
-        <p class="exhibit-text">Exhibit L2-L4: Cost Share</p>
-        <div class="easy-pie L-2" data-percent="{{ prcnt_paid }}">
-            <div class="percent">{{ prcnt_paid }}</div>
-            <div class="pie-title">100% Employer Paid Only</div>
+{% if num_employers >= EMPLOYER_THRESHOLD %}
+    <div class="benefit-header">
+        <div class="benefit-details">
+            <h4>LIFE INSURANCE BENCHMARKING</h4>
+            <h6>INDUSTRIES:<span id='lbl_ft_industries'></span></h6>
+            <h6>REGIONS:<span id='lbl_ft_regions'></span></h6>
+            <h6>HEADCOUNTS:<span id='lbl_ft_headcounts'></span></h6>
+            <h6>OTHER:<span id='lbl_ft_other'></span></h6>
         </div>
-        <div class="easy-pie L-3" data-percent="{{ prcnt_share }}">
-            <div class="percent">{{ prcnt_share }}</div>
-            <div class="pie-title">Employee Cost Share Only</div>
-        </div>
-        <div class="easy-pie L-4" data-percent="{{ prcnt_paid_share }}">
-            <div class="percent">{{ prcnt_paid_share }}</div>
-            <div class="pie-title">Core / Buy Up</div>
+        <div class="client-logo">
+            <img src="{% static 'img/bnchmrk_logo_stacked.jpg' %}" alt="">
         </div>
     </div>
-</div>
 
-<div class="section-header">
-    <h4>Basic Life: Flat Amount Plans</h4>
-</div>
+    <div class="section">
+        <div class="section-content">
+            <table class="table table-striped">
+                <col width="50%">
+                <col width="35%">
+                <col width="15%">
+                <thead>
+                    <tr>
+                        <th>Flat Amount Plans</th>
+                        <th>Values</th>
+                        <th>Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Median Flat Amount</td>
+                        <td>${{ mdn_flat_amount|intcomma }}</td>
+                        <td>{{ cnt_flat_amount }}</td>
+                    </tr>
+                    <tr>
+                        <td>Mean Flat Amount</td>
+                        <td>${{ mn_flat_amount|intcomma }}</td>
+                        <td>{{ cnt_flat_amount }}</td>
+                    </tr>
+                    <tr>
+                        <td>Standard Deviation</td>
+                        <td>${{ sdv_flat_amount|intcomma }}</td>
+                        <td>{{ cnt_flat_amount }}</td>
+                    </tr>
+                    <tr>
+                        <td>Includes ADD</td>
+                        <td>{{ prcnt_add }}</td>
+                        <td>{{ cnt_add }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="section-graph">
+            <p class="exhibit-text">Exhibit L5: Flat Amount Distributions</p>
+            <div id="L-5" class="flot-chart"></div>
+        </div>
+    </div>
 
-<div class="section">
-    <div class="section-content">
-        <table class="table table-striped">
-            <col width="50%">
-            <col width="35%">
-            <col width="15%">
-            <thead>
-                <tr>
-                    <th>Flat Amount Plans</th>
-                    <th>Values</th>
+    
+    <div class="section">
+        <div class="section-content">
+            <table class="table table-striped">
+                <col width="50%">
+                <col width="35%">
+                <col width="15%">
+                <thead>
+                    <tr>
+                        <th>Multiple of Salary Plans</th>
+                        <th>Values</th>
+                        <th>Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Median Multiple Maximum</td>
+                        <td>${{ mdn_multiple_max|intcomma }}</td>
+                        <td>{{ cnt_multiple_max }}</td>
+                    </tr>
+                    <tr>
+                        <td>Mean Multiple Maximum</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Multiple Maximum Standard Deviation</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Multiple of Salary Factor</td>
+                        <td>{{ mdn_multiple }}</td>
+                        <td>{{ cnt_multiple }}</td>
+                    </tr>
+                    <tr>
+                        <td>Includes ADD</td>
+                        <td>{{ prcnt_add }}</td>
+                        <td>{{ cnt_add }}</td>
+                    </tr>
+                </tbody>
+            </table>  
+        </div>
+        <div class="section-graph">
+            <p class="exhibit-text">Exhibit L5: Flat Amount Distributions</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-content">
+            <table class="table table-striped">
+                <col width="50%">
+                <col width="35%">
+                <col width="15%">
+                <thead>
+                    <tr>
+                        <th>Number of Plans</th>
+                        <th>Employers</th>
+                        <th>Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Not Offered</td>
+                        <td>{{ prcnt_plan0 }}%</td>
+                        <td>{{ num_plan0 }}</td>
+                    </tr>
+                    <tr>
+                        <td>1 Plan</td>
+                        <td>{{ prcnt_plan1 }}%</td>
+                        <td>{{ num_plan1 }}</td>
+                    </tr>
+                    <tr>
+                        <td>2 Plans</td>
+                        <td>{{ prcnt_plan2 }}%</td>
+                        <td>{{ num_plan2 }}</td>
+                    </tr>
+                    <tr>
+                        <td>3 or More Plans</td>
+                        <td>{{ prcnt_plan3_or_more }}%</td>
+                        <td>{{ num_plan3_or_more }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-striped">
+                <col width="50%">
+                <col width="35%">
+                <col width="15%">
+                <thead>
+                    <tr>
+                        <th>Plans Types</th>
+                        <th>Employers</th>
+                        <th>Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Multiple of Salary Plan(s) Only</td>
+                        <td>{{ prcnt_type_plan_mul }}%</td>
+                        <td>{{ cnt_type_plan_mul }}</td>
+                    </tr>
+                    <tr>
+                        <td>Flat Amount Plan(s) Only</td>
+                        <td>{{ prcnt_type_plan_flat }}%</td>
+                        <td>{{ cnt_type_plan_flat }}</td>
+                    </tr>
+                    <tr>
+                        <td>Both Multiple & Flat Plans</td>
+                        <td>{{ prcnt_type_plan_mul_flat }}%</td>
+                        <td>{{ cnt_type_plan_mul_flat }}</td>
+                    </tr>
+                    <tr>
+                        <td>Not Reported</td>
+                        <td>{{ prcnt_type_non_reported }}%</td>
+                        <td>{{ cnt_type_non_reported }}</td>
+                    </tr>
+                    <tr>
+                        <td>Not Offered</td>
+                        <td>{{ prcnt_type_plan_none }}%</td>
+                        <td>{{ cnt_type_plan_none }}</td>
+                    </tr>
+                </tbody>
+            </table>  
+        </div>
+        <div class="section-graph">
+            <p class="exhibit-text">Exhibit L1: Number of Plans Offered</p>
+            <div id="L-1" class="flot-chart-pie"></div>
+            <div class="flc-donut hidden-xs"></div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-graph">
+            <p class="exhibit-text">Exhibit L2-L4: Cost Share</p>
+            <div class="easy-pie L-2" data-percent="{{ prcnt_paid }}">
+                <div class="percent">{{ prcnt_paid }}</div>
+                <div class="pie-title">100% Employer Paid Only</div>
+            </div>
+            <div class="easy-pie L-3" data-percent="{{ prcnt_share }}">
+                <div class="percent">{{ prcnt_share }}</div>
+                <div class="pie-title">Employee Cost Share Only</div>
+            </div>
+            <div class="easy-pie L-4" data-percent="{{ prcnt_paid_share }}">
+                <div class="percent">{{ prcnt_paid_share }}</div>
+                <div class="pie-title">Core / Buy Up</div>
+            </div>
+        </div>
+        <div class="section-content">
+            <table class="table table-striped">
+                <col width="50%">
+                <col width="35%">
+                <col width="15%">
+                <thead>
+                    <th>Cost Share</th>
+                    <th>Employers</th>
                     <th>Count</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Median Flat Amount</td>
-                    <td>${{ mdn_flat_amount|intcomma }}</td>
-                    <td>{{ cnt_flat_amount }}</td>
-                </tr>
-                <tr>
-                    <td>Mean Flat Amount</td>
-                    <td>${{ mn_flat_amount|intcomma }}</td>
-                    <td>{{ cnt_flat_amount }}</td>
-                </tr>
-                <tr>
-                    <td>Standard Deviation</td>
-                    <td>${{ sdv_flat_amount|intcomma }}</td>
-                    <td>{{ cnt_flat_amount }}</td>
-                </tr>
-                <tr>
-                    <td>Includes ADD</td>
-                    <td>{{ prcnt_add }}</td>
-                    <td>{{ cnt_add }}</td>
-                </tr>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>100% Employer Paid Only</td>
+                        <td>{{ prcnt_paid }}%</td>
+                        <td>{{ cnt_paid }}</td>
+                    </tr>
+                    <tr>
+                        <td>Employee Cost Share Only</td>
+                        <td>{{ prcnt_share }}%</td>
+                        <td>{{ cnt_share }}</td>
+                    </tr>
+                    <tr>
+                        <td>Core & Buy Up Plans</td>
+                        <td>{{ prcnt_paid_share }}%</td>
+                        <td>{{ cnt_paid_share }}</td>
+                    </tr>
+                    <tr>
+                        <td>Not Reported</td>
+                        <td>{{ prcnt_non_reported }}%</td>
+                        <td>{{ cnt_non_reported }}</td>
+                    </tr>
+                    <tr>
+                        <td>Not Offered</td>
+                        <td>{{ prcnt_type_plan_none }}%</td>
+                        <td>{{ cnt_type_plan_none }}</td>
+                    </tr>
+                </tbody>
+            </table>  
+        </div>
     </div>
-    <div class="section-graph">
-        <p class="exhibit-text">Exhibit L5: Flat Amount Distributions</p>
-        <div id="L-5" class="flot-chart"></div>
-    </div>
-</div>
 
-<div class="section-header">
-    <h4>Basic Life: Multiple of Salary Plans</h4>
-</div>
-
-<div class="section">
-    <div class="section-content">
-        <table class="table table-striped">
-            <col width="50%">
-            <col width="35%">
-            <col width="15%">
-            <thead>
-                <tr>
-                    <th>Multiple of Salary Plans</th>
-                    <th>Values</th>
-                    <th>Count</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Median Multiple Maximum</td>
-                    <td>${{ mdn_multiple_max|intcomma }}</td>
-                    <td>{{ cnt_multiple_max }}</td>
-                </tr>
-                <tr>
-                    <td>Mean Multiple Maximum</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Multiple Maximum Standard Deviation</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Multiple of Salary Factor</td>
-                    <td>{{ mdn_multiple }}</td>
-                    <td>{{ cnt_multiple }}</td>
-                </tr>
-                <tr>
-                    <td>Includes ADD</td>
-                    <td>{{ prcnt_add }}</td>
-                    <td>{{ cnt_add }}</td>
-                </tr>
-            </tbody>
-        </table>  
+    {% else %}
+    <div class="benefit-error">
+        <p class="threshold-error">{{ EMPLOYER_THRESHOLD_MESSAGE }}</p>
     </div>
-    <div class="section-graph">
-        <p class="exhibit-text">Exhibit L6: Multiple of Salary Plans</p>
-    </div>
-</div>
+    {% endif %}
 
-{% else %}
-<p class="threshold-error">{{ EMPLOYER_THRESHOLD_MESSAGE }}</p>
-{% endif %}
+</div>
 
 <script type="text/javascript">
-    var l1_data = [
+
+var l1_data, l5_data;
+
+{% if num_employers >= EMPLOYER_THRESHOLD %}
+    l1_data = [
         {data: {{ prcnt_plan0 }}, color: '#F44336', label: 'Not Offered'},
         {data: {{ prcnt_plan1 }}, color: '#03A9F4', label: '1 Plan'},
         {data: {{ prcnt_plan2 }}, color: '#8BC34A', label: '2 Plans'},
@@ -260,7 +269,7 @@
     ];
 
     var flat_array = {{ flat_array }};
-    var l5_data = [{
+    l5_data = [{
         data : flat_array,
         bars : {
             show : true,
@@ -282,5 +291,5 @@
         data : d1,
         color: "#0062FF",
     });
-
+{% endif %}
 </script>

@@ -171,7 +171,7 @@ def get_filtered_employers(ft_industries, ft_head_counts, ft_other, ft_regions, 
     # filter with number of companies
     if num_companies < settings.EMPLOYER_THRESHOLD:
         employers = []
-        num_companies = 0
+        # num_companies = 0
 
     return employers, num_companies
 
@@ -250,6 +250,9 @@ def enterprise(request):
                     break
             employers_.append(item_)
 
+        if num_companies < settings.EMPLOYER_THRESHOLD:
+            num_companies = 0
+
         return JsonResponse({
             "current": page,
             "rowCount": limit,
@@ -299,10 +302,11 @@ def ajax_enterprise(request):
 
 
 def get_life_plan(employers, num_companies):
-    if num_companies == 0:
+    if num_companies < settings.EMPLOYER_THRESHOLD:
         return {
             'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE,
             'num_employers': num_companies,
+            'EMPLOYER_THRESHOLD': settings.EMPLOYER_THRESHOLD
         }
 
     lifes = Life.objects.filter(employer__in=employers)
@@ -364,6 +368,7 @@ def get_life_plan(employers, num_companies):
     prcnt_non_reported = '{0:0.1f}'.format(cnt_non_reported * 100.0 / num_companies)    
 
     return {
+        'EMPLOYER_THRESHOLD': settings.EMPLOYER_THRESHOLD,
         'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE,
         'num_employers': num_companies,
         

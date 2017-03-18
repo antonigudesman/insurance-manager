@@ -37,31 +37,31 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
+                        {% if user.is_authenticated %}
+                        <li class="enterprise">
+                            <a href="/enterprise">ENTERPRISE</a> 
+                        </li>
                         <li>
-                            <a href="/">PRODUCTS</a>
+                            <a href="/logout">HELP</a>
+                        </li>
+                        <li>
+                            <a href="/logout">LOGOUT</a>
+                        </li>
+                        {% else %}
+                        <li>
+                            <a href="/">HOME</a>
+                        </li>
+                        <li>
+                            <a href="/">COMPANY</a>
                         </li>
                         <li>
                             <a href="/blog">INSIGHTS</a>
                         </li>
                         <li>
-                            <a href="/">ABOUT US</a>
+                            <a href="/">CONTACT US</a>
                         </li>
-                        <li>
-                            <a href="/">WE'RE HIRING</a>
-                        </li>
-                        <li>
-                            <a href="/">CONTACT</a>
-                        </li>
-                        <li class="menu-left menu-login">
-                            {% if user.is_authenticated %}
-                            <a href="/logout">LOGOUT</a>
-                            {% else %}
+                        <li class="menu-login">
                             <a href="/login">LOGIN</a>
-                            {% endif %}
-                        </li>
-                        {% if user.is_authenticated %}
-                        <li class="menu-left">
-                            <a href="/enterprise" class="enterprise-link"><span style="color:#ee7123; font-weight: bold;">ENTERPRISE</span></a> 
                         </li>
                         {% endif %}
                     </ul>
