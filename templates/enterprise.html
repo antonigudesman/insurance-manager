@@ -25,7 +25,8 @@
                 <li><a href="javascript:void(0);">STD</a></li>
                 <li><a href="javascript:void(0);">LTD</a></li>
                 <li><a href="javascript:void(0);">STRATEGY</a></li>                
-                <li><a href="javascript:void(0);">EMPLOYERS</a></li>
+                <li><a href="javascript:void(0);">EMPLOYERS</a></li>               
+                <li><a href="javascript:void(0);">TICKET</a></li>
             </ul>
         </nav>
     </div>
@@ -35,7 +36,7 @@
     <div class="container">
         <div class="control-wrapper">
             <div class="industry-filter">
-                <select name="industry" multiple="" id="industries" class="filter-control" size="9">
+                <select name="industry" multiple="" id="industries" class="filter-control" size="7">
                     <option value="*">All Industries</option>
                     {% for item in industries %}
                     <option value="{{ item }}">{{ item }}</option>
@@ -43,7 +44,7 @@
                 </select>
             </div>
             <div class="headcount-filter">
-                <select name="head-count" multiple="" id="head-counts" class="filter-control" size="9">
+                <select name="head-count" multiple="" id="head-counts" class="filter-control" size="7">
                     <option value="0-2000000">All Sizes</option>
                     <option value="0-249">Up to 250</option>
                     <option value="250-499">250 to 499</option>
@@ -53,7 +54,7 @@
                 </select>   
             </div>
             <div class="region-filter">
-                <select name="" multiple="" id="regions" class="filter-control" size="9">
+                <select name="" multiple="" id="regions" class="filter-control" size="7">
                     <option value="*">All Regions</option>
                     <option value="new_england">New England</option>
                     <option value="mid_atlantic">Tri-State Area</option>
@@ -66,11 +67,26 @@
                 </select>
             </div>
             <div class="other-filter">
-                <div class="refresh_button pull-right">
-                    <input type="checkbox" class="other_filter" value="nonprofit"> <label>Non-Profit</label><br>
-                    <input type="checkbox" class="other_filter" value="govt_contractor"> <label>Government Contractor</label>
-                    <label>Employers: <span id="num_employers"></span></label><br>
-                    <a class="btn btn-primary" href="javascript:void(0);" onclick="get_body();">Refresh</a>
+                <input type="checkbox" class="other_filter" value="nonprofit"> <label>Non-Profit</label><br>
+                <input type="checkbox" class="other_filter" value="govt_contractor"> <label>Government Contractor</label><br><br>
+                <a class="btn btn-primary" href="javascript:void(0);" onclick="get_body();">Run Filters</a>
+            </div>
+            <div class="bottom-menu">
+                <div class="plan-dropdown">
+                    <h6>Select Client:&nbsp;&nbsp;</h6>
+                    <select name="" multiple="" id="" class="plan-control" size="1">
+                        <option value="*">Fill Plans</option>
+                        <option value="*">ABC Company - HSA Plan - Option 1</option>
+                        <option value="*">ABC Company - HSA Plan - Option 2</option>
+                        <option value="*">ABC Company - HSA Plan - Option 3</option>
+                    </select>
+                </div>
+                <div class="control-buttons">
+                    <a class="btn btn-print" href="" onclick="">Print Report</a>
+                    <a class="btn btn-print" href="" onclick="">Print Page</a>
+                </div>
+                <div class="employer-count">
+                    <h6><span id="num_employers"></span>&nbsp;Employers Surveyed</h6>
                 </div>
             </div>
         </div>

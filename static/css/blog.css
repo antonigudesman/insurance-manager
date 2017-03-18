@@ -1,0 +1,39 @@
+/* Blog Section */
+
+.blog-bg {
+    background-color: #fff;
+    padding: 1px 0;
+}
+
+.blog-header {
+    background: url('../img/single.jpg') no-repeat center center scroll;
+    height: 325px;
+    padding: 50px 20px;
+    text-align: center;
+}
+
+@media (min-width: 480px) {
+    .blog-header h1 span {
+        color: white; 
+        font-size: 60px; 
+        line-height: 90px; 
+        letter-spacing: -1px;  
+        background: rgb(0, 0, 0); /* fallback color */
+        background: rgba(0, 0, 0, 0.7);
+    }
+}
+
+@media (max-width: 480px) {
+    .blog-header h1 span {
+        color: white; 
+        font-size: 32px; 
+        letter-spacing: -1px; 
+        line-height: 50px; 
+        background: rgb(0, 0, 0); /* fallback color */
+        background: rgba(0, 0, 0, 0.7);
+    }
+}
+
+.bnchmrk-post {
+
+}

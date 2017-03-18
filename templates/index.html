@@ -25,10 +25,8 @@
 
     </head>
     <body>
-    <!-- Navigation -->
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="container">
-                <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                         <span class="sr-only">Toggle navigation</span>
@@ -40,28 +38,33 @@
                         <img img src="{% static 'img/bnchmrk_logo.png' %}" alt="">
                     </a>
                 </div>
-                <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         {% if user.is_authenticated %}
-                        <li class="menu-login">
-                            <a href="/logout">LOGOUT</a>
+                        <li>
+                            <a href="/">Welcome, Andrew</a>
                         </li>
-                        <li class="enterprise">
+                        <li class="menu-enterprise">
                             <a href="/enterprise">ENTERPRISE</a> 
+                        </li>
+                        <li>
+                            <a href="/">ACCOUNT</a> 
+                        </li>
+                        <li>
+                            <a href="/logout">LOGOUT</a>
                         </li>
                         {% else %}
                         <li>
-                            <a href="/">PRODUCTS</a>
+                            <a href="/">HOME</a>
+                        </li>
+                        <li>
+                            <a href="/">COMPANY</a>
                         </li>
                         <li>
                             <a href="/blog">INSIGHTS</a>
                         </li>
                         <li>
-                            <a href="/">ABOUT US</a>
-                        </li>
-                        <li>
-                            <a href="/">CONTACT</a>
+                            <a href="/">CONTACT US</a>
                         </li>
                         <li class="menu-login">
                             <a href="/login">LOGIN</a>
@@ -69,146 +72,126 @@
                         {% endif %}
                     </ul>
                 </div>
-                <!-- /.navbar-collapse -->
             </div>
-            <!-- /.container -->
         </nav>
 
         {% block body %}
-        <!-- Full Width Image Header -->
-        <header class="header-image">
-            <div class="headline">
-                <div class="container">
-                    <h1>Employee Benefits Benchmarking</h1>
-                    <h2>Differentiating our partners from the competition</h2>
-                </div>
-            </div>
-        </header>
         <div class="container">
-            <!-- Features Title -->
-            <div class="row">
-                <div class="col-lg-12">
-                    <h3>A New Approach to Employee Benefits Benchmarking</h3>
-                    <p>As a leader in big data and employee benefits, our proprietary analytics platform delivers a combination of features unparalleled in the marketplace.</p>
+            
+            <div class="home-header">
+                <div class="home-header-text">
+                    <h1>Employee Benefits<br>Benchmarking</h1>
+                    <h2>Top benefit consulting firms across the country use <span>bnchmrk</span> to differentiate themselves in the marketplace</h2>
                 </div>
             </div>
 
-            <!-- Feature Items -->
-            <div class="row text-center">
-                <div class="col-md-3 col-sm-6 hero-feature">
-                    <div class="thumbnail">
-                        <img src="{% static 'img/features/icons-target-reporting.png' %}" alt="">
-                        <div class="caption">
-                            <h3>Custom Reporting</h3>
-                            <p>Delivering unlimited reports for a one-time, annual fee</p>
-                        </div>
-                    </div>
+            <div class="home-subheader">
+                <div class="home-subheader-text">
+                    <h3>A better way to assess employer benefit programs versus the competition.</h3>
                 </div>
-                <div class="col-md-3 col-sm-6 hero-feature">
-                    <div class="thumbnail">
-                        <img src="{% static 'img/features/icons-real-time.png' %}" alt="">
-                        <div class="caption">
-                            <h3>Real-Time Data</h3>
-                            <p>Covering active 2017 employee benefit plans, refreshed daily</p>
-                        </div>
-                    </div>
+            </div>
+            
+            <div class="home-feature-alt">
+                <div class="home-feature-text-alt">
+                    <h6>STRATEGY</h6>
+                    <h5>Drive client decisions with real-time data and visualizations</h5>
+                    <ul>
+                        <li>Offer clients a unique and valuable perspective on the market</li>
+                        <li>integrity and quality of data</li>
+                    </ul>
                 </div>
-                <div class="col-md-3 col-sm-6 hero-feature">
-                    <div class="thumbnail">
-                        <img src="{% static 'img/features/icons-analyze.png' %}" alt="">
-                        <div class="caption">
-                            <h3>Diversified Results</h3>
-                            <p>Analyzing multiple plans including dental, vision and ancillary</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 hero-feature">
-                    <div class="thumbnail">
-                        <img src="{% static 'img/features/icons-partner.png' %}" alt="">
-                        <div class="caption">
-                            <h3>No Conflict of Interest</h3>
-                            <p>Partnering with consultants, not competing for business</p>
-                        </div>
-                    </div>
+                <div class="home-feature-img-alt">
+                    <img src="{% static 'img/features/on-demand-icon.png' %}" alt="">
                 </div>
             </div>
 
-            <!-- Achievements Items -->
-            <div class="row text-center">
-                <div class="col-md-3 col-sm-6 hero-feature">
-                    <div class="thumbnail">
-                        <img src="{% static 'img/features/icons-trophy.png' %}" alt="">
-                        <div class="caption">
-                            <h3>Enhanced Client Retention</h3>
-                            <p>Providing online access to interactive benchmarking software</p>
-                        </div>
-                    </div>
+            <div class="home-feature">
+                <div class="home-feature-img">
+                    <img src="{% static 'img/features/on-demand-icon.png' %}" alt="">
                 </div>
-                <div class="col-md-3 col-sm-6 hero-feature">
-                    <div class="thumbnail">
-                        <img src="{% static 'img/features/icons-light-bulb.png' %}" alt="">
-                        <div class="caption">
-                            <h3>Strategic Consulting Model</h3>
-                            <p>Reinforcing our platform with top-notch support (if you need it)</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 hero-feature">
-                    <div class="thumbnail">
-                        <img src="{% static 'img/features/icons-money.png' %}" alt="">
-                        <div class="caption">
-                            <h3>Smarter Renewal Decisions</h3>
-                            <p>Operating as an extension of your consulting team</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 hero-feature">
-                    <div class="thumbnail">
-                        <img src="{% static 'img/features/icons-box.png' %}" alt="">
-                        <div class="caption">
-                            <h3>Book of Business Utilization</h3>
-                            <p>Solving HR's most important benefits issues</p>
-                        </div>
-                    </div>
+                <div class="home-feature-text">
+                    <h6>TECHNOLOGY</h6>
+                    <h5>Leading the way in employee benefits benchmarking innovation</h5>
+                    <ul>
+                        <li>Unlimited cuts on our database by region, size or industry</li>
+                        <li>On-demand reporting via our a web-based, total benchmarking solution</li>
+                    </ul>
+
                 </div>
             </div>
 
-            <!-- Fixed Height Image Aside -->
-            <aside class="image-bg-fixed-height">
-                <h1>bnchmrk is growing. Grow with us.</h1>
-                <a class="btn btn-success" href="/">We're Hiring</a>
-            </aside>
-            <hr>
-
-            <div class="jumbotron hero-spacer">
-                    <h3>The <span style="color:#33cc33">bnchmrk</span> Story</h3>
-                    <hr>
-                    <p>The bnchmrk technology platform was developed in 2015 by Andrew Kimmel. The objective was to level the information technology playing field between employee benefits and other core business functions through the creation of world-class benchmarking analytics that can be utilized by brokers, HR consultants, and investors for their clients.</p>
-                    <p>While serving as Director of Analytics for a national employee benefits brokerage firm, Andrew was responsible for advising and assisting employers in managing the costs of their health and welfare programs. Competitive market analysis was essential; however, finding actionable benchmarking reports was growing increasingly difficult. The available data was quickly outdated, limited in sample size, inherently biased, and often posed to be a conflict of interest. Many professional service industries along with the employee benefits field share these issues, but have been slow to incorporate cutting edge IT practices into their consulting models.</p>
-                    <p>A passion for big data problem solving led Andrew to pursue a career in the field of business intelligence consulting following his tenure at the national brokerage firm. Quickly recognizing the inherent value of cross applications of current sales and marketing techniques, an innovative approach to collecting, processing and storing benefits data was formulated. This breakthrough gave rise to very successful outcomes, ultimately leading to the development of the bnchmrk proprietary analytics platform.</p>
-                    <hr>
+            <div class="home-feature-alt">
+                <div class="home-feature-text-alt">
+                    <h6>SALES & RETENTION</h6>
+                    <h5>A better way to access customized benchmarking analyics</h5>
+                    <ul>
+                        <li>Gain an outsource data team</li>
+                        <li>Custom Bradning</li>
+                    </ul>
+                </div>
+                <div class="home-feature-img-alt">
+                    <img src="{% static 'img/features/on-demand-icon.png' %}" alt="">
+                </div>
             </div>
+
+            <div class="home-feature">
+                <div class="home-feature-img">
+                    <img src="{% static 'img/features/on-demand-icon.png' %}" alt="">
+                </div>
+                <div class="home-feature-text">
+                    <h6>OPERATIONS</h6>
+                    <h5>A better way to access customized benchmarking analyics</h5>
+                    <ul>
+                        <li>No data entry required</li>
+                        <li>Easy implementation</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="home-testimonial">
+                <h5>"The healthcare landscape is ever-changing, and employers need to know how their plans directly measure against their competitors. We understand that need and sought a solution to help our advisors in the field better serve our clients. bnchmrk's real-time analytics are a tremendous resource and will provide a competitive advantage in this increasingly complex marketplace."</h5>
+                <br>
+                <h5><span> -President of Corporate Benefits, NFP</span></h5>
+            </div>
+
         </div>
         {% endblock %}
-        <!-- Footer -->
-        <div class="footer-bg">
-            <div class="container">
-                <div class="col-md-8">
-                    <p class="footer-links"><a href="/" class="footer-links">Home</a> / <a href="/" class="footer-links">Insights & News</a> / <a href="/" class="footer-links">We're Hiring</a> / <a href="/" class="footer-links">Contact</a>
-                    <p>Thank you for your interest in bnchmrk. Please contact us using the information to the right or by clicking on the Contact link in the menu. To get the latest updates from bnchmrk, check out our Insights & News section or connect with us on social media.</p>
+
+        <div class="container">
+            <div class="top-footer">
+                <div class="footer-links">
+                    <h6>Product</h6>
+                    <ul>
+                        <li><a href="/">Solution</a></li>
+                        <li><a href="/">How it Works</a></li>
+                        <li><a href="/blog">Insights</a></li> 
+                        <li><a href="/">Home</a></li> 
+                    </ul>
                 </div>
-                <div class="col-md-4 footer-contact-section">
-                    <p><span style="color: #ffffff;">Mailing Address</span><br/>PO Box 834<br/>New Providence, NJ 07974</p>
-                    <p><span style="color: #ffffff;">Phone Contact</span><br/>Toll Free: 800-215-2616<br/>Direct: 973-867-8039</p>
-                    <p><span style="color: #ffffff;">Email Contact</span><br/><a href="mailto:sales@bnchmrk.com">Sales@bnchmrk.com</a><br/><a href="mailto:support@bnchmrk.com">Support@bnchmrk.com</a></p>
-                    <a href="https://www.linkedin.com/company/bnchmrk" target="_blank"><img img src="{% static 'img/linkedin.png' %}" alt=""></a>
-                    <a href="https://twitter.com/bnchmrk_" target="_blank"><img img src="{% static 'img/twitter.png' %}" alt=""></a>
+                <div class="footer-links-2">
+                    <h6>About</h6>
+                    <ul>
+                        <li><a href="/">Company</a></li>
+                        <li><a href="/">We're Hiring</a></li> 
+                        <li><a href="/">Contact</a></li> 
+                    </ul>
+                </div>
+                <div class="footer-logo">
+                    <a class="" href="/">
+                        <img img src="{% static 'img/bnchmrk_logo.png' %}" alt="">
+                    </a>
+                    <h6>Employee benefits benchmarking for the next generation consultant</h6>
                 </div>
             </div>
-            <div class="container">
-                <p class="footer-text">Copyright &copy; 2017 bnchmrk LLC</p>
+            <div class="footer-social">
+                <a href="https://www.linkedin.com/company/bnchmrk" target="_blank"><img img src="{% static 'img/linkedin.png' %}" alt=""></a>
+                <a href="https://twitter.com/bnchmrk_" target="_blank"><img img src="{% static 'img/twitter.png' %}" alt=""></a>                
+            </div>
+            <div class="footer-copyright">
+                <h6>&copy; 2017 by bnchmrk LLC. All Rights Reserved. Privacy and Terms</h6>
             </div>
         </div>
+
 
         <!-- Page Loader -->
         <div class="page-loader">
