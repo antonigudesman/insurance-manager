@@ -319,8 +319,6 @@ def get_life_plan(employers, num_companies):
     mdn_multiple_max, cnt_multiple_max = get_median_count(qs_multiple_max, 'multiple_max')
     qs_flat_amount = lifes.exclude(flat_amount__isnull=True)
     mdn_flat_amount, cnt_flat_amount = get_median_count(qs_flat_amount, 'flat_amount')    
-    mn_flat_amount, sdv_flat_amount = get_mean_sdv(qs_flat_amount, 'flat_amount')
-    mn_quintile_amount, sdv_quintile_amount = get_mean_sdv(qs_multiple_max, 'multiple_max')
 
     # for counting # of plans
     num_plan0 = employers.filter(life_count=0).count()
@@ -328,18 +326,18 @@ def get_life_plan(employers, num_companies):
     num_plan2 = employers.filter(life_count=2).count()
     num_plan3_or_more = num_companies - num_plan0 - num_plan1 - num_plan2
 
-    prcnt_plan0 = '{0:0.1f}'.format(num_plan0 * 100.0 / num_companies)
-    prcnt_plan1 = '{0:0.1f}'.format(num_plan1 * 100.0 / num_companies)
-    prcnt_plan2 = '{0:0.1f}'.format(num_plan2 * 100.0 / num_companies)
-    prcnt_plan3_or_more = '{0:0.1f}'.format(num_plan3_or_more * 100.0 / num_companies)
+    prcnt_plan0 = '{0:0.0f}'.format(num_plan0 * 100.0 / num_companies)
+    prcnt_plan1 = '{0:0.0f}'.format(num_plan1 * 100.0 / num_companies)
+    prcnt_plan2 = '{0:0.0f}'.format(num_plan2 * 100.0 / num_companies)
+    prcnt_plan3_or_more = '{0:0.0f}'.format(num_plan3_or_more * 100.0 / num_companies)
 
-    flat_array = get_flat_array(qs_flat_amount) 
-    flat_array = [[item[0], '{0:0.1f}'.format(item[1] * 100.0 / cnt_flat_amount)] for item in flat_array]
-    flat_array.insert(0, ['0', 0.0]) # for formatting   
+    quintile_array_flat = get_incremental_array(qs_flat_amount, 'flat_amount') 
+    quintile_array_multiple = get_incremental_array(qs_multiple_max, 'multiple_max') 
 
-    quintile_array = get_incremental_array(qs_multiple_max, 'multiple_max') 
-    # print quintile_array, '#################'
-    cnt_add = lifes.filter(add=True).count()
+    cnt_add_flat = lifes.filter(add=True, type='Flat Amount').count()
+    cnt_add_flat_ = lifes.filter(type='Flat Amount').count()
+    cnt_add_multiple = lifes.filter(add=True, type='Multiple of Salary').count()
+    cnt_add_multiple_ = lifes.filter(type='Multiple of Salary').count()
 
     companies_with_mul_plan = set([item.employer_id for item in lifes.filter(type='Multiple of Salary')])
     companies_with_flat_plan = set([item.employer_id for item in lifes.filter(type='Flat Amount')])
@@ -357,17 +355,18 @@ def get_life_plan(employers, num_companies):
     cnt_paid_share = len(companies_with_share.intersection(companies_with_paid))
     cnt_non_reported = num_companies - num_plan0 - cnt_paid - cnt_share - cnt_paid_share
 
-    prcnt_add = '{0:0.1f}%'.format(cnt_add * 100.0 / num_lifes)
-    prcnt_type_plan_none = '{0:0.1f}'.format(cnt_type_plan_none * 100.0 / num_companies)
-    prcnt_type_plan_mul = '{0:0.1f}'.format(cnt_type_plan_mul * 100.0 / num_companies)
-    prcnt_type_plan_flat = '{0:0.1f}'.format(cnt_type_plan_flat * 100.0 / num_companies)
-    prcnt_type_plan_mul_flat = '{0:0.1f}'.format(cnt_type_plan_mul_flat * 100.0 / num_companies)
-    prcnt_type_non_reported = '{0:0.1f}'.format(cnt_type_non_reported * 100.0 / num_companies)
+    prcnt_add_flat = '{0:0.0f}%'.format(cnt_add_flat * 100.0 / cnt_add_flat_)
+    prcnt_add_multiple = '{0:0.0f}%'.format(cnt_add_multiple * 100.0 / cnt_add_multiple_)
+    prcnt_type_plan_none = '{0:0.0f}'.format(cnt_type_plan_none * 100.0 / num_companies)
+    prcnt_type_plan_mul = '{0:0.0f}'.format(cnt_type_plan_mul * 100.0 / num_companies)
+    prcnt_type_plan_flat = '{0:0.0f}'.format(cnt_type_plan_flat * 100.0 / num_companies)
+    prcnt_type_plan_mul_flat = '{0:0.0f}'.format(cnt_type_plan_mul_flat * 100.0 / num_companies)
+    prcnt_type_non_reported = '{0:0.0f}'.format(cnt_type_non_reported * 100.0 / num_companies)
 
-    prcnt_paid = '{0:0.1f}'.format(cnt_paid * 100.0 / num_companies)
-    prcnt_share = '{0:0.1f}'.format(cnt_share * 100.0 / num_companies)
-    prcnt_paid_share = '{0:0.1f}'.format(cnt_paid_share * 100.0 / num_companies)    
-    prcnt_non_reported = '{0:0.1f}'.format(cnt_non_reported * 100.0 / num_companies)    
+    prcnt_paid = '{0:0.0f}'.format(cnt_paid * 100.0 / num_companies)
+    prcnt_share = '{0:0.0f}'.format(cnt_share * 100.0 / num_companies)
+    prcnt_paid_share = '{0:0.0f}'.format(cnt_paid_share * 100.0 / num_companies)    
+    prcnt_non_reported = '{0:0.0f}'.format(cnt_non_reported * 100.0 / num_companies)    
 
     return {
         'EMPLOYER_THRESHOLD': settings.EMPLOYER_THRESHOLD,
@@ -375,31 +374,14 @@ def get_life_plan(employers, num_companies):
         'num_employers': num_companies,
         
         'mdn_multiple': mdn_multiple,
-        'cnt_multiple': cnt_multiple,
         'mdn_multiple_max': mdn_multiple_max, 
-        'cnt_multiple_max': cnt_multiple_max,
         'mdn_flat_amount': mdn_flat_amount, 
-        'cnt_flat_amount': cnt_flat_amount,
-        'mn_flat_amount': mn_flat_amount,
-        'sdv_flat_amount': sdv_flat_amount,
-        'flat_array': mark_safe(json.dumps(flat_array)),
 
-        'mn_quintile_amount': mn_quintile_amount,
-        'sdv_quintile_amount': sdv_quintile_amount,
-        'quintile_array': mark_safe(json.dumps(quintile_array)),        
+        'quintile_array_flat': mark_safe(json.dumps(quintile_array_flat)),
+        'quintile_array_multiple': mark_safe(json.dumps(quintile_array_multiple)),        
         
-        'cnt_add': cnt_add,
-        'cnt_type_plan_none': cnt_type_plan_none,
-        'cnt_type_plan_mul': cnt_type_plan_mul,
-        'cnt_type_plan_flat': cnt_type_plan_flat,
-        'cnt_type_plan_mul_flat': cnt_type_plan_mul_flat,
-        'cnt_type_non_reported': cnt_type_non_reported,
-        'cnt_paid': cnt_paid,
-        'cnt_share': cnt_share,
-        'cnt_paid_share': cnt_paid_share,
-        'cnt_non_reported': cnt_non_reported,
-        
-        'prcnt_add': prcnt_add,
+        'prcnt_add_flat': prcnt_add_flat,
+        'prcnt_add_multiple': prcnt_add_multiple,
         'prcnt_type_plan_none': prcnt_type_plan_none,
         'prcnt_type_plan_mul': prcnt_type_plan_mul,
         'prcnt_type_plan_flat': prcnt_type_plan_flat,
@@ -408,13 +390,7 @@ def get_life_plan(employers, num_companies):
         'prcnt_paid': prcnt_paid,
         'prcnt_share': prcnt_share,
         'prcnt_paid_share': prcnt_paid_share,
-        'prcnt_non_reported': prcnt_non_reported,
-        
-        'num_plan0': num_plan0,
-        'num_plan1': num_plan1,
-        'num_plan2': num_plan2,
-        'num_plan3_or_more': num_plan3_or_more,
-
+        'prcnt_non_reported': prcnt_non_reported,        
         'prcnt_plan0': prcnt_plan0,
         'prcnt_plan1': prcnt_plan1,
         'prcnt_plan2': prcnt_plan2,

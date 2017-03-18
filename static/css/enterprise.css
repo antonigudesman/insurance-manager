@@ -315,3 +315,11 @@ li.active {
 p.threshold-error {
     color: red;
 }
+
+div.easy-pie div.percent {
+    text-align: center;
+}
+
+div.easy-pie div.pie-title {
+    top: 100px;
+}

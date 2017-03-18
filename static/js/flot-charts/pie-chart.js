@@ -1,6 +1,6 @@
 function draw_easy_pie_chart() {    
     if ($('.easy-pie')[0]) {
-        easyPieChart('easy-pie', '#eee', '#ccc', '#2196F3', 4, 'butt', 95);
+        easyPieChart('easy-pie', '#eee', '#ccc', '#2196F3', 14, 'butt', 95);
     }
 }
 
