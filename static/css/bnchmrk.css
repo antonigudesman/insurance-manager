@@ -8,11 +8,11 @@ body {
 
 @media (min-width: 1200px) {
     .navbar-header {
-        width: 940px;
+        width: 823px;
     }
 
     .navbar-nav {
-        width: 483px;
+        width: 600px;
     }
 
     .home-header,

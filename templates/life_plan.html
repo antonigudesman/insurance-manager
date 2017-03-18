@@ -76,24 +76,24 @@
                 </thead>
                 <tbody>
                     <tr>
+                        <td>Median Salary Multiple</td>
+                        <td>{{ mdn_multiple }}</td>
+                        <td>{{ cnt_multiple }}</td>
+                    </tr>
+                    <tr>
+                        <td>Mean Salary Multiple</td>
+                        <td>${{ mn_quintile_amount|intcomma }}</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Salary Multiple Standard Deviation</td>
+                        <td>${{ sdv_quintile_amount|intcomma }}</td>
+                        <td></td>
+                    </tr>
+                    <tr>
                         <td>Median Multiple Maximum</td>
                         <td>${{ mdn_multiple_max|intcomma }}</td>
                         <td>{{ cnt_multiple_max }}</td>
-                    </tr>
-                    <tr>
-                        <td>Mean Multiple Maximum</td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Multiple Maximum Standard Deviation</td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Multiple of Salary Factor</td>
-                        <td>{{ mdn_multiple }}</td>
-                        <td>{{ cnt_multiple }}</td>
                     </tr>
                     <tr>
                         <td>Includes ADD</td>
@@ -104,7 +104,8 @@
             </table>  
         </div>
         <div class="section-graph">
-            <p class="exhibit-text">Exhibit L5: Flat Amount Distributions</p>
+            <p class="exhibit-text">Exhibit L6: Flat Amount Distributions</p>
+            <div id="L-6" class="flot-chart"></div>
         </div>
     </div>
 
@@ -258,7 +259,7 @@
 
 <script type="text/javascript">
 
-var l1_data, l5_data;
+var l1_data, l5_data, l6_data;
 
 {% if num_employers >= EMPLOYER_THRESHOLD %}
     l1_data = [
@@ -291,5 +292,11 @@ var l1_data, l5_data;
         data : d1,
         color: "#0062FF",
     });
+
+    var quintile_array = {{ quintile_array }};
+    l6_data = [{
+        data : quintile_array,
+    }];    
+ 
 {% endif %}
 </script>
