@@ -7,10 +7,10 @@
     <div class="benefit-header">
         <div class="benefit-details">
             <h4>LIFE INSURANCE BENCHMARKING</h4>
-            <h6>INDUSTRIES:<span id='lbl_ft_industries'></span></h6>
-            <h6>REGIONS:<span id='lbl_ft_regions'></span></h6>
-            <h6>HEADCOUNTS:<span id='lbl_ft_headcounts'></span></h6>
-            <h6>OTHER:<span id='lbl_ft_other'></span></h6>
+            <h6>INDUSTRIES:&nbsp;</h6><p><span id='lbl_ft_industries'></span></p>
+            <h6>REGIONS:&nbsp;</h6><p><span id='lbl_ft_regions'></span></p>
+            <h6>HEADCOUNTS:&nbsp;</h6><p><span id='lbl_ft_headcounts'></span></p>
+            <h6>OTHER:&nbsp;</h6><p><span id='lbl_ft_other'></span></p>
         </div>
         <div class="client-logo">
             <img src="{% static 'img/bnchmrk_logo_stacked.jpg' %}" alt="">
@@ -43,14 +43,14 @@
                     </tr>
                     <tr>
                         <td class="row-label">ADD Included</td>
-                        <td>{{ prcnt_add }}</td>
+                        <td>{{ prcnt_add_multiple }}</td>
                     </tr>
                 </tbody>
             </table>  
         </div>
         <div class="section-graph">
-            <p class="exhibit-text">Exhibit L6: Maximum Benefit Distribution</p>
-            <div id="L-6" class="flot-chart"></div>
+            <p class="exhibit-text">Exhibit L1: Maximum Benefit Distribution</p>
+            <div id="L-1" class="flot-chart"></div>
         </div>
     </div>
 
@@ -75,15 +75,15 @@
                     </tr>
                     <tr>
                         <td class="row-label">ADD Included</td>
-                        <td>{{ prcnt_add }}</td>
+                        <td>{{ prcnt_add_flat }}</td>
                         <td></td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <div class="section-graph">
-            <p class="exhibit-text">Exhibit L5: Flat Benefit Distribution</p>
-            <div id="L-5" class="flot-chart"></div>
+            <p class="exhibit-text">Exhibit L2: Flat Benefit Distribution</p>
+            <div id="L-2" class="flot-chart"></div>
         </div>
     </div>
 
@@ -121,16 +121,16 @@
             </table>  
         </div>
         <div class="section-graph">
-            <p class="exhibit-text">Exhibit L2-L4: Cost Share</p>
-            <div class="easy-pie L-2" data-percent="{{ prcnt_paid }}">
+            <p class="exhibit-text">Exhibit L12-L14: Cost Share</p>
+            <div class="easy-pie L-12" data-percent="{{ prcnt_paid }}">
                 <div class="percent">{{ prcnt_paid }}</div>
                 <div class="pie-title">100% Employer Paid Only</div>
             </div>
-            <div class="easy-pie L-3" data-percent="{{ prcnt_share }}">
+            <div class="easy-pie L-13" data-percent="{{ prcnt_share }}">
                 <div class="percent">{{ prcnt_share }}</div>
                 <div class="pie-title">Employee Cost Share Only</div>
             </div>
-            <div class="easy-pie L-4" data-percent="{{ prcnt_paid_share }}">
+            <div class="easy-pie L-14" data-percent="{{ prcnt_paid_share }}">
                 <div class="percent">{{ prcnt_paid_share }}</div>
                 <div class="pie-title">Core / Buy Up</div>
             </div>
@@ -202,8 +202,8 @@
             </table>  
         </div>
         <div class="section-graph">
-            <p class="exhibit-text">Exhibit L1: Number of Plans Offered</p>
-            <div id="L-1" class="flot-chart-pie"></div>
+            <p class="exhibit-text">Exhibit L18: Number of Plans Offered</p>
+            <div id="L-18" class="flot-chart-pie"></div>
             <div class="flc-donut hidden-xs"></div>
         </div>
     </div>
@@ -218,64 +218,18 @@
 
 <script type="text/javascript">
 
-var l1_data, l5_data, l6_data;
+var l1_data, l2_data, l18_data;
 
 {% if num_employers >= EMPLOYER_THRESHOLD %}
-    l1_data = [
+    l1_data = generate_quintile_data({{ quintile_array_multiple }});
+    l2_data = generate_quintile_data({{ quintile_array_flat }});
+
+    l18_data = [
         {data: {{ prcnt_plan0 }}, color: '#F44336', label: 'Not Offered'},
         {data: {{ prcnt_plan1 }}, color: '#03A9F4', label: '1 Plan'},
         {data: {{ prcnt_plan2 }}, color: '#8BC34A', label: '2 Plans'},
         {data: {{ prcnt_plan3_or_more }}, color: '#FFEB3B', label: '3+ Plans'},
     ];
-
-    var flat_array = {{ flat_array }};
-    l5_data = [{
-        data : flat_array,
-        bars : {
-            show : true,
-            barWidth : 0.75,
-            order : 1,
-            lineWidth: 0,
-            fillColor: '#8BC34A',
-            align: "right"
-        }
-    }];    
-
-    var d0 = [{{ mn_flat_amount }}, {{ sdv_flat_amount }}];
-    var d1 = [];
-
-    for (var i = 0; i < 12; i += 1)
-        d1.push([flat_array[i][0], NormalDensityZx(i * 10000,d0[0],d0[1]) * 4000000]);
-
-    l5_data.push({
-        data : d1,
-        color: "#0062FF",
-    });
-
-    var quintile_array = {{ quintile_array }};
-    var qa_points = $.map(quintile_array, function(i){if (i[0]%20==0) return [i];});
-    l6_data = [
-        {
-            data: qa_points,
-            points: { show: true, radius: 5 },
-            lines: { show: false, fill: 0.98 },
-            color: '#f1dd2c'
-        }
-    ];
-
-    var section = [];
-    for( var i = 0; i < quintile_array.length; i++ ) {
-        section.push(quintile_array[i]);
-        if ( i > 0 && quintile_array[i][0] % 20 == 0) {
-            l6_data.push({
-                data : section,
-                points: { show: false },
-                lines: { show: true, fill: 0.98 },
-                color: colors[quintile_array[i][0] / 20 - 1]
-            });
-            section = [quintile_array[i]];
-        }
-    }    
 
 {% endif %}
 </script>

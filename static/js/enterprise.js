@@ -123,12 +123,11 @@ function get_body() {
             $('#bnchmrk_card').html(data);
             if(benefit == 'EMPLOYERS') {
                 load_employers();
-                // $("#data-table-employer").bootgrid('reload');        
             } else if(benefit == 'LIFE') {
+                draw_bar_chart('L-1', l1_data);        
+                draw_bar_chart('L-2', l2_data);        
                 draw_easy_pie_chart();
-                draw_donut_chart('L-1', l1_data);
-                draw_bar_chart('L-5', l5_data);        
-                draw_bar_chart('L-6', l6_data, false, 5);        
+                draw_donut_chart('L-18', l18_data);
 
                 $('#lbl_ft_industries').html(industries_label.toString());
                 $('#lbl_ft_regions').html(regions_label.toString());
@@ -171,3 +170,30 @@ $(document).ready(function(){
         $('.filter-control').attr('size', 15);
     });
 });
+
+generate_quintile_data = function(raw_data){
+    var qa_points = $.map(raw_data, function(i){if (i[0]%20==0) return [i];});
+    var data = [
+        {
+            data: qa_points,
+            points: { show: true, radius: 5 },
+            lines: { show: false, fill: 0.98 },
+            color: '#f1dd2c'
+        }
+    ];
+
+    var section = [];
+    for( var i = 0; i < raw_data.length; i++ ) {
+        section.push(raw_data[i]);
+        if ( i > 0 && raw_data[i][0] % 20 == 0) {
+            data.push({
+                data : section,
+                points: { show: false },
+                lines: { show: true, fill: 0.98 },
+                color: colors[raw_data[i][0] / 20 - 1]
+            });
+            section = [raw_data[i]];
+        }
+    }       
+    return data;
+}
