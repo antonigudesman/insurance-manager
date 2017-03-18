@@ -19,180 +19,107 @@
 
     <div class="section">
         <div class="section-content">
-            <table class="table table-striped">
-                <col width="50%">
+            <table class="table table-striped table-content">
+                <col width="40%">
+                <col width="25%">
                 <col width="35%">
-                <col width="15%">
                 <thead>
                     <tr>
-                        <th>Flat Amount Plans</th>
-                        <th>Values</th>
-                        <th>Count</th>
+                        <th class="row-label">Salary-Based Plans</th>
+                        <th>Benchmark</th>
+                        <th>Rank</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Median Flat Amount</td>
-                        <td>${{ mdn_flat_amount|intcomma }}</td>
-                        <td>{{ cnt_flat_amount }}</td>
-                    </tr>
-                    <tr>
-                        <td>Mean Flat Amount</td>
-                        <td>${{ mn_flat_amount|intcomma }}</td>
-                        <td>{{ cnt_flat_amount }}</td>
-                    </tr>
-                    <tr>
-                        <td>Standard Deviation</td>
-                        <td>${{ sdv_flat_amount|intcomma }}</td>
-                        <td>{{ cnt_flat_amount }}</td>
-                    </tr>
-                    <tr>
-                        <td>Includes ADD</td>
-                        <td>{{ prcnt_add }}</td>
-                        <td>{{ cnt_add }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="section-graph">
-            <p class="exhibit-text">Exhibit L5: Flat Amount Distributions</p>
-            <div id="L-5" class="flot-chart"></div>
-        </div>
-    </div>
-
-    
-    <div class="section">
-        <div class="section-content">
-            <table class="table table-striped">
-                <col width="50%">
-                <col width="35%">
-                <col width="15%">
-                <thead>
-                    <tr>
-                        <th>Multiple of Salary Plans</th>
-                        <th>Values</th>
-                        <th>Count</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Median Salary Multiple</td>
-                        <td>{{ mdn_multiple }}</td>
-                        <td>{{ cnt_multiple }}</td>
-                    </tr>
-                    <tr>
-                        <td>Mean Salary Multiple</td>
-                        <td>${{ mn_quintile_amount|intcomma }}</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Salary Multiple Standard Deviation</td>
-                        <td>${{ sdv_quintile_amount|intcomma }}</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Median Multiple Maximum</td>
+                        <td class="row-label">Maximum Benefit</td>
                         <td>${{ mdn_multiple_max|intcomma }}</td>
-                        <td>{{ cnt_multiple_max }}</td>
+                        <td>Client</td>
                     </tr>
                     <tr>
-                        <td>Includes ADD</td>
+                        <td class="row-label">Multiple of Salary</td>
+                        <td>{{ mdn_multiple }}</td>
+                        <td rowspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">ADD Included</td>
                         <td>{{ prcnt_add }}</td>
-                        <td>{{ cnt_add }}</td>
                     </tr>
                 </tbody>
             </table>  
         </div>
         <div class="section-graph">
-            <p class="exhibit-text">Exhibit L6: Flat Amount Distributions</p>
+            <p class="exhibit-text">Exhibit L6: Maximum Benefit Distribution</p>
             <div id="L-6" class="flot-chart"></div>
         </div>
     </div>
 
     <div class="section">
         <div class="section-content">
-            <table class="table table-striped">
-                <col width="50%">
+            <table class="table table-striped table-content">
+                <col width="40%">
+                <col width="25%">
                 <col width="35%">
-                <col width="15%">
                 <thead>
                     <tr>
-                        <th>Number of Plans</th>
-                        <th>Employers</th>
-                        <th>Count</th>
+                        <th class="row-label">Flat Amount Plans</th>
+                        <th>Benchmark</th>
+                        <th>Rank</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Not Offered</td>
-                        <td>{{ prcnt_plan0 }}%</td>
-                        <td>{{ num_plan0 }}</td>
+                        <td class="row-label">Flat Benefit</td>
+                        <td>${{ mdn_flat_amount|intcomma }}</td>
+                        <td>Client</td>
                     </tr>
                     <tr>
-                        <td>1 Plan</td>
-                        <td>{{ prcnt_plan1 }}%</td>
-                        <td>{{ num_plan1 }}</td>
-                    </tr>
-                    <tr>
-                        <td>2 Plans</td>
-                        <td>{{ prcnt_plan2 }}%</td>
-                        <td>{{ num_plan2 }}</td>
-                    </tr>
-                    <tr>
-                        <td>3 or More Plans</td>
-                        <td>{{ prcnt_plan3_or_more }}%</td>
-                        <td>{{ num_plan3_or_more }}</td>
+                        <td class="row-label">ADD Included</td>
+                        <td>{{ prcnt_add }}</td>
+                        <td></td>
                     </tr>
                 </tbody>
             </table>
-            <table class="table table-striped">
-                <col width="50%">
-                <col width="35%">
-                <col width="15%">
-                <thead>
-                    <tr>
-                        <th>Plans Types</th>
-                        <th>Employers</th>
-                        <th>Count</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Multiple of Salary Plan(s) Only</td>
-                        <td>{{ prcnt_type_plan_mul }}%</td>
-                        <td>{{ cnt_type_plan_mul }}</td>
-                    </tr>
-                    <tr>
-                        <td>Flat Amount Plan(s) Only</td>
-                        <td>{{ prcnt_type_plan_flat }}%</td>
-                        <td>{{ cnt_type_plan_flat }}</td>
-                    </tr>
-                    <tr>
-                        <td>Both Multiple & Flat Plans</td>
-                        <td>{{ prcnt_type_plan_mul_flat }}%</td>
-                        <td>{{ cnt_type_plan_mul_flat }}</td>
-                    </tr>
-                    <tr>
-                        <td>Not Reported</td>
-                        <td>{{ prcnt_type_non_reported }}%</td>
-                        <td>{{ cnt_type_non_reported }}</td>
-                    </tr>
-                    <tr>
-                        <td>Not Offered</td>
-                        <td>{{ prcnt_type_plan_none }}%</td>
-                        <td>{{ cnt_type_plan_none }}</td>
-                    </tr>
-                </tbody>
-            </table>  
         </div>
         <div class="section-graph">
-            <p class="exhibit-text">Exhibit L1: Number of Plans Offered</p>
-            <div id="L-1" class="flot-chart-pie"></div>
-            <div class="flc-donut hidden-xs"></div>
+            <p class="exhibit-text">Exhibit L5: Flat Benefit Distribution</p>
+            <div id="L-5" class="flot-chart"></div>
         </div>
     </div>
 
     <div class="section">
+        <div class="section-content">
+            <table class="table table-striped table-content">
+                <col width="50%">
+                <col width="50%">
+                <thead>
+                    <th class="row-label">Cost Share</th>
+                    <th>Employers</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-label">100% Employer Paid Only</td>
+                        <td>{{ prcnt_paid }}%</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Employee Cost Share Only</td>
+                        <td>{{ prcnt_share }}%</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Core & Buy Up Plans</td>
+                        <td>{{ prcnt_paid_share }}%</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Not Reported</td>
+                        <td>{{ prcnt_non_reported }}%</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Not Offered</td>
+                        <td>{{ prcnt_type_plan_none }}%</td>
+                    </tr>
+                </tbody>
+            </table>  
+        </div>
         <div class="section-graph">
             <p class="exhibit-text">Exhibit L2-L4: Cost Share</p>
             <div class="easy-pie L-2" data-percent="{{ prcnt_paid }}">
@@ -208,44 +135,76 @@
                 <div class="pie-title">Core / Buy Up</div>
             </div>
         </div>
+    </div>
+
+
+    <div class="section">
         <div class="section-content">
-            <table class="table table-striped">
+            <table class="table table-striped table-content">
                 <col width="50%">
-                <col width="35%">
-                <col width="15%">
+                <col width="50%">
                 <thead>
-                    <th>Cost Share</th>
-                    <th>Employers</th>
-                    <th>Count</th>
+                    <tr>
+                        <th class="row-label">Number of Plans</th>
+                        <th>Employers</th>
+                    </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>100% Employer Paid Only</td>
-                        <td>{{ prcnt_paid }}%</td>
-                        <td>{{ cnt_paid }}</td>
+                        <td class="row-label">Not Offered</td>
+                        <td>{{ prcnt_plan0 }}%</td>
                     </tr>
                     <tr>
-                        <td>Employee Cost Share Only</td>
-                        <td>{{ prcnt_share }}%</td>
-                        <td>{{ cnt_share }}</td>
+                        <td class="row-label">1 Plan</td>
+                        <td>{{ prcnt_plan1 }}%</td>
                     </tr>
                     <tr>
-                        <td>Core & Buy Up Plans</td>
-                        <td>{{ prcnt_paid_share }}%</td>
-                        <td>{{ cnt_paid_share }}</td>
+                        <td class="row-label">2 Plans</td>
+                        <td>{{ prcnt_plan2 }}%</td>
                     </tr>
                     <tr>
-                        <td>Not Reported</td>
-                        <td>{{ prcnt_non_reported }}%</td>
-                        <td>{{ cnt_non_reported }}</td>
+                        <td class="row-label">3 or More Plans</td>
+                        <td>{{ prcnt_plan3_or_more }}%</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-striped table-content">
+                <col width="50%">
+                <col width="50%">
+                <thead>
+                    <tr>
+                        <th class="row-label">Plan Types</th>
+                        <th>Employers</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-label">Salary-Based Plans Only</td>
+                        <td>{{ prcnt_type_plan_mul }}%</td>
                     </tr>
                     <tr>
-                        <td>Not Offered</td>
+                        <td class="row-label">Flat Plans Only</td>
+                        <td>{{ prcnt_type_plan_flat }}%</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Both Multiple & Flat Plans</td>
+                        <td>{{ prcnt_type_plan_mul_flat }}%</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Not Reported</td>
+                        <td>{{ prcnt_type_non_reported }}%</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Not Offered</td>
                         <td>{{ prcnt_type_plan_none }}%</td>
-                        <td>{{ cnt_type_plan_none }}</td>
                     </tr>
                 </tbody>
             </table>  
+        </div>
+        <div class="section-graph">
+            <p class="exhibit-text">Exhibit L1: Number of Plans Offered</p>
+            <div id="L-1" class="flot-chart-pie"></div>
+            <div class="flc-donut hidden-xs"></div>
         </div>
     </div>
 
@@ -294,9 +253,29 @@ var l1_data, l5_data, l6_data;
     });
 
     var quintile_array = {{ quintile_array }};
-    l6_data = [{
-        data : quintile_array,
-    }];    
- 
+    var qa_points = $.map(quintile_array, function(i){if (i[0]%20==0) return [i];});
+    l6_data = [
+        {
+            data: qa_points,
+            points: { show: true, radius: 5 },
+            lines: { show: false, fill: 0.98 },
+            color: '#f1dd2c'
+        }
+    ];
+
+    var section = [];
+    for( var i = 0; i < quintile_array.length; i++ ) {
+        section.push(quintile_array[i]);
+        if ( i > 0 && quintile_array[i][0] % 20 == 0) {
+            l6_data.push({
+                data : section,
+                points: { show: false },
+                lines: { show: true, fill: 0.98 },
+                color: colors[quintile_array[i][0] / 20 - 1]
+            });
+            section = [quintile_array[i]];
+        }
+    }    
+
 {% endif %}
 </script>
