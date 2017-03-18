@@ -42,13 +42,13 @@
                     <ul class="nav navbar-nav">
                         {% if user.is_authenticated %}
                         <li>
-                            <a href="/">Welcome, {{ request.user.first_name }} {{ request.user.last_name }}</a>
+                            <h6>Welcome, {{ request.user.first_name }} {{ request.user.last_name }}</h6>
                         </li>
                         <li class="menu-enterprise">
                             <a href="/enterprise">ENTERPRISE</a> 
                         </li>
                         <li>
-                            <a href="/">ACCOUNT</a> 
+                            <a href="/">MY ACCOUNT</a> 
                         </li>
                         <li>
                             <a href="/logout">LOGOUT</a>

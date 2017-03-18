@@ -1,3 +1,7 @@
+digits = function(digit_str) {
+    return digit_str.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+}
+
 function NormalDensityZx(x, Mean, StdDev)
 {
     var a = x - Mean;
@@ -5,8 +9,8 @@ function NormalDensityZx(x, Mean, StdDev)
 }
 
 function draw_bar_chart(id, data, tip=true, xticks=0) {       
-    // var ticks = [["0%", "0%"], ["20%", "20%"], ["40%", 20], ["60%", 30], ["80%", 40]];
-    var ticks = ["0%", "20%", "40%", "60%", "80%", "100%"];
+    var ticks = [[0, "0%"], [20, "20%"], [40, "40%"], [60, "60%"], [80, "80%"]];
+
     if ($('#'+id)[0]) {
         var p = $.plot($('#'+id), data, {
             grid : {
@@ -25,7 +29,9 @@ function draw_bar_chart(id, data, tip=true, xticks=0) {
                     color: "#9f9f9f",
                 },
                 shadowSize: 0,
-                autoscaleMargin: -0.1
+                autoscaleMargin: -0.1,
+                // min: 0,
+                // ticks: [],
             },
             
             xaxis: {
@@ -38,10 +44,10 @@ function draw_bar_chart(id, data, tip=true, xticks=0) {
                     size: 12
                 },
                 shadowSize: 0,
-                mode: 'categories',
+                // mode: 'categories',
                 min: 0,
                 tickSize: 20,
-                // ticks: ticks
+                ticks: ticks
             },
     
             legend:{
@@ -51,33 +57,20 @@ function draw_bar_chart(id, data, tip=true, xticks=0) {
                 backgroundColor: "white",
                 lineWidth: 0
             },
-
         });
 
-        if (tip) {
+        if (!tip) {
             $.each(p.getData()[0].data, function(i, el){
                 var o = p.pointOffset({x: i, y: el[1]});
-                if (el[1] != 0.0) {
-                    $('<div class="data-point-label">' + el[1] + '%</div>').css( {
+                if (el[0] % 20 == 0) {
+                    $('<div class="data-point-label">' + '$'+digits(el[1].toString()) + '</div>').css( {
                         position: 'absolute',
-                        left: o.left - 24,
-                        top: o.top - 20,
+                        left: 27 + el[0] * 7.5,
+                        top: o.top - 25,
                         display: 'none'
                     }).appendTo(p.getPlaceholder()).fadeIn('slow');                
                 }
             });                    
         }
-
-        // if (xticks) {
-        //     var ticks_ = p.getAxes().xaxis.ticks;
-        //     for (var i = 0; i < ticks_.length; i++) {
-        //         p.getAxes().xaxis.ticks[i]['v'] += " %";
-        //         p.getAxes().xaxis.ticks[i]['label'] += " %";
-        //     }
-
-        //     console.log(p.getAxes().xaxis.ticks);
-        //     p.setupGrid();
-        //     p.draw();
-        // }
     }    
 }

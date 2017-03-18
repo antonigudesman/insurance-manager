@@ -8,6 +8,8 @@ var head_counts_label = [];
 var others_label = [];
 var regions_label = [];
 
+var colors = ['#d52929', '#ebf62f', '#bfbfbf', '#cdd529', '#29d529'];
+
 $(document).ready(function(){
     load_employers();
 });
@@ -103,6 +105,7 @@ function get_filters_label() {
 }
 
 function get_body() {
+    $('.filter-control').attr('size', 1);
     benefit = $('.enterprise-navbar li.active a').html();
     get_filters();
     get_filters_label();
@@ -162,5 +165,9 @@ $(document).ready(function(){
         $('.enterprise-navbar li').removeClass('active');
         $(this).addClass('active');
         get_body();
+    });
+
+    $('.dropdown-icon').click(function() {
+        $('.filter-control').attr('size', 15);
     });
 });

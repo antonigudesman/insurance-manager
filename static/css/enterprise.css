@@ -1,7 +1,7 @@
 @media (min-width: 1200px) {
 
     body {
-        margin-top: 261px;
+        margin-top: 160px;
     }
 
     .enterprise-menu {
@@ -31,7 +31,7 @@
 
     .enterprise-nav > li > a {
         padding: 3px 0;
-        letter-spacing: 2px;
+        letter-spacing: 1px;
     }
 
     .control-wrapper {
@@ -61,15 +61,22 @@
     .other-filter {
         float: left;
         width: 20%;
-        padding: 11px 11px 10px 11px;
+        padding: 1px 0 0 0;
     }
 
     .filter-control {
         display: block;
         width: 100%;
-        font-size: 13px;
-        line-height: 1.4;
+        float: left;
+        font-size: 16px;
         padding-left: 4px;
+    }
+
+    img.dropdown-icon {
+        display: block;
+        width: 20px;
+        float: right;
+        padding-top: 4px;
     }
 
     .bottom-menu {
@@ -88,13 +95,7 @@
 
     .plan-dropdown {
         float: left;
-        width: 66%;
-        padding: 0;
-    }
-
-    .employer-count {
-        float: left;
-        width: 15%;
+        width: 60%;
         padding: 0;
     }
 
@@ -104,12 +105,13 @@
 
     .control-buttons {
         float: right;
-        width: 19%;
+        width: 40%;
         padding: 0;
     }
 
     .btn-primary,
-    .btn-print {
+    .btn-print,
+    .control-buttons h6 {
         float: right;
         margin-left: 8px; 
     }
@@ -129,14 +131,14 @@
     }
 
     .section-content {
-        width: 50%;
+        width: 40%;
         height: 100%;
         float: left;
         padding: 0 35px 0 0;
     }
 
     .section-graph {
-        width: 50%;
+        width: 60%;
         height: 100%;
         float: right;
     }
@@ -151,27 +153,32 @@
         font-size: 20px;
     }
 
+    .other-filter > label {
+        font-size: 16px;
+        padding: 0 5px;
+    }
+
     .benefit-header h6 {
         font-size: 13px;
     }
 
     .client-logo {
-        width: 50%;
-        float: right;
+        width: 15%;
+        float: left;
     }
 
     .client-logo > img {
         max-height: 140px;
-        float: right;
+        float: left;
         padding: 10px;
     }
 
     .benefit-details{
-        width: 50%;
-        float: left;
+        width: 85%;
+        float: right;
     }
 
-    .employer-count h6,
+    .control-buttons h6,
     .plan-dropdown h6 {
         font-size: 18px;
         margin: 0;
@@ -179,18 +186,17 @@
     }
 
     .btn-primary,
-    .btn-print {
-        font-size: 14px;
-        letter-spacing: 1px;
-    }
-
-    .table > thead > tr > th {
-        font-size: 18px;
-    }
-
+    .btn-print,
+    .table > thead > tr > th,
     .table > tbody > tr > td {
         font-size: 14px;
     }
+
+    .table-content > thead > tr > th,
+    .table-content > tbody > tr > td {
+        padding-right: 20px; 
+    }
+
 
     .benefit-error {
         width: 100%;
@@ -199,16 +205,23 @@
 
 }
 
+
+p.exhibit-text {
+    margin-bottom: 6px;
+}
+
 .nav-tabs > li > a,
 li.active,
-.employer-count h6,
-.plan-dropdown h6 {
+.control-buttons h6,
+.plan-dropdown h6,
+.other-filter > label {
     font-weight: bold;
 }
 
 .enterprise-menu,
 .enterprise-control-wrapper,
 .control-wrapper,
+.other-filter,
 .bottom-menu {
     background-color:#222222;
 }
@@ -228,7 +241,6 @@ li.active,
 
 li.active,
 .section,
-.other-filter,
 .filter-control,
 .plan-control {
     background-color: #ffffff;
@@ -240,8 +252,9 @@ li.active,
 .nav-tabs,
 .nav-tabs > li > a,
 .nav-tabs > li > a:hover > li > a,
-.employer-count h6,
-.plan-dropdown h6 {
+.control-buttons h6,
+.plan-dropdown h6,
+.other-filter > label {
     color: #ffffff;
 }
 
@@ -289,8 +302,14 @@ li.active {
     border-radius: 0;
 }
 
-.bnchmrk_table {
+.table-content > thead > tr > th,
+.table-content > tbody > tr > td {
+    text-align: right; 
+}
 
+.table-content > thead > tr > th.row-label,
+.table-content > tbody > tr > td.row-label {
+    text-align: left;
 }
 
 p.threshold-error {

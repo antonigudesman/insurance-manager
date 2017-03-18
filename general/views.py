@@ -338,7 +338,7 @@ def get_life_plan(employers, num_companies):
     flat_array.insert(0, ['0', 0.0]) # for formatting   
 
     quintile_array = get_incremental_array(qs_multiple_max, 'multiple_max') 
-    print quintile_array, '#################'
+    # print quintile_array, '#################'
     cnt_add = lifes.filter(add=True).count()
 
     companies_with_mul_plan = set([item.employer_id for item in lifes.filter(type='Multiple of Salary')])
@@ -483,7 +483,6 @@ def get_incremental_array(queryset, term):
             idx_ += 1
         idx += 1
 
-    # return [[0,10],[1,20],[2,30],[3,10],[4,40],[5,70]]
     # format labels for 20%, 40% ..., 100%
     idx = 0
     factor = 20
@@ -502,7 +501,7 @@ def get_incremental_array(queryset, term):
         label_o = label_
         idx += 1
 
-    result_[-1][0] = '100%'
+    result_[-1][0] = 100
     return result_
 
 
