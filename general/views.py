@@ -320,6 +320,7 @@ def get_life_plan(employers, num_companies):
     qs_flat_amount = lifes.exclude(flat_amount__isnull=True)
     mdn_flat_amount, cnt_flat_amount = get_median_count(qs_flat_amount, 'flat_amount')    
     mn_flat_amount, sdv_flat_amount = get_mean_sdv(qs_flat_amount, 'flat_amount')
+    mn_quintile_amount, sdv_quintile_amount = get_mean_sdv(qs_multiple_max, 'multiple_max')
 
     # for counting # of plans
     num_plan0 = employers.filter(life_count=0).count()
@@ -333,10 +334,11 @@ def get_life_plan(employers, num_companies):
     prcnt_plan3_or_more = '{0:0.1f}'.format(num_plan3_or_more * 100.0 / num_companies)
 
     flat_array = get_flat_array(qs_flat_amount) 
-    flat_array_ = [['{0:0.1f}%'.format(item[1] * 100.0 / cnt_flat_amount), item[1]] for item in flat_array]
     flat_array = [[item[0], '{0:0.1f}'.format(item[1] * 100.0 / cnt_flat_amount)] for item in flat_array]
     flat_array.insert(0, ['0', 0.0]) # for formatting   
 
+    quintile_array = get_incremental_array(qs_multiple_max, 'multiple_max') 
+    print quintile_array, '#################'
     cnt_add = lifes.filter(add=True).count()
 
     companies_with_mul_plan = set([item.employer_id for item in lifes.filter(type='Multiple of Salary')])
@@ -381,7 +383,10 @@ def get_life_plan(employers, num_companies):
         'mn_flat_amount': mn_flat_amount,
         'sdv_flat_amount': sdv_flat_amount,
         'flat_array': mark_safe(json.dumps(flat_array)),
-        'flat_array_': flat_array_,
+
+        'mn_quintile_amount': mn_quintile_amount,
+        'sdv_quintile_amount': sdv_quintile_amount,
+        'quintile_array': mark_safe(json.dumps(quintile_array)),        
         
         'cnt_add': cnt_add,
         'cnt_type_plan_none': cnt_type_plan_none,
@@ -444,7 +449,7 @@ def get_median_count(queryset, term):
 
 def get_flat_array(lifes):
     min_ = settings.FLAT_BUCKET_SIZE
-    max_ = 100000
+    max_ = settings.FLAT_BUCKET_SIZE * 10
 
     bucket_title = ['<$10k', '$20k', '$30k', '$40k', '$50k', '$60k', '$70k', '$80k', '$90k', '$100k', '$100k+']
     buckets = [[item, item+settings.FLAT_BUCKET_SIZE-1] for item in range(min_, max_-1, settings.FLAT_BUCKET_SIZE)]
@@ -459,6 +464,46 @@ def get_flat_array(lifes):
         idx += 1
 
     return f_array
+
+
+def get_incremental_array(queryset, term):
+    num_points = settings.MAX_POINTS
+    num_elements = queryset.count()
+
+    interval = num_elements / num_points + 1 #if num_elements > num_points else 1
+
+    # limit number of points as MAX_POINTS
+    result = []
+    idx = 0
+    idx_ = 0
+    for item in queryset.order_by(term):
+        if idx % interval == 0:
+            # result.append([idx_, getattr(item, term)])
+            result.append(getattr(item, term))            
+            idx_ += 1
+        idx += 1
+
+    # return [[0,10],[1,20],[2,30],[3,10],[4,40],[5,70]]
+    # format labels for 20%, 40% ..., 100%
+    idx = 0
+    factor = 20
+    num_points = len(result)
+    result_ = []
+    label_o = 0
+
+    for item in result:
+        label_ = int(idx * 100 / num_points)
+        if label_o < factor and factor <= label_:
+            label_ = factor
+            factor += 20 
+        label = '{}%'.format(label_)
+        # result_.append([label, item])
+        result_.append([label_, item])
+        label_o = label_
+        idx += 1
+
+    result_[-1][0] = '100%'
+    return result_
 
 
 def get_mean_sdv(queryset, term):

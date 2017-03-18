@@ -125,6 +125,7 @@ function get_body() {
                 draw_easy_pie_chart();
                 draw_donut_chart('L-1', l1_data);
                 draw_bar_chart('L-5', l5_data);        
+                draw_bar_chart('L-6', l6_data, false, 5);        
 
                 $('#lbl_ft_industries').html(industries_label.toString());
                 $('#lbl_ft_regions').html(regions_label.toString());
