@@ -11,7 +11,24 @@ var regions_label = [];
 var colors = ['#f8696b', '#FCAA78', '#ffeb84', '#B1D480', '#63be7b'];
 
 $(document).ready(function(){
-    load_employers();
+    $('.enterprise-navbar li').each(function() {
+        if (benefit == $(this).find('a').html()) {
+            $(this).addClass('active');
+        }
+    });
+
+    get_body();
+
+    $('.enterprise-navbar li').click(function() {
+        $('.enterprise-navbar li').removeClass('active');
+        $(this).addClass('active');
+        get_body();
+    });
+
+    // expand filters
+    $('.dropdown-icon').click(function() {
+        $('.filter-control').attr('size', 20);
+    });    
 });
 
 function load_employers() {
@@ -42,8 +59,6 @@ function load_employers() {
             cache: false
         },
         requestHandler: function (request) {
-            get_filters();
-
             var model = {
                 current: request.current,
                 rowCount: request.rowCount,
@@ -105,6 +120,7 @@ function get_filters_label() {
 }
 
 function get_body() {
+    // collapse filters
     $('.filter-control').attr('size', 1);
     benefit = $('.enterprise-navbar li.active a').html();
     get_filters();
@@ -148,28 +164,7 @@ function get_body() {
         function(data) {
             $('#num_employers').html(data);
         })
-
 }
-
-$(document).ready(function(){
-    $('.enterprise-navbar li').each(function() {
-        if (benefit == $(this).find('a').html()) {
-            $(this).addClass('active');
-        }
-    });
-
-    get_body();
-
-    $('.enterprise-navbar li').click(function() {
-        $('.enterprise-navbar li').removeClass('active');
-        $(this).addClass('active');
-        get_body();
-    });
-
-    $('.dropdown-icon').click(function() {
-        $('.filter-control').attr('size', 20);
-    });
-});
 
 generate_quintile_data = function(raw_data){
     var qa_points = $.map(raw_data, function(i){if (i[0]%20==0) return [i];});

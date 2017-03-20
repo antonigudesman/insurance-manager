@@ -179,6 +179,10 @@ def get_filtered_employers(ft_industries, ft_head_counts, ft_other, ft_regions, 
 @csrf_exempt
 @login_required(login_url='/login')
 def enterprise(request):
+    """
+    GET: render general enterprise page
+    POST: for enterprise bootgrid table
+    """
     if request.method == 'POST':
         form_param = json.loads(request.body or "{}")
         limit = int(form_param.get('rowCount'))
