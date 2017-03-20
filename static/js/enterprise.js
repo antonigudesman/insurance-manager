@@ -25,6 +25,7 @@ $(document).ready(function(){
         get_body();
     });
 
+    // expand filters
     $('.dropdown-icon').click(function() {
         $('.filter-control').attr('size', 15);
     });    
@@ -58,8 +59,6 @@ function load_employers() {
             cache: false
         },
         requestHandler: function (request) {
-            get_filters();
-
             var model = {
                 current: request.current,
                 rowCount: request.rowCount,
@@ -121,6 +120,7 @@ function get_filters_label() {
 }
 
 function get_body() {
+    // collapse filters
     $('.filter-control').attr('size', 1);
     benefit = $('.enterprise-navbar li.active a').html();
     get_filters();
@@ -164,7 +164,6 @@ function get_body() {
         function(data) {
             $('#num_employers').html(data);
         })
-
 }
 
 generate_quintile_data = function(raw_data){
