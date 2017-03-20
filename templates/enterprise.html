@@ -35,22 +35,15 @@
 <div class="enterprise-control-wrapper">
     <div class="container">
         <div class="control-wrapper">
+            <div class="header-filter">
+                <h6>Filters:</h6>
+            </div>
             <div class="industry-filter">
                 <select name="industry" multiple="" id="industries" class="filter-control" size="1">
                     <option value="*">All Industries</option>
                     {% for item in industries %}
                     <option value="{{ item }}">{{ item }}</option>
                     {% endfor %}
-                </select>
-            </div>
-            <div class="headcount-filter">
-                <select name="head-count" multiple="" id="head-counts" class="filter-control" size="1">
-                    <option value="0-2000000">All Sizes</option>
-                    <option value="0-249">Up to 250</option>
-                    <option value="250-499">250 to 499</option>
-                    <option value="500-999">500 to 999</option>
-                    <option value="1000-4999">1,000 to 4,999</option>
-                    <option value="5000-2000000">5,000 and Up</option>
                 </select>
             </div>
             <div class="region-filter">
@@ -66,27 +59,48 @@
                     <option value="pacific">Pacific</option>
                 </select>
             </div>
-            <div class="other-filter">
-                <input type="checkbox" class="other_filter" value="nonprofit"> <label>Non-Profit</label>
-                <input type="checkbox" class="other_filter" value="govt_contractor"> <label>Gov't Contractor</label>   
-                <img src="{% static 'img/icons/menu.png' %}" class="dropdown-icon" alt="">             
+            <div class="headcount-filter">
+                <select name="head-count" multiple="" id="head-counts" class="filter-control" size="1">
+                    <option value="0-2000000">All Sizes</option>
+                    <option value="0-249">Up to 250</option>
+                    <option value="250-499">250 to 499</option>
+                    <option value="500-999">500 to 999</option>
+                    <option value="1000-4999">1,000 to 4,999</option>
+                    <option value="5000-2000000">5,000 and Up</option>
+                </select>
             </div>
-            <div class="bottom-menu">
-                <div class="plan-dropdown">
-                    <h6>Select Client:&nbsp;&nbsp;</h6>
-                    <select name="" multiple="" id="" class="plan-control" size="1">
-                        <option value="*">Fill Plans</option>
-                        <option value="*">ABC Company - HSA Plan - Option 1</option>
-                        <option value="*">ABC Company - HSA Plan - Option 2</option>
-                        <option value="*">ABC Company - HSA Plan - Option 3</option>
-                    </select>
-                </div>
-                <div class="control-buttons">
-                    <a class="btn btn-print" href="" onclick="">Print Report</a>
-                    <a class="btn btn-print" href="" onclick="">Print Page</a>
-                    <a class="btn btn-primary" href="javascript:void(0);" onclick="get_body();">Run Filters</a>
-                    <h6><span id="num_employers"></span>&nbsp;Employers Surveyed</h6>
-                </div>
+            <div class="other-filter">
+                <select name="" multiple="" id="" class="filter-control" size="1">
+                    <option value="*">Other</option>
+                    <option value="nonprofit">Non-Profit</option>
+                    <option value="govt_contractor">Gov't Contractor</option>
+                </select>
+                <!-- <input type="checkbox" class="other_filter" value="nonprofit"> <label>Non-Profit</label>
+                <input type="checkbox" class="other_filter" value="govt_contractor"> <label>Gov't Contractor</label>   -->      
+            </div>
+            <div class="zoom-icon">
+                <img src="{% static 'img/icons/menu.png' %}" class="dropdown-icon" alt="">
+            </div>
+            <div class="employer-filter-count">
+                <h6>Employers:&nbsp;<span id="num_employers"></span></h6>
+            </div>
+        </div>
+        <div class="control-wrapper">
+            <div class="header-filter">
+                <h6>Clients:</h6>
+            </div>
+            <div class="plan-selector">
+                <select name="" id="" class="plan-control" size="1">
+                    <option value="*">Fill Plans</option>
+                    <option value="*">ABC Company - HSA Plan - Option 1</option>
+                    <option value="*">ABC Company - HSA Plan - Option 2</option>
+                    <option value="*">ABC Company - HSA Plan - Option 3</option>
+                </select>
+            </div>
+            <div class="control-buttons">
+                <a class="btn btn-print" href="" onclick="">Print Report</a>
+                <a class="btn btn-print" href="" onclick="">Print Page</a>
+                <a class="btn btn-primary" href="javascript:void(0);" onclick="get_body();">Run Filters</a>
             </div>
         </div>
     </div>

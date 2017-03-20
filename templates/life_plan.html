@@ -3,8 +3,10 @@
 
 <div class="benefit-content">
 
-{% if num_employers >= EMPLOYER_THRESHOLD %}
     <div class="benefit-header">
+        <div class="benefit-timestamp">
+            <h6>Report Run On:&nbsp;</h6><p><span id=''>March 18th, 2017</span></p>
+        </div>
         <div class="benefit-details">
             <h4>LIFE INSURANCE BENCHMARKING</h4>
             <h6>INDUSTRIES:&nbsp;</h6><p><span id='lbl_ft_industries'></span></p>
@@ -16,6 +18,8 @@
             <img src="{% static 'img/bnchmrk_logo_stacked.jpg' %}" alt="">
         </div>
     </div>
+
+{% if num_employers >= EMPLOYER_THRESHOLD %}
 
     <div class="section">
         <div class="section-content">
@@ -93,7 +97,7 @@
                 <col width="50%">
                 <col width="50%">
                 <thead>
-                    <th class="row-label">Cost Share</th>
+                    <th class="row-label">Life Insurance Cost Share</th>
                     <th>Employers</th>
                 </thead>
                 <tbody>
@@ -145,7 +149,7 @@
                 <col width="50%">
                 <thead>
                     <tr>
-                        <th class="row-label">Number of Plans</th>
+                        <th class="row-label">Number of Plans Offered</th>
                         <th>Employers</th>
                     </tr>
                 </thead>
@@ -173,7 +177,7 @@
                 <col width="50%">
                 <thead>
                     <tr>
-                        <th class="row-label">Plan Types</th>
+                        <th class="row-label">Plan Types Offered</th>
                         <th>Employers</th>
                     </tr>
                 </thead>

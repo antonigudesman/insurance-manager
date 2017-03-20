@@ -36,18 +36,25 @@
                 </div>
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+{% load pages_tags mezzanine_tags i18n staticfiles %}
                     <ul class="nav navbar-nav">
                         {% if user.is_authenticated %}
-                        <li class="enterprise">
+                        <li>
+                            <h6>Welcome, {{ request.user.first_name }} {{ request.user.last_name }}</h6>
+                        </li>
+                        <li class="menu-enterprise">
                             <a href="/enterprise">ENTERPRISE</a> 
                         </li>
                         <li>
-                            <a href="/logout">HELP</a>
+                            <a href="/">MY ACCOUNT</a> 
                         </li>
                         <li>
                             <a href="/logout">LOGOUT</a>
                         </li>
                         {% else %}
+                        <li>
+                            <a href="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                        </li>
                         <li>
                             <a href="/">HOME</a>
                         </li>

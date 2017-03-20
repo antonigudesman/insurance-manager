@@ -8,7 +8,7 @@ var head_counts_label = [];
 var others_label = [];
 var regions_label = [];
 
-var colors = ['#d52929', '#ebf62f', '#bfbfbf', '#cdd529', '#29d529'];
+var colors = ['#f8696b', '#FCAA78', '#ffeb84', '#B1D480', '#63be7b'];
 
 $(document).ready(function(){
     load_employers();
@@ -167,7 +167,7 @@ $(document).ready(function(){
     });
 
     $('.dropdown-icon').click(function() {
-        $('.filter-control').attr('size', 15);
+        $('.filter-control').attr('size', 20);
     });
 });
 
