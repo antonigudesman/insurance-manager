@@ -14,11 +14,11 @@ from django.db.models import Q, Avg, StdDev
 from django.conf import settings
 from django.utils.safestring import mark_safe
 
-import cStringIO as StringIO
-from xhtml2pdf import pisa
-from django.template.loader import get_template
-from django.template import Context
-from cgi import escape
+# import cStringIO as StringIO
+# from xhtml2pdf import pisa
+# from django.template.loader import get_template
+# from django.template import Context
+# from cgi import escape
 
 from wkhtmltopdf.views import PDFTemplateView
 from .models import *
@@ -519,28 +519,36 @@ def get_mean_sdv(queryset, term):
 class PDFView(PDFTemplateView):
     filename = 'wkhtml.pdf'
 
-    def render_to_response(self, context, **response_kwargs):
-        benefit = self.request.session['benefit']
+    def get_context_data(self, **kwargs):
+        context = super(PDFView, self).get_context_data(**kwargs)
+
         ft_industries = self.request.session['ft_industries']
         ft_head_counts = self.request.session['ft_head_counts']
         ft_other = self.request.session['ft_other']
         ft_regions = self.request.session['ft_regions']
 
+        employers, num_companies = get_filtered_employers(ft_industries, 
+                                                          ft_head_counts, 
+                                                          ft_other,
+                                                          ft_regions)
+        params = get_life_plan(employers, num_companies)
+        context['base_template'] = 'print.html'        
+        context = dict(context.items() + params.items())
+
+        return context
+
+    def render_to_response(self, context, **response_kwargs):
+        benefit = self.request.session['benefit']
         if benefit == 'HOME':
             full_name = '{} {}'.format(request.user.first_name, request.user.last_name)
             return render(request, 'home.html', locals())
         elif benefit == 'LIFE':
-            employers, num_companies = get_filtered_employers(ft_industries, 
-                                                              ft_head_counts, 
-                                                              ft_other,
-                                                              ft_regions)
-            context = get_life_plan(employers, num_companies)
-            context['base_template'] = 'print.html'        
+            print context, '@@@@@@@@@@@@@2'
             # context.pop('quintile_array_multiple')
             # context.pop('quintile_array_flat')
             
             self.template_name = 'life_plan.html'
-            self.cmd_options = None#context
+            self.cmd_options = {'orientation': 'landscape'}
         elif benefit == 'EMPLOYERS':
             return render(request, 'employers.html')
 
