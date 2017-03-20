@@ -11,7 +11,23 @@ var regions_label = [];
 var colors = ['#d52929', '#ebf62f', '#bfbfbf', '#cdd529', '#29d529'];
 
 $(document).ready(function(){
-    load_employers();
+    $('.enterprise-navbar li').each(function() {
+        if (benefit == $(this).find('a').html()) {
+            $(this).addClass('active');
+        }
+    });
+
+    get_body();
+
+    $('.enterprise-navbar li').click(function() {
+        $('.enterprise-navbar li').removeClass('active');
+        $(this).addClass('active');
+        get_body();
+    });
+
+    $('.dropdown-icon').click(function() {
+        $('.filter-control').attr('size', 15);
+    });    
 });
 
 function load_employers() {
@@ -150,26 +166,6 @@ function get_body() {
         })
 
 }
-
-$(document).ready(function(){
-    $('.enterprise-navbar li').each(function() {
-        if (benefit == $(this).find('a').html()) {
-            $(this).addClass('active');
-        }
-    });
-
-    get_body();
-
-    $('.enterprise-navbar li').click(function() {
-        $('.enterprise-navbar li').removeClass('active');
-        $(this).addClass('active');
-        get_body();
-    });
-
-    $('.dropdown-icon').click(function() {
-        $('.filter-control').attr('size', 15);
-    });
-});
 
 generate_quintile_data = function(raw_data){
     var qa_points = $.map(raw_data, function(i){if (i[0]%20==0) return [i];});
