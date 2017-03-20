@@ -7,13 +7,6 @@ body {
 /* Home Page - Responsive Section */
 
 @media (min-width: 1200px) {
-    .navbar-header {
-        width: 823px;
-    }
-
-    .navbar-nav {
-        width: 600px;
-    }
 
     .home-header,
     .home-subheader,
@@ -24,6 +17,14 @@ body {
     .footer-social,
     .footer-copyright {
         width: 1425px;
+    }
+
+    .navbar-header {
+        width: 880px;
+    }
+
+    .navbar-nav {
+        width: 545px;
     }
 
     .home-header {
@@ -93,11 +94,12 @@ body {
         letter-spacing: 1px;
     }
 
-    .home-feature-text h5,
-    .home-feature-text-alt h5 {
+    .home-feature-text h3,
+    .home-feature-text-alt h3 {
         font-size: 25px;
         line-height: 35px;
         padding-bottom: 11px;
+        text-transform: capitalize;
     }
 
     .home-feature-text > ul,
@@ -130,8 +132,8 @@ body {
     }
 
     .navbar-nav > li > h6 {
-        font-size: 16px;
-        padding: 9px 40px 0 0;
+        font-size: 14px;
+        padding: 9px 20px 0 0;
         font-style: italic;
     }
 
@@ -184,9 +186,9 @@ body {
 .home-header-text h1,
 .home-header-text h2,
 .home-subheader h3,
-.home-feature-text h5,
+.home-feature-text h3,
 .home-feature-text > ul li,
-.home-feature-text-alt h5,
+.home-feature-text-alt h3,
 .home-feature-text-alt > ul li,
 .home-feature-text h6,
 .home-feature-text-alt h6,
@@ -200,13 +202,8 @@ body {
     font-family: Spinnaker,sans-serif;
 }
 
-.navbar-nav > li.menu-login,
-.navbar-nav > li.menu-enterprise {
+.navbar-nav > li.active {
     background-color: #666666;
-}
-
-.navbar-nav > li.menu-login > a,
-.navbar-nav > li.menu-enterprise > a {
     font-weight: bold;
 }
 
@@ -240,9 +237,9 @@ a.filled-button,
 }
 
 .home-feature-text > ul > li,
-.home-feature-text h5,
+.home-feature-text h3,
 .home-feature-text-alt > ul > li,
-.home-feature-text-alt h5 {
+.home-feature-text-alt h3 {
     color: #053E25;
 }
 

@@ -1,34 +1,45 @@
 var industries = [];
+var regions = [];
 var head_counts = [];
 var others = [];
-var regions = [];
 
 var industries_label = [];
+var regions_label = [];
 var head_counts_label = [];
 var others_label = [];
-var regions_label = [];
 
 var colors = ['#f8696b', '#FCAA78', '#ffeb84', '#B1D480', '#63be7b'];
 
 $(document).ready(function(){
-    $('.enterprise-navbar li').each(function() {
-        if (benefit == $(this).find('a').html()) {
-            $(this).addClass('active');
-        }
-    });
+    if (print_template) {
+        l1_data = generate_quintile_data(l1_data);
+        l2_data = generate_quintile_data(l2_data);
 
-    get_body();
+        draw_bar_chart('L-1', l1_data);        
+        draw_bar_chart('L-2', l2_data);        
+        draw_easy_pie_chart();
+        draw_donut_chart('L-18', l18_data);
 
-    $('.enterprise-navbar li').click(function() {
-        $('.enterprise-navbar li').removeClass('active');
-        $(this).addClass('active');
+    } else {
+        $('.enterprise-navbar li').each(function() {
+            if (benefit == $(this).find('a').html()) {
+                $(this).addClass('active');
+            }
+        });
+
         get_body();
-    });
 
-    // expand filters
-    $('.dropdown-icon').click(function() {
-        $('.filter-control').attr('size', 20);
-    });    
+        $('.enterprise-navbar li').click(function() {
+            $('.enterprise-navbar li').removeClass('active');
+            $(this).addClass('active');
+            get_body();
+        });
+
+        // expand filters
+        $('.dropdown-icon').click(function() {
+            $('.filter-control').attr('size', 20);
+        });    
+    }
 });
 
 function load_employers() {
@@ -75,55 +86,75 @@ function load_employers() {
 
 function get_filters() {
     industries = [];
+    regions = [];
     head_counts = [];
     others = [];
-    regions = [];
+
+    benefit = $('.enterprise-navbar li.active a').html();    
 
     $('#industries :selected').each(function() {
         industries.push($(this).val());
     });
 
+    $('#regions :selected').each(function() {
+        regions.push($(this).val());
+    }); 
+
     $('#head-counts :selected').each(function() {
         head_counts.push($(this).val());
     });   
 
-    $('.other_filter:checked').each(function() {
+    $('#other_filter :selected').each(function() {
         others.push($(this).val());
-    });   
-
-    $('#regions :selected').each(function() {
-        regions.push($(this).val());
-    });   
+    });     
 }
 
 function get_filters_label() {
     industries_label = [];
+    regions_label = [];
     head_counts_label = [];
     others_label = [];
-    regions_label = [];
 
     $('#industries :selected').each(function() {
         industries_label.push($(this).html());
     });
 
+    $('#regions :selected').each(function() {
+        regions_label.push($(this).html());
+    }); 
+
     $('#head-counts :selected').each(function() {
         head_counts_label.push($(this).html());
     });   
 
-    $('.other_filter:checked').each(function() {
-        others_label.push($(this).next().html());
-    });   
+    $('#other_filter :selected').each(function() {
+        others_label.push($(this).html());
+    });     
 
-    $('#regions :selected').each(function() {
-        regions_label.push($(this).html());
-    });   
+    // for default filters
+    if (industries_label.length == 0)
+        industries_label.push('All Industries');
+
+    if (regions_label.length == 0)
+        regions_label.push('All Regions');
+
+    if (head_counts_label.length == 0)
+        head_counts_label.push('All Sizes');
+
+    if (others_label.length == 0)
+        others_label.push('Other');
+
 }
 
 function get_body() {
     // collapse filters
     $('.filter-control').attr('size', 1);
-    benefit = $('.enterprise-navbar li.active a').html();
-    get_filters();
+
+    // skip for print template
+    if (!print_template) {
+        get_filters();
+    }
+
     get_filters_label();
 
     $.post(
@@ -133,13 +164,18 @@ function get_body() {
             head_counts: head_counts,
             benefit: benefit,
             others: others,
-            regions: regions
+            regions: regions,
+            print_template: print_template
         },
         function(data) {
             $('#bnchmrk_card').html(data);
+
             if(benefit == 'EMPLOYERS') {
                 load_employers();
             } else if(benefit == 'LIFE') {
+                l1_data = generate_quintile_data(l1_data);
+                l2_data = generate_quintile_data(l2_data);
+                
                 draw_bar_chart('L-1', l1_data);        
                 draw_bar_chart('L-2', l2_data);        
                 draw_easy_pie_chart();

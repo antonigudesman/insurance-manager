@@ -70,7 +70,7 @@
                 </select>
             </div>
             <div class="other-filter">
-                <select name="" multiple="" id="" class="filter-control" size="1">
+                <select name="" multiple="" id="other_filter" class="filter-control" size="1">
                     <option value="*">Other</option>
                     <option value="nonprofit">Non-Profit</option>
                     <option value="govt_contractor">Gov't Contractor</option>
@@ -82,7 +82,7 @@
                 <img src="{% static 'img/icons/menu.png' %}" class="dropdown-icon" alt="">
             </div>
             <div class="employer-filter-count">
-                <h6>Employers:&nbsp;<span id="num_employers"></span></h6>
+                <h6>Employers:<span id="num_employers"></span></h6>
             </div>
         </div>
         <div class="control-wrapper">
@@ -117,6 +117,7 @@
     <script type="text/javascript">
         var EMPLOYER_THRESHOLD_MESSAGE = "{{ EMPLOYER_THRESHOLD_MESSAGE }}";
         var benefit = '{{ request.session.benefit }}';
+        var print_template = false;        
     </script>
     <script src="{% static 'vendors/bower_components/flot/jquery.flot.categories.js' %}"></script>
     <script src="{% static 'vendors/bower_components/flot/jquery.flot.pie.js' %}"></script>

@@ -25,6 +25,7 @@
 
     </head>
     <body>
+        {% block nav %}
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="container">
                 <div class="navbar-header">
@@ -41,42 +42,23 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         {% if user.is_authenticated %}
-                        <li class="">
-                            <h6>Welcome, {{ request.user.first_name }} {{ request.user.last_name }}</h6>
-                        </li>
-                        <li class="">
-                            <a href="/enterprise">ENTERPRISE</a> 
-                        </li>
-                        <li class="">
-                            <a href="/">MY ACCOUNT</a> 
-                        </li>
-                        <li class="">
-                            <a href="/logout">LOGOUT</a>
-                        </li>
+                            <li><h6>Welcome, {{ request.user.first_name }} {{ request.user.last_name }}</h6></li>
+                            <li><a href="/enterprise">ENTERPRISE</a></li>
+                            <li><a href="/">MY ACCOUNT</a></li>
+                            <li><a href="/logout">LOGOUT</a></li>
                         {% else %}
-                        <li class="">
-                            <a href="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-                        </li>
-                        <li class="active">
-                            <a href="/">HOME</a>
-                        </li>
-                        <li class="">
-                            <a href="/">COMPANY</a>
-                        </li>
-                        <li class="">
-                            <a href="/blog">INSIGHTS</a>
-                        </li>
-                        <li class="">
-                            <a href="/">CONTACT US</a>
-                        </li>
-                        <li class="">
-                            <a href="/login">LOGIN</a>
-                        </li>
+                            <li><a href="/">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+                            <li><a href="/">HOME</a></li>
+                            <li><a href="/">COMPANY</a></li>
+                            <li><a href="/blog">INSIGHTS</a></li>
+                            <li><a href="/">CONTACT US</a></li>
+                            <li><a href="/login">LOGIN</a></li>
                         {% endif %}
                     </ul>
                 </div>
             </div>
         </nav>
+        {% endblock %}
 
         {% block body %}
         <div class="container">
@@ -94,10 +76,10 @@
             <div class="home-feature-alt">
                 <div class="home-feature-text-alt">
                     <h6>STRATEGY</h6>
-                    <h5>Drive client decisions with real-time data and visualizations</h5>
+                    <h3>Make smarter renewal decisions on plan design and costs</h3>
                     <ul>
-                        <li>Offer clients a unique and valuable perspective on the market</li>
-                        <li>Using industry information to demonstrate your knowledge and value with industry information establishes you as a trusted advisor, giving you the edge over your competition</li>
+                        <li>Use real-time market data and comparison tools to recommend changes on plan design and cost across all benefits (medical through disability)</li>
+                        <li>Establish yourself as a strategic advisor, giving you the edge over your competition</li>
                     </ul>
                 </div>
                 <div class="home-feature-img-alt">
@@ -111,10 +93,10 @@
                 </div>
                 <div class="home-feature-text">
                     <h6>TECHNOLOGY</h6>
-                    <h5>Leading the way in employee benefits benchmarking innovation</h5>
+                    <h3>Access powerful tools to examine how a company is performing</h3>
                     <ul>
-                        <li>Spend less time focusing on administrative tasks and more time doing what you do best—selling benefits and growing your business</li>
-                        <li>On-demand reporting via our a web-based, total benchmarking solution</li>
+                        <li>Generate easy-to-read comparisons based on any combination of industry, region and size.</li>
+                        <li>Across thousands of benefit plans</li>
                     </ul>
 
                 </div>
@@ -123,7 +105,7 @@
             <div class="home-feature-alt">
                 <div class="home-feature-text-alt">
                     <h6>SALES & RETENTION</h6>
-                    <h5>A better way to access customized benchmarking analyics</h5>
+                    <h3>A better way to access customized benchmarking analyics</h3>
                     <ul>
                         <li>Gain an outsource data team</li>
                         <li>Custom Bradning</li>
@@ -140,17 +122,22 @@
                 </div>
                 <div class="home-feature-text">
                     <h6>OPERATIONS</h6>
-                    <h5>Make your current resources work harder for you</h5>
+                    <h3>Make your current resources work harder for you</h3>
                     <ul>
+                        <li>Spend less time focusing on administrative tasks and more time doing what you do best—selling benefits and growing your business</li>
                         <li>Leverage your the raw client documents to gain deeper insights</li>
                         <li>Easy implementation process, with no data entry required</li>
                     </ul>
                 </div>
             </div>
 
+            <div class="home-feature-alt">
+
+            </div>
         </div>
         {% endblock %}
 
+        {% block footer %}
         <div class="footer">
             <div class="container">
                 <div class="top-footer">
@@ -187,9 +174,10 @@
                 </div>
             </div>
         </div>
-
+        {% endblock %}
 
         <!-- Page Loader -->
+        {% block page_loader %}
         <div class="page-loader">
             <div class="preloader pls-blue">
                 <svg class="pl-circular" viewBox="25 25 50 50">
@@ -198,7 +186,7 @@
                 <p>Please wait...</p>
             </div>
         </div>
-        
+        {% endblock %}
         <!-- Javascript Libraries -->
         <script src="{% static 'vendors/bower_components/jquery/dist/jquery.min.js' %}"></script>
         <script src="{% static 'vendors/bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
