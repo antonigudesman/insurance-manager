@@ -41,32 +41,35 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         {% if user.is_authenticated %}
-                        <li>
+                        <li class="">
                             <h6>Welcome, {{ request.user.first_name }} {{ request.user.last_name }}</h6>
                         </li>
-                        <li class="menu-enterprise">
+                        <li class="">
                             <a href="/enterprise">ENTERPRISE</a> 
                         </li>
-                        <li>
+                        <li class="">
                             <a href="/">MY ACCOUNT</a> 
                         </li>
-                        <li>
+                        <li class="">
                             <a href="/logout">LOGOUT</a>
                         </li>
                         {% else %}
-                        <li>
+                        <li class="">
+                            <a href="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                        </li>
+                        <li class="active">
                             <a href="/">HOME</a>
                         </li>
-                        <li>
+                        <li class="">
                             <a href="/">COMPANY</a>
                         </li>
-                        <li>
+                        <li class="">
                             <a href="/blog">INSIGHTS</a>
                         </li>
-                        <li>
+                        <li class="">
                             <a href="/">CONTACT US</a>
                         </li>
-                        <li class="menu-login">
+                        <li class="">
                             <a href="/login">LOGIN</a>
                         </li>
                         {% endif %}
@@ -80,14 +83,11 @@
             
             <div class="home-header">
                 <div class="home-header-text">
-                    <h1>Employee Benefits<br>Benchmarking</h1>
-                    <h2>Top benefit consulting firms across the country use <span>bnchmrk</span> to differentiate themselves in the marketplace</h2>
-                </div>
-            </div>
-
-            <div class="home-subheader">
-                <div class="home-subheader-text">
-                    <h3>A better way to assess employer benefit programs versus the competition.</h3>
+                    <h1>Employee Benefits<br><span class="header-highlight">Benchmarking</span></h1>
+                    <h2>Designed specifically for benefits brokerages, consultants, and agencies, Enterprise® from <span>bnchmrk</span> is a secure, web-based benefits platform that helps you deliver compelling, competitive offerings for clients and prospects</h2>
+                    <br><br>
+                    <a class="clear-button" href="" onclick="">Learn More</a>
+                    <a class="filled-button" href="" onclick="">Contact Us</a>
                 </div>
             </div>
             
@@ -97,23 +97,23 @@
                     <h5>Drive client decisions with real-time data and visualizations</h5>
                     <ul>
                         <li>Offer clients a unique and valuable perspective on the market</li>
-                        <li>integrity and quality of data</li>
+                        <li>Using industry information to demonstrate your knowledge and value with industry information establishes you as a trusted advisor, giving you the edge over your competition</li>
                     </ul>
                 </div>
                 <div class="home-feature-img-alt">
-                    <img src="{% static 'img/features/on-demand-icon.png' %}" alt="">
+                    <img src="{% static 'img/features/strategy.png' %}" alt="">
                 </div>
             </div>
 
             <div class="home-feature">
                 <div class="home-feature-img">
-                    <img src="{% static 'img/features/on-demand-icon.png' %}" alt="">
+                    <img src="{% static 'img/features/operations.png' %}" alt="">
                 </div>
                 <div class="home-feature-text">
                     <h6>TECHNOLOGY</h6>
                     <h5>Leading the way in employee benefits benchmarking innovation</h5>
                     <ul>
-                        <li>Unlimited cuts on our database by region, size or industry</li>
+                        <li>Spend less time focusing on administrative tasks and more time doing what you do best—selling benefits and growing your business</li>
                         <li>On-demand reporting via our a web-based, total benchmarking solution</li>
                     </ul>
 
@@ -130,65 +130,61 @@
                     </ul>
                 </div>
                 <div class="home-feature-img-alt">
-                    <img src="{% static 'img/features/on-demand-icon.png' %}" alt="">
+                    <img src="{% static 'img/features/sales.png' %}" alt="">
                 </div>
             </div>
 
             <div class="home-feature">
                 <div class="home-feature-img">
-                    <img src="{% static 'img/features/on-demand-icon.png' %}" alt="">
+                    <img src="{% static 'img/features/tech.png' %}" alt="">
                 </div>
                 <div class="home-feature-text">
                     <h6>OPERATIONS</h6>
-                    <h5>A better way to access customized benchmarking analyics</h5>
+                    <h5>Make your current resources work harder for you</h5>
                     <ul>
-                        <li>No data entry required</li>
-                        <li>Easy implementation</li>
+                        <li>Leverage your the raw client documents to gain deeper insights</li>
+                        <li>Easy implementation process, with no data entry required</li>
                     </ul>
                 </div>
-            </div>
-
-            <div class="home-testimonial">
-                <h5>"The healthcare landscape is ever-changing, and employers need to know how their plans directly measure against their competitors. We understand that need and sought a solution to help our advisors in the field better serve our clients. bnchmrk's real-time analytics are a tremendous resource and will provide a competitive advantage in this increasingly complex marketplace."</h5>
-                <br>
-                <h5><span> -President of Corporate Benefits, NFP</span></h5>
             </div>
 
         </div>
         {% endblock %}
 
-        <div class="container">
-            <div class="top-footer">
-                <div class="footer-links">
-                    <h6>Product</h6>
-                    <ul>
-                        <li><a href="/">Solution</a></li>
-                        <li><a href="/">How it Works</a></li>
-                        <li><a href="/blog">Insights</a></li> 
-                        <li><a href="/">Home</a></li> 
-                    </ul>
+        <div class="footer">
+            <div class="container">
+                <div class="top-footer">
+                    <div class="footer-links">
+                        <h6>Product</h6>
+                        <ul>
+                            <li><a href="/">Solution</a></li>
+                            <li><a href="/">How it Works</a></li>
+                            <li><a href="/blog">Insights</a></li> 
+                            <li><a href="/">Home</a></li> 
+                        </ul>
+                    </div>
+                    <div class="footer-links-2">
+                        <h6>About</h6>
+                        <ul>
+                            <li><a href="/">Company</a></li>
+                            <li><a href="/">We're Hiring</a></li> 
+                            <li><a href="/">Contact</a></li> 
+                        </ul>
+                    </div>
+                    <div class="footer-logo">
+                        <a class="" href="/">
+                            <img img src="{% static 'img/bnchmrk_logo.png' %}" alt="">
+                        </a>
+                        <h6>Employee benefits benchmarking for the next generation consultant</h6>
+                    </div>
                 </div>
-                <div class="footer-links-2">
-                    <h6>About</h6>
-                    <ul>
-                        <li><a href="/">Company</a></li>
-                        <li><a href="/">We're Hiring</a></li> 
-                        <li><a href="/">Contact</a></li> 
-                    </ul>
+                <div class="footer-social">
+                    <a href="https://www.linkedin.com/company/bnchmrk" target="_blank"><img img src="{% static 'img/linkedin.png' %}" alt=""></a>
+                    <a href="https://twitter.com/bnchmrk_" target="_blank"><img img src="{% static 'img/twitter.png' %}" alt=""></a>                
                 </div>
-                <div class="footer-logo">
-                    <a class="" href="/">
-                        <img img src="{% static 'img/bnchmrk_logo.png' %}" alt="">
-                    </a>
-                    <h6>Employee benefits benchmarking for the next generation consultant</h6>
+                <div class="footer-copyright">
+                    <h6>&copy; 2017 by bnchmrk LLC. All Rights Reserved. Privacy and Terms</h6>
                 </div>
-            </div>
-            <div class="footer-social">
-                <a href="https://www.linkedin.com/company/bnchmrk" target="_blank"><img img src="{% static 'img/linkedin.png' %}" alt=""></a>
-                <a href="https://twitter.com/bnchmrk_" target="_blank"><img img src="{% static 'img/twitter.png' %}" alt=""></a>                
-            </div>
-            <div class="footer-copyright">
-                <h6>&copy; 2017 by bnchmrk LLC. All Rights Reserved. Privacy and Terms</h6>
             </div>
         </div>
 

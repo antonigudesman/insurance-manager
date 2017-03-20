@@ -27,63 +27,76 @@ body {
     }
 
     .home-header {
-        height: 600px;
+        height: 750px;
         padding-top: 60px;
         padding-right: 35px;
     }
 
     .home-header-text {
-        width: 38%;
-        padding: 19px 40px 27px 40px;
+        width: 68%;
+        padding: 300px 0 0 80px;
     }
 
     .home-header-text h1 {
-        font-size: 42px;
-        line-height: 49px;
+        font-size: 55px;
+        letter-spacing: -1px;
+        margin: 0;
+    }
+
+    .header-highlight {
+        font-size: 100px;
+        letter-spacing: -4px;
+        margin: 0;
     }
 
     .home-header-text h2 {
-        font-size: 17px;
+        font-size: 19px;
         line-height: 27px;
+        margin: 10px 0 0 0;
     }
 
-    .home-subheader h3 {
-        font-size: 20px;
-        padding: 23px 0;
-        text-transform: capitalize; 
+    a.clear-button {
+        padding: 12px 45px;
+        font-size: 16px;
+    }
+
+    a.filled-button {
+        padding: 14px 47px;
+        font-size: 16px;
     }
 
     .home-feature,
     .home-feature-alt {
-        height: 360px;
+        height: 400px;
     }
 
     .home-feature-text {
-        padding: 35px 250px 0 25px;
+        padding: 75px 200px 0 25px;
     }
 
     .home-feature-img {
-        padding: 35px 0 0 250px;
+        padding: 22px 0 0 200px;
     }
 
     .home-feature-text-alt {
-        padding: 35px 0 0 250px;
+        padding: 75px 0 0 200px;
     }
 
     .home-feature-img-alt {
-        padding: 35px 250px 0 0;
+        padding: 22px 200px 0 0;
     }
 
     .home-feature-text h6,
     .home-feature-text-alt h6 {
-        padding-bottom: 9px;
-        font-size: 18px;
+        padding-bottom: 4px;
+        font-size: 20px;
+        letter-spacing: 1px;
     }
 
     .home-feature-text h5,
     .home-feature-text-alt h5 {
-        font-size: 27px;
-        line-height: 40px;
+        font-size: 25px;
+        line-height: 35px;
         padding-bottom: 11px;
     }
 
@@ -95,7 +108,7 @@ body {
     .home-feature-text > ul > li,
     .home-feature-text-alt > ul > li {
         font-size: 16px;
-        padding-bottom: 25px;
+        padding-bottom: 15px;
     }
 
     .home-testimonial {
@@ -126,12 +139,12 @@ body {
     .footer-links-2 h6,
     .footer-links > ul > li > a,
     .footer-links-2 > ul > li > a {
-        font-size: 14px;
+        font-size: 17px;
     }
 
     .footer-logo h6 {
-        font-size: 12px;
-        line-height: 15px;
+        font-size: 15px;
+        line-height: 20px;
         padding-top: 0;
     }
 
@@ -197,9 +210,16 @@ body {
     font-weight: bold;
 }
 
-.home-header-text {
-    border-radius: 7px;
-    background: rgba(0, 0, 0, 0.5);
+a.clear-button {
+    background-color: transparent;
+    border: solid rgba(255, 255, 255, 1) 2px;
+    margin-right: 25px;
+}
+
+a.filled-button {
+    background-color: #51b351;
+    border: none;
+    margin-right: 25px;
 }
 
 .home-header-text h1,
@@ -209,23 +229,21 @@ body {
 }
 
 .navbar-nav > li > h6,
-.home-header-text h2 {
+.home-header-text h2,
+a.clear-button,
+a.filled-button,
+.footer-links h6,
+.footer-links-2 h6,
+.footer-copyright h6,
+.footer-logo h6 {
     color: #ffffff;
 }
-
 
 .home-feature-text > ul > li,
 .home-feature-text h5,
 .home-feature-text-alt > ul > li,
 .home-feature-text-alt h5 {
     color: #053E25;
-}
-
-.footer-links h6,
-.footer-links-2 h6,
-.footer-copyright h6,
-.footer-logo h6 {
-    color: #2B2B24;
 }
 
 .home-feature-text h6,
@@ -238,9 +256,13 @@ body {
     margin: 0;
 }
 
-.home-header-text,
 .navbar-nav {
     float: right;
+    margin: 0;
+}
+
+.home-header-text {
+    float: left;
     margin: 0;
 }
 
@@ -252,30 +274,12 @@ body {
     font-weight: bold;
 }
 
-.home-subheader {
-    background-color: #51b351;
-    text-align: center;
-}
-
-.home-subheader h3 {
-    margin: 0;
-}
-
-hr.style1 {
-    text-align: center;
-    width: 40%;
-    padding-top: 0;
-    padding-bottom: 0;
-    margin-top: 0;
-    margin-bottom: 0;
+.home-feature-alt {
+    background-color: #ffffff;
 }
 
 .home-feature {
-    background-color: #ffffff;
-}
-
-.home-feature-alt {
-    background-color: #ffffff;
+    background-color: #f8f8f8;
 }
 
 .home-feature-text,
@@ -326,9 +330,8 @@ hr.style1 {
     font-style: normal;
 }
 
-.top-footer,
-.footer-social {
-    background-color: #ffffff;
+.footer {
+    background-color: #222222;
 }
 
 .footer-links > ul,

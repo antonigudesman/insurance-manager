@@ -6,8 +6,8 @@
 }
 
 .blog-header {
-    background: url('../img/single.jpg') no-repeat center center scroll;
-    height: 325px;
+    background: url('../img/news-header.jpg') no-repeat center center scroll;
+    height: 735px;
     padding: 50px 20px;
     text-align: center;
 }
