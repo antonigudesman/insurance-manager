@@ -14,6 +14,13 @@ from django.db.models import Q, Avg, StdDev
 from django.conf import settings
 from django.utils.safestring import mark_safe
 
+import cStringIO as StringIO
+from xhtml2pdf import pisa
+from django.template.loader import get_template
+from django.template import Context
+from cgi import escape
+
+from wkhtmltopdf.views import PDFTemplateView
 from .models import *
 
 
@@ -142,7 +149,8 @@ def get_filtered_employers(ft_industries, ft_head_counts, ft_other, ft_regions, 
         q = Q(industry1__in=ft_industries) | Q(industry2__in=ft_industries) | Q(industry3__in=ft_industries)
 
     for item in ft_other:
-        q &= Q(**{item: True})
+        if item != '*':
+            q &= Q(**{item: True})
 
     q_region = Q()
     if not '*' in ft_regions:
@@ -289,7 +297,20 @@ def ajax_enterprise(request):
     ft_other = form_param.getlist('others[]')
     ft_regions = form_param.getlist('regions[]')
     benefit = form_param.get('benefit')
-    request.session['benefit'] = benefit
+    print_template = form_param.get('print_template')
+    
+    if print_template == 'true':     # not for print template
+        benefit = request.session['benefit']
+        ft_industries = request.session['ft_industries']
+        ft_head_counts = request.session['ft_head_counts']
+        ft_other = request.session['ft_other']
+        ft_regions = request.session['ft_regions']
+    else:                   # for print
+        request.session['benefit'] = benefit
+        request.session['ft_industries'] = ft_industries
+        request.session['ft_head_counts'] = ft_head_counts
+        request.session['ft_other'] = ft_other
+        request.session['ft_regions'] = ft_regions
 
     if benefit == 'HOME':
         full_name = '{} {}'.format(request.user.first_name, request.user.last_name)
@@ -299,10 +320,29 @@ def ajax_enterprise(request):
                                                           ft_head_counts, 
                                                           ft_other,
                                                           ft_regions)
-        return render(request, 'life_plan.html', get_life_plan(employers, num_companies))
+        context = get_life_plan(employers, num_companies)
+        context['base_template'] = 'empty.html'
+        return render(request, 'life_plan.html', context)
     elif benefit == 'EMPLOYERS':
         return render(request, 'employers.html')
     return HttpResponse('Nice')
+
+
+def render_to_pdf(template_src, context_dict=None):
+    template = get_template(template_src)
+    context = Context(context_dict)
+    html  = template.render(context)
+    result = StringIO.StringIO()
+
+    pdf = pisa.pisaDocument(StringIO.StringIO(html.encode("ISO-8859-1")), result)
+    if not pdf.err:
+        return HttpResponse(result.getvalue(), content_type='application/pdf')
+    return HttpResponse('We had some errors<pre>%s</pre>' % escape(html))
+
+
+@login_required(login_url='/login')
+def print_template(request):
+    return render(request, 'print_ajax.html')
 
 
 def get_life_plan(employers, num_companies):
@@ -427,25 +467,6 @@ def get_median_count(queryset, term):
         return sum(values[count/2-1:count/2+1])/2, count
 
 
-def get_flat_array(lifes):
-    min_ = settings.FLAT_BUCKET_SIZE
-    max_ = settings.FLAT_BUCKET_SIZE * 10
-
-    bucket_title = ['<$10k', '$20k', '$30k', '$40k', '$50k', '$60k', '$70k', '$80k', '$90k', '$100k', '$100k+']
-    buckets = [[item, item+settings.FLAT_BUCKET_SIZE-1] for item in range(min_, max_-1, settings.FLAT_BUCKET_SIZE)]
-    buckets.append([max_, 10000000])
-    buckets.insert(0, [0, min_-1])
-
-    f_array = []
-    idx = 0
-    for bucket in buckets:
-        cnt = lifes.filter(flat_amount__gte=bucket[0], flat_amount__lte=bucket[1]).count()
-        f_array.append([bucket_title[idx], cnt])
-        idx += 1
-
-    return f_array
-
-
 def get_incremental_array(queryset, term):
     num_points = settings.MAX_POINTS
     num_elements = queryset.count()
@@ -456,12 +477,16 @@ def get_incremental_array(queryset, term):
     result = []
     idx = 0
     idx_ = 0
+
     for item in queryset.order_by(term):
         if idx % interval == 0:
             # result.append([idx_, getattr(item, term)])
             result.append(getattr(item, term))            
             idx_ += 1
         idx += 1
+        # store last maximum value
+        if idx == num_elements:
+            last_value = getattr(item, term)
 
     # format labels for 20%, 40% ..., 100%
     idx = 0
@@ -481,7 +506,7 @@ def get_incremental_array(queryset, term):
         label_o = label_
         idx += 1
 
-    result_[-1][0] = 100
+    result_[-1] = [100, last_value]
     return result_
 
 
@@ -489,3 +514,61 @@ def get_mean_sdv(queryset, term):
     mean = queryset.aggregate(Avg(term))
     sdv = queryset.aggregate(StdDev(term))
     return int(mean.values()[0]), int(sdv.values()[0])
+
+
+class PDFView(PDFTemplateView):
+    filename = 'wkhtml.pdf'
+
+    def render_to_response(self, context, **response_kwargs):
+        benefit = self.request.session['benefit']
+        ft_industries = self.request.session['ft_industries']
+        ft_head_counts = self.request.session['ft_head_counts']
+        ft_other = self.request.session['ft_other']
+        ft_regions = self.request.session['ft_regions']
+
+        if benefit == 'HOME':
+            full_name = '{} {}'.format(request.user.first_name, request.user.last_name)
+            return render(request, 'home.html', locals())
+        elif benefit == 'LIFE':
+            employers, num_companies = get_filtered_employers(ft_industries, 
+                                                              ft_head_counts, 
+                                                              ft_other,
+                                                              ft_regions)
+            context = get_life_plan(employers, num_companies)
+            context['base_template'] = 'print.html'        
+            # context.pop('quintile_array_multiple')
+            # context.pop('quintile_array_flat')
+            
+            self.template_name = 'life_plan.html'
+            self.cmd_options = None#context
+        elif benefit == 'EMPLOYERS':
+            return render(request, 'employers.html')
+
+        return super(PDFView, self).render_to_response(
+                context=context,
+                **response_kwargs
+            )
+
+
+def print_pdf(request):
+    #Retrieve data or whatever you need
+    benefit = request.session['benefit']
+    ft_industries = request.session['ft_industries']
+    ft_head_counts = request.session['ft_head_counts']
+    ft_other = request.session['ft_other']
+    ft_regions = request.session['ft_regions']
+
+    if benefit == 'HOME':
+        full_name = '{} {}'.format(request.user.first_name, request.user.last_name)
+        return render(request, 'home.html', locals())
+    elif benefit == 'LIFE':
+        employers, num_companies = get_filtered_employers(ft_industries, 
+                                                          ft_head_counts, 
+                                                          ft_other,
+                                                          ft_regions)
+        context = get_life_plan(employers, num_companies)
+        context['base_template'] = 'print.html'       
+        return render_to_pdf('life_plan.html', context)
+        return render(request, 'life_plan.html', context)
+
+

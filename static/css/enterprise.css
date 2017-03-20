@@ -170,11 +170,6 @@
         margin: 0;
     }
 
-    .other-filter > label {
-        font-size: 14px;
-        margin: 3px 0 0 0;
-    }
-
     .other-filter > input {
         margin: 0 0 0 10px;
     }
@@ -246,8 +241,7 @@
 }
 
 li.active,
-.control-buttons h6,
-.other-filter > label {
+.control-buttons h6 {
     font-weight: bold;
 }
 
@@ -294,8 +288,7 @@ li.active,
 .nav-tabs > li > a:hover > li > a,
 .control-buttons h6,
 .header-filter h6,
-.employer-filter-count h6,
-.other-filter > label {
+.employer-filter-count h6 {
     color: #ffffff;
 }
 

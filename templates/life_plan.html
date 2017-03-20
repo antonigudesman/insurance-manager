@@ -1,6 +1,8 @@
+{% extends base_template %}
 {% load humanize %}
 {% load pages_tags mezzanine_tags i18n staticfiles %}
 
+{% block page_content %}
 <div class="benefit-content">
 
     <div class="benefit-header">
@@ -225,8 +227,8 @@
 var l1_data, l2_data, l18_data;
 
 {% if num_employers >= EMPLOYER_THRESHOLD %}
-    l1_data = generate_quintile_data({{ quintile_array_multiple }});
-    l2_data = generate_quintile_data({{ quintile_array_flat }});
+    l1_data = {{ quintile_array_multiple }};
+    l2_data = {{ quintile_array_flat }};
 
     l18_data = [
         {data: {{ prcnt_plan0 }}, color: '#F44336', label: 'Not Offered'},
@@ -237,3 +239,4 @@ var l1_data, l2_data, l18_data;
 
 {% endif %}
 </script>
+{% endblock %}
