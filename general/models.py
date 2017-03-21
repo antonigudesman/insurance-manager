@@ -34,6 +34,7 @@ class Employer(models.Model):
 
 
 class Life(models.Model):
+    title = models.CharField(max_length=20)
     employer = models.ForeignKey(Employer)
     type = models.CharField(max_length=18)
     multiple = models.FloatField(blank=True, null=True)

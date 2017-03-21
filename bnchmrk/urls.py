@@ -36,10 +36,12 @@ urlpatterns += [
     # authentication
     url(r"^login", user_login, name="login"),
     url(r"^logout", user_logout, name="logout"),
-    
+    # main logic
     url(r"^enterprise", enterprise, name="enterprise"),
     url(r"^_enterprise", ajax_enterprise, name="_enterprise"),
     url(r"^get_num_employers", get_num_employers, name="get_num_employers"),
+    url(r"^get_plans", get_plans, name="get_plans"),
+    url(r"^update_properties", update_properties, name="update_properties"),
     # imports data
     url(r"^import_employer", import_employer, name="import_employer"),
     url(r"^import_life", import_life, name="import_life"),

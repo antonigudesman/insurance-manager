@@ -1,12 +1,12 @@
 import os
 import time
 import random
-
 import HTMLParser
 import mimetypes
 
 from fpdf import FPDF
 from PIL import Image
+from datetime import datetime
 
 from django.core.files.storage import FileSystemStorage
 from django.utils.encoding import smart_str
@@ -44,6 +44,7 @@ def print_template(request):
 
         context = get_life_plan(employers, num_companies)
         context['base_template'] = 'print.html'
+        context['today'] = datetime.strftime(datetime.now(), '%B %d, %Y')
         # unescape html characters
         h = HTMLParser.HTMLParser()
         context['ft_industries_label'] = h.unescape(ft_industries_label)

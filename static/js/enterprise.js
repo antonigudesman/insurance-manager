@@ -1,3 +1,4 @@
+var plan = 0;
 var industries = [];
 var regions = [];
 var head_counts = [];
@@ -39,8 +40,31 @@ $(document).ready(function(){
         $('.dropdown-icon').click(function() {
             $('.filter-control').attr('size', 20);
         });    
+
+        // choose plan
+        $('#plans').change(function() {
+            update_properties();
+        });    
+
     }
 });
+
+function update_properties() {
+    plan = $('#plans').val();
+
+    $.post(
+        '/update_properties',
+        {
+            benefit: benefit,
+            plan: plan
+        },
+        function(data) {
+            if(benefit == 'LIFE') {
+                $('#prop_multiple_max').html(data.multiple_max);
+                $('#prop_flat_amount').html(data.flat_amount);
+            }
+        });
+}
 
 function load_employers() {
     $("#data-table-employer").bootgrid({
@@ -168,6 +192,7 @@ function get_body() {
             regions_label: regions_label,
 
             benefit: benefit,
+            plan: plan
         },
         function(data) {
             $('#bnchmrk_card').html(data);
@@ -202,6 +227,17 @@ function get_body() {
         function(data) {
             $('#num_employers').html(data);
         })
+
+    $.post(
+        '/get_plans',
+        {
+            benefit: benefit,
+        },
+        function(data) {
+            $('#plans').html(data);
+        })    
+
+    update_properties();
 }
 
 generate_quintile_data = function(raw_data){
