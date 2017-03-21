@@ -313,25 +313,18 @@ def ajax_enterprise(request):
     ft_regions_label = form_param.getlist('regions_label[]')
 
     benefit = form_param.get('benefit')
-    print_template = form_param.get('print_template')
-    
-    if print_template == 'true':     # not for print template
-        benefit = request.session['benefit']
-        ft_industries = request.session['ft_industries']
-        ft_head_counts = request.session['ft_head_counts']
-        ft_other = request.session['ft_other']
-        ft_regions = request.session['ft_regions']
-    else:                   # for print
-        request.session['benefit'] = benefit
-        request.session['ft_industries'] = ft_industries
-        request.session['ft_head_counts'] = ft_head_counts
-        request.session['ft_other'] = ft_other
-        request.session['ft_regions'] = ft_regions
 
-        request.session['ft_industries_label'] = ft_industries_label
-        request.session['ft_head_counts_label'] = ft_head_counts_label
-        request.session['ft_other_label'] = ft_other_label
-        request.session['ft_regions_label'] = ft_regions_label
+    # store for print
+    request.session['benefit'] = benefit
+    request.session['ft_industries'] = ft_industries
+    request.session['ft_head_counts'] = ft_head_counts
+    request.session['ft_other'] = ft_other
+    request.session['ft_regions'] = ft_regions
+
+    request.session['ft_industries_label'] = ft_industries_label
+    request.session['ft_head_counts_label'] = ft_head_counts_label
+    request.session['ft_other_label'] = ft_other_label
+    request.session['ft_regions_label'] = ft_regions_label
 
     if benefit == 'HOME':
         full_name = '{} {}'.format(request.user.first_name, request.user.last_name)
@@ -514,12 +507,6 @@ def get_incremental_array(queryset, term):
     return result_
 
 
-def get_mean_sdv(queryset, term):
-    mean = queryset.aggregate(Avg(term))
-    sdv = queryset.aggregate(StdDev(term))
-    return int(mean.values()[0]), int(sdv.values()[0])
-
-
 @login_required(login_url='/login')
 def print_template(request):
     #Retrieve data or whatever you need
@@ -542,10 +529,11 @@ def print_template(request):
                                                           ft_head_counts, 
                                                           ft_other,
                                                           ft_regions)
-        h = HTMLParser.HTMLParser()
 
         context = get_life_plan(employers, num_companies)
         context['base_template'] = 'print.html'
+        # unescape html characters
+        h = HTMLParser.HTMLParser()
         context['ft_industries_label'] = h.unescape(ft_industries_label)
         context['ft_head_counts_label'] = h.unescape(ft_head_counts_label)
         context['ft_other_label'] = h.unescape(ft_other_label)
@@ -555,6 +543,7 @@ def print_template(request):
 
 @login_required(login_url='/login')
 def print_page(request):
+    # get screenshot for current page with same session using selenium    
     driver = webdriver.PhantomJS()
     driver.set_window_size(1360, 1000)
 
@@ -579,6 +568,7 @@ def print_page(request):
     driver.save_screenshot(img_path)
     driver.quit()
 
+    # convert png into pdf using fpdf
     margin = 20
     width, height = Image.open(img_path).size
 

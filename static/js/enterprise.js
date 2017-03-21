@@ -151,12 +151,8 @@ function get_body() {
     // collapse filters
     $('.filter-control').attr('size', 1);
 
-    // skip for print template
-    if (!print_template) {
-        get_filters();
-        get_filters_label();
-    }
-
+    get_filters();
+    get_filters_label();
 
     $.post(
         '/_enterprise',
@@ -172,7 +168,6 @@ function get_body() {
             regions_label: regions_label,
 
             benefit: benefit,
-            print_template: print_template
         },
         function(data) {
             $('#bnchmrk_card').html(data);
