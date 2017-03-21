@@ -12,7 +12,7 @@
             <h6>REGIONS:&nbsp;</h6><p><span id='lbl_ft_regions'>{{ ft_regions_label }}</span></p>
             <h6>HEADCOUNTS:&nbsp;</h6><p><span id='lbl_ft_headcounts'>{{ ft_head_counts_label }}</span></p>
             <h6>OTHER:&nbsp;</h6><p><span id='lbl_ft_other'>{{ ft_other_label }}</span></p>
-            <p style="float: right;"><i>Reporting Date: March 18th, 2017</i></p>
+            <p style="float: right;"><i>Reporting Date: {{ today }}</i></p>
         </div>
         <div class="client-logo">
             <img src="{% static 'img/bnchmrk_logo_stacked.jpg' %}" alt="">
@@ -42,7 +42,7 @@
                     <tr>
                         <td class="row-label">Maximum Benefit</td>
                         <td>${{ mdn_multiple_max|intcomma }}</td>
-                        <td>Client</td>
+                        <td><span id="prop_multiple_max"></span></td>
                     </tr>
                     <tr>
                         <td class="row-label">Multiple of Salary</td>
@@ -79,7 +79,7 @@
                     <tr>
                         <td class="row-label">Flat Benefit</td>
                         <td>${{ mdn_flat_amount|intcomma }}</td>
-                        <td>Client</td>
+                        <td><span id="prop_flat_amount"></span></td>
                     </tr>
                     <tr>
                         <td class="row-label">ADD Included</td>

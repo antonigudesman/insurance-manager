@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
@@ -20,6 +21,10 @@ HEAD_COUNT = {
     '5,000 and Up': [5000, 2000000],
 }
 
+MODEL_MAP = {
+    'LIFE': Life,
+    'STD': STD
+}
 
 def get_filtered_employers(ft_industries, ft_head_counts, ft_other, ft_regions, lstart=0, lend=0, group='bnchmrk'):
     # filter with factors from UI (industry, head-count, other)
@@ -209,10 +214,30 @@ def ajax_enterprise(request):
                                                           ft_regions)
         context = get_life_plan(employers, num_companies)
         context['base_template'] = 'empty.html'
+        context['today'] = datetime.strftime(datetime.now(), '%B %d, %Y')
         return render(request, 'life_plan.html', context)
     elif benefit == 'EMPLOYERS':
         return render(request, 'employers.html')
     return HttpResponse('Nice')
+
+
+@csrf_exempt
+def update_properties(request):
+    form_param = request.POST
+    benefit = form_param.get('benefit')
+    plan = int(form_param.get('plan', 0))
+
+    context = {}
+    if benefit == 'LIFE':
+        multiple_max = 'N/A'
+        flat_amount = 'N/A'
+        if plan:
+            multiple_max = Life.objects.get(id=plan).multiple_max or 'N/A'
+            flat_amount = Life.objects.get(id=plan).flat_amount or 'N/A'
+
+        context['multiple_max'] = multiple_max
+        context['flat_amount'] = flat_amount
+    return JsonResponse(context, safe=False)
 
 
 def get_life_plan(employers, num_companies):
@@ -379,3 +404,28 @@ def get_incremental_array(queryset, term):
     result_[-1] = [100, last_value]
     return result_
 
+
+@csrf_exempt
+def get_plans(request):
+    benefit = request.POST.get('benefit')
+    group = request.user.groups.first().name
+
+    allowed_benefits = ['LIFE']
+    plans = []
+    if benefit in allowed_benefits:
+        plans = get_plans_(benefit, group)
+
+    return render(request, 'plans.html', { 'plans': plans })
+
+
+def get_plans_(benefit, group):
+    model = MODEL_MAP[benefit]
+    if group == 'bnchmrk':
+        objects = model.objects.all()
+    else:
+        objects = model.objects.filter(employer__broker=group)
+
+    return [
+               [item.id, '{} - {}'.format(item.employer.name, item.title)]
+               for item in objects.order_by('employer__name', 'title')
+           ]
