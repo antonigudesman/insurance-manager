@@ -8,7 +8,10 @@ from django.views.i18n import set_language
 from mezzanine.core.views import direct_to_template
 from mezzanine.conf import settings
 
+from general.auth import *
 from general.views import *
+from general.prints import *
+from general.imports import *
 
 admin.autodiscover()
 
@@ -29,17 +32,19 @@ if settings.USE_MODELTRANSLATION:
 
 urlpatterns += [
     url("^$", direct_to_template, {"template": "index.html"}, name="home"),
+    url("^", include("mezzanine.urls")),
+    # authentication
     url(r"^login", user_login, name="login"),
     url(r"^logout", user_logout, name="logout"),
+    
     url(r"^enterprise", enterprise, name="enterprise"),
     url(r"^_enterprise", ajax_enterprise, name="_enterprise"),
     url(r"^get_num_employers", get_num_employers, name="get_num_employers"),
-    url("^", include("mezzanine.urls")),
-
+    # imports data
     url(r"^import_employer", import_employer, name="import_employer"),
     url(r"^import_life", import_life, name="import_life"),
     url(r"^import_std", import_std, name="import_std"),
-
+    # print page
     url(r"^98Wf37r2-3h4X2_jh9$", print_template, name="print_template"),
     url(r"^print_page", print_page, name="print_page"),
 ]
