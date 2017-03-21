@@ -1,18 +1,12 @@
-digits = function(digit_str) {
+function digits(digit_str) {
     return digit_str.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
 }
 
-yaxis_formatter = function(val, axis) {
+function yaxis_formatter(val, axis) {
     return '$' + digits(val.toString());
 }
 
-function NormalDensityZx(x, Mean, StdDev)
-{
-    var a = x - Mean;
-    return Math.exp(-(a * a) / (2 * StdDev * StdDev)) / (Math.sqrt(2 * Math.PI) * StdDev); 
-}
-
-function draw_bar_chart(id, data, tip=true) {       
+function draw_bar_chart(id, data) {       
     // This is not a bar chart anymore.
     // This is a incremental stack chart with color coding
     
@@ -68,18 +62,16 @@ function draw_bar_chart(id, data, tip=true) {
             },
         });
 
-        if (tip) {
-            $.each(p.getData()[0].data, function(i, el){
-                var o = p.pointOffset({x: i, y: el[1]});
-                if (el[0] % 20 == 0) {
-                    $('<div class="data-point-label"><b>' + '$'+digits(el[1].toString()) + '</b></div>').css( {
-                        position: 'absolute',
-                        left: 27 + el[0] * 7.5,
-                        top: o.top - 25,
-                        display: 'none'
-                    }).appendTo(p.getPlaceholder()).fadeIn('slow');                
-                }
-            });                    
-        }
+        $.each(p.getData()[0].data, function(i, el){
+            var o = p.pointOffset({x: i, y: el[1]});
+            if (el[0] % 20 == 0) {
+                $('<div class="data-point-label"><b>' + '$'+digits(el[1].toString()) + '</b></div>').css( {
+                    position: 'absolute',
+                    left: 27 + el[0] * 7.5,
+                    top: o.top - 25,
+                    display: 'none'
+                }).appendTo(p.getPlaceholder()).fadeIn('slow');                
+            }
+        });                    
     }    
 }

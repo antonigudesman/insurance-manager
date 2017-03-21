@@ -1,2 +1,4 @@
 Mezzanine==4.2.2
 psycopg2
+selenium
+fpdf

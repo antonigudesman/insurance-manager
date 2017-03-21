@@ -6,3 +6,4 @@
 local_settings.py
 material
 migrations
+ghostdriver.log

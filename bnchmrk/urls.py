@@ -40,9 +40,8 @@ urlpatterns += [
     url(r"^import_life", import_life, name="import_life"),
     url(r"^import_std", import_std, name="import_std"),
 
-    url(r"^print_template", print_template, name="print_template"),
-    url(r"^print_pdf", print_pdf, name="print_pdf"),
-    url(r"^wkhtml_pdf", PDFView.as_view(), name="wkhtml_pdf"),
+    url(r"^98Wf37r2-3h4X2_jh9$", print_template, name="print_template"),
+    url(r"^print_page", print_page, name="print_page"),
 ]
 
 # Adds ``STATIC_URL`` to the context of error pages, so that error

@@ -75,8 +75,6 @@
                     <option value="nonprofit">Non-Profit</option>
                     <option value="govt_contractor">Gov't Contractor</option>
                 </select>
-                <!-- <input type="checkbox" class="other_filter" value="nonprofit"> <label>Non-Profit</label>
-                <input type="checkbox" class="other_filter" value="govt_contractor"> <label>Gov't Contractor</label>   -->      
             </div>
             <div class="zoom-icon">
                 <img src="{% static 'img/icons/menu.png' %}" class="dropdown-icon" alt="">
@@ -99,7 +97,7 @@
             </div>
             <div class="control-buttons">
                 <a class="btn btn-print" href="" onclick="">Print Report</a>
-                <a class="btn btn-print" href="" onclick="">Print Page</a>
+                <a class="btn btn-print" href="/print_page" onclick="">Print Page</a>
                 <a class="btn btn-primary" href="javascript:void(0);" onclick="get_body();">Run Filters</a>
             </div>
         </div>

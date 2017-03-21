@@ -146,6 +146,7 @@ function get_filters_label() {
 
 }
 
+// called for only real template
 function get_body() {
     // collapse filters
     $('.filter-control').attr('size', 1);
@@ -153,18 +154,24 @@ function get_body() {
     // skip for print template
     if (!print_template) {
         get_filters();
+        get_filters_label();
     }
 
-    get_filters_label();
 
     $.post(
         '/_enterprise',
         {
             industry: industries,
             head_counts: head_counts,
-            benefit: benefit,
             others: others,
             regions: regions,
+
+            industry_label: industries_label,
+            head_counts_label: head_counts_label,
+            others_label: others_label,
+            regions_label: regions_label,
+
+            benefit: benefit,
             print_template: print_template
         },
         function(data) {
@@ -181,10 +188,10 @@ function get_body() {
                 draw_easy_pie_chart();
                 draw_donut_chart('L-18', l18_data);
 
-                $('#lbl_ft_industries').html(industries_label.toString());
-                $('#lbl_ft_regions').html(regions_label.toString());
-                $('#lbl_ft_headcounts').html(head_counts_label.toString());
-                $('#lbl_ft_other').html(others_label.toString());
+                $('#lbl_ft_industries').html(industries_label.join(', '));
+                $('#lbl_ft_regions').html(regions_label.join(', '));
+                $('#lbl_ft_headcounts').html(head_counts_label.join(', '));
+                $('#lbl_ft_other').html(others_label.join(', '));
             }
         })
 
@@ -228,3 +235,4 @@ generate_quintile_data = function(raw_data){
     }       
     return data;
 }
+
