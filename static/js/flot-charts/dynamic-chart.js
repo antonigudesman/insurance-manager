@@ -1,3 +1,7 @@
+test_load = function() {
+    return true;
+}
+
 $(document).ready(function(){
     
     /* Make some random data*/

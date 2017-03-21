@@ -1,7 +1,16 @@
 import csv
 import json
+import time
+import random
+import os, sys
+import HTMLParser
 import collections
+import mimetypes
 
+from fpdf import FPDF
+from PIL import Image
+
+from django.utils.encoding import smart_str
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
@@ -14,13 +23,10 @@ from django.db.models import Q, Avg, StdDev
 from django.conf import settings
 from django.utils.safestring import mark_safe
 
-import cStringIO as StringIO
-from xhtml2pdf import pisa
-from django.template.loader import get_template
-from django.template import Context
-from cgi import escape
+from django.core.files.storage import FileSystemStorage
+from wsgiref.util import FileWrapper
+from selenium import webdriver
 
-from wkhtmltopdf.views import PDFTemplateView
 from .models import *
 
 
@@ -291,11 +297,21 @@ def enterprise(request):
 
 @csrf_exempt
 def ajax_enterprise(request):
+    """
+    get body of page
+    supposed to be called for only real template not print
+    """
     form_param = request.POST
     ft_industries = form_param.getlist('industry[]', ['*'])
     ft_head_counts = form_param.getlist('head_counts[]') or ['0-2000000']
     ft_other = form_param.getlist('others[]')
     ft_regions = form_param.getlist('regions[]')
+
+    ft_industries_label = form_param.getlist('industry_label[]')
+    ft_head_counts_label = form_param.getlist('head_counts_label[]')
+    ft_other_label = form_param.getlist('others_label[]')
+    ft_regions_label = form_param.getlist('regions_label[]')
+
     benefit = form_param.get('benefit')
     print_template = form_param.get('print_template')
     
@@ -312,6 +328,11 @@ def ajax_enterprise(request):
         request.session['ft_other'] = ft_other
         request.session['ft_regions'] = ft_regions
 
+        request.session['ft_industries_label'] = ft_industries_label
+        request.session['ft_head_counts_label'] = ft_head_counts_label
+        request.session['ft_other_label'] = ft_other_label
+        request.session['ft_regions_label'] = ft_regions_label
+
     if benefit == 'HOME':
         full_name = '{} {}'.format(request.user.first_name, request.user.last_name)
         return render(request, 'home.html', locals())
@@ -326,23 +347,6 @@ def ajax_enterprise(request):
     elif benefit == 'EMPLOYERS':
         return render(request, 'employers.html')
     return HttpResponse('Nice')
-
-
-def render_to_pdf(template_src, context_dict=None):
-    template = get_template(template_src)
-    context = Context(context_dict)
-    html  = template.render(context)
-    result = StringIO.StringIO()
-
-    pdf = pisa.pisaDocument(StringIO.StringIO(html.encode("ISO-8859-1")), result)
-    if not pdf.err:
-        return HttpResponse(result.getvalue(), content_type='application/pdf')
-    return HttpResponse('We had some errors<pre>%s</pre>' % escape(html))
-
-
-@login_required(login_url='/login')
-def print_template(request):
-    return render(request, 'print_ajax.html')
 
 
 def get_life_plan(employers, num_companies):
@@ -516,47 +520,19 @@ def get_mean_sdv(queryset, term):
     return int(mean.values()[0]), int(sdv.values()[0])
 
 
-class PDFView(PDFTemplateView):
-    filename = 'wkhtml.pdf'
-
-    def render_to_response(self, context, **response_kwargs):
-        benefit = self.request.session['benefit']
-        ft_industries = self.request.session['ft_industries']
-        ft_head_counts = self.request.session['ft_head_counts']
-        ft_other = self.request.session['ft_other']
-        ft_regions = self.request.session['ft_regions']
-
-        if benefit == 'HOME':
-            full_name = '{} {}'.format(request.user.first_name, request.user.last_name)
-            return render(request, 'home.html', locals())
-        elif benefit == 'LIFE':
-            employers, num_companies = get_filtered_employers(ft_industries, 
-                                                              ft_head_counts, 
-                                                              ft_other,
-                                                              ft_regions)
-            context = get_life_plan(employers, num_companies)
-            context['base_template'] = 'print.html'        
-            # context.pop('quintile_array_multiple')
-            # context.pop('quintile_array_flat')
-            
-            self.template_name = 'life_plan.html'
-            self.cmd_options = None#context
-        elif benefit == 'EMPLOYERS':
-            return render(request, 'employers.html')
-
-        return super(PDFView, self).render_to_response(
-                context=context,
-                **response_kwargs
-            )
-
-
-def print_pdf(request):
+@login_required(login_url='/login')
+def print_template(request):
     #Retrieve data or whatever you need
     benefit = request.session['benefit']
     ft_industries = request.session['ft_industries']
     ft_head_counts = request.session['ft_head_counts']
     ft_other = request.session['ft_other']
     ft_regions = request.session['ft_regions']
+
+    ft_industries_label = ', '.join(request.session['ft_industries_label'])
+    ft_head_counts_label = ', '.join(request.session['ft_head_counts_label'])
+    ft_other_label = ', '.join(request.session['ft_other_label'])
+    ft_regions_label = ', '.join(request.session['ft_regions_label'])
 
     if benefit == 'HOME':
         full_name = '{} {}'.format(request.user.first_name, request.user.last_name)
@@ -566,9 +542,61 @@ def print_pdf(request):
                                                           ft_head_counts, 
                                                           ft_other,
                                                           ft_regions)
+        h = HTMLParser.HTMLParser()
+
         context = get_life_plan(employers, num_companies)
-        context['base_template'] = 'print.html'       
-        return render_to_pdf('life_plan.html', context)
+        context['base_template'] = 'print.html'
+        context['ft_industries_label'] = h.unescape(ft_industries_label)
+        context['ft_head_counts_label'] = h.unescape(ft_head_counts_label)
+        context['ft_other_label'] = h.unescape(ft_other_label)
+        context['ft_regions_label'] = h.unescape(ft_regions_label)
         return render(request, 'life_plan.html', context)
 
 
+@login_required(login_url='/login')
+def print_page(request):
+    driver = webdriver.PhantomJS()
+    driver.set_window_size(1360, 1000)
+
+    cc = { 
+        'domain': 'localhost', 
+        'name': 'sessionid', 
+        'value': request.COOKIES.get('sessionid'), 
+        'path': '/'
+    }
+
+    try:
+        driver.add_cookie(cc)
+    except Exception as e:
+        pass
+
+    driver.get('http://{}/98Wf37r2-3h4X2_jh9'.format(request.META.get('HTTP_HOST')))
+    base_path = '/tmp/page{}'.format(random.randint(-100000000, 100000000))
+    img_path = base_path + '.png'
+    pdf_path = base_path + '.pdf'
+    time.sleep(2)
+
+    driver.save_screenshot(img_path)
+    driver.quit()
+
+    margin = 20
+    width, height = Image.open(img_path).size
+
+    pdf = FPDF(unit="pt", format=[width+2*margin, height+2*margin])
+    pdf.add_page()
+
+    pdf.image(img_path, margin, margin)
+
+    pdf.output(pdf_path, "F")
+    os.remove(img_path)
+    return get_download_response(pdf_path)
+
+
+def get_download_response(path):
+    wrapper = FileWrapper( open( path, "r" ) )
+    content_type = mimetypes.guess_type( path )[0]
+
+    response = HttpResponse(wrapper, content_type = content_type)
+    response['Content-Length'] = os.path.getsize( path ) # not FileField instance
+    response['Content-Disposition'] = 'attachment; filename=%s/' % smart_str( os.path.basename( path ) )
+    return response
