@@ -6,15 +6,13 @@
 <div class="benefit-content">
 
     <div class="benefit-header">
-        <div class="benefit-timestamp">
-            <h6>Report Run On:&nbsp;</h6><p><span id=''>March 18th, 2017</span></p>
-        </div>
         <div class="benefit-details">
             <h4>LIFE INSURANCE BENCHMARKING</h4>
             <h6>INDUSTRIES:&nbsp;</h6><p><span id='lbl_ft_industries'>{{ ft_industries_label }}</span></p>
             <h6>REGIONS:&nbsp;</h6><p><span id='lbl_ft_regions'>{{ ft_regions_label }}</span></p>
             <h6>HEADCOUNTS:&nbsp;</h6><p><span id='lbl_ft_headcounts'>{{ ft_head_counts_label }}</span></p>
             <h6>OTHER:&nbsp;</h6><p><span id='lbl_ft_other'>{{ ft_other_label }}</span></p>
+            <p style="float: right;"><i>Reporting Date: March 18th, 2017</i></p>
         </div>
         <div class="client-logo">
             <img src="{% static 'img/bnchmrk_logo_stacked.jpg' %}" alt="">
@@ -24,6 +22,10 @@
 {% if num_employers >= EMPLOYER_THRESHOLD %}
 
     <div class="section">
+        <div class="section-graph">
+            <p class="exhibit-text">Multiple of Salary Plans <span>(Exhibit L1: Maximum Benefit Distribution)</span></p>
+            <div id="L-1" class="flot-chart"></div>
+        </div>
         <div class="section-content">
             <table class="table table-striped table-content">
                 <col width="40%">
@@ -54,13 +56,13 @@
                 </tbody>
             </table>  
         </div>
-        <div class="section-graph">
-            <p class="exhibit-text">Exhibit L1: Maximum Benefit Distribution</p>
-            <div id="L-1" class="flot-chart"></div>
-        </div>
     </div>
 
     <div class="section">
+        <div class="section-graph">
+            <p class="exhibit-text">Flat Amount Plans <span>(Exhibit L2: Flat Benefit Distribution)</span></p>
+            <div id="L-2" class="flot-chart"></div>
+        </div>
         <div class="section-content">
             <table class="table table-striped table-content">
                 <col width="40%">
@@ -87,13 +89,24 @@
                 </tbody>
             </table>
         </div>
-        <div class="section-graph">
-            <p class="exhibit-text">Exhibit L2: Flat Benefit Distribution</p>
-            <div id="L-2" class="flot-chart"></div>
-        </div>
     </div>
 
     <div class="section">
+        <div class="section-graph">
+            <p class="exhibit-text">Employee Cost Share<span> (Exhibits L3-L5: Cost Share Breakdown)</span></p>
+            <div class="easy-pie L-12" data-percent="{{ prcnt_paid }}">
+                <div class="percent">{{ prcnt_paid }}</div>
+                <div class="pie-title">100% Employer Paid Only</div>
+            </div>
+            <div class="easy-pie L-13" data-percent="{{ prcnt_share }}">
+                <div class="percent">{{ prcnt_share }}</div>
+                <div class="pie-title">Employee Cost Share Only</div>
+            </div>
+            <div class="easy-pie L-14" data-percent="{{ prcnt_paid_share }}">
+                <div class="percent">{{ prcnt_paid_share }}</div>
+                <div class="pie-title">Core / Buy Up</div>
+            </div>
+        </div>
         <div class="section-content">
             <table class="table table-striped table-content">
                 <col width="50%">
@@ -126,25 +139,15 @@
                 </tbody>
             </table>  
         </div>
-        <div class="section-graph">
-            <p class="exhibit-text">Exhibit L12-L14: Cost Share</p>
-            <div class="easy-pie L-12" data-percent="{{ prcnt_paid }}">
-                <div class="percent">{{ prcnt_paid }}</div>
-                <div class="pie-title">100% Employer Paid Only</div>
-            </div>
-            <div class="easy-pie L-13" data-percent="{{ prcnt_share }}">
-                <div class="percent">{{ prcnt_share }}</div>
-                <div class="pie-title">Employee Cost Share Only</div>
-            </div>
-            <div class="easy-pie L-14" data-percent="{{ prcnt_paid_share }}">
-                <div class="percent">{{ prcnt_paid_share }}</div>
-                <div class="pie-title">Core / Buy Up</div>
-            </div>
-        </div>
     </div>
 
 
     <div class="section">
+        <div class="section-graph">
+            <p class="exhibit-text">PREVALENCE<span> (Exhibit L6: Number of Plans Offered)</span></p>
+            <div id="L-18" class="flot-chart-pie"></div>
+            <div class="flc-donut hidden-xs"></div>
+        </div>
         <div class="section-content">
             <table class="table table-striped table-content">
                 <col width="50%">
@@ -206,11 +209,6 @@
                     </tr>
                 </tbody>
             </table>  
-        </div>
-        <div class="section-graph">
-            <p class="exhibit-text">Exhibit L18: Number of Plans Offered</p>
-            <div id="L-18" class="flot-chart-pie"></div>
-            <div class="flc-donut hidden-xs"></div>
         </div>
     </div>
 

@@ -149,12 +149,7 @@
     }
 
     .benefit-details{
-        width: 70%;
-        float: right;
-    }
-
-    .benefit-timestamp{
-        width: 15%;
+        width: 85%;
         float: right;
     }
 
@@ -204,20 +199,23 @@
 
     p.exhibit-text {
         margin-bottom: 6px;
-        font-size: 14px;
+        font-size: 20px;
     }
 
-    .section-content {
-        width: 40%;
-        height: 100%;
-        float: right;
-        padding: 0 0 0 5px;
+    p.exhibit-text > span {
+        font-size: 12px;
     }
 
     .section-graph {
         width: 60%;
         height: 100%;
         float: left;
+    }
+
+    .section-content {
+        width: 40%;
+        height: 100%;
+        float: right;
     }
 
     .benefit-error {
@@ -301,6 +299,13 @@ p.exhibit-text {
     font-weight: 500;
     color: #333;
     text-transform: uppercase;
+}
+
+p.exhibit-text > span {
+    font-weight: 100;
+    color: #999999;
+    text-transform: capitalize;
+    font-style: italic;
 }
 
 .filter-control,

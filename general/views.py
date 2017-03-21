@@ -1,31 +1,13 @@
-import csv
 import json
-import time
-import random
-import os, sys
-import HTMLParser
-import collections
-import mimetypes
 
-from fpdf import FPDF
-from PIL import Image
-
-from django.utils.encoding import smart_str
-from django.shortcuts import render, redirect
-from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
-from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import render
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from django.forms.models import model_to_dict
 from django.db.models import Q, Avg, StdDev
 from django.conf import settings
 from django.utils.safestring import mark_safe
-
-from django.core.files.storage import FileSystemStorage
-from wsgiref.util import FileWrapper
-from selenium import webdriver
 
 from .models import *
 
@@ -37,115 +19,6 @@ HEAD_COUNT = {
     '1,000 to 4,999': [1000, 4999],
     '5,000 and Up': [5000, 2000000],
 }
-
-def user_login(request):
-    if request.method == 'GET':
-        return render(request, 'login.html')
-    else:
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(username=username, password=password)
-
-        if user is not None:
-            login(request, user)
-            return HttpResponseRedirect(reverse('enterprise'))
-        else:
-            message = 'Your login credential is incorrect! Please try again.'
-            return render(request, 'login.html', {
-                'message': message,
-            })
-
-
-def user_logout(request):
-    logout(request)
-    return HttpResponseRedirect(reverse('login')) 
-
-
-def import_employer(request):
-    path = '/home/akimmel/work/table extracts/employers.csv'
-    # path = '/root/work/Enterprise/data/employers.csv'
-    with open(path) as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            try:
-                employer = Employer.objects.create(
-                    id=row['ID'],
-                    # name=row['NAME'].decode('utf8'),
-                    name = unicode(row['NAME'], errors='ignore'),
-                    broker=row['BROKER__C'],
-                    industry1=row['INDUSTRY_1__C'],
-                    industry2=row['INDUSTRY_2__C'],
-                    industry3=row['INDUSTRY_3__C'],
-                    state=row['EMPLOYERSTATE__C'],
-                    size=row['EMPLOYERHEADCOUNT__C'],
-                    nonprofit=row['NON_PROFIT__C']=='TRUE',
-                    govt_contractor=row['GOVT_CONTRACTOR__C']=='TRUE',
-                    med_count=row['MEDICAL_PLANS__C'],
-                    den_count=row['DENTAL_PLANS__C'],
-                    vis_count=row['VISION_PLANS__C'],
-                    life_count=row['LIFE_PLANS__C'],
-                    std_count=row['STD_PLANS__C'],
-                    ltd_count=row['LTD_PLANS__C'],
-                    new_england=row['DISTRICT_NEW_ENGLAND__C']=='TRUE',
-                    mid_atlantic=row['DISTRICT_MID_ATLANTIC__C']=='TRUE',
-                    south_atlantic=row['DISTRICT_SOUTH_ATLANTIC__C']=='TRUE',
-                    south_cental=row['DISTRICT_SOUTH_CENTRAL__C']=='TRUE',
-                    east_central=row['DISTRICT_EAST_NORTH_CENTRAL__C']=='TRUE',
-                    west_central=row['DISTRICT_WEST_NORTH_CENTRAL__C']=='TRUE',
-                    mountain=row['DISTRICT_MOUNTAIN__C']=='TRUE',
-                    pacific=row['DISTRICT_PACIFIC__C']=='TRUE')
-            except Exception as e:
-                print str(e)
-                print row['ID'], '#{}#'.format(row['EMPLOYERHEADCOUNT__C'])
-
-    return HttpResponse('Successfully imported!')
-
-
-def import_life(request):
-    path = '/home/akimmel/work/table extracts/life.csv'
-    # path = '/root/work/Enterprise/data/life.csv'
-
-    with open(path) as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            try:
-                life = Life.objects.create(                                                 
-                    employer_id=row['EMPLOYERNAME__C'],
-                    type=row['LP_TYPE__C'],
-                    multiple=row['LP_MULTIPLE__C'] or None,
-                    multiple_max=row['LP_MULTIPLE_MAX__C'] or None,
-                    flat_amount=row['LP_FLAT_AMOUNT__C'] or None,
-                    add=row['LP_ADD__C']=='TRUE',
-                    cost_share=row['LP_COST_SHARE__C'])
-            except Exception as e:
-                print str(e)
-                print '#{}#'.format(row['LP_MULTIPLE__C']), row['EMPLOYERNAME__C'], row['LP_TYPE__C']
-                # break
-    return HttpResponse('Successfully imported!')
-
-
-def import_std(request):
-    path = '/home/akimmel/work/table extracts/STD.csv'    
-    # path = '/root/work/Enterprise/data/STD.csv'
-
-    with open(path) as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            try:
-                std = STD.objects.create(                                                 
-                    employer_id=row['EMPLOYER_NAME__C'],
-                    salary_cont=row['STD_SALARY_CONTINUATION__C']=='TRUE',
-                    waiting_days=row['STD_WAITING_DAYS__C'] or None,
-                    waiting_days_sick=row['STD_WAITING_DAYS_SICK__C'] or None,
-                    duration_weeks=row['STD_DURATION_WEEKS__C'] or None,
-                    percentage=row['STD_PERCENTAGE__C'] or None,
-                    weekly_max=row['STD_WEEKLY_MAX__C'] or None,
-                    cost_share=row['STD_COST_SHARE__C'])
-            except Exception as e:
-                print str(e)
-                print '#{}#'.format(row['STD_COST_SHARE__C']), row['EMPLOYER_NAME__C']
-
-    return HttpResponse('Successfully imported!')
 
 
 def get_filtered_employers(ft_industries, ft_head_counts, ft_other, ft_regions, lstart=0, lend=0, group='bnchmrk'):
@@ -506,87 +379,3 @@ def get_incremental_array(queryset, term):
     result_[-1] = [100, last_value]
     return result_
 
-
-@login_required(login_url='/login')
-def print_template(request):
-    #Retrieve data or whatever you need
-    benefit = request.session['benefit']
-    ft_industries = request.session['ft_industries']
-    ft_head_counts = request.session['ft_head_counts']
-    ft_other = request.session['ft_other']
-    ft_regions = request.session['ft_regions']
-
-    ft_industries_label = ', '.join(request.session['ft_industries_label'])
-    ft_head_counts_label = ', '.join(request.session['ft_head_counts_label'])
-    ft_other_label = ', '.join(request.session['ft_other_label'])
-    ft_regions_label = ', '.join(request.session['ft_regions_label'])
-
-    if benefit == 'HOME':
-        full_name = '{} {}'.format(request.user.first_name, request.user.last_name)
-        return render(request, 'home.html', locals())
-    elif benefit == 'LIFE':
-        employers, num_companies = get_filtered_employers(ft_industries, 
-                                                          ft_head_counts, 
-                                                          ft_other,
-                                                          ft_regions)
-
-        context = get_life_plan(employers, num_companies)
-        context['base_template'] = 'print.html'
-        # unescape html characters
-        h = HTMLParser.HTMLParser()
-        context['ft_industries_label'] = h.unescape(ft_industries_label)
-        context['ft_head_counts_label'] = h.unescape(ft_head_counts_label)
-        context['ft_other_label'] = h.unescape(ft_other_label)
-        context['ft_regions_label'] = h.unescape(ft_regions_label)
-        return render(request, 'life_plan.html', context)
-
-
-@login_required(login_url='/login')
-def print_page(request):
-    # get screenshot for current page with same session using selenium    
-    driver = webdriver.PhantomJS()
-    driver.set_window_size(1360, 1000)
-
-    cc = { 
-        'domain': 'localhost', 
-        'name': 'sessionid', 
-        'value': request.COOKIES.get('sessionid'), 
-        'path': '/'
-    }
-
-    try:
-        driver.add_cookie(cc)
-    except Exception as e:
-        pass
-
-    driver.get('http://{}/98Wf37r2-3h4X2_jh9'.format(request.META.get('HTTP_HOST')))
-    base_path = '/tmp/page{}'.format(random.randint(-100000000, 100000000))
-    img_path = base_path + '.png'
-    pdf_path = base_path + '.pdf'
-    time.sleep(2)
-
-    driver.save_screenshot(img_path)
-    driver.quit()
-
-    # convert png into pdf using fpdf
-    margin = 20
-    width, height = Image.open(img_path).size
-
-    pdf = FPDF(unit="pt", format=[width+2*margin, height+2*margin])
-    pdf.add_page()
-
-    pdf.image(img_path, margin, margin)
-
-    pdf.output(pdf_path, "F")
-    os.remove(img_path)
-    return get_download_response(pdf_path)
-
-
-def get_download_response(path):
-    wrapper = FileWrapper( open( path, "r" ) )
-    content_type = mimetypes.guess_type( path )[0]
-
-    response = HttpResponse(wrapper, content_type = content_type)
-    response['Content-Length'] = os.path.getsize( path ) # not FileField instance
-    response['Content-Disposition'] = 'attachment; filename=%s/' % smart_str( os.path.basename( path ) )
-    return response
