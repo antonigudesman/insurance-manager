@@ -144,19 +144,19 @@
     }
 
     .client-logo {
-        width: 15%;
+        width: 11%;
         float: left;
     }
 
     .benefit-details{
-        width: 85%;
+        width: 87%;
         float: right;
     }
 
     .client-logo > img {
         max-height: 140px;
         float: left;
-        padding: 10px;
+        padding: 20px 0 10px 10px;
     }
 
     .benefit-header h4,
@@ -209,13 +209,30 @@
     .section-graph {
         width: 60%;
         height: 100%;
-        float: left;
+        float: left;        
+        padding: 0 0 0 20px;
     }
 
     .section-content {
         width: 40%;
         height: 100%;
         float: right;
+        padding: 10px 0 0 15px;
+    }
+
+    .easy-pie {
+        display: inline-block;
+        position: relative;
+        padding: 20px 85px 5px 85px;
+    }
+
+
+    div.easy-pie div.pie-title {
+        top: 120px;
+    }
+
+    .pie-title {
+        font-size: 14px;
     }
 
     .benefit-error {
@@ -226,12 +243,6 @@
 }
 
 
-.header-filter h6,
-.employer-filter-count h6,
-.filter-control {
-    font-family: Spinnaker,sans-serif;
-}
-
 .benefit-details > p,
 .benefit-details > h6 {
     margin: 0 0 1px 0;
@@ -239,7 +250,8 @@
 }
 
 li.active,
-.control-buttons h6 {
+.control-buttons h6,
+.pie-title {
     font-weight: bold;
 }
 
@@ -291,7 +303,8 @@ li.active,
 }
 
 .btn-primary,
-.btn-print {
+.btn-print,
+.pie-title {
     text-transform: capitalize;
 }
 
@@ -309,7 +322,8 @@ p.exhibit-text > span {
 }
 
 .filter-control,
-.plan-control {
+.plan-control,
+.pie-title {
     color: #5e5e5e;
 }
 
@@ -335,7 +349,10 @@ p.exhibit-text > span {
     border: 1px solid #e0e0e0;
 }
 
-.benefit-header,
+.benefit-header {
+    border: 1px solid #c0c0c0;
+}
+
 .section {
     border-bottom: 1px solid #c0c0c0;
     border-left: 1px solid #c0c0c0;
@@ -358,8 +375,4 @@ p.threshold-error {
 
 div.easy-pie div.percent {
     text-align: center;
-}
-
-div.easy-pie div.pie-title {
-    top: 100px;
 }

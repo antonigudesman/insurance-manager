@@ -196,6 +196,7 @@ function get_body() {
         },
         function(data) {
             $('#bnchmrk_card').html(data);
+            update_properties();
 
             if(benefit == 'EMPLOYERS') {
                 load_employers();
@@ -237,7 +238,6 @@ function get_body() {
             $('#plans').html(data);
         })    
 
-    update_properties();
 }
 
 generate_quintile_data = function(raw_data){

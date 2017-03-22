@@ -229,11 +229,15 @@ def update_properties(request):
 
     context = {}
     if benefit == 'LIFE':
-        multiple_max = 'N/A'
-        flat_amount = 'N/A'
         if plan:
-            multiple_max = Life.objects.get(id=plan).multiple_max or 'N/A'
-            flat_amount = Life.objects.get(id=plan).flat_amount or 'N/A'
+            multiple_max = Life.objects.get(id=plan).multiple_max 
+            multiple_max = '${:,.0f}'.format(multiple_max) if multiple_max else 'N/A'
+            flat_amount = Life.objects.get(id=plan).flat_amount
+            flat_amount = '${:,.0f}'.format(flat_amount) if flat_amount else 'N/A'
+        else:
+            multiple_max = 'N/A'
+            flat_amount = 'N/A'
+            multiple = 'N/A'
 
         context['multiple_max'] = multiple_max
         context['flat_amount'] = flat_amount
