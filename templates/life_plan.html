@@ -26,18 +26,20 @@
             <p class="exhibit-text">Multiple of Salary Plans <span>(Exhibit L1: Maximum Benefit Distribution)</span></p>
             <div id="L-1" class="flot-chart"></div>
         </div>
+        <div class="section-score">
+            <h5>Q-SCORE</h5>
+            <p><span id="prop_rank_multiple"></span></p>           
+        </div> 
         <div class="section-content">
             <table class="table table-striped table-content">
-                <col width="40%">
-                <col width="20%">
-                <col width="20%">
-                <col width="20%">
+                <col width="50%">
+                <col width="25%">
+                <col width="25%">
                 <thead>
                     <tr>
                         <th class="row-label">Salary-Based Plans</th>
                         <th>Benchmark</th>
                         <th>Client Name</th>
-                        <th>Score</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,20 +47,19 @@
                         <td class="row-label">Maximum Benefit</td>
                         <td>${{ mdn_multiple_max|intcomma }}</td>
                         <td><span id="prop_multiple_max"></span></td>
-                        <td rowspan="3">RANK</td>
                     </tr>
                     <tr>
                         <td class="row-label">Multiple of Salary</td>
                         <td>{{ mdn_multiple }}</td>
-                        <td></td>
+                        <td><span id="prop_multiple"></span></td>
                     </tr>
                     <tr>
                         <td class="row-label">ADD Included</td>
                         <td>{{ prcnt_add_multiple }}</td>
-                        <td></td>
+                        <td><span id="prop_add_multiple"></span></td>
                     </tr>
                 </tbody>
-            </table>  
+            </table>
         </div>
     </div>
 
@@ -67,18 +68,20 @@
             <p class="exhibit-text">Flat Amount Plans <span>(Exhibit L2: Flat Benefit Distribution)</span></p>
             <div id="L-2" class="flot-chart"></div>
         </div>
+        <div class="section-score">
+            <h5>Q-SCORE</h5>
+            <p><span id="prop_rank_flat"></span></p>      
+        </div> 
         <div class="section-content">
             <table class="table table-striped table-content">
-                <col width="40%">
-                <col width="20%">
-                <col width="20%">
-                <col width="20%">
+                <col width="50%">
+                <col width="25%">
+                <col width="25%">
                 <thead>
                     <tr>
                         <th class="row-label">Flat Amount Plans</th>
                         <th>Benchmark</th>
                         <th>Client Name</th>
-                        <th>Score</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -86,12 +89,12 @@
                         <td class="row-label">Flat Benefit</td>
                         <td>${{ mdn_flat_amount|intcomma }}</td>
                         <td><span id="prop_flat_amount"></span></td>
-                        <td rowspan="2">RANK</td>
+                        <td><span id="prop_rank_flat"></span></td>
                     </tr>
                     <tr>
                         <td class="row-label">ADD Included</td>
                         <td>{{ prcnt_add_flat }}</td>
-                        <td></td>
+                        <td><span id="prop_add_flat"></span></td>
                     </tr>
                 </tbody>
             </table>
@@ -114,11 +117,12 @@
                 <div class="pie-title">Core / Buy Up</div>
             </div>
         </div>
+        <div class="section-score">  
+        </div> 
         <div class="section-content">
             <table class="table table-striped table-content">
-                <col width="50%">
-                <col width="25%">
-                <col width="25%">
+                <col width="60%">
+                <col width="40%">
                 <thead>
                     <th class="row-label">Life Insurance Cost Share</th>
                     <th>Employers</th>
@@ -128,27 +132,22 @@
                     <tr>
                         <td class="row-label">100% Employer Paid Only</td>
                         <td>{{ prcnt_paid }}%</td>
-                        <td></td>
                     </tr>
                     <tr>
                         <td class="row-label">Employee Cost Share Only</td>
                         <td>{{ prcnt_share }}%</td>
-                        <td></td>
                     </tr>
                     <tr>
                         <td class="row-label">Core & Buy Up Plans</td>
                         <td>{{ prcnt_paid_share }}%</td>
-                        <td></td>
                     </tr>
                     <tr>
                         <td class="row-label">Not Reported</td>
                         <td>{{ prcnt_non_reported }}%</td>
-                        <td></td>
                     </tr>
                     <tr>
                         <td class="row-label">Not Offered</td>
                         <td>{{ prcnt_type_plan_none }}%</td>
-                        <td></td>
                     </tr>
                 </tbody>
             </table>  
@@ -162,77 +161,66 @@
             <div id="L-18" class="flot-chart-pie"></div>
             <div class="flc-donut hidden-xs"></div>
         </div>
+        <div class="section-score">  
+        </div> 
         <div class="section-content">
             <table class="table table-striped table-content">
-                <col width="50%">
-                <col width="25%">
-                <col width="25%">
+                <col width="60%">
+                <col width="40%">
                 <thead>
                     <tr>
                         <th class="row-label">Number of Plans Offered</th>
                         <th>Employers</th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td class="row-label">Not Offered</td>
                         <td>{{ prcnt_plan0 }}%</td>
-                        <td></td>
                     </tr>
                     <tr>
                         <td class="row-label">1 Plan</td>
                         <td>{{ prcnt_plan1 }}%</td>
-                        <td></td>
                     </tr>
                     <tr>
                         <td class="row-label">2 Plans</td>
                         <td>{{ prcnt_plan2 }}%</td>
-                        <td></td>
                     </tr>
                     <tr>
                         <td class="row-label">3 or More Plans</td>
                         <td>{{ prcnt_plan3_or_more }}%</td>
-                        <td></td>
                     </tr>
                 </tbody>
             </table>
             <table class="table table-striped table-content">
-                <col width="50%">
-                <col width="25%">
-                <col width="25%">
+                <col width="60%">
+                <col width="40%">
                 <thead>
                     <tr>
                         <th class="row-label">Plan Types Offered</th>
                         <th>Employers</th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td class="row-label">Salary-Based Plans Only</td>
                         <td>{{ prcnt_type_plan_mul }}%</td>
-                        <td></td>
                     </tr>
                     <tr>
                         <td class="row-label">Flat Plans Only</td>
                         <td>{{ prcnt_type_plan_flat }}%</td>
-                        <td></td>
                     </tr>
                     <tr>
                         <td class="row-label">Both Multiple & Flat Plans</td>
                         <td>{{ prcnt_type_plan_mul_flat }}%</td>
-                        <td></td>
                     </tr>
                     <tr>
                         <td class="row-label">Not Reported</td>
                         <td>{{ prcnt_type_non_reported }}%</td>
-                        <td></td>
                     </tr>
                     <tr>
                         <td class="row-label">Not Offered</td>
                         <td>{{ prcnt_type_plan_none }}%</td>
-                        <td></td>
                     </tr>
                 </tbody>
             </table>  

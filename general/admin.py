@@ -8,6 +8,7 @@ class EmployerAdmin(admin.ModelAdmin):
 
 class LifeAdmin(admin.ModelAdmin):
     list_display = [item.name for item in Life._meta.fields if item.name != 'id']
+    search_fields = ('employer__name',)
 
 
 class STDAdmin(admin.ModelAdmin):

@@ -227,21 +227,80 @@ def update_properties(request):
     benefit = form_param.get('benefit')
     plan = int(form_param.get('plan', 0))
 
-    context = {}
-    if benefit == 'LIFE':
-        if plan:
-            multiple_max = Life.objects.get(id=plan).multiple_max 
-            multiple_max = '${:,.0f}'.format(multiple_max) if multiple_max else 'N/A'
-            flat_amount = Life.objects.get(id=plan).flat_amount
-            flat_amount = '${:,.0f}'.format(flat_amount) if flat_amount else 'N/A'
-        else:
-            multiple_max = 'N/A'
-            flat_amount = 'N/A'
-            multiple = 'N/A'
+    # save for print
+    if plan != -1:
+        request.session['plan'] = plan
+    else:
+        plan = request.session['plan']
 
-        context['multiple_max'] = multiple_max
-        context['flat_amount'] = flat_amount
+    func_name = 'get_{}_properties'.format(benefit.lower())
+    return globals()[func_name](request, plan)
+
+
+def get_life_properties(request, plan):
+    context = {}
+    multiple_max = 'N/A'
+    flat_amount = 'N/A'
+    multiple = 'N/A'
+    add_flat = 'N/A'
+    add_multiple = 'N/A'
+    rank_flat = 'N/A'
+    rank_multiple = 'N/A'
+
+    if plan:
+        ft_industries = request.session['ft_industries']
+        ft_head_counts = request.session['ft_head_counts']
+        ft_other = request.session['ft_other']
+        ft_regions = request.session['ft_regions']
+
+        employers, num_companies = get_filtered_employers(ft_industries, 
+                                                          ft_head_counts, 
+                                                          ft_other,
+                                                          ft_regions)
+
+        lifes = Life.objects.filter(employer__in=employers)
+        life = Life.objects.get(id=plan)
+        multiple_max = '${:,.0f}'.format(life.multiple_max) if life.multiple_max else 'N/A'
+        flat_amount = '${:,.0f}'.format(life.flat_amount) if life.flat_amount else 'N/A'
+        multiple = life.multiple or 'N/A'
+        
+        if life.type == 'Flat Amount':
+            add_flat = 'Yes' if life.add else 'No'
+            if life.flat_amount:
+                qs_flat_amount = lifes.exclude(flat_amount__isnull=True)
+                quintile_array_flat = get_incremental_array(qs_flat_amount, 'flat_amount') 
+                rank_flat = get_rank(quintile_array_flat, life.flat_amount)
+        else:
+            add_multiple = 'Yes' if life.add else 'No'
+            if life.multiple_max:
+                qs_multiple_max = lifes.exclude(multiple_max__isnull=True)
+                quintile_array_multiple = get_incremental_array(qs_multiple_max, 'multiple_max') 
+                rank_multiple = get_rank(quintile_array_multiple, life.multiple_max)
+
+    context['multiple_max'] = multiple_max
+    context['flat_amount'] = flat_amount
+    context['multiple'] = multiple
+    context['add_flat'] = add_flat
+    context['add_multiple'] = add_multiple
+    context['rank_flat'] = rank_flat
+    context['rank_multiple'] = rank_multiple
     return JsonResponse(context, safe=False)
+
+
+def get_rank(quintile_array, value):
+    x_vals = []
+    for idx in range(len(quintile_array)-1):
+        if quintile_array[idx][1] <= value and value <= quintile_array[idx+1][1]:
+            x_vals.append(quintile_array[idx+1][0])
+
+    x_mean = 0
+    for item in x_vals:
+        x_mean += item
+    x_mean = x_mean * 1.0 / len(x_vals)
+
+    for idx in range(1, 6):
+        if x_mean < idx * 20:
+            return idx
 
 
 def get_life_plan(employers, num_companies):
@@ -276,7 +335,7 @@ def get_life_plan(employers, num_companies):
 
     quintile_array_flat = get_incremental_array(qs_flat_amount, 'flat_amount') 
     quintile_array_multiple = get_incremental_array(qs_multiple_max, 'multiple_max') 
-
+    
     cnt_add_flat = lifes.filter(add=True, type='Flat Amount').count()
     cnt_add_flat_ = lifes.filter(type='Flat Amount').count()
     cnt_add_multiple = lifes.filter(add=True, type='Multiple of Salary').count()

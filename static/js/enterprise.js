@@ -13,6 +13,8 @@ var colors = ['#f8696b', '#FCAA78', '#ffeb84', '#B1D480', '#63be7b'];
 
 $(document).ready(function(){
     if (print_template) {
+        update_properties();
+
         l1_data = generate_quintile_data(l1_data);
         l2_data = generate_quintile_data(l2_data);
 
@@ -50,7 +52,9 @@ $(document).ready(function(){
 });
 
 function update_properties() {
-    plan = $('#plans').val();
+    plan = -1;
+    if (!print_template) 
+        plan = $('#plans').val();
 
     $.post(
         '/update_properties',
@@ -61,7 +65,18 @@ function update_properties() {
         function(data) {
             if(benefit == 'LIFE') {
                 $('#prop_multiple_max').html(data.multiple_max);
+                $('#prop_multiple').html(data.multiple);
                 $('#prop_flat_amount').html(data.flat_amount);
+                $('#prop_add_flat').html(data.add_flat);
+                $('#prop_add_multiple').html(data.add_multiple);
+                $('#prop_rank_flat').html(data.rank_flat);
+                $('#prop_rank_flat').removeAttr('style');
+                if (data.rank_flat != 'N/A')
+                    $('#prop_rank_flat').css('color', colors[data.rank_flat-1]);
+                $('#prop_rank_multiple').html(data.rank_multiple);
+                $('#prop_rank_multiple').removeAttr('style');
+                if (data.rank_multiple != 'N/A')
+                    $('#prop_rank_multiple').css('color', colors[data.rank_multiple-1]);
             }
         });
 }
