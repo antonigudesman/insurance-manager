@@ -184,7 +184,8 @@
         font-size: 14px;
     }
 
-    .table > thead > tr > th {
+    .table > thead > tr > th,
+    .section-score > h5 {
         font-size: 12px;
     }
 
@@ -214,7 +215,14 @@
     }
 
     .section-content {
-        width: 40%;
+        width: 30%;
+        height: 100%;
+        float: right;
+        padding: 10px 0 0 15px;
+    }
+
+    .section-score {
+        width: 10%;
         height: 100%;
         float: right;
         padding: 10px 0 0 15px;
@@ -233,6 +241,11 @@
 
     .pie-title {
         font-size: 14px;
+    }
+
+    .section-score p {
+        font-size: 50px;
+        font-weight: bold;
     }
 
     .benefit-error {
@@ -308,7 +321,8 @@ li.active,
     text-transform: capitalize;
 }
 
-p.exhibit-text {
+p.exhibit-text,
+.section-score h5 {
     font-weight: 500;
     color: #333;
     text-transform: uppercase;
@@ -373,6 +387,8 @@ p.threshold-error {
     color: red;
 }
 
+.section-score h5,
+.section-score p,
 div.easy-pie div.percent {
     text-align: center;
 }

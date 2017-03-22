@@ -343,9 +343,6 @@ except ImportError:
 else:
     set_dynamic_settings(globals())
 
-EMPLOYER_THRESHOLD = 25
-EMPLOYER_THRESHOLD_MESSAGE = 'Current search criteria resulted in less 25 employers. Please expand it by selecting additional filters before refreshing.'
-FLAT_BUCKET_SIZE = 10000
-
-MULTIPLE_MAX_BUCKET_SIZE = 250000
+EMPLOYER_THRESHOLD = 10
+EMPLOYER_THRESHOLD_MESSAGE = 'Current search criteria resulted in less 10 employers. Please expand it by selecting additional filters before refreshing.'
 MAX_POINTS = 50
