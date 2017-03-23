@@ -67,7 +67,7 @@ function draw_bar_chart(id, data) {
             if (el[0] % 20 == 0) {
                 $('<div class="data-point-label"><b>' + '$'+digits(el[1].toString()) + '</b></div>').css( {
                     position: 'absolute',
-                    left: 27 + el[0] * 7.5,
+                    left: 30 + el[0] * 6.5,
                     top: o.top - 25,
                     display: 'none'
                 }).appendTo(p.getPlaceholder()).fadeIn('slow');                

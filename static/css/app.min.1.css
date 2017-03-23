@@ -1402,7 +1402,7 @@ html {
 }
 
 body {
-  font-family: roboto;
+  font-family: Arial;
   font-size: 13px;
   line-height: 1.42857143;
   color: #5e5e5e;
@@ -5566,7 +5566,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 
 .navbar {
   position: relative;
-  min-height: 50px;
+  min-height: 40px;
   border: 1px solid transparent;
 }
 
@@ -5690,10 +5690,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 
 .navbar-brand {
   float: left;
-  padding: 12px 15px 20px 15px;
-  font-size: 17px;
-  line-height: 18px;
-  height: 50px;
+  padding: 8px 15px;
 }
 
 .navbar-brand:hover,
@@ -5785,8 +5782,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   }
 
   .navbar-nav > li > a {
-    padding-top: 16px;
-    padding-bottom: 16px;
+    padding-top: 9px;
+    padding-bottom: 9px;
   }
 
   .navbar-nav > li.menu-login > a {
@@ -6067,7 +6064,7 @@ fieldset[disabled] .navbar-default .btn-link:focus {
 }
 
 .navbar-inverse {
-  background-color: #222222;
+  background-color: #333333;
   border-color: #080808;
 }
 
@@ -6100,7 +6097,7 @@ fieldset[disabled] .navbar-default .btn-link:focus {
 .navbar-inverse .navbar-nav > .active > a:hover,
 .navbar-inverse .navbar-nav > .active > a:focus {
   color: #ffffff;
-  background-color: #080808;
+  background-color: #ee7123;
 }
 
 .navbar-inverse .navbar-nav > .disabled > a,
@@ -11808,12 +11805,12 @@ a.lv-footer:hover {
 }
 
 .easy-pie:not(.main-pie) .percent {
-  font-size: 26px;
+  font-size: 20px;
   margin-top: 37px;
 }
 
 .easy-pie:not(.main-pie) .percent:after {
-  font-size: 20px;
+  font-size: 15px;
 }
 
 .easy-pie .pie-title {

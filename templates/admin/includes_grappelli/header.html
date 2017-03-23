@@ -3,33 +3,33 @@
 <div id="header">
     <div class="branding">&nbsp;</div>
     <!-- Title -->
-    <div class="admin-title"><img img="" src="/static/img/bnchmrk_logo.png" alt=""></div>
+    <div class="admin-title" style="padding: 7px 17px 7px 17px;background-color: transparent; border: none;"><img img="" src="/static/img/bnchmrk_logo.png" alt=""></div>
     {% if user.is_authenticated and user.is_staff %}
     <!-- Bookmarks (temporary) -->
     <ul id="user-tools">
         <!-- Username -->
-        <li><strong>{% firstof user.first_name user.username %}</strong></li>
+        <li><strong style="font-size: 15px;">{% firstof user.first_name user.username %}</strong></li>
         <!-- Userlinks -->
         {% block userlinks %}
         <!-- Documentation -->
         {% url "django-admindocs-docroot" as docsroot %}
         {% if docsroot %}
-        <li><a href="{{ docsroot }}">{% trans 'Documentation' %}</a></li>
+        <li><a href="{{ docsroot }}" style="font-size: 15px;">{% trans 'Documentation' %}</a></li>
         {% endif %}
         <!-- Change Password -->
         {% url "admin:password_change" as password_change_url %}
         {% if password_change_url %}
-        <li><a href="{{ password_change_url }}">
+        <li><a href="{{ password_change_url }}" style="font-size: 15px;">
         {% else %}
-        <li><a href="{{ root_path }}password_change/">
+        <li><a href="{{ root_path }}password_change/" style="font-size: 15px;">
         {% endif %}
         {% trans 'Change password' %}</a></li>
         <!-- Logout -->
         {% url "admin:logout" as logout_url %}
         {% if logout_url %}
-        <li><a href="{{ logout_url }}">
+        <li><a href="{{ logout_url }}" style="font-size: 15px;">
         {% else %}
-        <li><a href="{{ root_path }}logout/">
+        <li><a href="{{ root_path }}logout/" style="font-size: 15px;">
         {% endif %}
         {% trans 'Log out' %}</a></li>
         {% endblock %}

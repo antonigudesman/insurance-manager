@@ -1,4 +1,5 @@
 var plan = 0;
+var toggle_filter = 0;
 var industries = [];
 var regions = [];
 var head_counts = [];
@@ -40,7 +41,9 @@ $(document).ready(function(){
 
         // expand filters
         $('.dropdown-icon').click(function() {
-            $('.filter-control').attr('size', 20);
+            toggle_filter = 1 - toggle_filter;
+            var f_size = 19 * toggle_filter + 1;
+            $('.filter-control').attr('size', f_size);
         });    
 
         // choose plan
