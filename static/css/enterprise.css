@@ -1,12 +1,12 @@
 @media (min-width: 1200px) {
 
     body {
-        margin-top: 160px;
+        margin-top: 150px;
     }
 
     .enterprise-menu {
         position: fixed;
-        top: 50px;
+        top: 40px;
         right: 0;
         left: 0;
         z-index: 1030;
@@ -24,7 +24,7 @@
 
     .enterprise-control-wrapper {
         position: fixed;
-        top: 85px;
+        top: 75px;
         right: 0;
         left: 0;
         z-index: 1030;
@@ -80,6 +80,8 @@
         width: 100%;
         float: left;
         font-size: 16px;
+        padding-top: 3px;
+        padding-bottom: 3px;
     }
 
     .plan-selector {
@@ -93,6 +95,8 @@
         width: 100%;
         float: left;
         font-size: 16px;
+        padding-top: 3px;
+        padding-bottom: 3px;
     }
 
     img.dropdown-icon {
@@ -208,17 +212,17 @@
     }
 
     .section-graph {
-        width: 60%;
+        width: 55%;
         height: 100%;
         float: left;        
         padding: 0 0 0 20px;
     }
 
     .section-content {
-        width: 30%;
+        width: 35%;
         height: 100%;
         float: right;
-        padding: 10px 0 0 15px;
+        padding: 10px 0 0 40px;
     }
 
     .section-score {
@@ -231,7 +235,7 @@
     .easy-pie {
         display: inline-block;
         position: relative;
-        padding: 20px 85px 5px 85px;
+        padding: 20px 75px 5px 75px;
     }
 
 
@@ -270,14 +274,14 @@ li.active,
 
 .enterprise-menu,
 .enterprise-control-wrapper,
-.control-wrapper,
 .other-filter,
 .bottom-menu {
-    background-color:#222222;
+    background-color:#333333;
 }
 
-.nav-tabs {
-    background-color:#444444;
+.nav-tabs,
+.control-wrapper{
+    background-color:#222222;
 }
 
 .btn-primary {
@@ -321,10 +325,11 @@ li.active,
     text-transform: capitalize;
 }
 
-p.exhibit-text,
-.section-score h5 {
-    font-weight: 500;
-    color: #333;
+.table-content > thead > tr > th,
+.section-score h5,
+p.exhibit-text {
+    font-weight: 800;
+    color: #555;
     text-transform: uppercase;
 }
 

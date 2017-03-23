@@ -19,7 +19,7 @@ from selenium import webdriver
 from .views import *
 
 
-@login_required(login_url='/login')
+@login_required(login_url='/admin/login')
 def print_template(request):
     #Retrieve data or whatever you need
     benefit = request.session['benefit']
@@ -54,7 +54,7 @@ def print_template(request):
         return render(request, 'life_plan.html', context)
 
 
-@login_required(login_url='/login')
+@login_required(login_url='/admin/login')
 def print_page(request):
     # get screenshot for current page with same session using selenium    
     driver = webdriver.PhantomJS()

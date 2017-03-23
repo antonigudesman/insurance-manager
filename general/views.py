@@ -26,6 +26,8 @@ MODEL_MAP = {
     'STD': STD
 }
 
+PLAN_ALLOWED_BENEFITS = ['LIFE']
+
 def get_filtered_employers(ft_industries, ft_head_counts, ft_other, ft_regions, lstart=0, lend=0, group='bnchmrk'):
     # filter with factors from UI (industry, head-count, other)
     q = Q()
@@ -69,7 +71,7 @@ def get_filtered_employers(ft_industries, ft_head_counts, ft_other, ft_regions, 
 
 
 @csrf_exempt
-@login_required(login_url='/login')
+@login_required(login_url='/admin/login')
 def enterprise(request):
     """
     GET: render general enterprise page
@@ -233,8 +235,11 @@ def update_properties(request):
     else:
         plan = request.session['plan']
 
-    func_name = 'get_{}_properties'.format(benefit.lower())
-    return globals()[func_name](request, plan)
+    if benefit in PLAN_ALLOWED_BENEFITS:
+        func_name = 'get_{}_properties'.format(benefit.lower())
+        return globals()[func_name](request, plan)
+    else:
+        return HttpResponse('')
 
 
 def get_life_properties(request, plan):
@@ -335,7 +340,7 @@ def get_life_plan(employers, num_companies):
 
     quintile_array_flat = get_incremental_array(qs_flat_amount, 'flat_amount') 
     quintile_array_multiple = get_incremental_array(qs_multiple_max, 'multiple_max') 
-    
+
     cnt_add_flat = lifes.filter(add=True, type='Flat Amount').count()
     cnt_add_flat_ = lifes.filter(type='Flat Amount').count()
     cnt_add_multiple = lifes.filter(add=True, type='Multiple of Salary').count()
@@ -472,10 +477,9 @@ def get_incremental_array(queryset, term):
 def get_plans(request):
     benefit = request.POST.get('benefit')
     group = request.user.groups.first().name
-
-    allowed_benefits = ['LIFE']
     plans = []
-    if benefit in allowed_benefits:
+
+    if benefit in PLAN_ALLOWED_BENEFITS:
         plans = get_plans_(benefit, group)
 
     return render(request, 'plans.html', { 'plans': plans })
@@ -489,6 +493,6 @@ def get_plans_(benefit, group):
         objects = model.objects.filter(employer__broker=group)
 
     return [
-               [item.id, '{} - {}'.format(item.employer.name, item.title)]
+               [item.id, '{} - {} - {}'.format(item.employer.name, item.type, item.title)]
                for item in objects.order_by('employer__name', 'title')
            ]
