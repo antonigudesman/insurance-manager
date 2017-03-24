@@ -54,7 +54,21 @@ class LTDAdmin(admin.ModelAdmin):
             
         return qs
 
+
+class StrategyAdmin(admin.ModelAdmin):
+    list_display = [item.name for item in Strategy._meta.fields if item.name != 'id']
+
+    def get_queryset(self, request):
+        qs = super(StrategyAdmin, self).get_queryset(request)
+        group = request.user.groups.first().name
+
+        if group != 'bnchmrk':
+            qs = qs.filter(employer__broker=group)
+            
+        return qs
+
 admin.site.register(Employer, EmployerAdmin)
 admin.site.register(Life, LifeAdmin)
 admin.site.register(STD, STDAdmin)
 admin.site.register(LTD, LTDAdmin)
+admin.site.register(Strategy, StrategyAdmin)

@@ -25,9 +25,10 @@ MODEL_MAP = {
     'LIFE': Life,
     'STD': STD,
     'LTD': LTD,
+    'STRATEGY': Strategy
 }
 
-PLAN_ALLOWED_BENEFITS = ['LIFE', 'STD', 'LTD']
+PLAN_ALLOWED_BENEFITS = ['LIFE', 'STD', 'LTD', 'STRATEGY']
 
 def get_filtered_employers(ft_industries, ft_head_counts, ft_other, ft_regions, lstart=0, lend=0, group='bnchmrk'):
     # filter with factors from UI (industry, head-count, other)
@@ -226,6 +227,17 @@ def ajax_enterprise(request):
         return render(request, template, context)
     elif benefit == 'EMPLOYERS':
         return render(request, 'benefit/employers.html', { 'today': today })
+    elif benefit == 'STRATEGY':
+        employers, num_companies = get_filtered_employers(ft_industries, 
+                                                          ft_head_counts, 
+                                                          ft_other,
+                                                          ft_regions)
+
+        context = get_strategy(employers, num_companies)
+        context['base_template'] = 'empty.html'
+        context['today'] = today
+        template = 'benefit/strategy.html'
+        return render(request, template, context)
     return HttpResponse('Nice')
 
 
@@ -387,6 +399,128 @@ def get_ltd_properties(request, plan):
     context['rank_monthly_max'] = rank_monthly_max
     context['rank_waiting_weeks'] = rank_waiting_weeks
     return JsonResponse(context, safe=False)
+
+
+def get_strategy_properties(request, plan):
+    context = {}
+    tobacco_surcharge_amount = 'N/A'
+    tobacco_surcharge = 'N/A'
+    spousal_surcharge_amount = 'N/A'
+    spousal_surcharge = 'N/A'
+    rank_spousal_surcharge = 'N/A'
+    rank_tobacco_surcharge = 'N/A'
+
+    if plan:
+        ft_industries = request.session['ft_industries']
+        ft_head_counts = request.session['ft_head_counts']
+        ft_other = request.session['ft_other']
+        ft_regions = request.session['ft_regions']
+
+        employers, num_companies = get_filtered_employers(ft_industries, 
+                                                          ft_head_counts, 
+                                                          ft_other,
+                                                          ft_regions)
+
+        instances = Strategy.objects.filter(employer__in=employers)
+        instance = Strategy.objects.get(id=plan)
+
+        spousal_surcharge_amount = '${:,.0f}'.format(instance.spousal_surcharge_amount) if instance.spousal_surcharge_amount else 'N/A'
+        tobacco_surcharge_amount = '${:,.0f}'.format(instance.tobacco_surcharge_amount) if instance.tobacco_surcharge_amount else 'N/A'
+        tobacco_surcharge = 'Yes' if instance.tobacco_surcharge else 'No'
+        spousal_surcharge = 'Yes' if instance.spousal_surcharge else 'No'
+        
+        qs_spousal_surcharge_amount = instances.exclude(spousal_surcharge_amount__isnull=True)
+        qs_tobacco_surcharge_amount = instances.exclude(tobacco_surcharge_amount__isnull=True)
+        quintile_spousal_surcharge = get_incremental_array(qs_spousal_surcharge_amount, 'spousal_surcharge_amount') 
+        quintile_tobacco_surcharge = get_incremental_array(qs_tobacco_surcharge_amount, 'tobacco_surcharge_amount') 
+
+        rank_spousal_surcharge = get_rank(quintile_spousal_surcharge, instance.spousal_surcharge_amount)
+        rank_tobacco_surcharge = get_rank(quintile_tobacco_surcharge, instance.tobacco_surcharge_amount)
+
+    context['tobacco_surcharge_amount'] = tobacco_surcharge_amount
+    context['tobacco_surcharge'] = tobacco_surcharge
+    context['spousal_surcharge_amount'] = spousal_surcharge_amount
+    context['spousal_surcharge'] = spousal_surcharge
+    context['rank_spousal_surcharge'] = rank_spousal_surcharge
+    context['rank_tobacco_surcharge'] = rank_tobacco_surcharge
+    return JsonResponse(context, safe=False)
+
+
+def get_strategy(employers, num_companies):
+    if num_companies < settings.EMPLOYER_THRESHOLD:
+        return {
+            'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE,
+            'num_employers': num_companies,
+            'EMPLOYER_THRESHOLD': settings.EMPLOYER_THRESHOLD
+        }
+
+    strategies = Strategy.objects.filter(employer__in=employers)
+
+    qs_spousal_surcharge_amount = strategies.exclude(spousal_surcharge_amount__isnull=True)
+    mdn_spousal_surcharge_amount, cnt_spousal_surcharge_amount = get_median_count(qs_spousal_surcharge_amount, 'spousal_surcharge_amount')
+    qs_tobacco_surcharge_amount = strategies.exclude(tobacco_surcharge_amount__isnull=True)
+    mdn_tobacco_surcharge_amount, cnt_tobacco_surcharge_amount = get_median_count(qs_tobacco_surcharge_amount, 'tobacco_surcharge_amount')
+
+    prcnt_spousal_surcharge = strategies.filter(spousal_surcharge=True).count() * 100 / strategies.exclude(spousal_surcharge__isnull=True).count()
+    prcnt_tobacco_surcharge = strategies.filter(tobacco_surcharge=True).count() * 100 / strategies.exclude(tobacco_surcharge__isnull=True).count()
+
+    prcnt_offer_vol_life = strategies.filter(offer_vol_life=True).count() * 100 / strategies.exclude(offer_vol_life__isnull=True).count()
+    prcnt_offer_vol_std = strategies.filter(offer_vol_std=True).count() * 100 / strategies.exclude(offer_vol_std__isnull=True).count()
+    prcnt_offer_vol_ltd = strategies.filter(offer_vol_ltd=True).count() * 100 / strategies.exclude(offer_vol_ltd__isnull=True).count()
+
+    prcnt_pt_medical = strategies.filter(pt_medical=True).count() * 100 / strategies.exclude(pt_medical__isnull=True).count()
+    prcnt_pt_dental = strategies.filter(pt_dental=True).count() * 100 / strategies.exclude(pt_dental__isnull=True).count()
+    prcnt_pt_vision = strategies.filter(pt_vision=True).count() * 100 / strategies.exclude(pt_vision__isnull=True).count()
+    prcnt_pt_life = strategies.filter(pt_life=True).count() * 100 / strategies.exclude(pt_life__isnull=True).count()
+    prcnt_pt_std = strategies.filter(pt_std=True).count() * 100 / strategies.exclude(pt_std__isnull=True).count()
+    prcnt_pt_ltd = strategies.filter(pt_ltd=True).count() * 100 / strategies.exclude(pt_ltd__isnull=True).count()
+
+    prcnt_defined_contribution = strategies.filter(defined_contribution=True).count() * 100 / strategies.exclude(defined_contribution__isnull=True).count()
+    prcnt_salary_banding = strategies.filter(salary_banding=True).count() * 100 / strategies.exclude(salary_banding__isnull=True).count()
+    prcnt_wellness_banding = strategies.filter(wellness_banding=True).count() * 100 / strategies.exclude(wellness_banding__isnull=True).count()
+
+    prcnt_offer_fsa = strategies.filter(offer_fsa=True).count() * 100 / strategies.exclude(offer_fsa__isnull=True).count()
+    prcnt_narrow_network = strategies.filter(narrow_network=True).count() * 100 / strategies.exclude(narrow_network__isnull=True).count()
+    prcnt_mvp = strategies.filter(mvp=True).count() * 100 / strategies.exclude(mvp__isnull=True).count()
+    prcnt_mec = strategies.filter(mec=True).count() * 100 / strategies.exclude(mec__isnull=True).count()
+
+    quintile_spousal_surcharge = get_incremental_array(qs_spousal_surcharge_amount, 'spousal_surcharge_amount') 
+    quintile_tobacco_surcharge = get_incremental_array(qs_tobacco_surcharge_amount, 'tobacco_surcharge_amount') 
+
+    return {
+        'EMPLOYER_THRESHOLD': settings.EMPLOYER_THRESHOLD,
+        'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE,
+        'num_employers': num_companies,
+
+        'mdn_spousal_surcharge': mdn_spousal_surcharge_amount,
+        'mdn_tobacco_surcharge': mdn_tobacco_surcharge_amount,
+        'prcnt_spousal_surcharge': prcnt_spousal_surcharge,
+        'prcnt_tobacco_surcharge': prcnt_tobacco_surcharge,
+
+        'quintile_tobacco_surcharge': quintile_tobacco_surcharge,
+        'quintile_spousal_surcharge': quintile_spousal_surcharge,
+
+        'prcnt_offer_vol_life': prcnt_offer_vol_life,
+        'prcnt_offer_vol_std': prcnt_offer_vol_std,
+        'prcnt_offer_vol_ltd': prcnt_offer_vol_ltd,
+
+        'prcnt_pt_medical': prcnt_pt_medical,
+        'prcnt_pt_dental': prcnt_pt_dental,
+        'prcnt_pt_vision': prcnt_pt_vision,
+        'prcnt_pt_life': prcnt_pt_life,
+        'prcnt_pt_std': prcnt_pt_std,
+        'prcnt_pt_ltd': prcnt_pt_ltd,
+
+        'prcnt_defined_contribution': prcnt_defined_contribution,
+        'prcnt_salary_banding': prcnt_salary_banding,
+        'prcnt_wellness_banding': prcnt_wellness_banding,
+
+        'prcnt_offer_fsa': prcnt_offer_fsa,
+        'prcnt_narrow_network': prcnt_narrow_network,
+        'prcnt_mvp': prcnt_mvp,
+        'prcnt_mec': prcnt_mec,
+    }
+
 
 
 def get_rank(quintile_array, value):
@@ -745,6 +879,11 @@ def get_plans_(benefit, group):
         return [
                    [item.id, '{} - {}'.format(item.employer.name, item.title)]
                    for item in objects.order_by('employer__name', 'title')
+               ]
+    elif benefit in ['STRATEGY']:
+        return [
+                   [item.id, '{}'.format(item.employer.name)]
+                   for item in objects.order_by('employer__name')
                ]
 
 

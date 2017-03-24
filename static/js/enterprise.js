@@ -287,5 +287,18 @@ update_content = function(benefit) {
       
         draw_easy_pie_chart();
         draw_donut_chart(benefit+'-18', gh18_data);
+    } else if ($.inArray(benefit, ["STRATEGY"]) != -1) {
+        gh1_data = generate_quintile_data(gh1_data);
+        gh2_data = generate_quintile_data(gh2_data);
+        
+        draw_bar_chart(benefit+'-1', gh1_data);        
+        
+        // if ( benefit == "LIFE")
+            draw_bar_chart(benefit+'-2', gh2_data);        
+        // else
+        //     draw_bar_chart(benefit+'-2', gh2_data, true, 7);        
+      
+        // draw_easy_pie_chart();
+        // draw_donut_chart(benefit+'-18', gh18_data);
     }
 }

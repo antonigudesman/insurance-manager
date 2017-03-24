@@ -43,6 +43,49 @@ def import_employer(request):
     return HttpResponse('Successfully imported ({})!'.format(Employer.objects.all().count()))
 
 
+def import_vision(request):
+    path = '/home/akimmel/work/table extracts/vision.csv'
+    # path = '/root/work/Enterprise/data/vision.csv'
+
+    with open(path) as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            try:
+                vision = Vision.objects.create(          
+                    title='Option V',
+                    employer_id=row['EMPLOYERNAME__C'],
+                    exam_copay=row['VP_EXAM_COPAY__C'] or None,
+                    exam_frequency=row['VP_EXAM_FREQUENCY__C'] or None,
+                    exam_out_allowance=row['VP_EXAM_OUT_ALLOWANCE__C'] or None,
+                    lenses_copay=row['VP_LENSES_COPAY__C'] or None,
+                    lenses_frequency=row['VP_LENSES_FREQUENCY__C'] or None,
+                    lenses_out_allowance=row['VP_LENSES_OUT_ALLOWANCE__C'] or None,
+                    frames_copay=row['VP_FRAMES_COPAY__C'] or None,
+                    frames_allowance=row['VP_FRAMES_ALLOWANCE__C'] or None,
+                    frames_coinsurance=row['VP_FRAMES_BALANCE_COINSURANCE__C'] or None,
+                    frames_frequency=row['VP_FRAMES_FREQUENCY__C'] or None,
+                    frames_out_allowance=row['VP_FRAMES_OUT_ALLOWANCE__C'] or None,
+                    contacts_copay=row['VP_CONTACTS_COPAY__C'] or None,
+                    contacts_allowance=row['VP_CONTACTS_ALLOWANCE__C'] or None,
+                    contacts_coinsurance=row['VP_CONTACTS_BALANCE_COINSURANCE__C'] or None,
+                    contacts_frequency=row['VP_CONTACTS_FREQUENCY__C'] or None,
+                    contacts_out_allowance=row['VP_CONTACTS_OUT_ALLOWANCE__C'] or None,
+                    t1_ee=row['VP_T1_ANNUAL_EE__C'] or None,
+                    t2_ee=row['VP_T2_ANNUAL_EE__C'] or None,
+                    t3_ee=row['VP_T3_ANNUAL_EE__C'] or None,
+                    t4_ee=row['VP_T4_ANNUAL_EE__C'] or None,
+                    t1_gross=row['VP_T1_ANNUAL_GROSS__C'] or None,
+                    t2_gross=row['VP_T2_ANNUAL_GROSS__C'] or None,
+                    t3_gross=row['VP_T3_ANNUAL_GROSS__C'] or None,
+                    t4_gross=row['VP_T4_ANNUAL_GROSS__C'] or None)
+            except Exception as e:
+                print str(e)
+                print '#{}#'.format(row['EMPLOYERNAME__C'])
+                # break
+
+    return HttpResponse('Successfully imported ({})!'.format(Life.objects.all().count()))
+
+
 def import_life(request):
     path = '/home/akimmel/work/table extracts/life.csv'
     # path = '/root/work/Enterprise/data/life.csv'
@@ -125,31 +168,37 @@ def import_strategy(request):
             try:
                 strategy = Strategy.objects.create(  
                     employer_id=row['EMPLOYERNAME__C'],         
-                    offer_vol_life=row['OFFER_VOLUNTARY_LIFE__C']=='TRUE',
-                    offer_vol_std=row['OFFER_VOLUNTARY_STD__C']=='TRUE',
-                    offer_vol_ltd=row['OFFER_VOLUNTARY_LTD__C']=='TRUE',
-                    spousal_surcharge=row['SPOUSAL_SURCHARGE__C']=='TRUE',
+                    offer_vol_life=get_3_state_boolean(row['OFFER_VOLUNTARY_LIFE__C']),
+                    offer_vol_std=get_3_state_boolean(row['OFFER_VOLUNTARY_STD__C']),
+                    offer_vol_ltd=get_3_state_boolean(row['OFFER_VOLUNTARY_LTD__C']),
+                    spousal_surcharge=get_3_state_boolean(row['SPOUSAL_SURCHARGE__C']),
                     spousal_surcharge_amount=row['SPOUSAL_SURCHARGE_ANNUAL_AMOUNT__C'] or None,
-                    tobacco_surcharge=row['TOBACCO_SURCHARGE__C']=='TRUE',
+                    tobacco_surcharge=get_3_state_boolean(row['TOBACCO_SURCHARGE__C']),
                     tobacco_surcharge_amount=row['TOBACCO_SURCHARGE_ANNUAL_AMOUNT__C'] or None,
-                    defined_contribution=row['DEFINED_CONTRIBUTION__C']=='TRUE',
-                    offer_fsa=row['OFFER_FSA__C']=='TRUE',
-                    pt_medical=row['OFFER_PART_TIME_MEDICAL__C']=='TRUE',
-                    pt_dental=row['OFFER_PART_TIME_DENTAL__C']=='TRUE',
-                    pt_vision=row['OFFER_PART_TIME_VISION__C']=='TRUE',
-                    pt_life=row['OFFER_PART_TIME_LIFE__C']=='TRUE',
-                    pt_std=row['OFFER_PART_TIME_STD__C']=='TRUE',
-                    pt_ltd=row['OFFER_PART_TIME_LTD__C']=='TRUE',
-                    salary_banding=row['SALARY_BANDING__C']=='TRUE',
-                    wellness_banding=row['WELLNESS_BANDING__C']=='TRUE',
-                    narrow_network=row['NARROW_NETWORK__C']=='TRUE',
-                    mvp=row['MVP_PLAN__C']=='TRUE',
-                    mec=row['MEC_PLAN__C']=='TRUE',
+                    defined_contribution=get_3_state_boolean(row['DEFINED_CONTRIBUTION__C']),
+                    offer_fsa=get_3_state_boolean(row['OFFER_FSA__C']),
+                    pt_medical=get_3_state_boolean(row['OFFER_PART_TIME_MEDICAL__C']),
+                    pt_dental=get_3_state_boolean(row['OFFER_PART_TIME_DENTAL__C']),
+                    pt_vision=get_3_state_boolean(row['OFFER_PART_TIME_VISION__C']),
+                    pt_life=get_3_state_boolean(row['OFFER_PART_TIME_LIFE__C']),
+                    pt_std=get_3_state_boolean(row['OFFER_PART_TIME_STD__C']),
+                    pt_ltd=get_3_state_boolean(row['OFFER_PART_TIME_LTD__C']),
+                    salary_banding=get_3_state_boolean(row['SALARY_BANDING__C']),
+                    wellness_banding=get_3_state_boolean(row['WELLNESS_BANDING__C']),
+                    narrow_network=get_3_state_boolean(row['NARROW_NETWORK__C']),
+                    mvp=get_3_state_boolean(row['MVP_PLAN__C']),
+                    mec=get_3_state_boolean(row['MEC_PLAN__C']),
                     contribution_bundle=row['CONTRIBUTION_BUNDLING__C'])
 
             except Exception as e:
                 print str(e)
-                print '#{}#'.format(row['STD_COST_SHARE__C']), row['EMPLOYER_NAME__C']
+                print row['EMPLOYERNAME__C']
 
     return HttpResponse('Successfully imported ({})!'.format(Strategy.objects.all().count()))
 
+
+def get_3_state_boolean(value):
+    if value == 'TRUE':
+        return True
+    elif value == 'FALSE':
+        return False
