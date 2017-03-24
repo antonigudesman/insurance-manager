@@ -1,38 +1,35 @@
-{% load i18n %}
+{% load pages_tags mezzanine_tags i18n staticfiles %}
 
-<div id="header">
-    <div class="branding">&nbsp;</div>
-    <!-- Title -->
-    <div class="admin-title" style="padding: 7px 17px 7px 17px;background-color: transparent; border: none;"><img img="" src="/static/img/bnchmrk_logo.png" alt=""></div>
-    {% if user.is_authenticated and user.is_staff %}
-    <!-- Bookmarks (temporary) -->
-    <ul id="user-tools">
-        <!-- Username -->
-        <li><strong style="font-size: 15px;">{% firstof user.first_name user.username %}</strong></li>
-        <!-- Userlinks -->
-        {% block userlinks %}
-        <!-- Documentation -->
-        {% url "django-admindocs-docroot" as docsroot %}
-        {% if docsroot %}
-        <li><a href="{{ docsroot }}" style="font-size: 15px;">{% trans 'Documentation' %}</a></li>
-        {% endif %}
-        <!-- Change Password -->
-        {% url "admin:password_change" as password_change_url %}
-        {% if password_change_url %}
-        <li><a href="{{ password_change_url }}" style="font-size: 15px;">
-        {% else %}
-        <li><a href="{{ root_path }}password_change/" style="font-size: 15px;">
-        {% endif %}
-        {% trans 'Change password' %}</a></li>
-        <!-- Logout -->
-        {% url "admin:logout" as logout_url %}
-        {% if logout_url %}
-        <li><a href="{{ logout_url }}" style="font-size: 15px;">
-        {% else %}
-        <li><a href="{{ root_path }}logout/" style="font-size: 15px;">
-        {% endif %}
-        {% trans 'Log out' %}</a></li>
-        {% endblock %}
-    </ul>
-    {% endif %}
-</div>
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">
+                        <img img src="{% static 'img/bnchmrk_logo.png' %}" alt="">
+                    </a>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    {% if user.is_authenticated %}
+                    <ul class="nav navbar-nav loggedin">
+                        <li><a href="/">HOME</a></li>
+                        <li><a href="/enterprise">ENTERPRISE</a></li>
+                        <li><a href="/admin">MY ACCOUNT</a></li>
+                        <li><a href="/logout">LOGOUT</a></li>
+                    </ul>
+                    {% else %}
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="/">HOME</a></li>
+                        <li><a href="/">COMPANY</a></li>
+                        <li><a href="/blog">INSIGHTS</a></li>
+                        <li><a href="/">CONTACT US</a></li>
+                        <li><a href="/admin/login?next=/enterprise">LOGIN</a></li>
+                    </ul>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>

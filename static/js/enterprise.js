@@ -10,7 +10,7 @@ var regions_label = [];
 var head_counts_label = [];
 var others_label = [];
 
-var colors = ['#f8696b', '#FCAA78', '#ffeb84', '#B1D480', '#63be7b'];
+var colors = ['#f8696b', '#FCAA78', '#808080', '#B1D480', '#63be7b'];
 
 $(document).ready(function(){
     if (print_template) {
@@ -216,6 +216,13 @@ function get_body() {
             $('#bnchmrk_card').html(data);
             update_properties();
 
+            if ($.inArray(benefit, ["HOME", "TICKET"]) < 0) {
+                $('#lbl_ft_industries').html(industries_label.join(', '));
+                $('#lbl_ft_regions').html(regions_label.join(', '));
+                $('#lbl_ft_headcounts').html(head_counts_label.join(', '));
+                $('#lbl_ft_other').html(others_label.join(', '));                
+            }
+
             if(benefit == 'EMPLOYERS') {
                 load_employers();
             } else if(benefit == 'LIFE') {
@@ -226,11 +233,6 @@ function get_body() {
                 draw_bar_chart('L-2', l2_data);        
                 draw_easy_pie_chart();
                 draw_donut_chart('L-18', l18_data);
-
-                $('#lbl_ft_industries').html(industries_label.join(', '));
-                $('#lbl_ft_regions').html(regions_label.join(', '));
-                $('#lbl_ft_headcounts').html(head_counts_label.join(', '));
-                $('#lbl_ft_other').html(others_label.join(', '));
             }
         })
 
