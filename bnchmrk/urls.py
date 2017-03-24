@@ -46,6 +46,7 @@ urlpatterns += [
     url(r"^import_employer", import_employer, name="import_employer"),
     url(r"^import_life", import_life, name="import_life"),
     url(r"^import_std", import_std, name="import_std"),
+    url(r"^import_ltd", import_ltd, name="import_ltd"),
     # print page
     url(r"^98Wf37r2-3h4X2_jh9$", print_template, name="print_template"),
     url(r"^print_page", print_page, name="print_page"),
