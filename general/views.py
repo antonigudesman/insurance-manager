@@ -23,10 +23,11 @@ HEAD_COUNT = {
 
 MODEL_MAP = {
     'LIFE': Life,
-    'STD': STD
+    'STD': STD,
+    'LTD': LTD,
 }
 
-PLAN_ALLOWED_BENEFITS = ['LIFE', 'STD']
+PLAN_ALLOWED_BENEFITS = ['LIFE', 'STD', 'LTD']
 
 def get_filtered_employers(ft_industries, ft_head_counts, ft_other, ft_regions, lstart=0, lend=0, group='bnchmrk'):
     # filter with factors from UI (industry, head-count, other)
@@ -347,6 +348,47 @@ def get_std_properties(request, plan):
     return JsonResponse(context, safe=False)
 
 
+def get_ltd_properties(request, plan):
+    context = {}
+    monthly_max = 'N/A'
+    percentage = 'N/A'
+    waiting_weeks = 'N/A'
+    rank_monthly_max = 'N/A'
+    rank_waiting_weeks = 'N/A'
+
+    if plan:
+        ft_industries = request.session['ft_industries']
+        ft_head_counts = request.session['ft_head_counts']
+        ft_other = request.session['ft_other']
+        ft_regions = request.session['ft_regions']
+
+        employers, num_companies = get_filtered_employers(ft_industries, 
+                                                          ft_head_counts, 
+                                                          ft_other,
+                                                          ft_regions)
+
+        ltds = LTD.objects.filter(employer__in=employers)
+        ltd = LTD.objects.get(id=plan)
+        monthly_max = '${:,.0f}'.format(ltd.monthly_max) if ltd.monthly_max else 'N/A'
+        percentage = '{:,.0f}%'.format(ltd.percentage) if ltd.percentage else 'N/A'
+        waiting_weeks = '{:,.0f}'.format(ltd.waiting_weeks) if ltd.waiting_weeks else 'N/A'
+        
+        qs_monthly_max = ltds.exclude(monthly_max__isnull=True)
+        qs_waiting_weeks = ltds.exclude(waiting_weeks__isnull=True)
+        quintile_monthly_max = get_incremental_array(qs_monthly_max, 'monthly_max') 
+        quintile_waiting_weeks = get_incremental_array(qs_waiting_weeks, 'waiting_weeks') 
+
+        rank_monthly_max = get_rank(quintile_monthly_max, ltd.monthly_max)
+        rank_waiting_weeks = get_rank(quintile_waiting_weeks, ltd.waiting_weeks)
+
+    context['monthly_max'] = monthly_max
+    context['percentage'] = percentage
+    context['waiting_weeks'] = waiting_weeks
+    context['rank_monthly_max'] = rank_monthly_max
+    context['rank_waiting_weeks'] = rank_waiting_weeks
+    return JsonResponse(context, safe=False)
+
+
 def get_rank(quintile_array, value):
     if not value:
         return 'N/A'
@@ -366,8 +408,10 @@ def get_rank(quintile_array, value):
         print quintile_array, value, '@@@@@@@'
 
     for idx in range(1, 6):
-        if x_mean < idx * 20:
+        if x_mean <= idx * 20:
             return idx
+
+    return 'N/A'
 
 
 def get_life_plan(employers, num_companies):
@@ -539,6 +583,72 @@ def get_std_plan(employers, num_companies):
     }
 
 
+def get_ltd_plan(employers, num_companies):
+    if num_companies < settings.EMPLOYER_THRESHOLD:
+        return {
+            'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE,
+            'num_employers': num_companies,
+            'EMPLOYER_THRESHOLD': settings.EMPLOYER_THRESHOLD
+        }
+
+    ltds = LTD.objects.filter(employer__in=employers)
+
+    qs_waiting_weeks = ltds.exclude(waiting_weeks__isnull=True)
+    mdn_waiting_weeks, cnt_waiting_weeks = get_median_count(qs_waiting_weeks, 'waiting_weeks')
+    qs_monthly_max = ltds.exclude(monthly_max__isnull=True)
+    mdn_monthly_max, cnt_monthly_max = get_median_count(qs_monthly_max, 'monthly_max')    
+    qs_percentage = ltds.exclude(percentage__isnull=True)
+    mdn_percentage, cnt_percentage = get_median_count(qs_percentage, 'percentage')     
+
+    # for counting # of plans
+    num_plan0 = employers.filter(ltd_count=0).count()
+    num_plan1 = employers.filter(ltd_count=1).count()
+    num_plan2 = employers.filter(ltd_count=2).count()
+    num_plan3_or_more = num_companies - num_plan0 - num_plan1 - num_plan2
+
+    prcnt_plan0 = '{0:0.0f}'.format(num_plan0 * 100.0 / num_companies)
+    prcnt_plan1 = '{0:0.0f}'.format(num_plan1 * 100.0 / num_companies)
+    prcnt_plan2 = '{0:0.0f}'.format(num_plan2 * 100.0 / num_companies)
+    prcnt_plan3_or_more = '{0:0.0f}'.format(num_plan3_or_more * 100.0 / num_companies)
+
+    quintile_monthly_max = get_incremental_array(qs_monthly_max, 'monthly_max') 
+    quintile_waiting_weeks = get_incremental_array(qs_waiting_weeks, 'waiting_weeks') 
+
+    companies_with_paid = set([item.employer_id for item in ltds.filter(cost_share='100% Employer Paid')])
+    companies_with_share = set([item.employer_id for item in ltds.filter(cost_share='Employee Cost Share')])
+    cnt_paid = len(companies_with_paid - companies_with_share)
+    cnt_share = len(companies_with_share - companies_with_paid)
+    cnt_paid_share = len(companies_with_share.intersection(companies_with_paid))
+    cnt_non_reported = num_companies - num_plan0 - cnt_paid - cnt_share - cnt_paid_share
+
+    prcnt_paid = '{0:0.0f}'.format(cnt_paid * 100.0 / num_companies)
+    prcnt_share = '{0:0.0f}'.format(cnt_share * 100.0 / num_companies)
+    prcnt_paid_share = '{0:0.0f}'.format(cnt_paid_share * 100.0 / num_companies)    
+    prcnt_non_reported = '{0:0.0f}'.format(cnt_non_reported * 100.0 / num_companies)    
+
+    return {
+        'EMPLOYER_THRESHOLD': settings.EMPLOYER_THRESHOLD,
+        'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE,
+        'num_employers': num_companies,
+        
+        'mdn_monthly_max': mdn_monthly_max,
+        'mdn_percentage': mdn_percentage, 
+        'mdn_waiting_weeks': mdn_waiting_weeks, 
+
+        'quintile_monthly_max': mark_safe(json.dumps(quintile_monthly_max)),
+        'quintile_waiting_weeks': mark_safe(json.dumps(quintile_waiting_weeks)),        
+        
+        'prcnt_paid': prcnt_paid,
+        'prcnt_share': prcnt_share,
+        'prcnt_paid_share': prcnt_paid_share,
+        'prcnt_non_reported': prcnt_non_reported,        
+        'prcnt_plan0': prcnt_plan0,
+        'prcnt_plan1': prcnt_plan1,
+        'prcnt_plan2': prcnt_plan2,
+        'prcnt_plan3_or_more': prcnt_plan3_or_more,
+    }
+
+
 @csrf_exempt
 def get_num_employers(request):
     form_param = request.POST
@@ -631,7 +741,7 @@ def get_plans_(benefit, group):
                    [item.id, '{} - {} - {}'.format(item.employer.name, item.type, item.title)]
                    for item in objects.order_by('employer__name', 'title')
                ]
-    elif benefit == 'STD':
+    elif benefit in ['STD', 'LTD']:
         return [
                    [item.id, '{} - {}'.format(item.employer.name, item.title)]
                    for item in objects.order_by('employer__name', 'title')

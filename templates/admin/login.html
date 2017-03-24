@@ -28,7 +28,7 @@
     {% csrf_token %}
     <div id="content-main">
         <div class="form-row">
-            <label for="id_username" class="required">{% trans 'Username or email:' %}</label>
+            <label for="id_username" class="required">{% trans 'Username:' %}</label>
             <input type="text" required name="username" id="id_username" value="{{ request.POST.username }}">
         </div>
         <div class="form-row">
@@ -50,13 +50,13 @@
         </div>
         {% endif %}
         <!-- <input type="hidden" name="mezzanine_login_interface" id="interface_site" value="site"/> -->
+        <div class="submit-row">
+            <label>&nbsp;</label><input type="submit" value="{% trans 'Log in' %}" />
+        </div>
+        <p id="forgot-password">
+            <a href="{% url "password_reset" %}">{% trans "Forgot password?" %}</a>
+        </p>
     </div>
-    <div class="submit-row">
-        <label>&nbsp;</label><input type="submit" value="{% trans 'Log in' %}" />
-    </div>
-    <p id="forgot-password">
-        <a href="{% url "password_reset" %}">{% trans "Forgot password?" %}</a>
-    </p>
 </form>
 
 {% endblock %}

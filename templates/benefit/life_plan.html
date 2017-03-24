@@ -213,19 +213,7 @@
     </div>
 
     {% else %}
-    <div class="benefit-error">
-        <p class="threshold-error">{{ EMPLOYER_THRESHOLD_MESSAGE }}</p>
-        <p>In order to ensure a statistically significant sample set, at least 10 employers must meet the filter criteria. You are getting this message because there are XX employers in the current list.</p>
-        <p>Here are some suggestions on how to best expand your search citeria</p>
-        <ol>
-            <li>Industires:</li>
-                <ul>
-                    <li>Select additional industries that share the same sector (the first item in the string)</li>
-                </ul>
-            <li>Regions:</li>
-            <li>Headcount:</li>
-        </ol>
-    </div>
+        {% include 'includes/too-few-employers.html' %}
     {% endif %}
 
 </div>
