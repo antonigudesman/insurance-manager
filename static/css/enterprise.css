@@ -84,6 +84,10 @@
         padding-bottom: 3px;
     }
 
+    .filter-control > option {
+        padding-top: 4px;
+    }
+
     .plan-selector {
         float: left;
         width: 68%;

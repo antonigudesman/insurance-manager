@@ -4,20 +4,7 @@
 
 {% block page_content %}
 <div class="benefit-content">
-
-    <div class="benefit-header">
-        <div class="benefit-details">
-            <h4>LIFE INSURANCE BENCHMARKING</h4>
-            <h6>INDUSTRIES:&nbsp;</h6><p><span id='lbl_ft_industries'>{{ ft_industries_label }}</span></p>
-            <h6>REGIONS:&nbsp;</h6><p><span id='lbl_ft_regions'>{{ ft_regions_label }}</span></p>
-            <h6>HEADCOUNTS:&nbsp;</h6><p><span id='lbl_ft_headcounts'>{{ ft_head_counts_label }}</span></p>
-            <h6>OTHER:&nbsp;</h6><p><span id='lbl_ft_other'>{{ ft_other_label }}</span></p>
-            <p style="float: right;"><i>Reporting Date: {{ today }}</i></p>
-        </div>
-        <div class="client-logo">
-            <img src="{% static 'img/bnchmrk_logo_stacked.jpg' %}" alt="">
-        </div>
-    </div>
+{% include 'benefit-header.html' %}
 
 {% if num_employers >= EMPLOYER_THRESHOLD %}
 
@@ -37,7 +24,7 @@
                 <col width="25%">
                 <thead>
                     <tr>
-                        <th class="row-label">Salary-Based Plans</th>
+                        <th class="row-label">Multiple of Salary Plans</th>
                         <th>Benchmark</th>
                         <th>Current Plan</th>
                     </tr>
@@ -89,7 +76,6 @@
                         <td class="row-label">Flat Benefit</td>
                         <td>${{ mdn_flat_amount|intcomma }}</td>
                         <td><span id="prop_flat_amount"></span></td>
-                        <td><span id="prop_rank_flat"></span></td>
                     </tr>
                     <tr>
                         <td class="row-label">ADD Included</td>
@@ -202,7 +188,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="row-label">Salary-Based Plans Only</td>
+                        <td class="row-label">Multiple of Salary Plans Only</td>
                         <td>{{ prcnt_type_plan_mul }}%</td>
                     </tr>
                     <tr>
@@ -229,6 +215,16 @@
     {% else %}
     <div class="benefit-error">
         <p class="threshold-error">{{ EMPLOYER_THRESHOLD_MESSAGE }}</p>
+        <p>In order to ensure a statistically significant sample set, at least 10 employers must meet the filter criteria. You are getting this message because there are XX employers in the current list.</p>
+        <p>Here are some suggestions on how to best expand your search citeria</p>
+        <ol>
+            <li>Industires:</li>
+                <ul>
+                    <li>Select additional industries that share the same sector (the first item in the string)</li>
+                </ul>
+            <li>Regions:</li>
+            <li>Headcount:</li>
+        </ol>
     </div>
     {% endif %}
 

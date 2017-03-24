@@ -49,6 +49,9 @@ urlpatterns += [
     # print page
     url(r"^98Wf37r2-3h4X2_jh9$", print_template, name="print_template"),
     url(r"^print_page", print_page, name="print_page"),
+    # other pages
+    url(r"^company", company, name="company"),
+    url(r"^contact_us", contact_us, name="contact_us"),
 ]
 
 # Adds ``STATIC_URL`` to the context of error pages, so that error

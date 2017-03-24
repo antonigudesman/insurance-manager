@@ -42,17 +42,18 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     {% if user.is_authenticated %}
                     <ul class="nav navbar-nav loggedin">
+                        <li><a href="/">HOME</a></li>
                         <li><a href="/enterprise">ENTERPRISE</a></li>
                         <li><a href="/admin">MY ACCOUNT</a></li>
                         <li><a href="/logout">LOGOUT</a></li>
                     </ul>
                     {% else %}
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="/">HOME</a></li>
-                        <li><a href="/">COMPANY</a></li>
+                        <li><a href="/">HOME</a></li>
+                        <li><a href="/company">COMPANY</a></li>
                         <li><a href="/blog">INSIGHTS</a></li>
-                        <li><a href="/">CONTACT US</a></li>
-                        <li><a href="/admin/login">LOGIN</a></li>
+                        <li><a href="/contact_us">CONTACT US</a></li>
+                        <li><a href="/admin/login?next=/enterprise">LOGIN</a></li>
                     </ul>
                     {% endif %}
                 </div>
@@ -207,6 +208,10 @@
         <script src="{% static 'js/flot-charts/line-chart.js' %}"></script>
         <script src="{% static 'js/functions.js' %}"></script>
         {% block extra_js %}
+            <script type="text/javascript">
+                // make active menuitem for this page
+                $('ul.navbar-nav li').eq(0).addClass('active');
+            </script>        
         {% endblock %}
     </body>
   </html>

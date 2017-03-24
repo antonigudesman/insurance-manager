@@ -206,6 +206,8 @@ def ajax_enterprise(request):
     request.session['ft_other_label'] = ft_other_label
     request.session['ft_regions_label'] = ft_regions_label
 
+    today = datetime.strftime(datetime.now(), '%B %d, %Y')
+
     if benefit == 'HOME':
         full_name = '{} {}'.format(request.user.first_name, request.user.last_name)
         return render(request, 'home.html', locals())
@@ -216,10 +218,10 @@ def ajax_enterprise(request):
                                                           ft_regions)
         context = get_life_plan(employers, num_companies)
         context['base_template'] = 'empty.html'
-        context['today'] = datetime.strftime(datetime.now(), '%B %d, %Y')
+        context['today'] = today
         return render(request, 'life_plan.html', context)
     elif benefit == 'EMPLOYERS':
-        return render(request, 'employers.html')
+        return render(request, 'employers.html', { 'today': today })
     return HttpResponse('Nice')
 
 
@@ -267,7 +269,7 @@ def get_life_properties(request, plan):
         life = Life.objects.get(id=plan)
         multiple_max = '${:,.0f}'.format(life.multiple_max) if life.multiple_max else 'N/A'
         flat_amount = '${:,.0f}'.format(life.flat_amount) if life.flat_amount else 'N/A'
-        multiple = life.multiple or 'N/A'
+        multiple = '{:03.1f}'.format(life.multiple) if life.multiple else 'N/A'
         
         if life.type == 'Flat Amount':
             add_flat = 'Yes' if life.add else 'No'
@@ -418,7 +420,7 @@ def get_num_employers(request):
                                                       ft_head_counts, 
                                                       ft_other,
                                                       ft_regions)
-    return HttpResponse(num_companies or "<25")
+    return HttpResponse('{:,.0f}'.format(num_companies))
 
 
 def get_median_count(queryset, term):
@@ -496,3 +498,11 @@ def get_plans_(benefit, group):
                [item.id, '{} - {} - {}'.format(item.employer.name, item.type, item.title)]
                for item in objects.order_by('employer__name', 'title')
            ]
+
+
+def contact_us(request):
+    return render(request, 'contact_us.html')
+
+
+def company(request):
+    return render(request, 'company.html')    

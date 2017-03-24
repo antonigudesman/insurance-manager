@@ -102,6 +102,7 @@
 <div class="container">
     <div class="bnchmrk_table">
         <div class="card" id="bnchmrk_card">
+        
         </div>
     </div>
 </div>
@@ -112,6 +113,10 @@
         var EMPLOYER_THRESHOLD_MESSAGE = "{{ EMPLOYER_THRESHOLD_MESSAGE }}";
         var benefit = '{{ request.session.benefit }}';
         var print_template = false;        
+    </script>
+    <script type="text/javascript">
+        // make active menuitem for this page
+        $('ul.navbar-nav li').eq(1).addClass('active');
     </script>
     <script src="{% static 'vendors/bower_components/flot/jquery.flot.categories.js' %}"></script>
     <script src="{% static 'vendors/bower_components/flot/jquery.flot.pie.js' %}"></script>
