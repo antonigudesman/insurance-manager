@@ -82,3 +82,34 @@ class LTD(models.Model):
     class Meta:
         verbose_name_plural = 'LTD Plans'
         
+
+class Strategy(models.Model):
+    employer = models.ForeignKey(Employer)
+    offer_vol_life = models.BooleanField()
+    offer_vol_std = models.BooleanField()
+    offer_vol_ltd = models.BooleanField()
+    spousal_surcharge = models.BooleanField()
+    spousal_surcharge_amount = models.IntegerField(blank=True, null=True)
+    tobacco_surcharge = models.BooleanField()
+    tobacco_surcharge_amount = models.IntegerField(blank=True, null=True)
+    defined_contribution = models.BooleanField()
+    offer_fsa = models.BooleanField()
+    pt_medical = models.BooleanField()
+    pt_dental = models.BooleanField()
+    pt_vision = models.BooleanField()
+    pt_life = models.BooleanField()
+    pt_std = models.BooleanField()
+    pt_ltd = models.BooleanField()
+    salary_banding = models.BooleanField()
+    wellness_banding = models.BooleanField()
+    narrow_network = models.BooleanField()
+    mec = models.BooleanField()
+    mvp = models.BooleanField()    
+    contribution_bundle = models.CharField(max_length=19, null=True, blank=True)
+
+    def __unicode__(self):
+        return self.employer.name
+        
+    class Meta:
+        verbose_name_plural = 'Strategies'
+

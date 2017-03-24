@@ -114,3 +114,42 @@ def import_ltd(request):
 
     return HttpResponse('Successfully imported ({})!'.format(LTD.objects.all().count()))
 
+
+def import_strategy(request):
+    path = '/home/akimmel/work/table extracts/strategy.csv'    
+    # path = '/root/work/Enterprise/data/strategy.csv'
+
+    with open(path) as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            try:
+                strategy = Strategy.objects.create(  
+                    employer_id=row['EMPLOYERNAME__C'],         
+                    offer_vol_life=row['OFFER_VOLUNTARY_LIFE__C']=='TRUE',
+                    offer_vol_std=row['OFFER_VOLUNTARY_STD__C']=='TRUE',
+                    offer_vol_ltd=row['OFFER_VOLUNTARY_LTD__C']=='TRUE',
+                    spousal_surcharge=row['SPOUSAL_SURCHARGE__C']=='TRUE',
+                    spousal_surcharge_amount=row['SPOUSAL_SURCHARGE_ANNUAL_AMOUNT__C'] or None,
+                    tobacco_surcharge=row['TOBACCO_SURCHARGE__C']=='TRUE',
+                    tobacco_surcharge_amount=row['TOBACCO_SURCHARGE_ANNUAL_AMOUNT__C'] or None,
+                    defined_contribution=row['DEFINED_CONTRIBUTION__C']=='TRUE',
+                    offer_fsa=row['OFFER_FSA__C']=='TRUE',
+                    pt_medical=row['OFFER_PART_TIME_MEDICAL__C']=='TRUE',
+                    pt_dental=row['OFFER_PART_TIME_DENTAL__C']=='TRUE',
+                    pt_vision=row['OFFER_PART_TIME_VISION__C']=='TRUE',
+                    pt_life=row['OFFER_PART_TIME_LIFE__C']=='TRUE',
+                    pt_std=row['OFFER_PART_TIME_STD__C']=='TRUE',
+                    pt_ltd=row['OFFER_PART_TIME_LTD__C']=='TRUE',
+                    salary_banding=row['SALARY_BANDING__C']=='TRUE',
+                    wellness_banding=row['WELLNESS_BANDING__C']=='TRUE',
+                    narrow_network=row['NARROW_NETWORK__C']=='TRUE',
+                    mvp=row['MVP_PLAN__C']=='TRUE',
+                    mec=row['MEC_PLAN__C']=='TRUE',
+                    contribution_bundle=row['CONTRIBUTION_BUNDLING__C'])
+
+            except Exception as e:
+                print str(e)
+                print '#{}#'.format(row['STD_COST_SHARE__C']), row['EMPLOYER_NAME__C']
+
+    return HttpResponse('Successfully imported ({})!'.format(Strategy.objects.all().count()))
+
