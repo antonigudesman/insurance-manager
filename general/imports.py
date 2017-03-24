@@ -89,3 +89,24 @@ def import_std(request):
 
     return HttpResponse('Successfully imported!')
 
+
+def import_ltd(request):
+    path = '/home/akimmel/work/table extracts/LTD.csv'    
+    # path = '/root/work/Enterprise/data/LTD.csv'
+
+    with open(path) as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            try:
+                ltd = LTD.objects.create(                                                 
+                    employer_id=row['EMPLOYER_NAME__C'],
+                    waiting_weeks=row['LTD_WAITING_WEEKS__C'] or None,
+                    percentage=row['LTD_PERCENTAGE__C'] or None,
+                    monthly_max=row['LTD_MONTHLY_MAX__C'] or None,
+                    cost_share=row['LTD_COST_SHARE__C'])
+            except Exception as e:
+                print str(e)
+                print '#{}#'.format(row['LTD_COST_SHARE__C']), row['EMPLOYER_NAME__C']
+
+    return HttpResponse('Successfully imported!')
+

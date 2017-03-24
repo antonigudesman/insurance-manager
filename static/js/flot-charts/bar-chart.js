@@ -6,10 +6,20 @@ function yaxis_formatter(val, axis) {
     return '$' + digits(val.toString());
 }
 
-function draw_bar_chart(id, data) {       
+function yaxis_formatter_int(val, axis) {
+    return digits(val.toString());
+}
+
+function draw_bar_chart(id, data, int, label_xpos_factor) {       
     // This is not a bar chart anymore.
     // This is a incremental stack chart with color coding
+    tickFormatter = yaxis_formatter;
+    if (typeof int !== 'undefined')
+        tickFormatter = yaxis_formatter_int;
     
+    if (typeof label_xpos_factor === 'undefined')
+        label_xpos_factor = 6.5;
+
     var ticks = [[0, "0%"], [20, "20%"], [40, "40%"], [60, "60%"], [80, "80%"]];
 
     if ($('#'+id)[0]) {
@@ -24,7 +34,7 @@ function draw_bar_chart(id, data) {
             yaxis: {
                 tickColor: '#eee',
                 tickDecimals: 0,
-                tickFormatter: yaxis_formatter,
+                tickFormatter: tickFormatter,
                 font :{
                     lineHeight: 15,
                     style: "normal",
@@ -65,9 +75,10 @@ function draw_bar_chart(id, data) {
         $.each(p.getData()[0].data, function(i, el){
             var o = p.pointOffset({x: i, y: el[1]});
             if (el[0] % 20 == 0) {
-                $('<div class="data-point-label"><b>' + '$'+digits(el[1].toString()) + '</b></div>').css( {
+                var sign = int ? '' : '$';
+                $('<div class="data-point-label"><b>' + sign+digits(el[1].toString()) + '</b></div>').css( {
                     position: 'absolute',
-                    left: 30 + el[0] * 6.5,
+                    left: 30 + el[0] * label_xpos_factor,
                     top: o.top - 25,
                     display: 'none'
                 }).appendTo(p.getPlaceholder()).fadeIn('slow');                

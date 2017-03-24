@@ -33,13 +33,15 @@ $(document).ready(function(){
 
         get_body();
 
+        // change benefit
         $('.enterprise-navbar li').click(function() {
             $('.enterprise-navbar li').removeClass('active');
             $(this).addClass('active');
+            plan = -2;
             get_body();
         });
 
-        // expand filters
+        // toggle filters
         $('.dropdown-icon').click(function() {
             toggle_filter = 1 - toggle_filter;
             var f_size = 19 * toggle_filter + 1;
@@ -55,9 +57,13 @@ $(document).ready(function(){
 });
 
 function update_properties() {
-    plan = -1;
     if (!print_template) 
-        plan = $('#plans').val();
+        if (plan != -2) // not changed benefit
+            plan = $('#plans').val();
+        else
+            plan = 0;
+    else
+        plan = -1;
 
     $.post(
         '/update_properties',
@@ -66,21 +72,17 @@ function update_properties() {
             plan: plan
         },
         function(data) {
-            if(benefit == 'LIFE') {
-                $('#prop_multiple_max').html(data.multiple_max);
-                $('#prop_multiple').html(data.multiple);
-                $('#prop_flat_amount').html(data.flat_amount);
-                $('#prop_add_flat').html(data.add_flat);
-                $('#prop_add_multiple').html(data.add_multiple);
-                $('#prop_rank_flat').html(data.rank_flat);
-                $('#prop_rank_flat').removeAttr('style');
-                if (data.rank_flat != 'N/A')
-                    $('#prop_rank_flat').css('color', colors[data.rank_flat-1]);
-                $('#prop_rank_multiple').html(data.rank_multiple);
-                $('#prop_rank_multiple').removeAttr('style');
-                if (data.rank_multiple != 'N/A')
-                    $('#prop_rank_multiple').css('color', colors[data.rank_multiple-1]);
-            }
+            $.each(data, function( key, value ) {
+                if (key.match("^rank_")) {
+                    $('#prop_'+key).html(value);
+                    $('#prop_'+key).removeAttr('style');
+                    if ( value != 'N/A' ) {
+                        $('#prop_'+key).css('color', colors[value-1]);
+                    }
+                } else {
+                    $('#prop_'+key).html(value);
+                }
+            });            
         });
 }
 
@@ -225,7 +227,7 @@ function get_body() {
 
             if(benefit == 'EMPLOYERS') {
                 load_employers();
-            } else if(benefit == 'LIFE') {
+            } else if (benefit == 'LIFE') {
                 l1_data = generate_quintile_data(l1_data);
                 l2_data = generate_quintile_data(l2_data);
                 
@@ -233,6 +235,15 @@ function get_body() {
                 draw_bar_chart('L-2', l2_data);        
                 draw_easy_pie_chart();
                 draw_donut_chart('L-18', l18_data);
+            } else if (benefit == 'STD') {
+                std1_data = generate_quintile_data(std1_data);
+                std2_data = generate_quintile_data(std2_data);
+                
+                draw_bar_chart('STD-1', std1_data);        
+                draw_bar_chart('STD-2', std2_data, true, 7);        
+                draw_easy_pie_chart();
+                draw_donut_chart('STD-18', std18_data);
+
             }
         })
 

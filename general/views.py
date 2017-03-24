@@ -26,7 +26,7 @@ MODEL_MAP = {
     'STD': STD
 }
 
-PLAN_ALLOWED_BENEFITS = ['LIFE']
+PLAN_ALLOWED_BENEFITS = ['LIFE', 'STD']
 
 def get_filtered_employers(ft_industries, ft_head_counts, ft_other, ft_regions, lstart=0, lend=0, group='bnchmrk'):
     # filter with factors from UI (industry, head-count, other)
@@ -210,18 +210,21 @@ def ajax_enterprise(request):
 
     if benefit == 'HOME':
         full_name = '{} {}'.format(request.user.first_name, request.user.last_name)
-        return render(request, 'home.html', locals())
-    elif benefit == 'LIFE':
+        return render(request, 'benefit/home.html', locals())
+    elif benefit in ['LIFE', 'STD', 'LTD']:
         employers, num_companies = get_filtered_employers(ft_industries, 
                                                           ft_head_counts, 
                                                           ft_other,
                                                           ft_regions)
-        context = get_life_plan(employers, num_companies)
+
+        func_name = 'get_{}_plan'.format(benefit.lower())
+        context = globals()[func_name](employers, num_companies)
         context['base_template'] = 'empty.html'
         context['today'] = today
-        return render(request, 'life_plan.html', context)
+        template = 'benefit/{}_plan.html'.format(benefit.lower())
+        return render(request, template, context)
     elif benefit == 'EMPLOYERS':
-        return render(request, 'employers.html', { 'today': today })
+        return render(request, 'benefit/employers.html', { 'today': today })
     return HttpResponse('Nice')
 
 
@@ -241,7 +244,7 @@ def update_properties(request):
         func_name = 'get_{}_properties'.format(benefit.lower())
         return globals()[func_name](request, plan)
     else:
-        return HttpResponse('')
+        return HttpResponse('{}')
 
 
 def get_life_properties(request, plan):
@@ -294,7 +297,60 @@ def get_life_properties(request, plan):
     return JsonResponse(context, safe=False)
 
 
+def get_std_properties(request, plan):
+    context = {}
+    weekly_max = 'N/A'
+    percentage = 'N/A'
+    salary_cont = 'N/A'
+    duration_weeks = 'N/A'
+    waiting_injury = 'N/A'
+    waiting_illness = 'N/A'
+    rank_weekly_max = 'N/A'
+    rank_duration_weeks = 'N/A'
+
+    if plan:
+        ft_industries = request.session['ft_industries']
+        ft_head_counts = request.session['ft_head_counts']
+        ft_other = request.session['ft_other']
+        ft_regions = request.session['ft_regions']
+
+        employers, num_companies = get_filtered_employers(ft_industries, 
+                                                          ft_head_counts, 
+                                                          ft_other,
+                                                          ft_regions)
+
+        stds = STD.objects.filter(employer__in=employers)
+        std = STD.objects.get(id=plan)
+        weekly_max = '${:,.0f}'.format(std.weekly_max) if std.weekly_max else 'N/A'
+        percentage = '{:,.0f}%'.format(std.percentage) if std.percentage else 'N/A'
+        duration_weeks = '{:,.0f}'.format(std.duration_weeks) if std.duration_weeks else 'N/A'
+        waiting_injury = '{:,.0f}'.format(std.waiting_days) if std.waiting_days else 'N/A'
+        waiting_illness = '{:,.0f}'.format(std.waiting_days_sick) if std.waiting_days_sick else 'N/A'
+        salary_cont = 'Yes' if std.salary_cont else 'No'
+        
+        qs_weekly_max = stds.exclude(weekly_max__isnull=True)
+        qs_duration_weeks = stds.exclude(duration_weeks__isnull=True)
+        quintile_weekly_max = get_incremental_array(qs_weekly_max, 'weekly_max') 
+        quintile_duration_weeks = get_incremental_array(qs_duration_weeks, 'duration_weeks') 
+
+        rank_weekly_max = get_rank(quintile_weekly_max, std.weekly_max)
+        rank_duration_weeks = get_rank(quintile_duration_weeks, std.duration_weeks)
+
+    context['weekly_max'] = weekly_max
+    context['percentage'] = percentage
+    context['duration_weeks'] = duration_weeks
+    context['waiting_injury'] = waiting_injury
+    context['waiting_illness'] = waiting_illness
+    context['salary_cont'] = salary_cont
+    context['rank_weekly_max'] = rank_weekly_max
+    context['rank_duration_weeks'] = rank_duration_weeks
+    return JsonResponse(context, safe=False)
+
+
 def get_rank(quintile_array, value):
+    if not value:
+        return 'N/A'
+
     x_vals = []
     for idx in range(len(quintile_array)-1):
         if quintile_array[idx][1] <= value and value <= quintile_array[idx+1][1]:
@@ -303,7 +359,11 @@ def get_rank(quintile_array, value):
     x_mean = 0
     for item in x_vals:
         x_mean += item
-    x_mean = x_mean * 1.0 / len(x_vals)
+
+    try:
+        x_mean = x_mean * 1.0 / len(x_vals)
+    except Exception as e:
+        print quintile_array, value, '@@@@@@@'
 
     for idx in range(1, 6):
         if x_mean < idx * 20:
@@ -319,8 +379,6 @@ def get_life_plan(employers, num_companies):
         }
 
     lifes = Life.objects.filter(employer__in=employers)
-    num_lifes = lifes.count()
-
 
     qs_multiple = lifes.exclude(multiple__isnull=True)
     mdn_multiple, cnt_multiple = get_median_count(qs_multiple, 'multiple')
@@ -396,6 +454,80 @@ def get_life_plan(employers, num_companies):
         'prcnt_type_plan_flat': prcnt_type_plan_flat,
         'prcnt_type_plan_mul_flat': prcnt_type_plan_mul_flat,
         'prcnt_type_non_reported': prcnt_type_non_reported,
+        'prcnt_paid': prcnt_paid,
+        'prcnt_share': prcnt_share,
+        'prcnt_paid_share': prcnt_paid_share,
+        'prcnt_non_reported': prcnt_non_reported,        
+        'prcnt_plan0': prcnt_plan0,
+        'prcnt_plan1': prcnt_plan1,
+        'prcnt_plan2': prcnt_plan2,
+        'prcnt_plan3_or_more': prcnt_plan3_or_more,
+    }
+
+
+def get_std_plan(employers, num_companies):
+    if num_companies < settings.EMPLOYER_THRESHOLD:
+        return {
+            'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE,
+            'num_employers': num_companies,
+            'EMPLOYER_THRESHOLD': settings.EMPLOYER_THRESHOLD
+        }
+
+    stds = STD.objects.filter(employer__in=employers)
+
+    qs_waiting_days = stds.exclude(waiting_days__isnull=True)
+    mdn_waiting_days, cnt_waiting_days = get_median_count(qs_waiting_days, 'waiting_days')
+    qs_waiting_days_sick = stds.exclude(waiting_days_sick__isnull=True)
+    mdn_waiting_days_sick, cnt_waiting_days_sick = get_median_count(qs_waiting_days_sick, 'waiting_days_sick')
+    qs_weekly_max = stds.exclude(weekly_max__isnull=True)
+    mdn_weekly_max, cnt_weekly_max = get_median_count(qs_weekly_max, 'weekly_max')    
+    qs_percentage = stds.exclude(percentage__isnull=True)
+    mdn_percentage, cnt_percentage = get_median_count(qs_percentage, 'percentage')    
+    qs_duration_weeks = stds.exclude(duration_weeks__isnull=True)
+    mdn_duration_weeks, cnt_duration_weeks = get_median_count(qs_duration_weeks, 'duration_weeks')    
+
+    prcnt_salary_cont = stds.filter(salary_cont=True).count() * 100 / stds.count()
+    # for counting # of plans
+    num_plan0 = employers.filter(std_count=0).count()
+    num_plan1 = employers.filter(std_count=1).count()
+    num_plan2 = employers.filter(std_count=2).count()
+    num_plan3_or_more = num_companies - num_plan0 - num_plan1 - num_plan2
+
+    prcnt_plan0 = '{0:0.0f}'.format(num_plan0 * 100.0 / num_companies)
+    prcnt_plan1 = '{0:0.0f}'.format(num_plan1 * 100.0 / num_companies)
+    prcnt_plan2 = '{0:0.0f}'.format(num_plan2 * 100.0 / num_companies)
+    prcnt_plan3_or_more = '{0:0.0f}'.format(num_plan3_or_more * 100.0 / num_companies)
+
+    quintile_weekly_max = get_incremental_array(qs_weekly_max, 'weekly_max') 
+    quintile_duration_weeks = get_incremental_array(qs_duration_weeks, 'duration_weeks') 
+
+    companies_with_paid = set([item.employer_id for item in stds.filter(cost_share='100% Employer Paid')])
+    companies_with_share = set([item.employer_id for item in stds.filter(cost_share='Employee Cost Share')])
+    cnt_paid = len(companies_with_paid - companies_with_share)
+    cnt_share = len(companies_with_share - companies_with_paid)
+    cnt_paid_share = len(companies_with_share.intersection(companies_with_paid))
+    cnt_non_reported = num_companies - num_plan0 - cnt_paid - cnt_share - cnt_paid_share
+
+    prcnt_paid = '{0:0.0f}'.format(cnt_paid * 100.0 / num_companies)
+    prcnt_share = '{0:0.0f}'.format(cnt_share * 100.0 / num_companies)
+    prcnt_paid_share = '{0:0.0f}'.format(cnt_paid_share * 100.0 / num_companies)    
+    prcnt_non_reported = '{0:0.0f}'.format(cnt_non_reported * 100.0 / num_companies)    
+
+    return {
+        'EMPLOYER_THRESHOLD': settings.EMPLOYER_THRESHOLD,
+        'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE,
+        'num_employers': num_companies,
+        
+        'mdn_waiting_injury': mdn_waiting_days,
+        'mdn_waiting_illness': mdn_waiting_days_sick, 
+        'mdn_weekly_max': mdn_weekly_max, 
+        'mdn_percentage': mdn_percentage, 
+        'mdn_duration_weeks': mdn_duration_weeks, 
+
+        'quintile_weekly_max': mark_safe(json.dumps(quintile_weekly_max)),
+        'quintile_duration_weeks': mark_safe(json.dumps(quintile_duration_weeks)),        
+        
+        'prcnt_salary_cont': prcnt_salary_cont,
         'prcnt_paid': prcnt_paid,
         'prcnt_share': prcnt_share,
         'prcnt_paid_share': prcnt_paid_share,
@@ -484,7 +616,7 @@ def get_plans(request):
     if benefit in PLAN_ALLOWED_BENEFITS:
         plans = get_plans_(benefit, group)
 
-    return render(request, 'plans.html', { 'plans': plans })
+    return render(request, 'includes/plans.html', { 'plans': plans })
 
 
 def get_plans_(benefit, group):
@@ -494,10 +626,16 @@ def get_plans_(benefit, group):
     else:
         objects = model.objects.filter(employer__broker=group)
 
-    return [
-               [item.id, '{} - {} - {}'.format(item.employer.name, item.type, item.title)]
-               for item in objects.order_by('employer__name', 'title')
-           ]
+    if benefit == 'LIFE':
+        return [
+                   [item.id, '{} - {} - {}'.format(item.employer.name, item.type, item.title)]
+                   for item in objects.order_by('employer__name', 'title')
+               ]
+    elif benefit == 'STD':
+        return [
+                   [item.id, '{} - {}'.format(item.employer.name, item.title)]
+                   for item in objects.order_by('employer__name', 'title')
+               ]
 
 
 def contact_us(request):

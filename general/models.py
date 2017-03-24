@@ -51,6 +51,7 @@ class Life(models.Model):
     
 
 class STD(models.Model):
+    title = models.CharField(max_length=20)
     employer = models.ForeignKey(Employer)
     salary_cont = models.BooleanField()
     waiting_days = models.IntegerField(blank=True, null=True)
@@ -65,4 +66,19 @@ class STD(models.Model):
         
     class Meta:
         verbose_name_plural = 'STD Plans'
-    
+
+
+class LTD(models.Model):
+    title = models.CharField(max_length=20)
+    employer = models.ForeignKey(Employer)
+    waiting_weeks = models.IntegerField(blank=True, null=True)
+    percentage = models.IntegerField(blank=True, null=True)
+    monthly_max = models.IntegerField(blank=True, null=True)
+    cost_share = models.CharField(max_length=19, null=True, blank=True)
+
+    def __unicode__(self):
+        return self.employer.name
+        
+    class Meta:
+        verbose_name_plural = 'LTD Plans'
+        
