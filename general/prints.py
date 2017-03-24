@@ -33,25 +33,33 @@ def print_template(request):
     ft_other_label = ', '.join(request.session['ft_other_label'])
     ft_regions_label = ', '.join(request.session['ft_regions_label'])
 
+    today = datetime.strftime(datetime.now(), '%B %d, %Y')
+
     if benefit == 'HOME':
         full_name = '{} {}'.format(request.user.first_name, request.user.last_name)
         return render(request, 'home.html', locals())
-    elif benefit == 'LIFE':
+    elif benefit in ['LIFE', 'STD', 'LTD']:
         employers, num_companies = get_filtered_employers(ft_industries, 
                                                           ft_head_counts, 
                                                           ft_other,
                                                           ft_regions)
 
-        context = get_life_plan(employers, num_companies)
+        func_name = 'get_{}_plan'.format(benefit.lower())
+        context = globals()[func_name](employers, num_companies)
         context['base_template'] = 'print.html'
-        context['today'] = datetime.strftime(datetime.now(), '%B %d, %Y')
+        context['today'] = today
         # unescape html characters
         h = HTMLParser.HTMLParser()
         context['ft_industries_label'] = h.unescape(ft_industries_label)
         context['ft_head_counts_label'] = h.unescape(ft_head_counts_label)
         context['ft_other_label'] = h.unescape(ft_other_label)
         context['ft_regions_label'] = h.unescape(ft_regions_label)
-        return render(request, 'life_plan.html', context)
+
+        template = 'benefit/{}_plan.html'.format(benefit.lower())
+        return render(request, template, context)
+    elif benefit == 'EMPLOYERS':
+        return render(request, 'benefit/employers.html', { 'today': today })
+    return HttpResponse('Nice')
 
 
 @login_required(login_url='/admin/login')
@@ -79,7 +87,11 @@ def print_page(request):
     time.sleep(2)
 
     driver.save_screenshot(img_path)
-    driver.quit()
+
+    try:
+        driver.quit()
+    except Exception as e:
+        pass
 
     # convert png into pdf using fpdf
     margin = 20

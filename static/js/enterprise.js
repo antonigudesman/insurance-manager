@@ -15,15 +15,7 @@ var colors = ['#f8696b', '#FCAA78', '#808080', '#B1D480', '#63be7b'];
 $(document).ready(function(){
     if (print_template) {
         update_properties();
-
-        l1_data = generate_quintile_data(l1_data);
-        l2_data = generate_quintile_data(l2_data);
-
-        draw_bar_chart('L-1', l1_data);        
-        draw_bar_chart('L-2', l2_data);        
-        draw_easy_pie_chart();
-        draw_donut_chart('L-18', l18_data);
-
+        update_content(benefit);
     } else {
         $('.enterprise-navbar li').each(function() {
             if (benefit == $(this).find('a').html()) {
@@ -225,33 +217,7 @@ function get_body() {
                 $('#lbl_ft_other').html(others_label.join(', '));                
             }
 
-            if(benefit == 'EMPLOYERS') {
-                load_employers();
-            } else if (benefit == 'LIFE') {
-                l1_data = generate_quintile_data(l1_data);
-                l2_data = generate_quintile_data(l2_data);
-                
-                draw_bar_chart('L-1', l1_data);        
-                draw_bar_chart('L-2', l2_data);        
-                draw_easy_pie_chart();
-                draw_donut_chart('L-18', l18_data);
-            } else if (benefit == 'STD') {
-                std1_data = generate_quintile_data(std1_data);
-                std2_data = generate_quintile_data(std2_data);
-                
-                draw_bar_chart('STD-1', std1_data);        
-                draw_bar_chart('STD-2', std2_data, true, 7);        
-                draw_easy_pie_chart();
-                draw_donut_chart('STD-18', std18_data);
-            } else if (benefit == 'LTD') {
-                ltd1_data = generate_quintile_data(ltd1_data);
-                ltd2_data = generate_quintile_data(ltd2_data);
-                
-                draw_bar_chart('LTD-1', ltd1_data);        
-                draw_bar_chart('LTD-2', ltd2_data, true, 7);        
-                draw_easy_pie_chart();
-                draw_donut_chart('LTD-18', ltd18_data);
-            }
+            update_content(benefit);
         })
 
     $.post(
@@ -305,3 +271,21 @@ generate_quintile_data = function(raw_data){
     return data;
 }
 
+update_content = function(benefit) {
+    if(benefit == 'EMPLOYERS') {
+        load_employers();
+    } else if ($.inArray(benefit, ["LIFE", "STD", "LTD"]) != -1) {
+        gh1_data = generate_quintile_data(gh1_data);
+        gh2_data = generate_quintile_data(gh2_data);
+        
+        draw_bar_chart(benefit+'-1', gh1_data);        
+        
+        if ( benefit == "LIFE")
+            draw_bar_chart(benefit+'-2', gh2_data);        
+        else
+            draw_bar_chart(benefit+'-2', gh2_data, true, 7);        
+      
+        draw_easy_pie_chart();
+        draw_donut_chart(benefit+'-18', gh18_data);
+    }
+}

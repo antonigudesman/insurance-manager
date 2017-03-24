@@ -193,13 +193,13 @@
 
 <script type="text/javascript">
 
-var std1_data, std2_data, std18_data;
+var gh1_data, gh2_data, gh18_data;
 
 {% if num_employers >= EMPLOYER_THRESHOLD %}
-    std1_data = {{ quintile_weekly_max }};
-    std2_data = {{ quintile_duration_weeks }};
+    gh1_data = {{ quintile_weekly_max }};
+    gh2_data = {{ quintile_duration_weeks }};
 
-    std18_data = [
+    gh18_data = [
         {data: {{ prcnt_plan0 }}, color: '#F44336', label: 'Not Offered'},
         {data: {{ prcnt_plan1 }}, color: '#03A9F4', label: '1 Plan'},
         {data: {{ prcnt_plan2 }}, color: '#8BC34A', label: '2 Plans'},
