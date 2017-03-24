@@ -40,7 +40,7 @@ def import_employer(request):
                 print str(e)
                 print row['ID'], '#{}#'.format(row['EMPLOYERHEADCOUNT__C'])
 
-    return HttpResponse('Successfully imported!')
+    return HttpResponse('Successfully imported ({})!'.format(Employer.objects.all().count()))
 
 
 def import_life(request):
@@ -51,7 +51,8 @@ def import_life(request):
         reader = csv.DictReader(csvfile)
         for row in reader:
             try:
-                life = Life.objects.create(                                                 
+                life = Life.objects.create(          
+                    title='Option X',
                     employer_id=row['EMPLOYERNAME__C'],
                     type=row['LP_TYPE__C'],
                     multiple=row['LP_MULTIPLE__C'] or None,
@@ -63,7 +64,8 @@ def import_life(request):
                 print str(e)
                 print '#{}#'.format(row['LP_MULTIPLE__C']), row['EMPLOYERNAME__C'], row['LP_TYPE__C']
                 # break
-    return HttpResponse('Successfully imported!')
+
+    return HttpResponse('Successfully imported ({})!'.format(Life.objects.all().count()))
 
 
 def import_std(request):
@@ -74,7 +76,8 @@ def import_std(request):
         reader = csv.DictReader(csvfile)
         for row in reader:
             try:
-                std = STD.objects.create(                                                 
+                std = STD.objects.create(           
+                    title='Option Y',
                     employer_id=row['EMPLOYER_NAME__C'],
                     salary_cont=row['STD_SALARY_CONTINUATION__C']=='TRUE',
                     waiting_days=row['STD_WAITING_DAYS__C'] or None,
@@ -87,7 +90,7 @@ def import_std(request):
                 print str(e)
                 print '#{}#'.format(row['STD_COST_SHARE__C']), row['EMPLOYER_NAME__C']
 
-    return HttpResponse('Successfully imported!')
+    return HttpResponse('Successfully imported ({})!'.format(STD.objects.all().count()))
 
 
 def import_ltd(request):
@@ -98,8 +101,9 @@ def import_ltd(request):
         reader = csv.DictReader(csvfile)
         for row in reader:
             try:
-                ltd = LTD.objects.create(                                                 
-                    employer_id=row['EMPLOYER_NAME__C'],
+                ltd = LTD.objects.create(               
+                    title='Option Z',                                  
+                    employer_id=row['EMPLOYERNAME__C'],
                     waiting_weeks=row['LTD_WAITING_WEEKS__C'] or None,
                     percentage=row['LTD_PERCENTAGE__C'] or None,
                     monthly_max=row['LTD_MONTHLY_MAX__C'] or None,
@@ -108,5 +112,5 @@ def import_ltd(request):
                 print str(e)
                 print '#{}#'.format(row['LTD_COST_SHARE__C']), row['EMPLOYER_NAME__C']
 
-    return HttpResponse('Successfully imported!')
+    return HttpResponse('Successfully imported ({})!'.format(LTD.objects.all().count()))
 
