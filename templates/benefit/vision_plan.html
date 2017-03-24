@@ -1,0 +1,356 @@
+{% extends base_template %}
+{% load humanize %}
+{% load pages_tags mezzanine_tags i18n staticfiles %}
+
+{% block page_content %}
+<div class="benefit-content">
+{% include 'includes/benefit-header.html' %}
+
+{% if num_employers >= EMPLOYER_THRESHOLD %}
+
+    <div class="section">
+        <div class="section-graph">
+            <p class="exhibit-text">Exam Cost Share <span>(Exhibit)</span></p>
+            <div id="VISION-1" class="flot-chart"></div>
+        </div>
+        <div class="section-score">
+            <h5>Q-SCORE</h5>
+            <p><span id="prop_rank_exam_copay"></span></p>           
+        </div> 
+        <div class="section-content">
+            <table class="table table-striped table-content">
+                <col width="50%">
+                <col width="25%">
+                <col width="25%">
+                <thead>
+                    <tr>
+                        <th class="row-label">Exam Cost Share</th>
+                        <th>Benchmark</th>
+                        <th>Current Plan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-label">Exam Copay</td>
+                        <td>${{ mdn_exam_copay|intcomma }}</td>
+                        <td><span id="prop_exam_copay"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Exam Frequency</td>
+                        <td>{{ mdn_exam_frequency }}</td>
+                        <td><span id="prop_exam_frequency"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Exam Out of Network Allowance</td>
+                        <td>{{ mdn_exam_out_allowance }}</td>
+                        <td><span id="prop_exam_out_allowance"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-graph">
+            <p class="exhibit-text">Lenses Cost Share <span>(Exhibit)</span></p>
+            <div id="VISION-2" class="flot-chart"></div>
+        </div>
+        <div class="section-score">
+            <h5>Q-SCORE</h5>
+            <p><span id="prop_rank_lenses_copay"></span></p>           
+        </div> 
+        <div class="section-content">
+            <table class="table table-striped table-content">
+                <col width="50%">
+                <col width="25%">
+                <col width="25%">
+                <thead>
+                    <tr>
+                        <th class="row-label">Lenses Cost Share</th>
+                        <th>Benchmark</th>
+                        <th>Current Plan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-label">Lenses Copay</td>
+                        <td>${{ mdn_lenses_copay|intcomma }}</td>
+                        <td><span id="prop_lenses_copay"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Lenses Frequency</td>
+                        <td>{{ mdn_lenses_frequency }}</td>
+                        <td><span id="prop_lenses_frequency"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Lenses Out of Network Allowance</td>
+                        <td>{{ mdn_lenses_out_allowance }}</td>
+                        <td><span id="prop_lenses_out_allowance"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-graph">
+            <p class="exhibit-text">Frames Cost Share <span>(Exhibit)</span></p>
+            <div id="VISION-3" class="flot-chart"></div>
+        </div>
+        <div class="section-score">
+            <h5>Q-SCORE</h5>
+            <p><span id="prop_rank_frames_allowance"></span></p>           
+        </div> 
+        <div class="section-content">
+            <table class="table table-striped table-content">
+                <col width="50%">
+                <col width="25%">
+                <col width="25%">
+                <thead>
+                    <tr>
+                        <th class="row-label">Frames Cost Share</th>
+                        <th>Benchmark</th>
+                        <th>Current Plan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-label">Frames Copay</td>
+                        <td>${{ mdn_frames_copay|intcomma }}</td>
+                        <td><span id="prop_frames_copay"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Frames Allowance</td>
+                        <td>{{ mdn_frames_allowance }}</td>
+                        <td><span id="prop_frames_allowance"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Frames Balance Coinsurance</td>
+                        <td>{{ mdn_frames_coinsurance }}</td>
+                        <td><span id="prop_frames_coinsurance"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Frames Frequency</td>
+                        <td>{{ mdn_frames_frequency }}</td>
+                        <td><span id="prop_frames_frequency"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Frames Out of Network Allowance</td>
+                        <td>{{ mdn_frames_out_allowance }}</td>
+                        <td><span id="prop_frames_out_allowance"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-graph">
+            <p class="exhibit-text">Contacts Cost Share <span>(Exhibit)</span></p>
+            <div id="VISION-4" class="flot-chart"></div>
+        </div>
+        <div class="section-score">
+            <h5>Q-SCORE</h5>
+            <p><span id="prop_rank_contacts_allowance"></span></p>           
+        </div> 
+        <div class="section-content">
+            <table class="table table-striped table-content">
+                <col width="50%">
+                <col width="25%">
+                <col width="25%">
+                <thead>
+                    <tr>
+                        <th class="row-label">Contacts Cost Share</th>
+                        <th>Benchmark</th>
+                        <th>Current Plan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-label">Contacts Copay</td>
+                        <td>${{ mdn_contacts_copay|intcomma }}</td>
+                        <td><span id="prop_contacts_copay"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Contacts Allowance</td>
+                        <td>{{ mdn_contacts_allowance }}</td>
+                        <td><span id="prop_contacts_allowance"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Contacts Balance Coinsurance</td>
+                        <td>{{ mdn_contacts_coinsurance }}</td>
+                        <td><span id="prop_contacts_coinsurance"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Contacts Frequency</td>
+                        <td>{{ mdn_contacts_frequency }}</td>
+                        <td><span id="prop_contacts_frequency"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Contacts Out of Network Allowance</td>
+                        <td>{{ mdn_contacts_out_allowance }}</td>
+                        <td><span id="prop_contacts_out_allowance"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-graph">
+            <p class="exhibit-text">Employee Annual Contributions <span>(Exhibit)</span></p>
+            <div id="VISION-6" class="flot-chart"></div>
+        </div>
+        <div class="section-score">
+            <h5>Q-SCORE</h5>
+            <p><span id="prop_rank_t1_ee"></span></p>           
+        </div> 
+        <div class="section-content">
+            <table class="table table-striped table-content">
+                <col width="50%">
+                <col width="25%">
+                <col width="25%">
+                <thead>
+                    <tr>
+                        <th class="row-label">Employee Annual Contributions</th>
+                        <th>Benchmark</th>
+                        <th>Current Plan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-label">Employee Only</td>
+                        <td>${{ mdn_t1_ee|intcomma }}</td>
+                        <td><span id="prop_t1_ee"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Employee + Spouse</td>
+                        <td>{{ mdn_t2_ee }}</td>
+                        <td><span id="prop_t2_ee"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Employee + Child(ren)</td>
+                        <td>{{ mdn_t3_ee }}</td>
+                        <td><span id="prop_t3_ee"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Family</td>
+                        <td>{{ mdn_t4_ee }}</td>
+                        <td><span id="prop_t4_ee"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div> 
+
+    <div class="section">
+        <div class="section-graph">
+            <p class="exhibit-text">Employee Gross Cost <span>(Exhibit)</span></p>
+            <div id="VISION-7" class="flot-chart"></div>
+        </div>
+        <div class="section-score">
+            <h5>Q-SCORE</h5>
+            <p><span id="prop_rank_t1_gross"></span></p>           
+        </div> 
+        <div class="section-content">
+            <table class="table table-striped table-content">
+                <col width="50%">
+                <col width="25%">
+                <col width="25%">
+                <thead>
+                    <tr>
+                        <th class="row-label">Gross Annual Contributions</th>
+                        <th>Benchmark</th>
+                        <th>Current Plan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-label">Employee Only</td>
+                        <td>${{ mdn_t1_gross|intcomma }}</td>
+                        <td><span id="prop_t1_gross"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Employee + Spouse</td>
+                        <td>{{ mdn_t2_gross }}</td>
+                        <td><span id="prop_t2_gross"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Employee + Child(ren)</td>
+                        <td>{{ mdn_t3_gross }}</td>
+                        <td><span id="prop_t3_gross"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Family</td>
+                        <td>{{ mdn_t4_gross }}</td>
+                        <td><span id="prop_t4_gross"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>  
+
+    <div class="section">
+        <div class="section-graph">
+            <p class="exhibit-text">PREVALENCE<span> (Exhibit)</span></p>
+            <div id="VISION-8" class="flot-chart-pie"></div>
+            <div class="flc-donut hidden-xs"></div>
+        </div>
+        <div class="section-score">  
+        </div> 
+        <div class="section-content">
+            <table class="table table-striped table-content">
+                <col width="60%">
+                <col width="40%">
+                <thead>
+                    <tr>
+                        <th class="row-label">Number of Plans Offered</th>
+                        <th>Employers</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-label">Not Offered</td>
+                        <td>{{ prcnt_plan0 }}%</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">1 Plan</td>
+                        <td>{{ prcnt_plan1 }}%</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">2 Plans</td>
+                        <td>{{ prcnt_plan2 }}%</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">3 or More Plans</td>
+                        <td>{{ prcnt_plan3_or_more }}%</td>
+                    </tr>
+                </tbody>
+            </table> 
+        </div>
+    </div>
+
+    {% else %}
+        {% include 'includes/too-few-employers.html' %}
+    {% endif %}
+
+</div>
+
+<script type="text/javascript">
+
+var gh1_data, gh2_data, gh18_data;
+
+{% if num_employers >= EMPLOYER_THRESHOLD %}
+    gh1_data = {{ quintile_array_multiple }};
+    gh2_data = {{ quintile_array_flat }};
+
+    gh18_data = [
+        {data: {{ prcnt_plan0 }}, color: '#F44336', label: 'Not Offered'},
+        {data: {{ prcnt_plan1 }}, color: '#03A9F4', label: '1 Plan'},
+        {data: {{ prcnt_plan2 }}, color: '#8BC34A', label: '2 Plans'},
+        {data: {{ prcnt_plan3_or_more }}, color: '#FFEB3B', label: '3+ Plans'},
+    ];
+
+{% endif %}
+</script>
+{% endblock %}

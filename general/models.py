@@ -33,6 +33,41 @@ class Employer(models.Model):
         return self.name
 
 
+class Vision(models.Model):
+    title = models.CharField(max_length=20)
+    employer = models.ForeignKey(Employer)
+    exam_copay = models.IntegerField(blank=True, null=True)
+    exam_frequency = models.IntegerField(blank=True, null=True)
+    exam_out_allowance = models.IntegerField(blank=True, null=True)
+    lenses_copay = models.IntegerField(blank=True, null=True)
+    lenses_frequency = models.IntegerField(blank=True, null=True)
+    lenses_out_allowance = models.IntegerField(blank=True, null=True)
+    frames_copay = models.IntegerField(blank=True, null=True)
+    frames_allowance = models.IntegerField(blank=True, null=True)
+    frames_coinsurance = models.IntegerField(blank=True, null=True)
+    frames_frequency = models.IntegerField(blank=True, null=True)
+    frames_out_allowance = models.IntegerField(blank=True, null=True)
+    contacts_copay = models.IntegerField(blank=True, null=True)
+    contacts_allowance = models.IntegerField(blank=True, null=True)
+    contacts_coinsurance = models.IntegerField(blank=True, null=True)
+    contacts_frequency = models.IntegerField(blank=True, null=True)
+    contacts_out_allowance = models.IntegerField(blank=True, null=True)
+    t1_ee = models.IntegerField(blank=True, null=True)
+    t2_ee = models.IntegerField(blank=True, null=True)
+    t3_ee = models.IntegerField(blank=True, null=True)
+    t4_ee = models.IntegerField(blank=True, null=True)
+    t1_gross = models.IntegerField(blank=True, null=True)
+    t2_gross = models.IntegerField(blank=True, null=True)
+    t3_gross = models.IntegerField(blank=True, null=True)
+    t4_gross = models.IntegerField(blank=True, null=True)
+
+    def __unicode__(self):
+        return self.employer.name
+        
+    class Meta:
+        verbose_name_plural = 'Vision Plans'
+    
+
 class Life(models.Model):
     title = models.CharField(max_length=20)
     employer = models.ForeignKey(Employer)
@@ -85,26 +120,26 @@ class LTD(models.Model):
 
 class Strategy(models.Model):
     employer = models.ForeignKey(Employer)
-    offer_vol_life = models.BooleanField()
-    offer_vol_std = models.BooleanField()
-    offer_vol_ltd = models.BooleanField()
-    spousal_surcharge = models.BooleanField()
+    offer_vol_life = models.NullBooleanField()
+    offer_vol_std = models.NullBooleanField()
+    offer_vol_ltd = models.NullBooleanField()
+    spousal_surcharge = models.NullBooleanField()
     spousal_surcharge_amount = models.IntegerField(blank=True, null=True)
-    tobacco_surcharge = models.BooleanField()
+    tobacco_surcharge = models.NullBooleanField()
     tobacco_surcharge_amount = models.IntegerField(blank=True, null=True)
-    defined_contribution = models.BooleanField()
-    offer_fsa = models.BooleanField()
-    pt_medical = models.BooleanField()
-    pt_dental = models.BooleanField()
-    pt_vision = models.BooleanField()
-    pt_life = models.BooleanField()
-    pt_std = models.BooleanField()
-    pt_ltd = models.BooleanField()
-    salary_banding = models.BooleanField()
-    wellness_banding = models.BooleanField()
-    narrow_network = models.BooleanField()
-    mec = models.BooleanField()
-    mvp = models.BooleanField()    
+    defined_contribution = models.NullBooleanField()
+    offer_fsa = models.NullBooleanField()
+    pt_medical = models.NullBooleanField()
+    pt_dental = models.NullBooleanField()
+    pt_vision = models.NullBooleanField()
+    pt_life = models.NullBooleanField()
+    pt_std = models.NullBooleanField()
+    pt_ltd = models.NullBooleanField()
+    salary_banding = models.NullBooleanField()
+    wellness_banding = models.NullBooleanField()
+    narrow_network = models.NullBooleanField()
+    mec = models.NullBooleanField()
+    mvp = models.NullBooleanField()    
     contribution_bundle = models.CharField(max_length=19, null=True, blank=True)
 
     def __unicode__(self):
