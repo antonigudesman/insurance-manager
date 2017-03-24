@@ -243,7 +243,14 @@ function get_body() {
                 draw_bar_chart('STD-2', std2_data, true, 7);        
                 draw_easy_pie_chart();
                 draw_donut_chart('STD-18', std18_data);
-
+            } else if (benefit == 'LTD') {
+                ltd1_data = generate_quintile_data(ltd1_data);
+                ltd2_data = generate_quintile_data(ltd2_data);
+                
+                draw_bar_chart('LTD-1', ltd1_data);        
+                draw_bar_chart('LTD-2', ltd2_data, true, 7);        
+                draw_easy_pie_chart();
+                draw_donut_chart('LTD-18', ltd18_data);
             }
         })
 

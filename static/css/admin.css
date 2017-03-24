@@ -1,0 +1,81 @@
+@media (min-width: 1200px) {
+
+    #login-form {
+        margin-top: 0;
+    }
+
+    .login #content-main {
+        padding-bottom: 10px;
+        padding-top: 15px;   
+    }
+
+    .login .form-row label {
+        width: 100px;
+        padding-top: 4px;
+
+    }
+
+    .login .form-row {
+        height: 85px;
+    }
+
+    .login .form-row #id_username, .login .form-row #id_password {
+        height: 35px;
+        width: 100%;
+    }
+
+    .form-row {
+        padding: 8px 15px;
+        line-height: 18px;
+        border-top: none;
+        border-bottom: none;
+    }
+
+    .login .submit-row ,
+    .submit-row input {
+        margin: 0;
+        padding-left: 14px;
+    }
+
+    .submit-row input {
+        width: 96%;
+    }
+
+    input[type="submit"] {
+        background: #333333;
+    }
+
+    #forgot-password {
+        margin-top: 15px;
+    }
+
+    #forgot-password > a:link,
+    #forgot-password > a:visited {
+        color: #333333;
+    }
+
+    p.errornote {
+        text-align: center;
+    }
+
+    #container {
+        clear: both;
+        width: 1425px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    #panel {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        width: 200px;
+        float: left;
+        background-color: #333333;
+    }
+
+    #content {
+
+    }
+
+}
