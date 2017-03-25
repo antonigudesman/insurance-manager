@@ -32,7 +32,7 @@
                 <tbody>
                     <tr>
                         <td class="row-label">Tobacco Surcharge Amount</td>
-                        <td>${{ mdn_tobacco_surcharge|intcomma }}</td>
+                        <td>${{ mdn_tobacco_surcharge_amount|intcomma }}</td>
                         <td><span id="prop_tobacco_surcharge_amount"></span></td>
                     </tr>
                     <tr>
@@ -69,7 +69,7 @@
                 <tbody>
                     <tr>
                         <td class="row-label">Spousal Surcharge Amount</td>
-                        <td>${{ mdn_spousal_surcharge|intcomma }}</td>
+                        <td>${{ mdn_spousal_surcharge_amount|intcomma }}</td>
                         <td><span id="prop_spousal_surcharge_amount"></span></td>
                     </tr>
                     <tr>
@@ -236,8 +236,8 @@
 var gh1_data, gh2_data;
 
 {% if num_employers >= EMPLOYER_THRESHOLD %}
-    gh1_data = {{ quintile_tobacco_surcharge }};
-    gh2_data = {{ quintile_spousal_surcharge }};
+    gh1_data = {{ quintile_tobacco_surcharge_amount }};
+    gh2_data = {{ quintile_spousal_surcharge_amount }};
 {% endif %}
 </script>
 {% endblock %}
