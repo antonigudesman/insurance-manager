@@ -38,14 +38,22 @@ def print_template(request):
     if benefit == 'HOME':
         full_name = '{} {}'.format(request.user.first_name, request.user.last_name)
         return render(request, 'home.html', locals())
-    elif benefit in ['LIFE', 'STD', 'LTD']:
+    elif benefit in ['LIFE', 'STD', 'LTD', 'STRATEGY', 'VISION']:
         employers, num_companies = get_filtered_employers(ft_industries, 
                                                           ft_head_counts, 
                                                           ft_other,
                                                           ft_regions)
 
-        func_name = 'get_{}_plan'.format(benefit.lower())
-        context = globals()[func_name](employers, num_companies)
+        if num_companies < settings.EMPLOYER_THRESHOLD:
+            context =  {
+                'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE,
+                'num_employers': num_companies,
+                'EMPLOYER_THRESHOLD': settings.EMPLOYER_THRESHOLD
+            }
+        else:
+            func_name = 'get_{}_plan'.format(benefit.lower())
+            context = globals()[func_name](employers, num_companies)
+
         context['base_template'] = 'print.html'
         context['today'] = today
         # unescape html characters
