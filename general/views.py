@@ -25,10 +25,11 @@ MODEL_MAP = {
     'LIFE': Life,
     'STD': STD,
     'LTD': LTD,
-    'STRATEGY': Strategy
+    'STRATEGY': Strategy, 
+    'VISION': Vision
 }
 
-PLAN_ALLOWED_BENEFITS = ['LIFE', 'STD', 'LTD', 'STRATEGY']
+PLAN_ALLOWED_BENEFITS = ['LIFE', 'STD', 'LTD', 'STRATEGY', 'VISION']
 
 def get_filtered_employers(ft_industries, ft_head_counts, ft_other, ft_regions, lstart=0, lend=0, group='bnchmrk'):
     # filter with factors from UI (industry, head-count, other)
@@ -213,31 +214,29 @@ def ajax_enterprise(request):
     if benefit == 'HOME':
         full_name = '{} {}'.format(request.user.first_name, request.user.last_name)
         return render(request, 'benefit/home.html', locals())
-    elif benefit in ['LIFE', 'STD', 'LTD']:
+    elif benefit in ['LIFE', 'STD', 'LTD', 'STRATEGY', 'VISION']:
         employers, num_companies = get_filtered_employers(ft_industries, 
                                                           ft_head_counts, 
                                                           ft_other,
                                                           ft_regions)
 
-        func_name = 'get_{}_plan'.format(benefit.lower())
-        context = globals()[func_name](employers, num_companies)
+        if num_companies < settings.EMPLOYER_THRESHOLD:
+            context =  {
+                'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE,
+                'num_employers': num_companies,
+                'EMPLOYER_THRESHOLD': settings.EMPLOYER_THRESHOLD
+            }
+        else:
+            func_name = 'get_{}_plan'.format(benefit.lower())
+            context = globals()[func_name](employers, num_companies)
+
         context['base_template'] = 'empty.html'
         context['today'] = today
+
         template = 'benefit/{}_plan.html'.format(benefit.lower())
         return render(request, template, context)
     elif benefit == 'EMPLOYERS':
         return render(request, 'benefit/employers.html', { 'today': today })
-    elif benefit == 'STRATEGY':
-        employers, num_companies = get_filtered_employers(ft_industries, 
-                                                          ft_head_counts, 
-                                                          ft_other,
-                                                          ft_regions)
-
-        context = get_strategy(employers, num_companies)
-        context['base_template'] = 'empty.html'
-        context['today'] = today
-        template = 'benefit/strategy.html'
-        return render(request, template, context)
     return HttpResponse('Nice')
 
 
@@ -271,15 +270,7 @@ def get_life_properties(request, plan):
     rank_multiple = 'N/A'
 
     if plan:
-        ft_industries = request.session['ft_industries']
-        ft_head_counts = request.session['ft_head_counts']
-        ft_other = request.session['ft_other']
-        ft_regions = request.session['ft_regions']
-
-        employers, num_companies = get_filtered_employers(ft_industries, 
-                                                          ft_head_counts, 
-                                                          ft_other,
-                                                          ft_regions)
+        employers, num_companies = get_filtered_employers_session(request)
 
         lifes = Life.objects.filter(employer__in=employers)
         life = Life.objects.get(id=plan)
@@ -322,15 +313,7 @@ def get_std_properties(request, plan):
     rank_duration_weeks = 'N/A'
 
     if plan:
-        ft_industries = request.session['ft_industries']
-        ft_head_counts = request.session['ft_head_counts']
-        ft_other = request.session['ft_other']
-        ft_regions = request.session['ft_regions']
-
-        employers, num_companies = get_filtered_employers(ft_industries, 
-                                                          ft_head_counts, 
-                                                          ft_other,
-                                                          ft_regions)
+        employers, num_companies = get_filtered_employers_session(request)
 
         stds = STD.objects.filter(employer__in=employers)
         std = STD.objects.get(id=plan)
@@ -446,81 +429,91 @@ def get_strategy_properties(request, plan):
     return JsonResponse(context, safe=False)
 
 
-def get_strategy(employers, num_companies):
-    if num_companies < settings.EMPLOYER_THRESHOLD:
-        return {
-            'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE,
-            'num_employers': num_companies,
-            'EMPLOYER_THRESHOLD': settings.EMPLOYER_THRESHOLD
-        }
+def get_vision_properties(request, plan):
+    context = {}
+    attrs = [item.name for item in Vision._meta.fields if item.name not in ['id', 'employer', 'title']]
+    for attr in attrs:
+        context[attr] = 'N/A'
 
-    strategies = Strategy.objects.filter(employer__in=employers)
+    for attr in vision_quintile_attr:
+        context['rank_'+attr] = 'N/A'
 
-    qs_spousal_surcharge_amount = strategies.exclude(spousal_surcharge_amount__isnull=True)
-    mdn_spousal_surcharge_amount, cnt_spousal_surcharge_amount = get_median_count(qs_spousal_surcharge_amount, 'spousal_surcharge_amount')
-    qs_tobacco_surcharge_amount = strategies.exclude(tobacco_surcharge_amount__isnull=True)
-    mdn_tobacco_surcharge_amount, cnt_tobacco_surcharge_amount = get_median_count(qs_tobacco_surcharge_amount, 'tobacco_surcharge_amount')
+    if plan:
+        employers, num_companies = get_filtered_employers_session(request)
+        medians, var_local = get_vision_plan_(employers, num_companies)
+        instance = Vision.objects.get(id=plan)
 
-    prcnt_spousal_surcharge = strategies.filter(spousal_surcharge=True).count() * 100 / strategies.exclude(spousal_surcharge__isnull=True).count()
-    prcnt_tobacco_surcharge = strategies.filter(tobacco_surcharge=True).count() * 100 / strategies.exclude(tobacco_surcharge__isnull=True).count()
+        for attr in attrs:
+            val = getattr(instance, attr)
+            context[attr] = val if val else 'N/A'
 
-    prcnt_offer_vol_life = strategies.filter(offer_vol_life=True).count() * 100 / strategies.exclude(offer_vol_life__isnull=True).count()
-    prcnt_offer_vol_std = strategies.filter(offer_vol_std=True).count() * 100 / strategies.exclude(offer_vol_std__isnull=True).count()
-    prcnt_offer_vol_ltd = strategies.filter(offer_vol_ltd=True).count() * 100 / strategies.exclude(offer_vol_ltd__isnull=True).count()
+        for attr in vision_quintile_attr:            
+            context['rank_'+attr] = get_rank(var_local['quintile_'+attr], getattr(instance, attr))
 
-    prcnt_pt_medical = strategies.filter(pt_medical=True).count() * 100 / strategies.exclude(pt_medical__isnull=True).count()
-    prcnt_pt_dental = strategies.filter(pt_dental=True).count() * 100 / strategies.exclude(pt_dental__isnull=True).count()
-    prcnt_pt_vision = strategies.filter(pt_vision=True).count() * 100 / strategies.exclude(pt_vision__isnull=True).count()
-    prcnt_pt_life = strategies.filter(pt_life=True).count() * 100 / strategies.exclude(pt_life__isnull=True).count()
-    prcnt_pt_std = strategies.filter(pt_std=True).count() * 100 / strategies.exclude(pt_std__isnull=True).count()
-    prcnt_pt_ltd = strategies.filter(pt_ltd=True).count() * 100 / strategies.exclude(pt_ltd__isnull=True).count()
+    return JsonResponse(context, safe=False)
 
-    prcnt_defined_contribution = strategies.filter(defined_contribution=True).count() * 100 / strategies.exclude(defined_contribution__isnull=True).count()
-    prcnt_salary_banding = strategies.filter(salary_banding=True).count() * 100 / strategies.exclude(salary_banding__isnull=True).count()
-    prcnt_wellness_banding = strategies.filter(wellness_banding=True).count() * 100 / strategies.exclude(wellness_banding__isnull=True).count()
 
-    prcnt_offer_fsa = strategies.filter(offer_fsa=True).count() * 100 / strategies.exclude(offer_fsa__isnull=True).count()
-    prcnt_narrow_network = strategies.filter(narrow_network=True).count() * 100 / strategies.exclude(narrow_network__isnull=True).count()
-    prcnt_mvp = strategies.filter(mvp=True).count() * 100 / strategies.exclude(mvp__isnull=True).count()
-    prcnt_mec = strategies.filter(mec=True).count() * 100 / strategies.exclude(mec__isnull=True).count()
+def get_strategy_plan(employers, num_companies):
+    attrs = ['tobacco_surcharge_amount', 'spousal_surcharge_amount']
+    qs = Strategy.objects.filter(employer__in=employers)
+    medians, sub_qs = get_medians(qs, attrs, num_companies)
+    
+    var_local = {}
+    for attr in attrs:
+        var_local['quintile_'+attr] = get_incremental_array(sub_qs['qs_'+attr], attr)
 
-    quintile_spousal_surcharge = get_incremental_array(qs_spousal_surcharge_amount, 'spousal_surcharge_amount') 
-    quintile_tobacco_surcharge = get_incremental_array(qs_tobacco_surcharge_amount, 'tobacco_surcharge_amount') 
+    attrs = ['spousal_surcharge',
+             'tobacco_surcharge',
+             'offer_vol_life',
+             'offer_vol_std',
+             'offer_vol_ltd',
+             'pt_medical',
+             'pt_dental',
+             'pt_vision',
+             'pt_life',
+             'pt_std',
+             'pt_ltd',
+             'defined_contribution',
+             'salary_banding',
+             'wellness_banding',
+             'offer_fsa',
+             'narrow_network',
+             'mvp',
+             'mec']
 
-    return {
-        'EMPLOYER_THRESHOLD': settings.EMPLOYER_THRESHOLD,
-        'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE,
-        'num_employers': num_companies,
+    for attr in attrs:
+        var_local['prcnt_'+attr] = get_percent_count(qs, attr)
 
-        'mdn_spousal_surcharge': mdn_spousal_surcharge_amount,
-        'mdn_tobacco_surcharge': mdn_tobacco_surcharge_amount,
-        'prcnt_spousal_surcharge': prcnt_spousal_surcharge,
-        'prcnt_tobacco_surcharge': prcnt_tobacco_surcharge,
+    return dict(var_local.items() 
+              + medians.items())
 
-        'quintile_tobacco_surcharge': quintile_tobacco_surcharge,
-        'quintile_spousal_surcharge': quintile_spousal_surcharge,
 
-        'prcnt_offer_vol_life': prcnt_offer_vol_life,
-        'prcnt_offer_vol_std': prcnt_offer_vol_std,
-        'prcnt_offer_vol_ltd': prcnt_offer_vol_ltd,
+vision_quintile_attr = ['exam_copay',
+                        'lenses_copay',
+                        'frames_allowance',
+                        'contacts_allowance',
+                        't1_ee',
+                        't1_gross']
 
-        'prcnt_pt_medical': prcnt_pt_medical,
-        'prcnt_pt_dental': prcnt_pt_dental,
-        'prcnt_pt_vision': prcnt_pt_vision,
-        'prcnt_pt_life': prcnt_pt_life,
-        'prcnt_pt_std': prcnt_pt_std,
-        'prcnt_pt_ltd': prcnt_pt_ltd,
 
-        'prcnt_defined_contribution': prcnt_defined_contribution,
-        'prcnt_salary_banding': prcnt_salary_banding,
-        'prcnt_wellness_banding': prcnt_wellness_banding,
+def get_vision_plan(employers, num_companies):
+    medians, var_local = get_vision_plan_(employers, num_companies)
+    prcnt_plan_count = get_plan_percentages(employers, num_companies, 'vis')
 
-        'prcnt_offer_fsa': prcnt_offer_fsa,
-        'prcnt_narrow_network': prcnt_narrow_network,
-        'prcnt_mvp': prcnt_mvp,
-        'prcnt_mec': prcnt_mec,
-    }
+    return dict(var_local.items() 
+              + prcnt_plan_count.items()
+              + medians.items())
 
+
+def get_vision_plan_(employers, num_companies):
+    attrs = [item.name for item in Vision._meta.fields if item.name not in ['id', 'employer', 'title']]
+    qs = Vision.objects.filter(employer__in=employers)
+    medians, sub_qs = get_medians(qs, attrs, num_companies)
+
+    var_local = {}
+    for attr in vision_quintile_attr:
+        var_local['quintile_'+attr] = get_incremental_array(sub_qs['qs_'+attr], attr)
+    return medians, var_local
 
 
 def get_rank(quintile_array, value):
@@ -549,238 +542,72 @@ def get_rank(quintile_array, value):
 
 
 def get_life_plan(employers, num_companies):
-    if num_companies < settings.EMPLOYER_THRESHOLD:
-        return {
-            'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE,
-            'num_employers': num_companies,
-            'EMPLOYER_THRESHOLD': settings.EMPLOYER_THRESHOLD
-        }
+    attrs = ['multiple', 'multiple_max', 'flat_amount']
+    qs = Life.objects.filter(employer__in=employers)
+    medians, sub_qs = get_medians(qs, attrs, num_companies)
 
-    lifes = Life.objects.filter(employer__in=employers)
-
-    qs_multiple = lifes.exclude(multiple__isnull=True)
-    mdn_multiple, cnt_multiple = get_median_count(qs_multiple, 'multiple')
-    qs_multiple_max = lifes.exclude(multiple_max__isnull=True)
-    mdn_multiple_max, cnt_multiple_max = get_median_count(qs_multiple_max, 'multiple_max')
-    qs_flat_amount = lifes.exclude(flat_amount__isnull=True)
-    mdn_flat_amount, cnt_flat_amount = get_median_count(qs_flat_amount, 'flat_amount')    
-
-    # for counting # of plans
-    num_plan0 = employers.filter(life_count=0).count()
-    num_plan1 = employers.filter(life_count=1).count()
-    num_plan2 = employers.filter(life_count=2).count()
-    num_plan3_or_more = num_companies - num_plan0 - num_plan1 - num_plan2
-
-    prcnt_plan0 = '{0:0.0f}'.format(num_plan0 * 100.0 / num_companies)
-    prcnt_plan1 = '{0:0.0f}'.format(num_plan1 * 100.0 / num_companies)
-    prcnt_plan2 = '{0:0.0f}'.format(num_plan2 * 100.0 / num_companies)
-    prcnt_plan3_or_more = '{0:0.0f}'.format(num_plan3_or_more * 100.0 / num_companies)
-
-    quintile_array_flat = get_incremental_array(qs_flat_amount, 'flat_amount') 
-    quintile_array_multiple = get_incremental_array(qs_multiple_max, 'multiple_max') 
-
-    cnt_add_flat = lifes.filter(add=True, type='Flat Amount').count()
-    cnt_add_flat_ = lifes.filter(type='Flat Amount').count()
-    cnt_add_multiple = lifes.filter(add=True, type='Multiple of Salary').count()
-    cnt_add_multiple_ = lifes.filter(type='Multiple of Salary').count()
-
-    companies_with_mul_plan = set([item.employer_id for item in lifes.filter(type='Multiple of Salary')])
-    companies_with_flat_plan = set([item.employer_id for item in lifes.filter(type='Flat Amount')])
-
-    cnt_type_plan_none = num_plan0
-    cnt_type_plan_mul = len(companies_with_mul_plan - companies_with_flat_plan)
-    cnt_type_plan_flat = len(companies_with_flat_plan - companies_with_mul_plan)
-    cnt_type_plan_mul_flat = len(companies_with_flat_plan.intersection(companies_with_mul_plan))
-    cnt_type_non_reported = -(cnt_type_plan_mul_flat + cnt_type_plan_none + cnt_type_plan_mul + cnt_type_plan_flat - num_companies)
-
-    companies_with_paid = set([item.employer_id for item in lifes.filter(cost_share='100% Employer Paid')])
-    companies_with_share = set([item.employer_id for item in lifes.filter(cost_share='Employee Cost Share')])
-    cnt_paid = len(companies_with_paid - companies_with_share)
-    cnt_share = len(companies_with_share - companies_with_paid)
-    cnt_paid_share = len(companies_with_share.intersection(companies_with_paid))
-    cnt_non_reported = num_companies - num_plan0 - cnt_paid - cnt_share - cnt_paid_share
-
-    prcnt_add_flat = '{0:0.0f}%'.format(cnt_add_flat * 100.0 / cnt_add_flat_)
-    prcnt_add_multiple = '{0:0.0f}%'.format(cnt_add_multiple * 100.0 / cnt_add_multiple_)
-    prcnt_type_plan_none = '{0:0.0f}'.format(cnt_type_plan_none * 100.0 / num_companies)
-    prcnt_type_plan_mul = '{0:0.0f}'.format(cnt_type_plan_mul * 100.0 / num_companies)
-    prcnt_type_plan_flat = '{0:0.0f}'.format(cnt_type_plan_flat * 100.0 / num_companies)
-    prcnt_type_plan_mul_flat = '{0:0.0f}'.format(cnt_type_plan_mul_flat * 100.0 / num_companies)
-    prcnt_type_non_reported = '{0:0.0f}'.format(cnt_type_non_reported * 100.0 / num_companies)
-
-    prcnt_paid = '{0:0.0f}'.format(cnt_paid * 100.0 / num_companies)
-    prcnt_share = '{0:0.0f}'.format(cnt_share * 100.0 / num_companies)
-    prcnt_paid_share = '{0:0.0f}'.format(cnt_paid_share * 100.0 / num_companies)    
-    prcnt_non_reported = '{0:0.0f}'.format(cnt_non_reported * 100.0 / num_companies)    
-
-    return {
-        'EMPLOYER_THRESHOLD': settings.EMPLOYER_THRESHOLD,
-        'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE,
-        'num_employers': num_companies,
-        
-        'mdn_multiple': mdn_multiple,
-        'mdn_multiple_max': mdn_multiple_max, 
-        'mdn_flat_amount': mdn_flat_amount, 
-
-        'quintile_array_flat': mark_safe(json.dumps(quintile_array_flat)),
-        'quintile_array_multiple': mark_safe(json.dumps(quintile_array_multiple)),        
-        
-        'prcnt_add_flat': prcnt_add_flat,
-        'prcnt_add_multiple': prcnt_add_multiple,
-        'prcnt_type_plan_none': prcnt_type_plan_none,
-        'prcnt_type_plan_mul': prcnt_type_plan_mul,
-        'prcnt_type_plan_flat': prcnt_type_plan_flat,
-        'prcnt_type_plan_mul_flat': prcnt_type_plan_mul_flat,
-        'prcnt_type_non_reported': prcnt_type_non_reported,
-        'prcnt_paid': prcnt_paid,
-        'prcnt_share': prcnt_share,
-        'prcnt_paid_share': prcnt_paid_share,
-        'prcnt_non_reported': prcnt_non_reported,        
-        'prcnt_plan0': prcnt_plan0,
-        'prcnt_plan1': prcnt_plan1,
-        'prcnt_plan2': prcnt_plan2,
-        'prcnt_plan3_or_more': prcnt_plan3_or_more,
+    var_local = {        
+        'prcnt_add_flat': get_percent_count_( qs.filter(add=True, type='Flat Amount'), qs.filter(type='Flat Amount')),
+        'prcnt_add_multiple': get_percent_count_( qs.filter(add=True, type='Multiple of Salary'), qs.filter(type='Multiple of Salary'))
     }
+
+    for attr in ['multiple_max', 'flat_amount']:
+        var_local['quintile_'+attr] = get_incremental_array(sub_qs['qs_'+attr], attr)
+
+
+    # percentages for plans and cost share
+    prcnt_plan_cost_share = get_plan_cost_share(qs)
+    prcnt_plan_type = get_plan_type(qs)
+    prcnt_plan_count = get_plan_percentages(employers, num_companies, 'life')
+    prcnt_cost_share = get_plan_cost_share(qs)
+
+    return dict(var_local.items() 
+              + prcnt_cost_share.items() 
+              + prcnt_plan_type.items() 
+              + prcnt_plan_count.items()
+              + medians.items())
 
 
 def get_std_plan(employers, num_companies):
-    if num_companies < settings.EMPLOYER_THRESHOLD:
-        return {
-            'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE,
-            'num_employers': num_companies,
-            'EMPLOYER_THRESHOLD': settings.EMPLOYER_THRESHOLD
-        }
+    attrs = ['waiting_days', 'waiting_days_sick', 'weekly_max', 'percentage', 'duration_weeks']
+    qs = STD.objects.filter(employer__in=employers)
+    medians, sub_qs = get_medians(qs, attrs, num_companies)
 
-    stds = STD.objects.filter(employer__in=employers)
-
-    qs_waiting_days = stds.exclude(waiting_days__isnull=True)
-    mdn_waiting_days, cnt_waiting_days = get_median_count(qs_waiting_days, 'waiting_days')
-    qs_waiting_days_sick = stds.exclude(waiting_days_sick__isnull=True)
-    mdn_waiting_days_sick, cnt_waiting_days_sick = get_median_count(qs_waiting_days_sick, 'waiting_days_sick')
-    qs_weekly_max = stds.exclude(weekly_max__isnull=True)
-    mdn_weekly_max, cnt_weekly_max = get_median_count(qs_weekly_max, 'weekly_max')    
-    qs_percentage = stds.exclude(percentage__isnull=True)
-    mdn_percentage, cnt_percentage = get_median_count(qs_percentage, 'percentage')    
-    qs_duration_weeks = stds.exclude(duration_weeks__isnull=True)
-    mdn_duration_weeks, cnt_duration_weeks = get_median_count(qs_duration_weeks, 'duration_weeks')    
-
-    prcnt_salary_cont = stds.filter(salary_cont=True).count() * 100 / stds.count()
-    # for counting # of plans
-    num_plan0 = employers.filter(std_count=0).count()
-    num_plan1 = employers.filter(std_count=1).count()
-    num_plan2 = employers.filter(std_count=2).count()
-    num_plan3_or_more = num_companies - num_plan0 - num_plan1 - num_plan2
-
-    prcnt_plan0 = '{0:0.0f}'.format(num_plan0 * 100.0 / num_companies)
-    prcnt_plan1 = '{0:0.0f}'.format(num_plan1 * 100.0 / num_companies)
-    prcnt_plan2 = '{0:0.0f}'.format(num_plan2 * 100.0 / num_companies)
-    prcnt_plan3_or_more = '{0:0.0f}'.format(num_plan3_or_more * 100.0 / num_companies)
-
-    quintile_weekly_max = get_incremental_array(qs_weekly_max, 'weekly_max') 
-    quintile_duration_weeks = get_incremental_array(qs_duration_weeks, 'duration_weeks') 
-
-    companies_with_paid = set([item.employer_id for item in stds.filter(cost_share='100% Employer Paid')])
-    companies_with_share = set([item.employer_id for item in stds.filter(cost_share='Employee Cost Share')])
-    cnt_paid = len(companies_with_paid - companies_with_share)
-    cnt_share = len(companies_with_share - companies_with_paid)
-    cnt_paid_share = len(companies_with_share.intersection(companies_with_paid))
-    cnt_non_reported = num_companies - num_plan0 - cnt_paid - cnt_share - cnt_paid_share
-
-    prcnt_paid = '{0:0.0f}'.format(cnt_paid * 100.0 / num_companies)
-    prcnt_share = '{0:0.0f}'.format(cnt_share * 100.0 / num_companies)
-    prcnt_paid_share = '{0:0.0f}'.format(cnt_paid_share * 100.0 / num_companies)    
-    prcnt_non_reported = '{0:0.0f}'.format(cnt_non_reported * 100.0 / num_companies)    
-
-    return {
-        'EMPLOYER_THRESHOLD': settings.EMPLOYER_THRESHOLD,
-        'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE,
-        'num_employers': num_companies,
-        
-        'mdn_waiting_injury': mdn_waiting_days,
-        'mdn_waiting_illness': mdn_waiting_days_sick, 
-        'mdn_weekly_max': mdn_weekly_max, 
-        'mdn_percentage': mdn_percentage, 
-        'mdn_duration_weeks': mdn_duration_weeks, 
-
-        'quintile_weekly_max': mark_safe(json.dumps(quintile_weekly_max)),
-        'quintile_duration_weeks': mark_safe(json.dumps(quintile_duration_weeks)),        
-        
-        'prcnt_salary_cont': prcnt_salary_cont,
-        'prcnt_paid': prcnt_paid,
-        'prcnt_share': prcnt_share,
-        'prcnt_paid_share': prcnt_paid_share,
-        'prcnt_non_reported': prcnt_non_reported,        
-        'prcnt_plan0': prcnt_plan0,
-        'prcnt_plan1': prcnt_plan1,
-        'prcnt_plan2': prcnt_plan2,
-        'prcnt_plan3_or_more': prcnt_plan3_or_more,
+    var_local = {
+        'prcnt_salary_cont': qs.filter(salary_cont=True).count() * 100 / qs.count(),
     }
+
+    for attr in ['weekly_max', 'duration_weeks']:
+        var_local['quintile_'+attr] = get_incremental_array(sub_qs['qs_'+attr], attr)
+
+    # percentages for plans and cost share
+    prcnt_plan_count = get_plan_percentages(employers, num_companies, 'std')
+    prcnt_cost_share = get_plan_cost_share(qs)
+
+    return dict(var_local.items() 
+              + prcnt_cost_share.items() 
+              + prcnt_plan_count.items()
+              + medians.items())
 
 
 def get_ltd_plan(employers, num_companies):
-    if num_companies < settings.EMPLOYER_THRESHOLD:
-        return {
-            'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE,
-            'num_employers': num_companies,
-            'EMPLOYER_THRESHOLD': settings.EMPLOYER_THRESHOLD
-        }
-
     ltds = LTD.objects.filter(employer__in=employers)
+    attrs = ['waiting_weeks', 'monthly_max', 'percentage']
+    qs = LTD.objects.filter(employer__in=employers)
+    medians, sub_qs = get_medians(qs, attrs, num_companies)
 
-    qs_waiting_weeks = ltds.exclude(waiting_weeks__isnull=True)
-    mdn_waiting_weeks, cnt_waiting_weeks = get_median_count(qs_waiting_weeks, 'waiting_weeks')
-    qs_monthly_max = ltds.exclude(monthly_max__isnull=True)
-    mdn_monthly_max, cnt_monthly_max = get_median_count(qs_monthly_max, 'monthly_max')    
-    qs_percentage = ltds.exclude(percentage__isnull=True)
-    mdn_percentage, cnt_percentage = get_median_count(qs_percentage, 'percentage')     
+    var_local = {}
+    for attr in ['waiting_weeks', 'monthly_max']:
+        var_local['quintile_'+attr] = get_incremental_array(sub_qs['qs_'+attr], attr)
 
-    # for counting # of plans
-    num_plan0 = employers.filter(ltd_count=0).count()
-    num_plan1 = employers.filter(ltd_count=1).count()
-    num_plan2 = employers.filter(ltd_count=2).count()
-    num_plan3_or_more = num_companies - num_plan0 - num_plan1 - num_plan2
+    # percentages for plans and cost share
+    prcnt_plan_count = get_plan_percentages(employers, num_companies, 'ltd')
+    prcnt_cost_share = get_plan_cost_share(qs)
 
-    prcnt_plan0 = '{0:0.0f}'.format(num_plan0 * 100.0 / num_companies)
-    prcnt_plan1 = '{0:0.0f}'.format(num_plan1 * 100.0 / num_companies)
-    prcnt_plan2 = '{0:0.0f}'.format(num_plan2 * 100.0 / num_companies)
-    prcnt_plan3_or_more = '{0:0.0f}'.format(num_plan3_or_more * 100.0 / num_companies)
-
-    quintile_monthly_max = get_incremental_array(qs_monthly_max, 'monthly_max') 
-    quintile_waiting_weeks = get_incremental_array(qs_waiting_weeks, 'waiting_weeks') 
-
-    companies_with_paid = set([item.employer_id for item in ltds.filter(cost_share='100% Employer Paid')])
-    companies_with_share = set([item.employer_id for item in ltds.filter(cost_share='Employee Cost Share')])
-    cnt_paid = len(companies_with_paid - companies_with_share)
-    cnt_share = len(companies_with_share - companies_with_paid)
-    cnt_paid_share = len(companies_with_share.intersection(companies_with_paid))
-    cnt_non_reported = num_companies - num_plan0 - cnt_paid - cnt_share - cnt_paid_share
-
-    prcnt_paid = '{0:0.0f}'.format(cnt_paid * 100.0 / num_companies)
-    prcnt_share = '{0:0.0f}'.format(cnt_share * 100.0 / num_companies)
-    prcnt_paid_share = '{0:0.0f}'.format(cnt_paid_share * 100.0 / num_companies)    
-    prcnt_non_reported = '{0:0.0f}'.format(cnt_non_reported * 100.0 / num_companies)    
-
-    return {
-        'EMPLOYER_THRESHOLD': settings.EMPLOYER_THRESHOLD,
-        'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE,
-        'num_employers': num_companies,
-        
-        'mdn_monthly_max': mdn_monthly_max,
-        'mdn_percentage': mdn_percentage, 
-        'mdn_waiting_weeks': mdn_waiting_weeks, 
-
-        'quintile_monthly_max': mark_safe(json.dumps(quintile_monthly_max)),
-        'quintile_waiting_weeks': mark_safe(json.dumps(quintile_waiting_weeks)),        
-        
-        'prcnt_paid': prcnt_paid,
-        'prcnt_share': prcnt_share,
-        'prcnt_paid_share': prcnt_paid_share,
-        'prcnt_non_reported': prcnt_non_reported,        
-        'prcnt_plan0': prcnt_plan0,
-        'prcnt_plan1': prcnt_plan1,
-        'prcnt_plan2': prcnt_plan2,
-        'prcnt_plan3_or_more': prcnt_plan3_or_more,
-    }
+    return dict(var_local.items() 
+              + prcnt_cost_share.items() 
+              + prcnt_plan_count.items()
+              + medians.items())
 
 
 @csrf_exempt
@@ -802,10 +629,23 @@ def get_num_employers(request):
 def get_median_count(queryset, term):
     count = queryset.count()
     values = queryset.values_list(term, flat=True).order_by(term)
-    if count % 2 == 1:
-        return values[int(round(count/2))], count
-    else:
-        return sum(values[count/2-1:count/2+1])/2, count
+    try:
+        if count % 2 == 1:
+            return values[int(round(count/2))], count
+        else:
+            return sum(values[count/2-1:count/2+1])/2, count
+    except Exception as e:
+        print term, '@@@@@@@@@@'
+
+
+def get_percent_count(qs, attr):
+    qs1 = qs.filter(**{ attr: True })
+    qs2 = qs.exclude(**{ '{}__isnull'.format(attr): True })
+    return get_percent_count_(qs1, qs2)
+
+
+def get_percent_count_(qs1, qs2):
+    return qs1.count() * 100 / qs2.count()
 
 
 def get_incremental_array(queryset, term):
@@ -875,7 +715,7 @@ def get_plans_(benefit, group):
                    [item.id, '{} - {} - {}'.format(item.employer.name, item.type, item.title)]
                    for item in objects.order_by('employer__name', 'title')
                ]
-    elif benefit in ['STD', 'LTD']:
+    elif benefit in ['STD', 'LTD', 'VISION']:
         return [
                    [item.id, '{} - {}'.format(item.employer.name, item.title)]
                    for item in objects.order_by('employer__name', 'title')
@@ -893,3 +733,77 @@ def contact_us(request):
 
 def company(request):
     return render(request, 'company.html')    
+
+
+def get_plan_percentages(employers, num_companies, attr):
+    var_local = {}
+    var_return = {}
+    num_plans = 0
+
+    for i in range(3):
+        kwargs = { '{0}_count'.format(attr): i }
+        var_local['num_plan{}'.format(i)] = employers.filter(**kwargs).count()
+        num_plans += var_local['num_plan{}'.format(i)]
+        var_return['prcnt_plan{}'.format(i)] = '{0:0.0f}'.format(var_local['num_plan{}'.format(i)] * 100.0 / num_companies)
+
+    num_plan = num_companies - num_plans
+    var_return['prcnt_plan3_or_more'] = '{0:0.0f}'.format(num_plan * 100.0 / num_companies)
+
+    return var_return
+
+
+def get_prevalence(qs, attr, val1, val2, keys):
+    num_employers = len(qs.values_list('employer_id').distinct())       
+    set1 = set([item.employer_id for item in qs.filter(**{ attr: val1 })])
+    set2 = set([item.employer_id for item in qs.filter(**{ attr: val2 })])
+
+    cnt_set1 = len(set1 - set2)
+    cnt_set2 = len(set2 - set1)
+    cnt_intersection = len(set2.intersection(set1))
+    cnt_non_reported = num_employers - cnt_set1 - cnt_set2 - cnt_intersection
+
+    return {
+        keys[0]: '{0:0.0f}'.format(cnt_set1 * 100.0 / num_employers),
+        keys[1]: '{0:0.0f}'.format(cnt_set2 * 100.0 / num_employers),
+        keys[2]: '{0:0.0f}'.format(cnt_intersection * 100.0 / num_employers),
+        keys[3]: '{0:0.0f}'.format(cnt_non_reported * 100.0 / num_employers)           
+    }
+
+
+def get_plan_cost_share(qs):
+    keys = ['prcnt_paid', 'prcnt_share', 'prcnt_paid_share', 'prcnt_non_reported']
+    return get_prevalence(qs, 'cost_share', '100% Employer Paid', 'Employee Cost Share', keys)
+
+
+def get_plan_type(qs):
+    keys = ['prcnt_type_plan_mul', 'prcnt_type_plan_flat', 'prcnt_type_plan_mul_flat', 'prcnt_type_non_reported']
+    return get_prevalence(qs, 'type', 'Multiple of Salary', 'Flat Amount', keys)
+
+
+def get_medians(qs, attrs, num_companies):
+    var_local = {}
+    var_return = {
+        'EMPLOYER_THRESHOLD': settings.EMPLOYER_THRESHOLD,
+        'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE,
+        'num_employers': num_companies,    
+    }
+
+    for attr in attrs:
+        kwargs = { '{0}__isnull'.format(attr): True }        
+        var_local['qs_'+attr] = qs.exclude(**kwargs)
+        mdn_attr, _ = get_median_count(var_local['qs_'+attr], attr)
+        var_return['mdn_'+attr] = mdn_attr    
+
+    return var_return, var_local
+
+
+def get_filtered_employers_session(request):
+    ft_industries = request.session['ft_industries']
+    ft_head_counts = request.session['ft_head_counts']
+    ft_other = request.session['ft_other']
+    ft_regions = request.session['ft_regions']
+
+    return get_filtered_employers(ft_industries, 
+                                  ft_head_counts, 
+                                  ft_other,
+                                  ft_regions)

@@ -292,13 +292,22 @@ update_content = function(benefit) {
         gh2_data = generate_quintile_data(gh2_data);
         
         draw_bar_chart(benefit+'-1', gh1_data);        
+        draw_bar_chart(benefit+'-2', gh2_data);        
+    } else if ($.inArray(benefit, ["VISION"]) != -1) {
+        gh1_data = generate_quintile_data(gh1_data);
+        gh2_data = generate_quintile_data(gh2_data);
+        gh3_data = generate_quintile_data(gh3_data);
+        gh4_data = generate_quintile_data(gh4_data);
+        gh5_data = generate_quintile_data(gh5_data);
+        gh6_data = generate_quintile_data(gh6_data);        
         
-        // if ( benefit == "LIFE")
-            draw_bar_chart(benefit+'-2', gh2_data);        
-        // else
-        //     draw_bar_chart(benefit+'-2', gh2_data, true, 7);        
-      
-        // draw_easy_pie_chart();
-        // draw_donut_chart(benefit+'-18', gh18_data);
+        draw_bar_chart(benefit+'-1', gh1_data);        
+        draw_bar_chart(benefit+'-2', gh2_data);        
+        draw_bar_chart(benefit+'-3', gh3_data);        
+        draw_bar_chart(benefit+'-4', gh4_data);        
+        draw_bar_chart(benefit+'-5', gh5_data);        
+        draw_bar_chart(benefit+'-6', gh6_data);        
+
+        draw_donut_chart(benefit+'-18', gh18_data);
     }
 }

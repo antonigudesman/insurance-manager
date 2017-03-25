@@ -42,7 +42,7 @@
                     </tr>
                     <tr>
                         <td class="row-label">ADD Included</td>
-                        <td>{{ prcnt_add_multiple }}</td>
+                        <td>{{ prcnt_add_multiple }}%</td>
                         <td><span id="prop_add_multiple"></span></td>
                     </tr>
                 </tbody>
@@ -79,7 +79,7 @@
                     </tr>
                     <tr>
                         <td class="row-label">ADD Included</td>
-                        <td>{{ prcnt_add_flat }}</td>
+                        <td>{{ prcnt_add_flat }}%</td>
                         <td><span id="prop_add_flat"></span></td>
                     </tr>
                 </tbody>
@@ -129,10 +129,6 @@
                     <tr>
                         <td class="row-label">Not Reported</td>
                         <td>{{ prcnt_non_reported }}%</td>
-                    </tr>
-                    <tr>
-                        <td class="row-label">Not Offered</td>
-                        <td>{{ prcnt_type_plan_none }}%</td>
                     </tr>
                 </tbody>
             </table>  
@@ -203,10 +199,6 @@
                         <td class="row-label">Not Reported</td>
                         <td>{{ prcnt_type_non_reported }}%</td>
                     </tr>
-                    <tr>
-                        <td class="row-label">Not Offered</td>
-                        <td>{{ prcnt_type_plan_none }}%</td>
-                    </tr>
                 </tbody>
             </table>  
         </div>
@@ -223,8 +215,8 @@
 var gh1_data, gh2_data, gh18_data;
 
 {% if num_employers >= EMPLOYER_THRESHOLD %}
-    gh1_data = {{ quintile_array_multiple }};
-    gh2_data = {{ quintile_array_flat }};
+    gh1_data = {{ quintile_multiple_max }};
+    gh2_data = {{ quintile_flat_amount }};
 
     gh18_data = [
         {data: {{ prcnt_plan0 }}, color: '#F44336', label: 'Not Offered'},
