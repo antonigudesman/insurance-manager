@@ -32,7 +32,7 @@
                 <tbody>
                     <tr>
                         <td class="row-label">Copay</td>
-                        <td>${{ mdn_exam_copay|intcomma }}</td>
+                        <td>{{ mdn_exam_copay }}</td>
                         <td><span id="prop_exam_copay"></span></td>
                     </tr>
                     <tr>
@@ -42,7 +42,7 @@
                     </tr>
                     <tr>
                         <td class="row-label">Out of Network Allowance</td>
-                        <td>${{ mdn_exam_out_allowance }}</td>
+                        <td>{{ mdn_exam_out_allowance }}</td>
                         <td><span id="prop_exam_out_allowance"></span></td>
                     </tr>
                 </tbody>
@@ -74,7 +74,7 @@
                 <tbody>
                     <tr>
                         <td class="row-label">Copay</td>
-                        <td>${{ mdn_lenses_copay|intcomma }}</td>
+                        <td>{{ mdn_lenses_copay }}</td>
                         <td><span id="prop_lenses_copay"></span></td>
                     </tr>
                     <tr>
@@ -84,7 +84,7 @@
                     </tr>
                     <tr>
                         <td class="row-label">Out-of-Network Allowance</td>
-                        <td>${{ mdn_lenses_out_allowance }}</td>
+                        <td>{{ mdn_lenses_out_allowance }}</td>
                         <td><span id="prop_lenses_out_allowance"></span></td>
                     </tr>
                 </tbody>
@@ -116,17 +116,17 @@
                 <tbody>
                     <tr>
                         <td class="row-label">Copay</td>
-                        <td>${{ mdn_frames_copay|intcomma }}</td>
+                        <td>{{ mdn_frames_copay }}</td>
                         <td><span id="prop_frames_copay"></span></td>
                     </tr>
                     <tr>
                         <td class="row-label">Allowance</td>
-                        <td>${{ mdn_frames_allowance }}</td>
+                        <td>{{ mdn_frames_allowance }}</td>
                         <td><span id="prop_frames_allowance"></span></td>
                     </tr>
                     <tr>
                         <td class="row-label">Balance Coinsurance</td>
-                        <td>{{ mdn_frames_coinsurance }}%</td>
+                        <td>{{ mdn_frames_coinsurance }}</td>
                         <td><span id="prop_frames_coinsurance"></span></td>
                     </tr>
                     <tr>
@@ -136,7 +136,7 @@
                     </tr>
                     <tr>
                         <td class="row-label">Out-of-Network Allowance</td>
-                        <td>${{ mdn_frames_out_allowance }}</td>
+                        <td>{{ mdn_frames_out_allowance }}</td>
                         <td><span id="prop_frames_out_allowance"></span></td>
                     </tr>
                 </tbody>
@@ -168,17 +168,17 @@
                 <tbody>
                     <tr>
                         <td class="row-label">Copay</td>
-                        <td>${{ mdn_contacts_copay|intcomma }}</td>
+                        <td>{{ mdn_contacts_copay }}</td>
                         <td><span id="prop_contacts_copay"></span></td>
                     </tr>
                     <tr>
                         <td class="row-label">Allowance</td>
-                        <td>${{ mdn_contacts_allowance }}</td>
+                        <td>{{ mdn_contacts_allowance }}</td>
                         <td><span id="prop_contacts_allowance"></span></td>
                     </tr>
                     <tr>
                         <td class="row-label">Balance Coinsurance</td>
-                        <td>{{ mdn_contacts_coinsurance }}%</td>
+                        <td>{{ mdn_contacts_coinsurance }}</td>
                         <td><span id="prop_contacts_coinsurance"></span></td>
                     </tr>
                     <tr>
@@ -188,7 +188,7 @@
                     </tr>
                     <tr>
                         <td class="row-label">Out-of-Network Allowance</td>
-                        <td>${{ mdn_contacts_out_allowance }}</td>
+                        <td>{{ mdn_contacts_out_allowance }}</td>
                         <td><span id="prop_contacts_out_allowance"></span></td>
                     </tr>
                 </tbody>
@@ -220,22 +220,22 @@
                 <tbody>
                     <tr>
                         <td class="row-label">Employee Only</td>
-                        <td>${{ mdn_t1_ee|intcomma }}</td>
+                        <td>{{ mdn_t1_ee }}</td>
                         <td><span id="prop_t1_ee"></span></td>
                     </tr>
                     <tr>
                         <td class="row-label">Employee + Spouse</td>
-                        <td>${{ mdn_t2_ee }}</td>
+                        <td>{{ mdn_t2_ee }}</td>
                         <td><span id="prop_t2_ee"></span></td>
                     </tr>
                     <tr>
                         <td class="row-label">Employee + Child(ren)</td>
-                        <td>${{ mdn_t3_ee }}</td>
+                        <td>{{ mdn_t3_ee }}</td>
                         <td><span id="prop_t3_ee"></span></td>
                     </tr>
                     <tr>
                         <td class="row-label">Family</td>
-                        <td>${{ mdn_t4_ee }}</td>
+                        <td>{{ mdn_t4_ee }}</td>
                         <td><span id="prop_t4_ee"></span></td>
                     </tr>
                 </tbody>
@@ -267,22 +267,22 @@
                 <tbody>
                     <tr>
                         <td class="row-label">Employee Only</td>
-                        <td>${{ mdn_t1_gross|intcomma }}</td>
+                        <td>{{ mdn_t1_gross }}</td>
                         <td><span id="prop_t1_gross"></span></td>
                     </tr>
                     <tr>
                         <td class="row-label">Employee + Spouse</td>
-                        <td>${{ mdn_t2_gross }}</td>
+                        <td>{{ mdn_t2_gross }}</td>
                         <td><span id="prop_t2_gross"></span></td>
                     </tr>
                     <tr>
                         <td class="row-label">Employee + Child(ren)</td>
-                        <td>${{ mdn_t3_gross }}</td>
+                        <td>{{ mdn_t3_gross }}</td>
                         <td><span id="prop_t3_gross"></span></td>
                     </tr>
                     <tr>
                         <td class="row-label">Family</td>
-                        <td>${{ mdn_t4_gross }}</td>
+                        <td>{{ mdn_t4_gross }}</td>
                         <td><span id="prop_t4_gross"></span></td>
                     </tr>
                 </tbody>

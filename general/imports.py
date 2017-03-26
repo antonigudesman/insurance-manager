@@ -43,6 +43,84 @@ def import_employer(request):
     return HttpResponse('Successfully imported ({})!'.format(Employer.objects.all().count()))
 
 
+def import_medical(request):
+    path = '/home/akimmel/work/table extracts/medical.csv'
+    # path = '/root/work/Enterprise/data/medical.csv'
+
+    with open(path) as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            try:
+                medical = Medical.objects.create(          
+                    title='Option M',
+                    employer_id=row['EMPLOYERNAME__C'],
+                    type=row['DP_TYPE__C'] or None,
+                    in_ded_single=row['MP_IN_DEDUCTIBLE_S__C'] or None,
+                    in_ded_family=row['MP_IN_DEDUCTIBLE_F__C'] or None,
+                    in_max_single=row['MP_IN_MAXIMUM_S__C'] or None,
+                    in_max_family=row['MP_IN_MAXIMUM_F__C'] or None,
+                    in_coin=row['MP_IN_COINSURANCE__C'] or None,
+                    out_ded_single=row['MP_OUT_DEDUCTIBLE_S__C'] or None,
+                    out_ded_family=row['MP_OUT_DEDUCTIBLE_F__C'] or None,
+                    out_max_single=row['MP_OUT_MAXIMUM_S__C'] or None,
+                    out_max_family=row['MP_OUT_MAXIMUM_F__C'] or None,
+                    out_coin=row['MP_OUT_COINSURANCE_DEL__C'] or None,
+                    rx_ded_single=row['MP_RX_DEDUCTIBLE_S__C'] or None,
+                    rx_ded_family=row['MP_RX_DEDUCTIBLE_F__C'] or None,
+                    rx_max_single=row['MP_RX_MAXIMUM_S__C'] or None,
+                    rx_max_family=row['MP_RX_MAXIMUM_F__C'] or None,
+                    rx_coin=row['MP_RX_COINSURANCE__C'] or None,
+                    pcp_copay=row['MP_PCP_COPAY__C'] or None,
+                    sp_copay=row['MP_SP_COPAY__C'] or None,
+                    er_copay=row['MP_ER_COPAY__C'] or None,
+                    uc_copay=row['MP_UC_COPAY__C'] or None,
+                    lx_copay=row['MP_LX_COPAY__C'] or None,
+                    ip_copay=row['MP_IP_COPAY__C'] or None,
+                    op_copay=row['MP_OP_COPAY__C'] or None,
+                    rx1_copay=row['MP_RX1_COPAY__C'] or None,
+                    rx2_copay=row['MP_RX2_COPAY__C'] or None,
+                    rx3_copay=row['MP_RX3_COPAY__C'] or None,
+                    rx4_copay=row['MP_RX4_COPAY__C'] or None,
+                    rx1_mail_copay=row['MP_RX1_MAIL_COPAY__C'] or None,
+                    rx2_mail_copay=row['MP_RX2_MAIL_COPAY__C'] or None,
+                    rx3_mail_copay=row['MP_RX3_MAIL_COPAY__C'] or None,
+                    rx4_mail_copay=row['MP_RX4_MAIL_COPAY__C'] or None,
+                    pcp_ded_apply=row['MP_PCP_DEDUCTIBLE_APPLY__C'] or None,
+                    sp_ded_apply=row['MP_SP_DEDUCTIBLE_APPLY__C'] or None,
+                    er_ded_apply=row['MP_ER_DEDUCTIBLE_APPLY__C'] or None,
+                    uc_ded_apply=row['MP_UC_DEDUCTIBLE_APPLY__C'] or None,
+                    lx_ded_apply=row['MP_LX_DEDUCTIBLE_APPLY__C'] or None,
+                    ip_ded_apply=row['MP_IP_DEDUCTIBLE_APPLY__C'] or None,
+                    op_ded_apply=row['MP_OP_DEDUCTIBLE_APPLY__C'] or None,
+                    rx1_ded_apply=row['MP_RX1_DEDUCTIBLE_APPLY__C'] or None,
+                    rx2_ded_apply=row['MP_RX2_DEDUCTIBLE_APPLY__C'] or None,
+                    rx3_ded_apply=row['MP_RX3_DEDUCTIBLE_APPLY__C'] or None,
+                    rx4_ded_apply=row['MP_RX4_DEDUCTIBLE_APPLY__C'] or None,
+                    age_rated=row['AGE_RATED__C']=='TRUE',
+                    hra=row['HRA__C']=='TRUE',
+                    hsa=row['HSA__C']=='TRUE',
+                    ded_cross=get_3_state_boolean(row['MP_DED_CROSS_ACCUMULATE__C']),
+                    max_cross=get_3_state_boolean(row['MP_MAX_CROSS_ACCUMULATE__C']),
+                    t1_ee=row['DP_T1_ANNUAL_EE__C'] or None,
+                    t2_ee=row['DP_T2_ANNUAL_EE__C'] or None,
+                    t3_ee=row['DP_T3_ANNUAL_EE__C'] or None,
+                    t4_ee=row['DP_T4_ANNUAL_EE__C'] or None,
+                    t1_gross=row['DP_T1_ANNUAL_GROSS__C'] or None,
+                    t2_gross=row['DP_T2_ANNUAL_GROSS__C'] or None,
+                    t3_gross=row['DP_T3_ANNUAL_GROSS__C'] or None,
+                    t4_gross=row['DP_T4_ANNUAL_GROSS__C'] or None,
+                    t1_ercdhp=row['DP_T1_ANNUAL_ERCDHP__C'] or None,
+                    t2_ercdhp=row['DP_T2_ANNUAL_ERCDHP__C'] or None,
+                    t3_ercdhp=row['DP_T3_ANNUAL_ERCDHP__C'] or None,
+                    t4_ercdhp=row['DP_T4_ANNUAL_ERCDHP__C'] or None)
+            except Exception as e:
+                print str(e)
+                print '#{}#'.format(row['EMPLOYERNAME__C'])
+                # break
+
+    return HttpResponse('Successfully imported ({})!'.format(Medical.objects.all().count()))
+
+
 def import_dental(request):
     path = '/home/akimmel/work/table extracts/dental.csv'
     # path = '/root/work/Enterprise/data/dental.csv'
