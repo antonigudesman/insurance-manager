@@ -57,7 +57,7 @@ def get_filtered_employers_session(request):
                                   ft_regions)
 
 
-def get_medians(qs, attrs, num_companies):
+def get_medians(qs, attrs, num_companies, attrs_percent=[], attrs_int=[]):
     var_local = {}
     var_return = {
         'EMPLOYER_THRESHOLD': settings.EMPLOYER_THRESHOLD,
@@ -69,7 +69,23 @@ def get_medians(qs, attrs, num_companies):
         kwargs = { '{0}__isnull'.format(attr): True }        
         var_local['qs_'+attr] = qs.exclude(**kwargs)
         mdn_attr, _ = get_median_count(var_local['qs_'+attr], attr)
-        var_return['mdn_'+attr] = mdn_attr    
+        var_return['mdn_'+attr] = mdn_attr
+        if mdn_attr != 'N/A':
+            var_return['mdn_'+attr] = '${:,.0f}'.format(mdn_attr)
+
+    for attr in attrs_percent:
+        kwargs = { '{0}__isnull'.format(attr): True }        
+        var_local['qs_'+attr] = qs.exclude(**kwargs)
+        mdn_attr, _ = get_median_count(var_local['qs_'+attr], attr)
+        var_return['mdn_'+attr] = mdn_attr
+        if mdn_attr != 'N/A':
+            var_return['mdn_'+attr] = '{:,.0f}%'.format(mdn_attr)
+
+    for attr in attrs_int:
+        kwargs = { '{0}__isnull'.format(attr): True }        
+        var_local['qs_'+attr] = qs.exclude(**kwargs)
+        mdn_attr, _ = get_median_count(var_local['qs_'+attr], attr)
+        var_return['mdn_'+attr] = mdn_attr
 
     return var_return, var_local
 
@@ -81,7 +97,10 @@ def get_percent_count(qs, attr):
 
 
 def get_percent_count_(qs1, qs2):
-    return qs1.count() * 100 / qs2.count()
+    cnt = qs2.count()
+    if cnt:
+        return qs1.count() * 100 / cnt
+    return 'N/A'
 
 
 def get_median_count(queryset, term):
@@ -93,8 +112,7 @@ def get_median_count(queryset, term):
         else:
             return sum(values[count/2-1:count/2+1])/2, count
     except Exception as e:
-        print term, '@@@@@@@@@@'
-
+        return 'N/A', 0
 
 def get_incremental_array(queryset, term):
     num_points = settings.MAX_POINTS
@@ -135,7 +153,8 @@ def get_incremental_array(queryset, term):
         label_o = label_
         idx += 1
 
-    result_[-1] = [100, last_value]
+    if result_:
+        result_[-1] = [100, last_value]
     return result_
 
 
@@ -185,8 +204,14 @@ def get_plan_type(qs):
 
 
 def get_rank(quintile_array, value):
-    if not value:
+    if value == None or value == 'N/A':
         return 'N/A'
+
+    # for specific filtering cases
+    if quintile_array[0][1] > value:
+        return 1;
+    elif quintile_array[-1][1] < value:
+        return 5;
 
     x_vals = []
     for idx in range(len(quintile_array)-1):

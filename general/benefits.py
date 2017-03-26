@@ -5,6 +5,163 @@ from .aux import *
 
 
 """
+Dental ( DPPO, DMO ) page
+"""
+
+dental_quintile_attrs = [
+    'in_ded_single',
+    'in_max',
+    'out_ded_single',
+    'out_max',
+    'in_prev_coin',
+    'in_basic_coin',
+    'in_major_coin',
+    'in_ortho_coin',
+    't1_ee',
+    't1_gross'
+]
+
+def get_dental_plan(employers, num_companies, benefit_=None):
+    medians, var_local, qs = get_dental_plan_(employers, num_companies, benefit_)
+    prcnt_plan_count = get_plan_percentages(employers, num_companies, 'den')
+
+    attrs = [
+        'prev_ded_apply',
+        'basic_ded_apply',
+        'major_ded_apply',
+        'ortho_ded_apply'
+    ]
+
+    for attr in attrs:
+        val = get_percent_count(qs, attr)
+        var_local['prcnt_'+attr] = val
+        if val != 'N/A':
+            var_local['prcnt_'+attr] = '{:,.0f}%'.format(val)
+
+    return dict(var_local.items() 
+              + prcnt_plan_count.items()
+              + medians.items())
+
+def get_dental_plan_(employers, num_companies, benefit_=None):
+    attrs = ['in_ded_single',
+             'in_ded_family',
+             'in_max',
+             'in_max_ortho',
+             'out_ded_single',
+             'out_ded_family',
+             'out_max',
+             'out_max_ortho',
+             't1_ee',
+             't2_ee',
+             't3_ee',
+             't4_ee',
+             't1_gross',
+             't2_gross',
+             't3_gross',
+             't4_gross']
+
+    attrs_percent = ['in_prev_coin',
+                     'out_prev_coin',
+                     'in_basic_coin',
+                     'out_basic_coin',
+                     'in_major_coin',
+                     'out_major_coin',
+                     'in_ortho_coin',
+                     'out_ortho_coin',
+    ]
+
+    attrs_int = ['ortho_age_limit']
+
+    qs = Dental.objects.filter(employer__in=employers, type=benefit_)
+    medians, sub_qs = get_medians(qs, attrs, num_companies, attrs_percent, attrs_int)
+
+    var_local = {}
+    for attr in dental_quintile_attrs:
+        var_local['quintile_'+attr] = get_incremental_array(sub_qs['qs_'+attr], attr)
+    return medians, var_local, qs
+
+def get_dental_properties(request, plan, benefit_=None):
+    context = {}
+    attrs = [item.name 
+             for item in Dental._meta.fields 
+             if item.name not in ['id', 'employer', 'title', 'type']]
+
+    for attr in attrs:
+        context[attr] = 'N/A'
+
+    for attr in dental_quintile_attrs:
+        context['rank_'+attr] = 'N/A'
+
+    if plan:
+        employers, num_companies = get_filtered_employers_session(request)
+        medians, var_local, qs = get_dental_plan_(employers, num_companies, benefit_)
+        instance = Dental.objects.get(id=plan)
+
+        attrs = ['in_ded_single',
+                 'in_ded_family',
+                 'in_max',
+                 'in_max_ortho',
+                 'out_ded_single',
+                 'out_ded_family',
+                 'out_max',
+                 'out_max_ortho',
+                 't1_ee',
+                 't2_ee',
+                 't3_ee',
+                 't4_ee',
+                 't1_gross',
+                 't2_gross',
+                 't3_gross',
+                 't4_gross']
+
+        for attr in attrs:
+            val = getattr(instance, attr)
+            context[attr] = 'N/A'
+            if val != None:
+                context[attr] = '${:,.0f}'.format(val)
+
+        attrs = ['in_prev_coin',
+                 'out_prev_coin',
+                 'in_basic_coin',
+                 'out_basic_coin',
+                 'in_major_coin',
+                 'out_major_coin',
+                 'in_ortho_coin',
+                 'out_ortho_coin']
+
+        for attr in attrs:
+            val = getattr(instance, attr)
+            context[attr] = '{:,.0f}%'.format(val) if val != None else 'N/A'
+
+        attrs = ['ortho_age_limit']
+                 
+        for attr in attrs:
+            val = getattr(instance, attr)
+            context[attr] = val if val else 'N/A'
+
+        attrs = ['prev_ded_apply',
+                 'basic_ded_apply',
+                 'major_ded_apply',
+                 'ortho_ded_apply']
+                 
+        for attr in attrs:
+            val = getattr(instance, attr)
+            if val != None:
+                context[attr] = 'Yes' if val else 'No'
+            else:
+                context[attr] = 'N/A'
+        
+        for attr in ['in_ded_single', 'out_ded_single', 'in_prev_coin', 'in_basic_coin', 'in_major_coin', 'in_ortho_coin', 't1_ee', 't1_gross']: 
+            rank = get_rank(var_local['quintile_'+attr], getattr(instance, attr))
+            context['rank_'+attr] = rank if rank == 'N/A' else 6 - rank
+
+        for attr in ['in_max', 'out_max']:            
+            context['rank_'+attr] = get_rank(var_local['quintile_'+attr], getattr(instance, attr))
+
+    return JsonResponse(context, safe=False)
+
+
+"""
 VISION page
 """
 
@@ -15,7 +172,7 @@ vision_quintile_attrs = ['exam_copay',
                         't1_ee',
                         't1_gross']
 
-def get_vision_plan(employers, num_companies):
+def get_vision_plan(employers, num_companies, benefit_=None):
     medians, var_local = get_vision_plan_(employers, num_companies)
     prcnt_plan_count = get_plan_percentages(employers, num_companies, 'vis')
 
@@ -33,7 +190,7 @@ def get_vision_plan_(employers, num_companies):
         var_local['quintile_'+attr] = get_incremental_array(sub_qs['qs_'+attr], attr)
     return medians, var_local
 
-def get_vision_properties(request, plan):
+def get_vision_properties(request, plan, benefit_=None):
     context = {}
     attrs = [item.name for item in Vision._meta.fields if item.name not in ['id', 'employer', 'title']]
     for attr in attrs:
@@ -102,7 +259,7 @@ LIFE page
 
 life_quintile_attrs = ['multiple_max', 'flat_amount']
 
-def get_life_plan(employers, num_companies):
+def get_life_plan(employers, num_companies, benefit_=None):
     medians, var_local, qs = get_life_plan_(employers, num_companies)
 
     var_local['prcnt_add_flat'] = get_percent_count_( qs.filter(add=True, type='Flat Amount'), qs.filter(type='Flat Amount'))
@@ -131,7 +288,7 @@ def get_life_plan_(employers, num_companies):
 
     return medians, var_local, qs
 
-def get_life_properties(request, plan):
+def get_life_properties(request, plan, benefit_=None):
     context = {
         'multiple_max': 'N/A',
         'flat_amount': 'N/A',
@@ -168,7 +325,7 @@ STD page
 
 std_quintile_attrs = ['weekly_max', 'duration_weeks']
 
-def get_std_plan(employers, num_companies):
+def get_std_plan(employers, num_companies, benefit_=None):
     medians, var_local, qs = get_std_plan_(employers, num_companies)
     var_local['prcnt_salary_cont'] = qs.filter(salary_cont=True).count() * 100 / qs.count()
 
@@ -228,7 +385,7 @@ LTD page
 
 ltd_quintile_attrs = ['waiting_weeks', 'monthly_max']
 
-def get_ltd_plan(employers, num_companies):
+def get_ltd_plan(employers, num_companies, benefit_=None):
     medians, var_local, qs = get_ltd_plan_(employers, num_companies)
     # percentages for plans and cost share
     prcnt_plan_count = get_plan_percentages(employers, num_companies, 'ltd')
@@ -250,7 +407,7 @@ def get_ltd_plan_(employers, num_companies):
 
     return medians, var_local, qs
 
-def get_ltd_properties(request, plan):
+def get_ltd_properties(request, plan, benefit_=None):
     context = {
         'monthly_max': 'N/A',
         'percentage': 'N/A',
@@ -284,7 +441,7 @@ STRATEGY PAGE
 
 strategy_quintile_attrs = ['tobacco_surcharge_amount', 'spousal_surcharge_amount']
 
-def get_strategy_plan(employers, num_companies):
+def get_strategy_plan(employers, num_companies, benefit_=None):
     medians, var_local, qs = get_strategy_plan_(employers, num_companies)
 
     attrs = ['spousal_surcharge',
@@ -321,7 +478,7 @@ def get_strategy_plan_(employers, num_companies):
         var_local['quintile_'+attr] = get_incremental_array(sub_qs['qs_'+attr], attr)
     return medians, var_local, qs
 
-def get_strategy_properties(request, plan):
+def get_strategy_properties(request, plan, benefit_=None):
     context = {
         'tobacco_surcharge_amount': 'N/A',
         'tobacco_surcharge': 'N/A',

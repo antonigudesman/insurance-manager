@@ -314,5 +314,32 @@ update_content = function(benefit) {
         draw_bar_chart(benefit+'-6', gh6_data, false, 7);        
 
         draw_donut_chart(benefit+'-18', gh18_data);
+    } else if ($.inArray(benefit, ["DPPO", "DMO"]) != -1) {
+        if (benefit == "DMO")
+            $('.out-benefit').remove();
+
+        gh1_data = generate_quintile_data(gh1_data, true);
+        gh2_data = generate_quintile_data(gh2_data);
+        gh3_data = generate_quintile_data(gh3_data, true);
+        gh4_data = generate_quintile_data(gh4_data);
+        gh5_data = generate_quintile_data(gh5_data, true);
+        gh6_data = generate_quintile_data(gh6_data, true);
+        gh7_data = generate_quintile_data(gh7_data, true);
+        gh8_data = generate_quintile_data(gh8_data, true);
+        gh9_data = generate_quintile_data(gh9_data, true);
+        gh10_data = generate_quintile_data(gh10_data, true);        
+        
+        draw_bar_chart('DENTAL-1', gh1_data, false, 7);        
+        draw_bar_chart('DENTAL-2', gh2_data, false, 7);        
+        draw_bar_chart('DENTAL-3', gh3_data, false, 7);        
+        draw_bar_chart('DENTAL-4', gh4_data, false, 7);        
+        draw_bar_chart('DENTAL-5', gh5_data, false, 7);        
+        draw_bar_chart('DENTAL-6', gh6_data, false, 7);        
+        draw_bar_chart('DENTAL-7', gh7_data, false, 7);        
+        draw_bar_chart('DENTAL-8', gh8_data, false, 7);        
+        draw_bar_chart('DENTAL-9', gh9_data, false, 7);        
+        draw_bar_chart('DENTAL-10', gh10_data, false, 7);        
+
+        draw_donut_chart('DENTAL-18', gh18_data);
     }
 }
