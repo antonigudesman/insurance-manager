@@ -148,17 +148,18 @@
         overflow: auto;
         position: relative;
         width: 100%;
-        padding: 15px;
+        padding-top: 15px;
     }
-
+/*
     .client-logo {
         width: 11%;
         float: left;
-    }
+    }*/
 
-    .benefit-details{
-        width: 87%;
+    .benefit-details {
+        width: 100%;
         float: right;
+        padding: 0 20px 0 20px;
     }
 
     .client-logo > img {
@@ -185,7 +186,7 @@
     }
 
     .benefit-header h4 {
-        font-size: 20px;
+        font-size: 30px;
     }
 
     .table > tbody > tr > td {
@@ -194,7 +195,7 @@
 
     .table > thead > tr > th,
     .section-score > h5 {
-        font-size: 12px;
+        font-size: 14px;
     }
 
     .table-content > thead > tr > th,
@@ -242,13 +243,12 @@
         padding: 20px 70px 5px 70px;
     }
 
-
     div.easy-pie div.pie-title {
         top: 120px;
     }
 
     .pie-title {
-        font-size: 14px;
+        font-size: 12px;
     }
 
     .section-score p {
@@ -262,11 +262,17 @@
     }
 }
 
+.benefit-details > h4 {
+    font-weight: 800;
+    color: #555;
+    text-transform: uppercase;
+}
 
 .benefit-details > p,
 .benefit-details > h6 {
     margin: 0 0 1px 0;
     padding: 0;
+    display: inline;
 }
 
 li.active,
@@ -328,10 +334,16 @@ li.active,
     text-transform: capitalize;
 }
 
-.table-content > thead > tr > th,
 .section-score h5,
 p.exhibit-text {
     font-weight: 800;
+    color: #555;
+    text-transform: uppercase;
+}
+
+
+.table-content > thead > tr > th {
+    font-weight: 600;
     color: #555;
     text-transform: uppercase;
 }
@@ -389,6 +401,9 @@ p.exhibit-text > span {
 .table-content > thead > tr > th.row-label,
 .table-content > tbody > tr > td.row-label {
     text-align: left;
+}
+
+.table-content > tbody > tr.quintile-subject > td {
 }
 
 p.threshold-error {

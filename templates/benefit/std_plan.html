@@ -10,7 +10,7 @@
 
     <div class="section">
         <div class="section-graph">
-            <p class="exhibit-text">Benefit Amounts <span>(Exhibit STD1: Weekly Maximum Distribution)</span></p>
+            <p class="exhibit-text">Benefit Amounts <span>(Exhibit 1: Weekly Maximum Distribution)</span></p>
             <div id="STD-1" class="flot-chart"></div>
         </div>
         <div class="section-score">
@@ -24,14 +24,14 @@
                 <col width="25%">
                 <thead>
                     <tr>
-                        <th class="row-label">STD Plans</th>
+                        <th class="row-label">STD Amounts</th>
                         <th>Benchmark</th>
-                        <th>Current Plan</th>
+                        <th>Current</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="row-label">Weekly Maximum</td>
+                    <tr class="quintile-subject">
+                        <td class="row-label">Weekly Maximum (Ex.1)</td>
                         <td>{{ mdn_weekly_max }}</td>
                         <td><span id="prop_weekly_max"></span></td>
                     </tr>
@@ -52,7 +52,7 @@
 
     <div class="section">
         <div class="section-graph">
-            <p class="exhibit-text">Waiting/Duration Periods <span>(Exhibit STD2: Duration Weeks Distribution)</span></p>
+            <p class="exhibit-text">Duration & Waiting Periods <span>(Exhibit 2: Duration Weeks Distribution)</span></p>
             <div id="STD-2" class="flot-chart"></div>
         </div>
         <div class="section-score">
@@ -66,26 +66,26 @@
                 <col width="25%">
                 <thead>
                     <tr>
-                        <th class="row-label">STD Plans</th>
+                        <th class="row-label">STD Periods</th>
                         <th>Benchmark</th>
-                        <th>Current Plan</th>
+                        <th>Current</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="row-label">Duration Weeks</td>
+                    <tr class="quintile-subject">
+                        <td class="row-label">Duration Weeks (Ex.2)</td>
                         <td>{{ mdn_duration_weeks }}</td>
                         <td><span id="prop_duration_weeks"></span></td>
                     </tr>
                     <tr>
-                        <td class="row-label">Waiting Days (Injury)</td>
+                        <td class="row-label">Waiting Days Injury</td>
                         <td>{{ mdn_waiting_days }}</td>
-                        <td><span id="prop_waiting_injury"></span></td>
+                        <td><span id="prop_waiting_days"></span></td>
                     </tr>
                     <tr>
-                        <td class="row-label">Waiting Days (Illness)</td>
+                        <td class="row-label">Waiting Days Illness</td>
                         <td>{{ mdn_waiting_days_sick }}</td>
-                        <td><span id="prop_waiting_illness"></span></td>
+                        <td><span id="prop_waiting_days_sick"></span></td>
                     </tr>
                 </tbody>
             </table>
@@ -94,7 +94,7 @@
 
     <div class="section">
         <div class="section-graph">
-            <p class="exhibit-text">Employee Cost Share<span> (Exhibits L3-L5: Cost Share Breakdown)</span></p>
+            <p class="exhibit-text">Employee Cost Share<span> (Exhibit 3: Cost Share Breakdown)</span></p>
             <div class="easy-pie STD-12" data-percent="{{ prcnt_paid }}">
                 <div class="percent">{{ prcnt_paid }}</div>
                 <div class="pie-title">100% Employer Paid Only</div>
@@ -105,7 +105,7 @@
             </div>
             <div class="easy-pie STD-14" data-percent="{{ prcnt_paid_share }}">
                 <div class="percent">{{ prcnt_paid_share }}</div>
-                <div class="pie-title">Core / Buy Up</div>
+                <div class="pie-title">Core & Buy Up Plans</div>
             </div>
         </div>
         <div class="section-score">  
@@ -143,7 +143,7 @@
 
     <div class="section">
         <div class="section-graph">
-            <p class="exhibit-text">PREVALENCE<span> (Exhibit L6: Number of Plans Offered)</span></p>
+            <p class="exhibit-text">PREVALENCE<span> (Exhibit 4: Number of Plans Offered)</span></p>
             <div id="STD-18" class="flot-chart-pie"></div>
             <div class="flc-donut hidden-xs"></div>
         </div>
@@ -165,15 +165,15 @@
                         <td>{{ prcnt_plan0 }}%</td>
                     </tr>
                     <tr>
-                        <td class="row-label">1 Plan</td>
+                        <td class="row-label">One Plan</td>
                         <td>{{ prcnt_plan1 }}%</td>
                     </tr>
                     <tr>
-                        <td class="row-label">2 Plans</td>
+                        <td class="row-label">Two Plans</td>
                         <td>{{ prcnt_plan2 }}%</td>
                     </tr>
                     <tr>
-                        <td class="row-label">3 or More Plans</td>
+                        <td class="row-label">Three or More Plans</td>
                         <td>{{ prcnt_plan3_or_more }}%</td>
                     </tr>
                 </tbody>
@@ -197,9 +197,9 @@ var gh1_data, gh2_data, gh18_data;
 
     gh18_data = [
         {data: {{ prcnt_plan0 }}, color: '#F44336', label: 'Not Offered'},
-        {data: {{ prcnt_plan1 }}, color: '#03A9F4', label: '1 Plan'},
-        {data: {{ prcnt_plan2 }}, color: '#8BC34A', label: '2 Plans'},
-        {data: {{ prcnt_plan3_or_more }}, color: '#FFEB3B', label: '3+ Plans'},
+        {data: {{ prcnt_plan1 }}, color: '#03A9F4', label: 'One Plan'},
+        {data: {{ prcnt_plan2 }}, color: '#8BC34A', label: 'Two Plans'},
+        {data: {{ prcnt_plan3_or_more }}, color: '#FFEB3B', label: 'Three or More Plans'},
     ];
 
 {% endif %}
