@@ -32,7 +32,7 @@
                 <tbody>
                     <tr>
                         <td class="row-label">Single Employees</td>
-                        <td>${{ mdn_in_ded_single|intcomma }}</td>
+                        <td>{{ mdn_in_ded_single }}</td>
                         <td><span id="prop_in_ded_single"></span></td>
                     </tr>
                     <tr>
@@ -69,7 +69,7 @@
                 <tbody>
                     <tr>
                         <td class="row-label">Services A-C</td>
-                        <td>${{ mdn_in_max|intcomma }}</td>
+                        <td>{{ mdn_in_max }}</td>
                         <td><span id="prop_in_max"></span></td>
                     </tr>
                     <tr>
@@ -82,7 +82,7 @@
         </div>
     </div>
 
-    <div class="section">
+    <div class="section out-benefit">
         <div class="section-graph">
             <p class="exhibit-text">Out of Network Deductibles<span>(Exhibit)</span></p>
             <div id="DENTAL-3" class="flot-chart"></div>
@@ -106,7 +106,7 @@
                 <tbody>
                     <tr>
                         <td class="row-label">Single Employees</td>
-                        <td>${{ mdn_out_ded_single|intcomma }}</td>
+                        <td>{{ mdn_out_ded_single }}</td>
                         <td><span id="prop_out_ded_single"></span></td>
                     </tr>
                     <tr>
@@ -119,7 +119,7 @@
         </div>
     </div>
 
-    <div class="section">
+    <div class="section out-benefit">
         <div class="section-graph">
             <p class="exhibit-text">Out of Network Maximums<span>(Exhibit)</span></p>
             <div id="DENTAL-4" class="flot-chart"></div>
@@ -143,7 +143,7 @@
                 <tbody>
                     <tr>
                         <td class="row-label">Services A-C</td>
-                        <td>${{ mdn_out_max|intcomma }}</td>
+                        <td>{{ mdn_out_max }}</td>
                         <td><span id="prop_out_max"></span></td>
                     </tr>
                     <tr>
@@ -180,10 +180,10 @@
                 <tbody>
                     <tr>
                         <td class="row-label">In Network Coinsurance</td>
-                        <td>${{ mdn_in_prev_coin|intcomma }}</td>
+                        <td>{{ mdn_in_prev_coin }}</td>
                         <td><span id="prop_in_prev_coin"></span></td>
                     </tr>
-                    <tr>
+                    <tr class="out-benefit">
                         <td class="row-label">Out of Network Coinsurance</td>
                         <td>{{ mdn_out_prev_coin }}</td>
                         <td><span id="prop_out_prev_coin"></span></td>
@@ -222,10 +222,10 @@
                 <tbody>
                     <tr>
                         <td class="row-label">In Network Coinsurance</td>
-                        <td>${{ mdn_in_basic_coin|intcomma }}</td>
+                        <td>{{ mdn_in_basic_coin }}</td>
                         <td><span id="prop_in_basic_coin"></span></td>
                     </tr>
-                    <tr>
+                    <tr class="out-benefit">
                         <td class="row-label">Out of Network Coinsurance</td>
                         <td>{{ mdn_out_basic_coin }}</td>
                         <td><span id="prop_out_basic_coin"></span></td>
@@ -264,10 +264,10 @@
                 <tbody>
                     <tr>
                         <td class="row-label">In Network Coinsurance</td>
-                        <td>${{ mdn_in_major_coin|intcomma }}</td>
+                        <td>{{ mdn_in_major_coin }}</td>
                         <td><span id="prop_in_major_coin"></span></td>
                     </tr>
-                    <tr>
+                    <tr class="out-benefit">
                         <td class="row-label">Out of Network Coinsurance</td>
                         <td>{{ mdn_out_major_coin }}</td>
                         <td><span id="prop_out_major_coin"></span></td>
@@ -306,10 +306,10 @@
                 <tbody>
                     <tr>
                         <td class="row-label">In Network Coinsurance</td>
-                        <td>${{ mdn_in_ortho_coin|intcomma }}</td>
+                        <td>{{ mdn_in_ortho_coin }}</td>
                         <td><span id="prop_in_ortho_coin"></span></td>
                     </tr>
-                    <tr>
+                    <tr class="out-benefit">
                         <td class="row-label">Out of Network Coinsurance</td>
                         <td>{{ mdn_out_ortho_coin }}</td>
                         <td><span id="prop_out_ortho_coin"></span></td>
@@ -353,22 +353,22 @@
                 <tbody>
                     <tr>
                         <td class="row-label">Employee Only</td>
-                        <td>${{ mdn_t1_ee|intcomma }}</td>
+                        <td>{{ mdn_t1_ee }}</td>
                         <td><span id="prop_t1_ee"></span></td>
                     </tr>
                     <tr>
                         <td class="row-label">Employee + Spouse</td>
-                        <td>${{ mdn_t2_ee }}</td>
+                        <td>{{ mdn_t2_ee }}</td>
                         <td><span id="prop_t2_ee"></span></td>
                     </tr>
                     <tr>
                         <td class="row-label">Employee + Child(ren)</td>
-                        <td>${{ mdn_t3_ee }}</td>
+                        <td>{{ mdn_t3_ee }}</td>
                         <td><span id="prop_t3_ee"></span></td>
                     </tr>
                     <tr>
                         <td class="row-label">Family</td>
-                        <td>${{ mdn_t4_ee }}</td>
+                        <td>{{ mdn_t4_ee }}</td>
                         <td><span id="prop_t4_ee"></span></td>
                     </tr>
                 </tbody>
@@ -400,22 +400,22 @@
                 <tbody>
                     <tr>
                         <td class="row-label">Employee Only</td>
-                        <td>${{ mdn_t1_gross|intcomma }}</td>
+                        <td>{{ mdn_t1_gross }}</td>
                         <td><span id="prop_t1_gross"></span></td>
                     </tr>
                     <tr>
                         <td class="row-label">Employee + Spouse</td>
-                        <td>${{ mdn_t2_gross }}</td>
+                        <td>{{ mdn_t2_gross }}</td>
                         <td><span id="prop_t2_gross"></span></td>
                     </tr>
                     <tr>
                         <td class="row-label">Employee + Child(ren)</td>
-                        <td>${{ mdn_t3_gross }}</td>
+                        <td>{{ mdn_t3_gross }}</td>
                         <td><span id="prop_t3_gross"></span></td>
                     </tr>
                     <tr>
                         <td class="row-label">Family</td>
-                        <td>${{ mdn_t4_gross }}</td>
+                        <td>{{ mdn_t4_gross }}</td>
                         <td><span id="prop_t4_gross"></span></td>
                     </tr>
                 </tbody>
@@ -426,7 +426,7 @@
     <div class="section">
         <div class="section-graph">
             <p class="exhibit-text">PREVALENCE<span> (Exhibit)</span></p>
-            <div id="DENTAL-11" class="flot-chart-pie"></div>
+            <div id="DENTAL-18" class="flot-chart-pie"></div>
             <div class="flc-donut hidden-xs"></div>
         </div>
         <div class="section-score">  

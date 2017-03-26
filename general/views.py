@@ -24,10 +24,11 @@ MODEL_MAP = {
     'STD': STD,
     'LTD': LTD,
     'STRATEGY': Strategy, 
-    'VISION': Vision
+    'VISION': Vision,
+    'DENTAL': Dental
 }
 
-PLAN_ALLOWED_BENEFITS = ['LIFE', 'STD', 'LTD', 'STRATEGY', 'VISION']
+PLAN_ALLOWED_BENEFITS = ['LIFE', 'STD', 'LTD', 'STRATEGY', 'VISION', 'DENTAL']
 
 
 @csrf_exempt
@@ -171,11 +172,16 @@ def ajax_enterprise(request):
     if benefit == 'HOME':
         full_name = '{} {}'.format(request.user.first_name, request.user.last_name)
         return render(request, 'benefit/home.html', locals())
-    elif benefit in ['LIFE', 'STD', 'LTD', 'STRATEGY', 'VISION']:
+    elif benefit in ['LIFE', 'STD', 'LTD', 'STRATEGY', 'VISION', 'DPPO', 'DMO']:
         employers, num_companies = get_filtered_employers(ft_industries, 
                                                           ft_head_counts, 
                                                           ft_other,
                                                           ft_regions)
+        
+        benefit_= None
+        if benefit in ['DPPO', 'DMO']:
+            benefit_ = benefit      # store original benefit
+            benefit = 'DENTAL'
 
         if num_companies < settings.EMPLOYER_THRESHOLD:
             context =  {
@@ -185,7 +191,7 @@ def ajax_enterprise(request):
             }
         else:
             func_name = 'get_{}_plan'.format(benefit.lower())
-            context = globals()[func_name](employers, num_companies)
+            context = globals()[func_name](employers, num_companies, benefit_)
 
         context['base_template'] = 'empty.html'
         context['today'] = today
@@ -209,9 +215,14 @@ def update_properties(request):
     else:
         plan = request.session['plan']
 
+    benefit_= None
+    if benefit in ['DPPO', 'DMO']:
+        benefit_ = benefit      # store original benefit
+        benefit = 'DENTAL'
+
     if benefit in PLAN_ALLOWED_BENEFITS:
         func_name = 'get_{}_properties'.format(benefit.lower())
-        return globals()[func_name](request, plan)
+        return globals()[func_name](request, plan, benefit_)
     else:
         return HttpResponse('{}')
 
@@ -238,20 +249,28 @@ def get_plans(request):
     group = request.user.groups.first().name
     plans = []
 
+    benefit_= None
+    if benefit in ['DPPO', 'DMO']:
+        benefit_ = benefit      # store original benefit
+        benefit = 'DENTAL'
+
     if benefit in PLAN_ALLOWED_BENEFITS:
-        plans = get_plans_(benefit, group)
+        plans = get_plans_(benefit, group, benefit_)
 
     return render(request, 'includes/plans.html', { 'plans': plans })
 
 
-def get_plans_(benefit, group):
+def get_plans_(benefit, group, benefit_):
     model = MODEL_MAP[benefit]
     if group == 'bnchmrk':
         objects = model.objects.all()
     else:
         objects = model.objects.filter(employer__broker=group)
 
-    if benefit == 'LIFE':
+    if benefit_ in ['DPPO', 'DMO']:     # for DPPO, DMO pages
+        objects = objects.filter(type=benefit_)
+
+    if benefit in ['LIFE', 'DENTAL']:
         return [
                    [item.id, '{} - {} - {}'.format(item.employer.name, item.type, item.title)]
                    for item in objects.order_by('employer__name', 'title')
