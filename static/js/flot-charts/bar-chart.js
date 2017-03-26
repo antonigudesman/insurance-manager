@@ -29,6 +29,7 @@ function draw_bar_chart(id, data, int, label_xpos_factor) {
                 show : true,
                 hoverable : true,
                 clickable : true,
+                borderColor: '#ddd',
             },
             
             yaxis: {

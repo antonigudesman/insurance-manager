@@ -1,0 +1,497 @@
+{% extends base_template %}
+{% load humanize %}
+{% load pages_tags mezzanine_tags i18n staticfiles %}
+
+{% block page_content %}
+<div class="benefit-content">
+{% include 'includes/benefit-header.html' %}
+
+{% if num_employers >= EMPLOYER_THRESHOLD %}
+
+    <div class="section">
+        <div class="section-graph">
+            <p class="exhibit-text">In Network Deductibles<span>(Exhibit)</span></p>
+            <div id="DENTAL-1" class="flot-chart"></div>
+        </div>
+        <div class="section-score">
+            <h5>Q-SCORE</h5>
+            <p><span id="prop_rank_in_ded_single"></span></p>           
+        </div> 
+        <div class="section-content">
+            <table class="table table-striped table-content">
+                <col width="50%">
+                <col width="25%">
+                <col width="25%">
+                <thead>
+                    <tr>
+                        <th class="row-label">In Network Deductibles</th>
+                        <th>Benchmark</th>
+                        <th>Current Plan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-label">Single Employees</td>
+                        <td>${{ mdn_in_ded_single|intcomma }}</td>
+                        <td><span id="prop_in_ded_single"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Families</td>
+                        <td>{{ mdn_in_ded_family }}</td>
+                        <td><span id="prop_in_ded_family"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-graph">
+            <p class="exhibit-text">In Network Maximums<span>(Exhibit)</span></p>
+            <div id="DENTAL-2" class="flot-chart"></div>
+        </div>
+        <div class="section-score">
+            <h5>Q-SCORE</h5>
+            <p><span id="prop_rank_in_max"></span></p>           
+        </div> 
+        <div class="section-content">
+            <table class="table table-striped table-content">
+                <col width="50%">
+                <col width="25%">
+                <col width="25%">
+                <thead>
+                    <tr>
+                        <th class="row-label">In Network Maximums</th>
+                        <th>Benchmark</th>
+                        <th>Current Plan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-label">Services A-C</td>
+                        <td>${{ mdn_in_max|intcomma }}</td>
+                        <td><span id="prop_in_max"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Ortho</td>
+                        <td>{{ mdn_in_max_ortho }}</td>
+                        <td><span id="prop_in_max_ortho"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-graph">
+            <p class="exhibit-text">Out of Network Deductibles<span>(Exhibit)</span></p>
+            <div id="DENTAL-3" class="flot-chart"></div>
+        </div>
+        <div class="section-score">
+            <h5>Q-SCORE</h5>
+            <p><span id="prop_rank_out_ded_single"></span></p>           
+        </div> 
+        <div class="section-content">
+            <table class="table table-striped table-content">
+                <col width="50%">
+                <col width="25%">
+                <col width="25%">
+                <thead>
+                    <tr>
+                        <th class="row-label">Out of Network Deductibles</th>
+                        <th>Benchmark</th>
+                        <th>Current Plan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-label">Single Employees</td>
+                        <td>${{ mdn_out_ded_single|intcomma }}</td>
+                        <td><span id="prop_out_ded_single"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Families</td>
+                        <td>{{ mdn_out_ded_family }}</td>
+                        <td><span id="prop_out_ded_family"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-graph">
+            <p class="exhibit-text">Out of Network Maximums<span>(Exhibit)</span></p>
+            <div id="DENTAL-4" class="flot-chart"></div>
+        </div>
+        <div class="section-score">
+            <h5>Q-SCORE</h5>
+            <p><span id="prop_rank_out_max"></span></p>           
+        </div> 
+        <div class="section-content">
+            <table class="table table-striped table-content">
+                <col width="50%">
+                <col width="25%">
+                <col width="25%">
+                <thead>
+                    <tr>
+                        <th class="row-label">Out of Network Maximums</th>
+                        <th>Benchmark</th>
+                        <th>Current Plan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-label">Services A-C</td>
+                        <td>${{ mdn_out_max|intcomma }}</td>
+                        <td><span id="prop_out_max"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Ortho</td>
+                        <td>{{ mdn_out_max_ortho }}</td>
+                        <td><span id="prop_out_max_ortho"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-graph">
+            <p class="exhibit-text">Preventive Services<span>(Exhibit)</span></p>
+            <div id="DENTAL-5" class="flot-chart"></div>
+        </div>
+        <div class="section-score">
+            <h5>Q-SCORE</h5>
+            <p><span id="prop_rank_in_prev_coin"></span></p>           
+        </div> 
+        <div class="section-content">
+            <table class="table table-striped table-content">
+                <col width="50%">
+                <col width="25%">
+                <col width="25%">
+                <thead>
+                    <tr>
+                        <th class="row-label">Preventive Services</th>
+                        <th>Benchmark</th>
+                        <th>Current Plan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-label">In Network Coinsurance</td>
+                        <td>${{ mdn_in_prev_coin|intcomma }}</td>
+                        <td><span id="prop_in_prev_coin"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Out of Network Coinsurance</td>
+                        <td>{{ mdn_out_prev_coin }}</td>
+                        <td><span id="prop_out_prev_coin"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Deductible Applies</td>
+                        <td>{{ prcnt_prev_ded_apply }}</td>
+                        <td><span id="prop_prev_ded_apply"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-graph">
+            <p class="exhibit-text">Basic Services<span>(Exhibit)</span></p>
+            <div id="DENTAL-6" class="flot-chart"></div>
+        </div>
+        <div class="section-score">
+            <h5>Q-SCORE</h5>
+            <p><span id="prop_rank_in_basic_coin"></span></p>           
+        </div> 
+        <div class="section-content">
+            <table class="table table-striped table-content">
+                <col width="50%">
+                <col width="25%">
+                <col width="25%">
+                <thead>
+                    <tr>
+                        <th class="row-label">Basic Services</th>
+                        <th>Benchmark</th>
+                        <th>Current Plan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-label">In Network Coinsurance</td>
+                        <td>${{ mdn_in_basic_coin|intcomma }}</td>
+                        <td><span id="prop_in_basic_coin"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Out of Network Coinsurance</td>
+                        <td>{{ mdn_out_basic_coin }}</td>
+                        <td><span id="prop_out_basic_coin"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Deductible Applies</td>
+                        <td>{{ prcnt_basic_ded_apply }}</td>
+                        <td><span id="prop_basic_ded_apply"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-graph">
+            <p class="exhibit-text">Major Services<span>(Exhibit)</span></p>
+            <div id="DENTAL-7" class="flot-chart"></div>
+        </div>
+        <div class="section-score">
+            <h5>Q-SCORE</h5>
+            <p><span id="prop_rank_in_major_coin"></span></p>           
+        </div> 
+        <div class="section-content">
+            <table class="table table-striped table-content">
+                <col width="50%">
+                <col width="25%">
+                <col width="25%">
+                <thead>
+                    <tr>
+                        <th class="row-label">Major Services</th>
+                        <th>Benchmark</th>
+                        <th>Current Plan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-label">In Network Coinsurance</td>
+                        <td>${{ mdn_in_major_coin|intcomma }}</td>
+                        <td><span id="prop_in_major_coin"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Out of Network Coinsurance</td>
+                        <td>{{ mdn_out_major_coin }}</td>
+                        <td><span id="prop_out_major_coin"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Deductible Applies</td>
+                        <td>{{ prcnt_major_ded_apply }}</td>
+                        <td><span id="prop_major_ded_apply"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-graph">
+            <p class="exhibit-text">Ortho Services<span>(Exhibit)</span></p>
+            <div id="DENTAL-8" class="flot-chart"></div>
+        </div>
+        <div class="section-score">
+            <h5>Q-SCORE</h5>
+            <p><span id="prop_rank_in_ortho_coin"></span></p>           
+        </div> 
+        <div class="section-content">
+            <table class="table table-striped table-content">
+                <col width="50%">
+                <col width="25%">
+                <col width="25%">
+                <thead>
+                    <tr>
+                        <th class="row-label">Ortho Services</th>
+                        <th>Benchmark</th>
+                        <th>Current Plan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-label">In Network Coinsurance</td>
+                        <td>${{ mdn_in_ortho_coin|intcomma }}</td>
+                        <td><span id="prop_in_ortho_coin"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Out of Network Coinsurance</td>
+                        <td>{{ mdn_out_ortho_coin }}</td>
+                        <td><span id="prop_out_ortho_coin"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Deductible Applies</td>
+                        <td>{{ prcnt_ortho_ded_apply }}</td>
+                        <td><span id="prop_ortho_ded_apply"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Age Limit</td>
+                        <td>{{ mdn_ortho_age_limit }}</td>
+                        <td><span id="prop_ortho_age_limit"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-graph">
+            <p class="exhibit-text">Employee Annual Contributions <span>(Exhibit)</span></p>
+            <div id="DENTAL-9" class="flot-chart"></div>
+        </div>
+        <div class="section-score">
+            <h5>Q-SCORE</h5>
+            <p><span id="prop_rank_t1_ee"></span></p>           
+        </div> 
+        <div class="section-content">
+            <table class="table table-striped table-content">
+                <col width="50%">
+                <col width="25%">
+                <col width="25%">
+                <thead>
+                    <tr>
+                        <th class="row-label">Employee Annual Contributions</th>
+                        <th>Benchmark</th>
+                        <th>Current Plan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-label">Employee Only</td>
+                        <td>${{ mdn_t1_ee|intcomma }}</td>
+                        <td><span id="prop_t1_ee"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Employee + Spouse</td>
+                        <td>${{ mdn_t2_ee }}</td>
+                        <td><span id="prop_t2_ee"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Employee + Child(ren)</td>
+                        <td>${{ mdn_t3_ee }}</td>
+                        <td><span id="prop_t3_ee"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Family</td>
+                        <td>${{ mdn_t4_ee }}</td>
+                        <td><span id="prop_t4_ee"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div> 
+
+    <div class="section">
+        <div class="section-graph">
+            <p class="exhibit-text">Employee Gross Cost <span>(Exhibit)</span></p>
+            <div id="DENTAL-10" class="flot-chart"></div>
+        </div>
+        <div class="section-score">
+            <h5>Q-SCORE</h5>
+            <p><span id="prop_rank_t1_gross"></span></p>           
+        </div> 
+        <div class="section-content">
+            <table class="table table-striped table-content">
+                <col width="50%">
+                <col width="25%">
+                <col width="25%">
+                <thead>
+                    <tr>
+                        <th class="row-label">Gross Annual Contributions</th>
+                        <th>Benchmark</th>
+                        <th>Current Plan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-label">Employee Only</td>
+                        <td>${{ mdn_t1_gross|intcomma }}</td>
+                        <td><span id="prop_t1_gross"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Employee + Spouse</td>
+                        <td>${{ mdn_t2_gross }}</td>
+                        <td><span id="prop_t2_gross"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Employee + Child(ren)</td>
+                        <td>${{ mdn_t3_gross }}</td>
+                        <td><span id="prop_t3_gross"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Family</td>
+                        <td>${{ mdn_t4_gross }}</td>
+                        <td><span id="prop_t4_gross"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>  
+
+    <div class="section">
+        <div class="section-graph">
+            <p class="exhibit-text">PREVALENCE<span> (Exhibit)</span></p>
+            <div id="DENTAL-11" class="flot-chart-pie"></div>
+            <div class="flc-donut hidden-xs"></div>
+        </div>
+        <div class="section-score">  
+        </div> 
+        <div class="section-content">
+            <table class="table table-striped table-content">
+                <col width="60%">
+                <col width="40%">
+                <thead>
+                    <tr>
+                        <th class="row-label">Number of Plans Offered</th>
+                        <th>Employers</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-label">Not Offered</td>
+                        <td>{{ prcnt_plan0 }}%</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">1 Plan</td>
+                        <td>{{ prcnt_plan1 }}%</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">2 Plans</td>
+                        <td>{{ prcnt_plan2 }}%</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">3 or More Plans</td>
+                        <td>{{ prcnt_plan3_or_more }}%</td>
+                    </tr>
+                </tbody>
+            </table> 
+        </div>
+    </div>
+
+    {% else %}
+        {% include 'includes/too-few-employers.html' %}
+    {% endif %}
+
+</div>
+
+<script type="text/javascript">
+
+var gh1_data, gh2_data, gh3_data, gh4_data, gh5_data, gh6_data, gh7_data, gh8_data, gh9_data, gh10_data, gh18_data;
+
+{% if num_employers >= EMPLOYER_THRESHOLD %}
+    gh1_data = {{ quintile_in_ded_single }};
+    gh2_data = {{ quintile_in_max }};
+    gh3_data = {{ quintile_out_ded_single }};
+    gh4_data = {{ quintile_out_max }};
+    gh5_data = {{ quintile_in_prev_coin }};
+    gh6_data = {{ quintile_in_basic_coin }};
+    gh7_data = {{ quintile_in_major_coin }};
+    gh8_data = {{ quintile_in_ortho_coin }};
+    gh9_data = {{ quintile_t1_ee }};
+    gh10_data = {{ quintile_t1_gross }};
+
+    gh18_data = [
+        {data: {{ prcnt_plan0 }}, color: '#F44336', label: 'Not Offered'},
+        {data: {{ prcnt_plan1 }}, color: '#03A9F4', label: '1 Plan'},
+        {data: {{ prcnt_plan2 }}, color: '#8BC34A', label: '2 Plans'},
+        {data: {{ prcnt_plan3_or_more }}, color: '#FFEB3B', label: '3+ Plans'},
+    ];
+
+{% endif %}
+</script>
+{% endblock %}

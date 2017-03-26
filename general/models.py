@@ -33,6 +33,47 @@ class Employer(models.Model):
         return self.name
 
 
+class Dental(models.Model):
+    title = models.CharField(max_length=20)
+    employer = models.ForeignKey(Employer)
+    type = models.CharField(max_length=4)
+    in_ded_single = models.IntegerField(blank=True, null=True)
+    in_ded_family = models.IntegerField(blank=True, null=True)
+    in_max = models.IntegerField(blank=True, null=True)
+    in_max_ortho = models.IntegerField(blank=True, null=True)
+    out_ded_single = models.IntegerField(blank=True, null=True)
+    out_ded_family = models.IntegerField(blank=True, null=True)
+    out_max = models.IntegerField(blank=True, null=True)
+    out_max_ortho = models.IntegerField(blank=True, null=True)
+    in_prev_coin = models.IntegerField(blank=True, null=True)
+    out_prev_coin = models.IntegerField(blank=True, null=True)
+    prev_ded_apply = models.NullBooleanField()
+    in_basic_coin = models.IntegerField(blank=True, null=True)
+    out_basic_coin = models.IntegerField(blank=True, null=True)
+    basic_ded_apply = models.NullBooleanField()
+    in_major_coin = models.IntegerField(blank=True, null=True)
+    out_major_coin = models.IntegerField(blank=True, null=True)
+    major_ded_apply = models.NullBooleanField()
+    in_ortho_coin = models.IntegerField(blank=True, null=True)
+    out_ortho_coin = models.IntegerField(blank=True, null=True)
+    ortho_ded_apply = models.NullBooleanField()
+    ortho_age_limit = models.IntegerField(blank=True, null=True)
+    t1_ee = models.IntegerField(blank=True, null=True)
+    t2_ee = models.IntegerField(blank=True, null=True)
+    t3_ee = models.IntegerField(blank=True, null=True)
+    t4_ee = models.IntegerField(blank=True, null=True)
+    t1_gross = models.IntegerField(blank=True, null=True)
+    t2_gross = models.IntegerField(blank=True, null=True)
+    t3_gross = models.IntegerField(blank=True, null=True)
+    t4_gross = models.IntegerField(blank=True, null=True)
+
+    def __unicode__(self):
+        return self.employer.name
+        
+    class Meta:
+        verbose_name_plural = 'Dental Plans'
+    
+
 class Vision(models.Model):
     title = models.CharField(max_length=20)
     employer = models.ForeignKey(Employer)
