@@ -97,9 +97,13 @@ def get_percent_count(qs, attr):
 
 
 def get_percent_count_(qs1, qs2):
+    """
+    Calculate percentageof a queryset over another one
+    Return formatted percentage
+    """
     cnt = qs2.count()
     if cnt:
-        return qs1.count() * 100 / cnt
+        return '{:,.0f}%'.format(qs1.count() * 100 / cnt)
     return 'N/A'
 
 
@@ -232,3 +236,60 @@ def get_rank(quintile_array, value):
             return idx
 
     return 'N/A'
+
+
+def get_init_properties(attrs, rank_attrs):
+    context = {}
+
+    for attr in attrs:
+        context[attr] = 'N/A'
+
+    for attr in rank_attrs:
+        context['rank_'+attr] = 'N/A'
+
+    return context
+
+
+def get_dollar_properties(instance, attrs, context):
+    for attr in attrs:
+        val = getattr(instance, attr)
+        context[attr] = 'N/A'
+        if val != None:
+            context[attr] = '${:,.0f}'.format(val)
+
+
+def get_percent_properties(instance, attrs, context):
+    for attr in attrs:
+        val = getattr(instance, attr)
+        context[attr] = '{:,.0f}%'.format(val) if val != None else 'N/A'
+
+
+def get_int_properties(instance, attrs, context):
+    for attr in attrs:
+        val = getattr(instance, attr)
+        context[attr] = val if val != None else 'N/A'
+
+
+def get_float_properties(instance, attrs, context):
+    for attr in attrs:
+        val = getattr(instance, attr)
+        context[attr] = '{:03.1f}'.format(val) if val != None else 'N/A'
+
+
+def get_boolean_properties(instance, attrs, context):
+    for attr in attrs:
+        val = getattr(instance, attr)
+        if val != None:
+            context[attr] = 'Yes' if val else 'No'
+        else:
+            context[attr] = 'N/A'
+
+
+def get_quintile_properties(var_qs, instance, attrs, attrs_inv, context):
+    for attr in attrs:            
+        context['rank_'+attr] = get_rank(var_qs['quintile_'+attr], getattr(instance, attr))
+
+    for attr in attrs_inv: 
+        rank = get_rank(var_qs['quintile_'+attr], getattr(instance, attr))
+        context['rank_'+attr] = rank if rank == 'N/A' else 6 - rank
+
