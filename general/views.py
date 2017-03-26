@@ -1,4 +1,5 @@
 import json
+import HTMLParser
 from datetime import datetime
 
 from django.shortcuts import render
@@ -25,10 +26,11 @@ MODEL_MAP = {
     'LTD': LTD,
     'STRATEGY': Strategy, 
     'VISION': Vision,
-    'DENTAL': Dental
+    'DENTAL': Dental,
+    'MEDICAL': Medical
 }
 
-PLAN_ALLOWED_BENEFITS = ['LIFE', 'STD', 'LTD', 'STRATEGY', 'VISION', 'DENTAL']
+PLAN_ALLOWED_BENEFITS = ['LIFE', 'STD', 'LTD', 'STRATEGY', 'VISION', 'DENTAL', 'MEDICAL']
 
 
 @csrf_exempt
@@ -167,12 +169,27 @@ def ajax_enterprise(request):
     request.session['ft_other_label'] = ft_other_label
     request.session['ft_regions_label'] = ft_regions_label
 
+    return get_response_template(request, benefit, ft_industries, ft_head_counts, ft_other, ft_regions)
+
+
+def get_response_template(request, 
+                          benefit, 
+                          ft_industries, 
+                          ft_head_counts, 
+                          ft_other, 
+                          ft_regions, 
+                          is_print=False, 
+                          ft_industries_label='', 
+                          ft_head_counts_label='', 
+                          ft_other_label='', 
+                          ft_regions_label=''):
+
     today = datetime.strftime(datetime.now(), '%B %d, %Y')
 
     if benefit == 'HOME':
         full_name = '{} {}'.format(request.user.first_name, request.user.last_name)
         return render(request, 'benefit/home.html', locals())
-    elif benefit in ['LIFE', 'STD', 'LTD', 'STRATEGY', 'VISION', 'DPPO', 'DMO']:
+    elif benefit in ['LIFE', 'STD', 'LTD', 'STRATEGY', 'VISION', 'DPPO', 'DMO', 'PPO', 'HMO', 'HDHP']:
         employers, num_companies = get_filtered_employers(ft_industries, 
                                                           ft_head_counts, 
                                                           ft_other,
@@ -182,6 +199,9 @@ def ajax_enterprise(request):
         if benefit in ['DPPO', 'DMO']:
             benefit_ = benefit      # store original benefit
             benefit = 'DENTAL'
+        elif benefit in ['PPO', 'HMO', 'HDHP']:
+            benefit_ = benefit      # store original benefit
+            benefit = 'MEDICAL'
 
         if num_companies < settings.EMPLOYER_THRESHOLD:
             context =  {
@@ -193,8 +213,16 @@ def ajax_enterprise(request):
             func_name = 'get_{}_plan'.format(benefit.lower())
             context = globals()[func_name](employers, num_companies, benefit_)
 
-        context['base_template'] = 'empty.html'
+        context['base_template'] = 'print.html' if is_print else 'empty.html'
         context['today'] = today
+
+        if is_print:
+            # unescape html characters
+            h = HTMLParser.HTMLParser()
+            context['ft_industries_label'] = h.unescape(ft_industries_label)
+            context['ft_head_counts_label'] = h.unescape(ft_head_counts_label)
+            context['ft_other_label'] = h.unescape(ft_other_label)
+            context['ft_regions_label'] = h.unescape(ft_regions_label)
 
         template = 'benefit/{}_plan.html'.format(benefit.lower())
         return render(request, template, context)
@@ -219,6 +247,9 @@ def update_properties(request):
     if benefit in ['DPPO', 'DMO']:
         benefit_ = benefit      # store original benefit
         benefit = 'DENTAL'
+    elif benefit in ['PPO', 'HMO', 'HDHP']:
+        benefit_ = benefit      # store original benefit
+        benefit = 'MEDICAL'
 
     if benefit in PLAN_ALLOWED_BENEFITS:
         func_name = 'get_{}_properties'.format(benefit.lower())
@@ -253,6 +284,9 @@ def get_plans(request):
     if benefit in ['DPPO', 'DMO']:
         benefit_ = benefit      # store original benefit
         benefit = 'DENTAL'
+    elif benefit in ['PPO', 'HMO', 'HDHP']:
+        benefit_ = benefit      # store original benefit
+        benefit = 'MEDICAL'
 
     if benefit in PLAN_ALLOWED_BENEFITS:
         plans = get_plans_(benefit, group, benefit_)
@@ -269,8 +303,14 @@ def get_plans_(benefit, group, benefit_):
 
     if benefit_ in ['DPPO', 'DMO']:     # for DPPO, DMO pages
         objects = objects.filter(type=benefit_)
+    elif benefit_ == 'PPO':
+        objects = objects.filter(type__in=['PPO', 'POS'])
+    elif benefit_ == 'HDHP':
+        objects = objects.filter(type='HDHP')
+    elif benefit_ == 'HMO':
+        objects = objects.filter(type__in=['HMO', 'EPO'])
 
-    if benefit in ['LIFE', 'DENTAL']:
+    if benefit in ['LIFE', 'DENTAL', 'MEDICAL']:
         return [
                    [item.id, '{} - {} - {}'.format(item.employer.name, item.type, item.title)]
                    for item in objects.order_by('employer__name', 'title')

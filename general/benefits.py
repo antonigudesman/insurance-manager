@@ -5,6 +5,164 @@ from .aux import *
 
 
 """
+Medical ( PPO, HMO, HDHP ) page
+"""
+
+medical_quintile_attrs = [
+    't1_ercdhp'
+]
+
+medical_quintile_attrs_inv = [
+    'in_ded_single',
+    'in_max_single',
+    'out_ded_single',
+    'out_max_single',
+    'rx_ded_single',
+    'rx_max_single',
+    'in_coin',
+    'pcp_copay',
+    'sp_copay',
+    'er_copay',
+    'uc_copay',
+    'lx_copay',
+    'op_copay',
+    'ip_copay',
+    'rx1_copay',
+    'rx2_copay',
+    'rx3_copay',
+    'rx4_copay',
+    't1_ee',
+    't1_gross'
+]
+
+medical_attrs_dollar = [
+    'in_ded_single',
+    'in_ded_family',
+    'in_max_single',
+    'in_max_family',
+    'out_ded_single',
+    'out_ded_family',
+    'out_max_single',
+    'out_max_family',
+    'rx_ded_single',
+    'rx_ded_family',
+    'rx_max_single',
+    'rx_max_family',
+    'pcp_copay',
+    'sp_copay',
+    'er_copay',
+    'uc_copay',
+    'lx_copay',
+    'op_copay',
+    'ip_copay',
+    'rx1_copay',
+    'rx1_mail_copay',
+    'rx2_copay',
+    'rx2_mail_copay',
+    'rx3_copay',
+    'rx3_mail_copay',
+    'rx4_copay',
+    'rx4_mail_copay',
+    't1_ee',
+    't2_ee',
+    't3_ee',
+    't4_ee',
+    't1_gross',
+    't2_gross',
+    't3_gross',
+    't4_gross',
+    't1_ercdhp',
+    't2_ercdhp',
+    't3_ercdhp',
+    't4_ercdhp'
+]
+
+medical_attrs_percent = [
+    'in_coin',
+    'out_coin',
+    'rx_coin'
+]
+
+medical_attrs_int = []
+
+medical_attrs_boolean = [
+    'ded_cross',
+    'max_cross',
+    'hra',
+    'hsa',
+    'age_rated'
+]
+
+medical_attrs_boolean_5_states = [
+    'pcp_ded_apply',
+    'sp_ded_apply',
+    'er_ded_apply',
+    'uc_ded_apply',
+    'lx_ded_apply',
+    'op_ded_apply',
+    'ip_ded_apply',
+    'rx1_ded_apply',
+    'rx2_ded_apply',
+    'rx3_ded_apply',
+    'rx4_ded_apply',
+]
+
+def get_medical_plan(employers, num_companies, benefit_=None):
+    medians, var_local, qs = get_medical_plan_(employers, num_companies, benefit_)
+    prcnt_plan_count = get_plan_percentages(employers, num_companies, 'med')
+
+    for attr in medical_attrs_boolean:
+        var_local['prcnt_'+attr] = get_percent_count(qs, attr)
+
+    for attr in medical_attrs_boolean_5_states:
+        qs1 = qs.filter(**{ '{}__in'.format(attr): ['TRUE', 'True/Coin'] })
+        qs2 = qs.exclude(**{ '{}__isnull'.format(attr): True })
+        var_local['prcnt_'+attr] = get_percent_count_(qs1, qs2)
+
+        qs1 = qs.filter(**{ '{}__in'.format(attr): ['False/Coin', 'True/Coin'] })
+        var_local['prcnt_coin_'+attr] = get_percent_count_(qs1, qs2)
+
+    return dict(var_local.items() 
+              + prcnt_plan_count.items()
+              + medians.items())
+
+def get_medical_plan_(employers, num_companies, benefit_=None):
+    qs = Medical.objects.filter(employer__in=employers, type=benefit_)
+    medians, sub_qs = get_medians(qs, medical_attrs_dollar, num_companies, medical_attrs_percent, medical_attrs_int)
+
+    var_local = {}
+    for attr in medical_quintile_attrs + medical_quintile_attrs_inv:
+        var_local['quintile_'+attr] = get_incremental_array(sub_qs['qs_'+attr], attr)
+
+    return medians, var_local, qs
+
+def get_medical_properties(request, plan, benefit_=None):
+    attrs = [item.name 
+             for item in Medical._meta.fields 
+             if item.name not in ['id', 'employer', 'title', 'type']]
+    context = get_init_properties(attrs, medical_quintile_attrs + medical_quintile_attrs_inv)
+
+    for attr in medical_attrs_boolean_5_states:
+        context['coin_'+attr] = 'N/A'
+
+    if plan:
+        employers, num_companies = get_filtered_employers_session(request)
+        medians, var_local, qs = get_medical_plan_(employers, num_companies, benefit_)
+        instance = Medical.objects.get(id=plan)
+        context['plan_info'] = ': {}, {}'.format(instance.employer.name, instance.title)
+
+        get_dollar_properties(instance, medical_attrs_dollar, context)
+        get_percent_properties(instance, medical_attrs_percent, context)
+        get_int_properties(instance, medical_attrs_int, context)
+        get_boolean_properties(instance, medical_attrs_boolean, context)
+        get_boolean_properties_5_states(instance, medical_attrs_boolean_5_states, context)
+        get_boolean_properties_5_states_coin(instance, medical_attrs_boolean_5_states, context)
+        get_quintile_properties(var_local, instance, medical_quintile_attrs, medical_quintile_attrs_inv, context)
+
+    return JsonResponse(context, safe=False)
+
+
+"""
 Dental ( DPPO, DMO ) page
 """
 
@@ -94,6 +252,7 @@ def get_dental_properties(request, plan, benefit_=None):
         employers, num_companies = get_filtered_employers_session(request)
         medians, var_local, qs = get_dental_plan_(employers, num_companies, benefit_)
         instance = Dental.objects.get(id=plan)
+        context['plan_info'] = ': {}, {}'.format(instance.employer.name, instance.title)
 
         get_dollar_properties(instance, dental_attrs_dollar, context)
         get_percent_properties(instance, dental_attrs_percent, context)
@@ -178,6 +337,7 @@ def get_vision_properties(request, plan, benefit_=None):
         employers, num_companies = get_filtered_employers_session(request)
         medians, var_local = get_vision_plan_(employers, num_companies)
         instance = Vision.objects.get(id=plan)
+        context['plan_info'] = ': {}, {}'.format(instance.employer.name, instance.title)
 
         get_dollar_properties(instance, vision_attrs_dollar, context)
         get_percent_properties(instance, vision_attrs_percent, context)
@@ -219,7 +379,7 @@ def get_life_plan_(employers, num_companies):
     medians, sub_qs = get_medians(qs, life_attrs_dollar, num_companies, life_attrs_percent, life_attrs_int)
 
     var_local = {}
-    for attr in life_quintile_attrs:
+    for attr in life_quintile_attrs + life_quintile_attrs_inv:
         var_local['quintile_'+attr] = get_incremental_array(sub_qs['qs_'+attr], attr)
 
     return medians, var_local, qs
@@ -232,6 +392,7 @@ def get_life_properties(request, plan, benefit_=None):
         employers, num_companies = get_filtered_employers_session(request)
         medians, var_local, _ = get_life_plan_(employers, num_companies)
         instance = Life.objects.get(id=plan)
+        context['plan_info'] = ': {}, {}'.format(instance.employer.name, instance.title)
 
         get_dollar_properties(instance, life_attrs_dollar, context)
         get_float_properties(instance, life_attrs_int, context)
@@ -252,6 +413,11 @@ STD page
 """
 
 std_quintile_attrs = ['weekly_max', 'duration_weeks']
+std_quintile_attrs_inv = []
+std_attrs_dollar = ['weekly_max']
+std_attrs_percent = ['percentage']
+std_attrs_int = ['waiting_days', 'waiting_days_sick', 'duration_weeks']
+std_attrs_boolean = ['salary_cont']
 
 def get_std_plan(employers, num_companies, benefit_=None):
     medians, var_local, qs = get_std_plan_(employers, num_companies)
@@ -267,45 +433,30 @@ def get_std_plan(employers, num_companies, benefit_=None):
               + medians.items())
 
 def get_std_plan_(employers, num_companies):
-    attrs = ['weekly_max']
-    attrs_percent = ['percentage']
-    attrs_int = ['waiting_days', 'waiting_days_sick', 'duration_weeks']
-
     qs = STD.objects.filter(employer__in=employers)
-    medians, sub_qs = get_medians(qs, attrs, num_companies, attrs_percent, attrs_int)
+    medians, sub_qs = get_medians(qs, std_attrs_dollar, num_companies, std_attrs_percent, std_attrs_int)
 
     var_local = {}
-    for attr in std_quintile_attrs:
+    for attr in std_quintile_attrs + std_quintile_attrs_inv:
         var_local['quintile_'+attr] = get_incremental_array(sub_qs['qs_'+attr], attr)
 
     return medians, var_local, qs
 
 def get_std_properties(request, plan, benefit_=None):
-    context = {
-        'weekly_max': 'N/A',
-        'percentage': 'N/A',
-        'salary_cont': 'N/A',
-        'duration_weeks': 'N/A',
-        'waiting_injury': 'N/A',
-        'waiting_illness': 'N/A',
-        'rank_weekly_max': 'N/A',
-        'rank_duration_weeks': 'N/A'
-    }
+    attrs = std_attrs_dollar + std_attrs_percent + std_attrs_int + std_attrs_boolean
+    context = get_init_properties(attrs, std_quintile_attrs + std_quintile_attrs_inv)
 
     if plan:
         employers, num_companies = get_filtered_employers_session(request)
         medians, var_local, _ = get_std_plan_(employers, num_companies)
         instance = STD.objects.get(id=plan)
+        context['plan_info'] = ': {}, {}'.format(instance.employer.name, instance.title)
 
-        for attr in std_quintile_attrs:            
-            context['rank_'+attr] = get_rank(var_local['quintile_'+attr], getattr(instance, attr))
-
-        context['weekly_max'] = '${:,.0f}'.format(instance.weekly_max) if instance.weekly_max else 'N/A'
-        context['percentage'] = '{:,.0f}%'.format(instance.percentage) if instance.percentage else 'N/A'
-        context['duration_weeks'] = '{:,.0f}'.format(instance.duration_weeks) if instance.duration_weeks else 'N/A'
-        context['waiting_injury'] = '{:,.0f}'.format(instance.waiting_days) if instance.waiting_days else 'N/A'
-        context['waiting_illness'] = '{:,.0f}'.format(instance.waiting_days_sick) if instance.waiting_days_sick else 'N/A'
-        context['salary_cont'] = 'Yes' if instance.salary_cont else 'No'
+        get_dollar_properties(instance, std_attrs_dollar, context)
+        get_percent_properties(instance, std_attrs_percent, context)
+        get_int_properties(instance, std_attrs_int, context)
+        get_boolean_properties(instance, std_attrs_boolean, context)
+        get_quintile_properties(var_local, instance, std_quintile_attrs, std_quintile_attrs_inv, context)
         
     return JsonResponse(context, safe=False)
 
@@ -314,7 +465,11 @@ def get_std_properties(request, plan, benefit_=None):
 LTD page
 """
 
-ltd_quintile_attrs = ['waiting_weeks', 'monthly_max']
+ltd_quintile_attrs = ['monthly_max']
+ltd_quintile_attrs_inv = ['waiting_weeks']
+ltd_attrs_dollar = ['monthly_max']
+ltd_attrs_percent = ['percentage']
+ltd_attrs_int = ['waiting_weeks']
 
 def get_ltd_plan(employers, num_companies, benefit_=None):
     medians, var_local, qs = get_ltd_plan_(employers, num_companies)
@@ -328,44 +483,30 @@ def get_ltd_plan(employers, num_companies, benefit_=None):
               + medians.items())
 
 def get_ltd_plan_(employers, num_companies):
-    attrs = ['monthly_max']
-    attrs_percent = ['percentage']
-    attrs_int = ['waiting_weeks']
-
     qs = LTD.objects.filter(employer__in=employers)
-    medians, sub_qs = get_medians(qs, attrs, num_companies, attrs_percent, attrs_int)
+    medians, sub_qs = get_medians(qs, ltd_attrs_dollar, num_companies, ltd_attrs_percent, ltd_attrs_int)
 
     var_local = {}
-    for attr in ltd_quintile_attrs:
+    for attr in ltd_quintile_attrs + ltd_quintile_attrs_inv:
         var_local['quintile_'+attr] = get_incremental_array(sub_qs['qs_'+attr], attr)
 
     return medians, var_local, qs
 
 def get_ltd_properties(request, plan, benefit_=None):
-    context = {
-        'monthly_max': 'N/A',
-        'percentage': 'N/A',
-        'waiting_weeks': 'N/A',
-        'rank_monthly_max': 'N/A',
-        'rank_waiting_weeks': 'N/A'
-    }
+    attrs = ltd_attrs_dollar + ltd_attrs_percent + ltd_attrs_int
+    context = get_init_properties(attrs, ltd_quintile_attrs + ltd_quintile_attrs_inv)
 
     if plan:
         employers, num_companies = get_filtered_employers_session(request)
         medians, var_local, _ = get_ltd_plan_(employers, num_companies)
         instance = LTD.objects.get(id=plan)
+        context['plan_info'] = ': {}, {}'.format(instance.employer.name, instance.title)
 
-        for attr in ['monthly_max']:            
-            context['rank_'+attr] = get_rank(var_local['quintile_'+attr], getattr(instance, attr))
+        get_dollar_properties(instance, ltd_attrs_dollar, context)
+        get_percent_properties(instance, ltd_attrs_percent, context)
+        get_int_properties(instance, ltd_attrs_int, context)
+        get_quintile_properties(var_local, instance, ltd_quintile_attrs, ltd_quintile_attrs_inv, context)
 
-        for attr in ['waiting_weeks']:         
-            rank = get_rank(var_local['quintile_'+attr], getattr(instance, attr))
-            context['rank_'+attr] = rank if rank == 'N/A' else 6 - rank
-
-        context['monthly_max'] = '${:,.0f}'.format(instance.monthly_max) if instance.monthly_max else 'N/A'
-        context['percentage'] = '{:,.0f}%'.format(instance.percentage) if instance.percentage else 'N/A'
-        context['waiting_weeks'] = '{:,.0f}'.format(instance.waiting_weeks) if instance.waiting_weeks else 'N/A'
-        
     return JsonResponse(context, safe=False)
 
 
@@ -373,7 +514,10 @@ def get_ltd_properties(request, plan, benefit_=None):
 STRATEGY PAGE
 """
 
-strategy_quintile_attrs = ['tobacco_surcharge_amount', 'spousal_surcharge_amount']
+strategy_quintile_attrs = []
+strategy_quintile_attrs_inv = ['tobacco_surcharge_amount', 'spousal_surcharge_amount']
+strategy_attrs_dollar = ['spousal_surcharge_amount', 'tobacco_surcharge_amount']
+strategy_attrs_boolean = ['tobacco_surcharge', 'spousal_surcharge']
 
 def get_strategy_plan(employers, num_companies, benefit_=None):
     medians, var_local, qs = get_strategy_plan_(employers, num_companies)
@@ -405,35 +549,25 @@ def get_strategy_plan(employers, num_companies, benefit_=None):
 
 def get_strategy_plan_(employers, num_companies):
     qs = Strategy.objects.filter(employer__in=employers)
-    medians, sub_qs = get_medians(qs, strategy_quintile_attrs, num_companies)
+    medians, sub_qs = get_medians(qs, strategy_attrs_dollar, num_companies)
     
     var_local = {}
-    for attr in strategy_quintile_attrs:
+    for attr in strategy_quintile_attrs + strategy_quintile_attrs_inv:
         var_local['quintile_'+attr] = get_incremental_array(sub_qs['qs_'+attr], attr)
     return medians, var_local, qs
 
 def get_strategy_properties(request, plan, benefit_=None):
-    context = {
-        'tobacco_surcharge_amount': 'N/A',
-        'tobacco_surcharge': 'N/A',
-        'spousal_surcharge_amount': 'N/A',
-        'spousal_surcharge': 'N/A',
-        'rank_spousal_surcharge_amount': 'N/A',
-        'rank_tobacco_surcharge_amount': 'N/A'    
-    }
+    attrs = strategy_attrs_dollar + strategy_attrs_boolean
+    context = get_init_properties(attrs, strategy_quintile_attrs + strategy_quintile_attrs_inv)
 
     if plan:
         employers, num_companies = get_filtered_employers_session(request)
         medians, var_local, qs = get_strategy_plan_(employers, num_companies)
         instance = Strategy.objects.get(id=plan)
+        context['plan_info'] = ': {}'.format(instance.employer.name)
 
-        for attr in strategy_quintile_attrs:       
-            rank = get_rank(var_local['quintile_'+attr], getattr(instance, attr))
-            context['rank_'+attr] = rank if rank == 'N/A' else 6 - rank
-
-        context['spousal_surcharge_amount'] = '${:,.0f}'.format(instance.spousal_surcharge_amount) if instance.spousal_surcharge_amount else 'N/A'
-        context['tobacco_surcharge_amount'] = '${:,.0f}'.format(instance.tobacco_surcharge_amount) if instance.tobacco_surcharge_amount else 'N/A'
-        context['tobacco_surcharge'] = 'Yes' if instance.tobacco_surcharge else 'No'
-        context['spousal_surcharge'] = 'Yes' if instance.spousal_surcharge else 'No'
+        get_dollar_properties(instance, strategy_attrs_dollar, context)
+        get_boolean_properties(instance, strategy_attrs_boolean, context)
+        get_quintile_properties(var_local, instance, strategy_quintile_attrs, strategy_quintile_attrs_inv, context)
         
     return JsonResponse(context, safe=False)

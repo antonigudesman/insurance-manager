@@ -10,7 +10,7 @@ var regions_label = [];
 var head_counts_label = [];
 var others_label = [];
 
-var colors = ['#f8696b', '#FCAA78', '#808080', '#B1D480', '#63be7b'];
+var colors = ['#f8696b', '#FCAA78', '#bfbfbf', '#B1D480', '#63be7b'];
 
 $(document).ready(function(){
     if (print_template) {
@@ -184,6 +184,7 @@ function get_filters_label() {
 
 // called for only real template
 function get_body() {
+    $('.page-loader').show();
     // collapse filters
     $('.filter-control').attr('size', 1);
 
@@ -341,5 +342,60 @@ update_content = function(benefit) {
         draw_bar_chart('DENTAL-10', gh10_data, false, 7);        
 
         draw_donut_chart('DENTAL-18', gh18_data);
+    } else if ($.inArray(benefit, ["PPO", "HMO", "HDHP"]) != -1) {
+        if (benefit == "HMO")
+            $('.out-benefit').remove();
+        else if (benefit == 'HDHP')
+            $('.hdhp-benefit').remove();
+        else
+            $('.ppo-benefit').remove();
+
+        gh1_data = generate_quintile_data(gh1_data, true);
+        gh2_data = generate_quintile_data(gh2_data, true);
+        gh3_data = generate_quintile_data(gh3_data, true);
+        gh4_data = generate_quintile_data(gh4_data, true);
+        gh5_data = generate_quintile_data(gh5_data, true);
+        gh6_data = generate_quintile_data(gh6_data, true);
+        gh7_data = generate_quintile_data(gh7_data, true);
+        gh8_data = generate_quintile_data(gh8_data, true);
+        gh9_data = generate_quintile_data(gh9_data, true);
+        gh10_data = generate_quintile_data(gh10_data, true);        
+        gh11_data = generate_quintile_data(gh11_data, true);
+        gh12_data = generate_quintile_data(gh12_data, true);
+        gh13_data = generate_quintile_data(gh13_data, true);
+        gh14_data = generate_quintile_data(gh14_data, true);
+        gh15_data = generate_quintile_data(gh15_data, true);
+        gh16_data = generate_quintile_data(gh16_data, true);
+        gh17_data = generate_quintile_data(gh17_data, true);
+        gh19_data = generate_quintile_data(gh19_data, true);
+        gh20_data = generate_quintile_data(gh20_data, true);        
+        gh21_data = generate_quintile_data(gh21_data, true);        
+        gh22_data = generate_quintile_data(gh22_data);
+        
+        draw_bar_chart('MEDICAL-1', gh1_data, false, 7);        
+        draw_bar_chart('MEDICAL-2', gh2_data, false, 7);        
+        draw_bar_chart('MEDICAL-3', gh3_data, false, 7);        
+        draw_bar_chart('MEDICAL-4', gh4_data, false, 7);        
+        draw_bar_chart('MEDICAL-5', gh5_data, false, 7);        
+        draw_bar_chart('MEDICAL-6', gh6_data, false, 7);        
+        draw_bar_chart('MEDICAL-7', gh7_data, false, 7);        
+        draw_bar_chart('MEDICAL-8', gh8_data, false, 7);        
+        draw_bar_chart('MEDICAL-9', gh9_data, false, 7);        
+        draw_bar_chart('MEDICAL-10', gh10_data, false, 7);        
+        draw_bar_chart('MEDICAL-11', gh11_data, false, 7);        
+        draw_bar_chart('MEDICAL-12', gh12_data, false, 7);        
+        draw_bar_chart('MEDICAL-13', gh13_data, false, 7);        
+        draw_bar_chart('MEDICAL-14', gh14_data, false, 7);        
+        draw_bar_chart('MEDICAL-15', gh15_data, false, 7);        
+        draw_bar_chart('MEDICAL-16', gh16_data, false, 7);        
+        draw_bar_chart('MEDICAL-17', gh17_data, false, 7);        
+        draw_bar_chart('MEDICAL-19', gh19_data, false, 7);        
+        draw_bar_chart('MEDICAL-20', gh20_data, false, 7);   
+        draw_bar_chart('MEDICAL-21', gh21_data, false, 7);        
+        draw_bar_chart('MEDICAL-22', gh22_data, false, 7);   
+
+        draw_donut_chart('MEDICAL-18', gh18_data);
     }
+
+    $('.page-loader').fadeOut();
 }

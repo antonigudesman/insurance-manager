@@ -54,7 +54,7 @@ def import_medical(request):
                 medical = Medical.objects.create(          
                     title='Option M',
                     employer_id=row['EMPLOYERNAME__C'],
-                    type=row['DP_TYPE__C'] or None,
+                    type=row['MP_TYPE__C'] or None,
                     in_ded_single=row['MP_IN_DEDUCTIBLE_S__C'] or None,
                     in_ded_family=row['MP_IN_DEDUCTIBLE_F__C'] or None,
                     in_max_single=row['MP_IN_MAXIMUM_S__C'] or None,
@@ -101,18 +101,18 @@ def import_medical(request):
                     hsa=row['HSA__C']=='TRUE',
                     ded_cross=get_3_state_boolean(row['MP_DED_CROSS_ACCUMULATE__C']),
                     max_cross=get_3_state_boolean(row['MP_MAX_CROSS_ACCUMULATE__C']),
-                    t1_ee=row['DP_T1_ANNUAL_EE__C'] or None,
-                    t2_ee=row['DP_T2_ANNUAL_EE__C'] or None,
-                    t3_ee=row['DP_T3_ANNUAL_EE__C'] or None,
-                    t4_ee=row['DP_T4_ANNUAL_EE__C'] or None,
-                    t1_gross=row['DP_T1_ANNUAL_GROSS__C'] or None,
-                    t2_gross=row['DP_T2_ANNUAL_GROSS__C'] or None,
-                    t3_gross=row['DP_T3_ANNUAL_GROSS__C'] or None,
-                    t4_gross=row['DP_T4_ANNUAL_GROSS__C'] or None,
-                    t1_ercdhp=row['DP_T1_ANNUAL_ERCDHP__C'] or None,
-                    t2_ercdhp=row['DP_T2_ANNUAL_ERCDHP__C'] or None,
-                    t3_ercdhp=row['DP_T3_ANNUAL_ERCDHP__C'] or None,
-                    t4_ercdhp=row['DP_T4_ANNUAL_ERCDHP__C'] or None)
+                    t1_ee=row['MP_T1_ANNUAL_EE__C'] or None,
+                    t2_ee=row['MP_T2_ANNUAL_EE__C'] or None,
+                    t3_ee=row['MP_T3_ANNUAL_EE__C'] or None,
+                    t4_ee=row['MP_T4_ANNUAL_EE__C'] or None,
+                    t1_gross=row['MP_T1_ANNUAL_GROSS__C'] or None,
+                    t2_gross=row['MP_T2_ANNUAL_GROSS__C'] or None,
+                    t3_gross=row['MP_T3_ANNUAL_GROSS__C'] or None,
+                    t4_gross=row['MP_T4_ANNUAL_GROSS__C'] or None,
+                    t1_ercdhp=row['MP_T1_ANNUAL_ERCDHP__C'] or None,
+                    t2_ercdhp=row['MP_T2_ANNUAL_ERCDHP__C'] or None,
+                    t3_ercdhp=row['MP_T3_ANNUAL_ERCDHP__C'] or None,
+                    t4_ercdhp=row['MP_T4_ANNUAL_ERCDHP__C'] or None)
             except Exception as e:
                 print str(e)
                 print '#{}#'.format(row['EMPLOYERNAME__C'])

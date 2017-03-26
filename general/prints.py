@@ -1,12 +1,10 @@
 import os
 import time
 import random
-import HTMLParser
 import mimetypes
 
 from fpdf import FPDF
 from PIL import Image
-from datetime import datetime
 
 from django.core.files.storage import FileSystemStorage
 from django.utils.encoding import smart_str
@@ -33,41 +31,17 @@ def print_template(request):
     ft_other_label = ', '.join(request.session['ft_other_label'])
     ft_regions_label = ', '.join(request.session['ft_regions_label'])
 
-    today = datetime.strftime(datetime.now(), '%B %d, %Y')
-
-    if benefit == 'HOME':
-        full_name = '{} {}'.format(request.user.first_name, request.user.last_name)
-        return render(request, 'home.html', locals())
-    elif benefit in ['LIFE', 'STD', 'LTD', 'STRATEGY', 'VISION']:
-        employers, num_companies = get_filtered_employers(ft_industries, 
-                                                          ft_head_counts, 
-                                                          ft_other,
-                                                          ft_regions)
-
-        if num_companies < settings.EMPLOYER_THRESHOLD:
-            context =  {
-                'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE,
-                'num_employers': num_companies,
-                'EMPLOYER_THRESHOLD': settings.EMPLOYER_THRESHOLD
-            }
-        else:
-            func_name = 'get_{}_plan'.format(benefit.lower())
-            context = globals()[func_name](employers, num_companies)
-
-        context['base_template'] = 'print.html'
-        context['today'] = today
-        # unescape html characters
-        h = HTMLParser.HTMLParser()
-        context['ft_industries_label'] = h.unescape(ft_industries_label)
-        context['ft_head_counts_label'] = h.unescape(ft_head_counts_label)
-        context['ft_other_label'] = h.unescape(ft_other_label)
-        context['ft_regions_label'] = h.unescape(ft_regions_label)
-
-        template = 'benefit/{}_plan.html'.format(benefit.lower())
-        return render(request, template, context)
-    elif benefit == 'EMPLOYERS':
-        return render(request, 'benefit/employers.html', { 'today': today })
-    return HttpResponse('Nice')
+    return get_response_template(request, 
+                                 benefit, 
+                                 ft_industries, 
+                                 ft_head_counts, 
+                                 ft_other, 
+                                 ft_regions, 
+                                 True,
+                                 ft_industries_label,
+                                 ft_head_counts_label,
+                                 ft_other_label,
+                                 ft_regions_label)
 
 
 @login_required(login_url='/admin/login')

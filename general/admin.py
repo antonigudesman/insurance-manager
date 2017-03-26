@@ -94,6 +94,18 @@ class DentalAdmin(admin.ModelAdmin):
         return qs
 
 
+class MedicalAdmin(admin.ModelAdmin):
+    list_display = [item.name for item in Medical._meta.fields if item.name != 'id']
+
+    def get_queryset(self, request):
+        qs = super(MedicalAdmin, self).get_queryset(request)
+        group = request.user.groups.first().name
+
+        if group != 'bnchmrk':
+            qs = qs.filter(employer__broker=group)
+            
+        return qs
+
 admin.site.register(Employer, EmployerAdmin)
 admin.site.register(Life, LifeAdmin)
 admin.site.register(STD, STDAdmin)
@@ -101,3 +113,4 @@ admin.site.register(LTD, LTDAdmin)
 admin.site.register(Strategy, StrategyAdmin)
 admin.site.register(Vision, VisionAdmin)
 admin.site.register(Dental, DentalAdmin)
+admin.site.register(Medical, MedicalAdmin)

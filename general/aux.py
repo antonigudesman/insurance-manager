@@ -1,7 +1,9 @@
 from django.conf import settings
 from django.db.models import Q
+from django.shortcuts import render
 
 from .models import *
+
 
 def get_filtered_employers(ft_industries, ft_head_counts, ft_other, ft_regions, lstart=0, lend=0, group='bnchmrk'):
     # filter with factors from UI (industry, head-count, other)
@@ -208,7 +210,7 @@ def get_plan_type(qs):
 
 
 def get_rank(quintile_array, value):
-    if value == None or value == 'N/A':
+    if value == None or value == 'N/A' or quintile_array == []:
         return 'N/A'
 
     # for specific filtering cases
@@ -283,6 +285,24 @@ def get_boolean_properties(instance, attrs, context):
             context[attr] = 'Yes' if val else 'No'
         else:
             context[attr] = 'N/A'
+
+
+def get_boolean_properties_5_states(instance, attrs, context):
+    for attr in attrs:
+        val = getattr(instance, attr)
+        if val != None:
+            context[attr] = 'Yes' if val in ['TRUE', 'True/Coin'] else 'No'
+        else:
+            context[attr] = 'N/A'
+
+
+def get_boolean_properties_5_states_coin(instance, attrs, context):
+    for attr in attrs:
+        val = getattr(instance, attr)
+        if val != None:
+            context['coin_'+attr] = 'Yes' if val in ['False/Coin', 'True/Coin'] else 'No'
+        else:
+            context['coin_'+attr] = 'N/A'
 
 
 def get_quintile_properties(var_qs, instance, attrs, attrs_inv, context):

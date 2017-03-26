@@ -198,7 +198,7 @@ body {
 }
 
 .navbar-nav > li.active {
-    background-color: gray;
+    background-color: #808080;
     font-weight: bold;
 }
 
