@@ -47,11 +47,50 @@ def get_vision_properties(request, plan):
         medians, var_local = get_vision_plan_(employers, num_companies)
         instance = Vision.objects.get(id=plan)
 
+        attrs = ['exam_copay',
+                 'exam_out_allowance',
+                 'lenses_copay',
+                 'lenses_out_allowance',
+                 'frames_copay',
+                 'frames_allowance',
+                 'frames_out_allowance',
+                 'contacts_copay',
+                 'contacts_allowance',
+                 'contacts_out_allowance',
+                 't1_ee',
+                 't2_ee',
+                 't3_ee',
+                 't4_ee',
+                 't1_gross',
+                 't2_gross',
+                 't3_gross',
+                 't4_gross']
+
+        for attr in attrs:
+            val = getattr(instance, attr)
+            context[attr] = '${:,.0f}'.format(val) if val else 'N/A'
+
+        attrs = ['frames_coinsurance',
+                 'contacts_coinsurance']
+
+        for attr in attrs:
+            val = getattr(instance, attr)
+            context[attr] = '{:,.0f}%'.format(val) if val else 'N/A'
+
+        attrs = ['exam_frequency',
+                 'lenses_frequency',
+                 'frames_frequency',
+                 'contacts_frequency']
+                 
         for attr in attrs:
             val = getattr(instance, attr)
             context[attr] = val if val else 'N/A'
+        
+        for attr in ['exam_copay', 'lenses_copay', 't1_ee', 't1_gross']:            
+            rank = get_rank(var_local['quintile_'+attr], getattr(instance, attr))
+            context['rank_'+attr] = rank if rank == 'N/A' else 6 - rank
 
-        for attr in vision_quintile_attrs:            
+        for attr in ['frames_allowance', 'contacts_allowance']:            
             context['rank_'+attr] = get_rank(var_local['quintile_'+attr], getattr(instance, attr))
 
     return JsonResponse(context, safe=False)
@@ -225,8 +264,12 @@ def get_ltd_properties(request, plan):
         medians, var_local, _ = get_ltd_plan_(employers, num_companies)
         instance = LTD.objects.get(id=plan)
 
-        for attr in ltd_quintile_attrs:            
+        for attr in ['monthly_max']:            
             context['rank_'+attr] = get_rank(var_local['quintile_'+attr], getattr(instance, attr))
+
+        for attr in ['waiting_weeks']:         
+            rank = get_rank(var_local['quintile_'+attr], getattr(instance, attr))
+            context['rank_'+attr] = rank if rank == 'N/A' else 6 - rank
 
         context['monthly_max'] = '${:,.0f}'.format(instance.monthly_max) if instance.monthly_max else 'N/A'
         context['percentage'] = '{:,.0f}%'.format(instance.percentage) if instance.percentage else 'N/A'
@@ -293,8 +336,9 @@ def get_strategy_properties(request, plan):
         medians, var_local, qs = get_strategy_plan_(employers, num_companies)
         instance = Strategy.objects.get(id=plan)
 
-        for attr in strategy_quintile_attrs:            
-            context['rank_'+attr] = get_rank(var_local['quintile_'+attr], getattr(instance, attr))
+        for attr in strategy_quintile_attrs:       
+            rank = get_rank(var_local['quintile_'+attr], getattr(instance, attr))
+            context['rank_'+attr] = rank if rank == 'N/A' else 6 - rank
 
         context['spousal_surcharge_amount'] = '${:,.0f}'.format(instance.spousal_surcharge_amount) if instance.spousal_surcharge_amount else 'N/A'
         context['tobacco_surcharge_amount'] = '${:,.0f}'.format(instance.tobacco_surcharge_amount) if instance.tobacco_surcharge_amount else 'N/A'

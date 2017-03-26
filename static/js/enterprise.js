@@ -244,7 +244,7 @@ function get_body() {
 
 }
 
-generate_quintile_data = function(raw_data){
+generate_quintile_data = function(raw_data, inverse){
     var qa_points = $.map(raw_data, function(i){if (i[0]%20==0) return [i];});
     var data = [
         {
@@ -257,13 +257,14 @@ generate_quintile_data = function(raw_data){
 
     var section = [];
     for( var i = 0; i < raw_data.length; i++ ) {
+        var color_index = inverse ? 5 - raw_data[i][0] / 20 : raw_data[i][0] / 20 - 1;
         section.push(raw_data[i]);
         if ( i > 0 && raw_data[i][0] % 20 == 0) {
             data.push({
                 data : section,
                 points: { show: false },
                 lines: { show: true, fill: 0.98 },
-                color: colors[raw_data[i][0] / 20 - 1]
+                color: colors[color_index]
             });
             section = [raw_data[i]];
         }
@@ -276,7 +277,11 @@ update_content = function(benefit) {
         load_employers();
     } else if ($.inArray(benefit, ["LIFE", "STD", "LTD"]) != -1) {
         gh1_data = generate_quintile_data(gh1_data);
-        gh2_data = generate_quintile_data(gh2_data);
+
+        if ( benefit == "LTD")
+            gh2_data = generate_quintile_data(gh2_data, true);
+        else
+            gh2_data = generate_quintile_data(gh2_data);
         
         draw_bar_chart(benefit+'-1', gh1_data);        
         
@@ -288,25 +293,25 @@ update_content = function(benefit) {
         draw_easy_pie_chart();
         draw_donut_chart(benefit+'-18', gh18_data);
     } else if ($.inArray(benefit, ["STRATEGY"]) != -1) {
-        gh1_data = generate_quintile_data(gh1_data);
-        gh2_data = generate_quintile_data(gh2_data);
+        gh1_data = generate_quintile_data(gh1_data, true);
+        gh2_data = generate_quintile_data(gh2_data, true);
         
         draw_bar_chart(benefit+'-1', gh1_data);        
         draw_bar_chart(benefit+'-2', gh2_data);        
     } else if ($.inArray(benefit, ["VISION"]) != -1) {
-        gh1_data = generate_quintile_data(gh1_data);
-        gh2_data = generate_quintile_data(gh2_data);
+        gh1_data = generate_quintile_data(gh1_data, true);
+        gh2_data = generate_quintile_data(gh2_data, true);
         gh3_data = generate_quintile_data(gh3_data);
         gh4_data = generate_quintile_data(gh4_data);
-        gh5_data = generate_quintile_data(gh5_data);
-        gh6_data = generate_quintile_data(gh6_data);        
+        gh5_data = generate_quintile_data(gh5_data, true);
+        gh6_data = generate_quintile_data(gh6_data, true);        
         
-        draw_bar_chart(benefit+'-1', gh1_data);        
-        draw_bar_chart(benefit+'-2', gh2_data);        
-        draw_bar_chart(benefit+'-3', gh3_data);        
-        draw_bar_chart(benefit+'-4', gh4_data);        
-        draw_bar_chart(benefit+'-5', gh5_data);        
-        draw_bar_chart(benefit+'-6', gh6_data);        
+        draw_bar_chart(benefit+'-1', gh1_data, false, 7);        
+        draw_bar_chart(benefit+'-2', gh2_data, false, 7);        
+        draw_bar_chart(benefit+'-3', gh3_data, false, 7);        
+        draw_bar_chart(benefit+'-4', gh4_data, false, 7);        
+        draw_bar_chart(benefit+'-5', gh5_data, false, 7);        
+        draw_bar_chart(benefit+'-6', gh6_data, false, 7);        
 
         draw_donut_chart(benefit+'-18', gh18_data);
     }

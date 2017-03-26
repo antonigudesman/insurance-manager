@@ -43,6 +43,55 @@ def import_employer(request):
     return HttpResponse('Successfully imported ({})!'.format(Employer.objects.all().count()))
 
 
+def import_dental(request):
+    path = '/home/akimmel/work/table extracts/dental.csv'
+    # path = '/root/work/Enterprise/data/dental.csv'
+
+    with open(path) as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            try:
+                dental = Dental.objects.create(          
+                    title='Option D',
+                    employer_id=row['EMPLOYERNAME__C'],
+                    type=row['DP_TYPE__C'] or None,
+                    in_ded_single=row['DP_IN_DEDUCTIBLE_S__C'] or None,
+                    in_ded_family=row['DP_IN_DEDUCTIBLE_F__C'] or None,
+                    in_max=row['DP_IN_MAXIMUM_PP__C'] or None,
+                    in_max_ortho=row['DP_IN_ORTHO_MAXIMUM_PP__C'] or None,
+                    out_ded_single=row['DP_OUT_DEDUCTIBLE_S__C'] or None,
+                    out_ded_family=row['DP_OUT_DEDUCTIBLE_F__C'] or None,
+                    out_max=row['DP_OUT_MAXIMUM_PP__C'] or None,
+                    out_max_ortho=row['DP_OUT_ORTHO_MAXIMUM_PP__C'] or None,
+                    in_prev_coin=row['DP_IN_PREV_COINSURANCE__C'] or None,
+                    out_prev_coin=row['DP_OUT_PREV_COINSURANCE__C'] or None,
+                    prev_ded_apply=get_3_state_boolean(row['DP_PREV_DEDUCTIBLE_APPLY__C']),
+                    in_basic_coin=row['DP_IN_BASIC_COINSURANCE__C'] or None,
+                    out_basic_coin=row['DP_OUT_BASIC_COINSURANCE__C'] or None,
+                    basic_ded_apply=get_3_state_boolean(row['DP_BASIC_DEDUCTIBLE_APPLY__C']),
+                    in_major_coin=row['DP_IN_MAJOR_COINSURANCE__C'] or None,
+                    out_major_coin=row['DP_OUT_MAJOR_COINSURANCE__C'] or None,
+                    major_ded_apply=get_3_state_boolean(row['DP_MAJOR_DEDUCTIBLE_APPLY__C']),
+                    in_ortho_coin=row['DP_IN_ORTHO_COINSURANCE__C'] or None,
+                    out_ortho_coin=row['DP_OUT_ORTHO_COINSURANCE__C'] or None,
+                    ortho_ded_apply=get_3_state_boolean(row['DP_ORTHO_DEDUCTIBLE_APPLY__C']),
+                    ortho_age_limit=row['DP_ORTHO_AGE_LIMIT__C'] or None,
+                    t1_ee=row['DP_T1_ANNUAL_EE__C'] or None,
+                    t2_ee=row['DP_T2_ANNUAL_EE__C'] or None,
+                    t3_ee=row['DP_T3_ANNUAL_EE__C'] or None,
+                    t4_ee=row['DP_T4_ANNUAL_EE__C'] or None,
+                    t1_gross=row['DP_T1_ANNUAL_GROSS__C'] or None,
+                    t2_gross=row['DP_T2_ANNUAL_GROSS__C'] or None,
+                    t3_gross=row['DP_T3_ANNUAL_GROSS__C'] or None,
+                    t4_gross=row['DP_T4_ANNUAL_GROSS__C'] or None)
+            except Exception as e:
+                print str(e)
+                print '#{}#'.format(row['EMPLOYERNAME__C'])
+                # break
+
+    return HttpResponse('Successfully imported ({})!'.format(Dental.objects.all().count()))
+
+
 def import_vision(request):
     path = '/home/akimmel/work/table extracts/vision.csv'
     # path = '/root/work/Enterprise/data/vision.csv'
@@ -83,7 +132,7 @@ def import_vision(request):
                 print '#{}#'.format(row['EMPLOYERNAME__C'])
                 # break
 
-    return HttpResponse('Successfully imported ({})!'.format(Life.objects.all().count()))
+    return HttpResponse('Successfully imported ({})!'.format(Dental.objects.all().count()))
 
 
 def import_life(request):
