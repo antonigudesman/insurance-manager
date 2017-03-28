@@ -150,8 +150,6 @@
             <h4>STD Prevalence</h4>
         </div>
         <div class="section-graph">
-            <div id="STD-18" class="flot-chart-pie"></div>
-            <div class="flc-donut hidden-xs"></div>
         </div>
         <div class="section-content">
             <table class="table table-striped table-content">
@@ -193,19 +191,11 @@
 
 <script type="text/javascript">
 
-var gh1_data, gh2_data, gh18_data;
+var gh1_data, gh2_data;
 
 {% if num_employers >= EMPLOYER_THRESHOLD %}
     gh1_data = {{ quintile_weekly_max }};
     gh2_data = {{ quintile_duration_weeks }};
-
-    gh18_data = [
-        {data: {{ prcnt_plan0 }}, color: '#F44336', label: 'Not Offered'},
-        {data: {{ prcnt_plan1 }}, color: '#03A9F4', label: 'One Plan'},
-        {data: {{ prcnt_plan2 }}, color: '#8BC34A', label: 'Two Plans'},
-        {data: {{ prcnt_plan3_or_more }}, color: '#FFEB3B', label: 'Three or More Plans'},
-    ];
-
 {% endif %}
 </script>
 {% endblock %}

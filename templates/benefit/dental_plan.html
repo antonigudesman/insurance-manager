@@ -10,7 +10,7 @@
 
     <div class="section">
         <div class="section-header">
-            <h4>Dental In-Network Deductibles</h4>
+            <h4>{{ request.session.benefit }} In-Network Deductibles</h4>
         </div>
         <div class="section-graph">
             <div id="DENTAL-1" class="flot-chart"></div>
@@ -49,7 +49,7 @@
 
     <div class="section">
         <div class="section-header">
-            <h4>Dental In-Network Per Person Maximums</h4>
+            <h4>{{ request.session.benefit }} In-Network Per Person Maximums</h4>
         </div>
         <div class="section-graph">
             <div id="DENTAL-2" class="flot-chart"></div>
@@ -88,7 +88,7 @@
 
     <div class="section out-benefit">
         <div class="section-header">
-            <h4>Dental Out-of-Network Deductibles</h4>
+            <h4>{{ request.session.benefit }} Out-of-Network Deductibles</h4>
         </div>
         <div class="section-graph">
             <div id="DENTAL-3" class="flot-chart"></div>
@@ -127,7 +127,7 @@
 
     <div class="section out-benefit">
         <div class="section-header">
-            <h4>Dental Out-of-Network Per Person Maximums</h4>
+            <h4>{{ request.session.benefit }} Out-of-Network Per Person Maximums</h4>
         </div>
         <div class="section-graph">
             <div id="DENTAL-4" class="flot-chart"></div>
@@ -166,7 +166,7 @@
 
     <div class="section">
         <div class="section-header">
-            <h4>Dental Preventive Services</h4>
+            <h4>{{ request.session.benefit }} Preventive Services</h4>
         </div>
         <div class="section-content">
             <table class="table table-striped table-content">
@@ -181,8 +181,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="quintile-subject">
-                        <td class="row-label">IN Coinsurance *</td>
+                    <tr>
+                        <td class="row-label">IN Coinsurance</td>
                         <td>{{ mdn_in_prev_coin }}</td>
                         <td><span id="prop_in_prev_coin"></span></td>
                     </tr>
@@ -199,15 +199,15 @@
                 </tbody>
             </table>
         </div>
-        <div class="section-score">
+        <!-- <div class="section-score">
             <h5>Q-SCORE</h5>
             <p><span id="prop_rank_in_prev_coin"></span></p>           
-        </div> 
+        </div>  -->
     </div>
 
     <div class="section">
         <div class="section-header">
-            <h4>Dental Basic Services</h4>
+            <h4>{{ request.session.benefit }} Basic Services</h4>
         </div>
         <div class="section-graph">
             <div id="DENTAL-6" class="flot-chart"></div>
@@ -251,7 +251,7 @@
 
     <div class="section">
         <div class="section-header">
-            <h4>Dental Major Services</h4>
+            <h4>{{ request.session.benefit }} Major Services</h4>
         </div>
         <div class="section-graph">
             <div id="DENTAL-7" class="flot-chart"></div>
@@ -295,7 +295,7 @@
 
     <div class="section">
         <div class="section-header">
-            <h4>Dental Orthodontics Services</h4>
+            <h4>{{ request.session.benefit }} Orthodontics Services</h4>
         </div>
         <div class="section-graph">
             <div id="DENTAL-8" class="flot-chart"></div>
@@ -344,7 +344,7 @@
 
     <div class="section">
         <div class="section-header">
-            <h4>Dental Employee Annual Contributions</h4>
+            <h4>{{ request.session.benefit }} Employee Annual Contributions</h4>
         </div>
         <div class="section-graph">
             <div id="DENTAL-9" class="flot-chart"></div>
@@ -393,7 +393,7 @@
 
     <div class="section">
         <div class="section-header">
-            <h4>Dental Gross Annual Total Cost</h4>
+            <h4>{{ request.session.benefit }} Gross Annual Total Cost</h4>
         </div>
         <div class="section-graph">
             <div id="DENTAL-10" class="flot-chart"></div>
@@ -442,7 +442,7 @@
 
     <div class="section">
         <div class="section-header">
-            <h4>Dental Prevalence</h4>
+            <h4>{{ request.session.benefit }} Prevalence</h4>
         </div>
         <div class="section-content">
             <table class="table table-striped table-content">

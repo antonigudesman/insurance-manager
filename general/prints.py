@@ -57,7 +57,7 @@ def print_template_header(request):
     ft_head_counts_label = ', '.join(request.session['ft_head_counts_label'])
     ft_other_label = ', '.join(request.session['ft_other_label'])
     ft_regions_label = ', '.join(request.session['ft_regions_label'])
-    
+
     return get_response_template(request, 
                                  benefit, 
                                  ft_industries, 
@@ -68,7 +68,8 @@ def print_template_header(request):
                                  ft_industries_label,
                                  ft_head_counts_label,
                                  ft_other_label,
-                                 ft_regions_label)
+                                 ft_regions_label,
+                                 True)
 
 
 @login_required(login_url='/admin/login')
@@ -89,14 +90,20 @@ def print_page(request):
     except Exception as e:
         pass
 
+    # for body
     driver.get('http://{}/98Wf37r2-3h4X2_jh9'.format(request.META.get('HTTP_HOST')))
     base_path = '/tmp/page{}'.format(random.randint(-100000000, 100000000))
     img_path = base_path + '.png'
     pdf_path = base_path + '.pdf'
     time.sleep(2)
-
     driver.save_screenshot(img_path)
 
+    # for header
+    driver.get('http://{}/25Wfr7r2-3h4X25t'.format(request.META.get('HTTP_HOST')))
+    img_path_header = base_path + '_header.png'
+    time.sleep(1)
+    driver.save_screenshot(img_path_header)
+    
     try:
         driver.quit()
     except Exception as e:
@@ -124,6 +131,9 @@ def print_page(request):
     pdf = FPDF(orientation='L', format=(1200+2*margin_v, 1425+2*margin_h), unit='pt')
     pdf.set_auto_page_break(False)
 
+    pdf.add_page()
+    pdf.image(img_path_header, margin_h, margin_v)
+
     for idx in range(num_pages):
         img_path_s = '{}_{}.png'.format(base_path, idx)
         pdf.add_page()
@@ -131,7 +141,9 @@ def print_page(request):
         os.remove(img_path_s)
 
     pdf.output(pdf_path, "F")
+    # remove image files
     os.remove(img_path)
+    os.remove(img_path_header)
     return get_download_response(pdf_path)
 
 

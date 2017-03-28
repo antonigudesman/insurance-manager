@@ -14,7 +14,7 @@ function draw_bar_chart(id, data, int, label_xpos_factor) {
     // This is not a bar chart anymore.
     // This is a incremental stack chart with color coding
     tickFormatter = yaxis_formatter;
-    if (typeof int !== 'undefined')
+    if (typeof int !== 'undefined' && int == true)
         tickFormatter = yaxis_formatter_int;
     
     if (typeof label_xpos_factor === 'undefined')
@@ -76,7 +76,7 @@ function draw_bar_chart(id, data, int, label_xpos_factor) {
         $.each(p.getData()[0].data, function(i, el){
             var o = p.pointOffset({x: i, y: el[1]});
             if (el[0] % 20 == 0) {
-                var sign = int ? '' : '$';
+                var sign = (typeof int !== 'undefined' && int == true) ? '' : '$';
                 $('<div class="data-point-label"><b>' + sign+digits(el[1].toString()) + '</b></div>').css( {
                     position: 'absolute',
                     left: 30 + el[0] * label_xpos_factor,

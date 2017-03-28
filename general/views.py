@@ -182,7 +182,8 @@ def get_response_template(request,
                           ft_industries_label='', 
                           ft_head_counts_label='', 
                           ft_other_label='', 
-                          ft_regions_label=''):
+                          ft_regions_label='',
+                          is_print_header=False):
 
     today = datetime.strftime(datetime.now(), '%B %d, %Y')
 
@@ -225,6 +226,9 @@ def get_response_template(request,
             context['ft_regions_label'] = h.unescape(ft_regions_label)
 
         template = 'benefit/{}_plan.html'.format(benefit.lower())
+        if is_print_header:
+            template = 'includes/print_header.html'
+
         return render(request, template, context)
     elif benefit == 'EMPLOYERS':
         return render(request, 'benefit/employers.html', { 'today': today })

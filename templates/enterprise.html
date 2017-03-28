@@ -4,6 +4,7 @@
 {% block extra_css %}
 <link href="{% static 'vendors/bootgrid/jquery.bootgrid.min.css' %}" rel="stylesheet">
 <link href="{% static 'css/enterprise.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 {% endblock %}
 
 {% block body %}
@@ -93,7 +94,7 @@
             </div>
             <div class="control-buttons">
                 <a class="btn btn-print" href="" onclick="">Print Report</a>
-                <a class="btn btn-print" href="/print_page" onclick="">Print Page</a>
+                <a class="btn btn-print" href="/print_page" onclick="show_print_pending_dialog();">Print Page</a>
                 <a class="btn btn-primary" href="javascript:void(0);" onclick="get_body();">Run Filters</a>
             </div>
         </div>
@@ -105,6 +106,12 @@
         
         </div>
     </div>
+</div>
+
+<div id="print_dialog" title="Printing Page Confirmation" style="display: none;">
+  <br>
+  <p>Please wait while your <b>{{ request.session.benefit }} Benchmarking Report</b> is generated.</p>
+  <p>You will be alerted as soon as the report is ready to download.</p> 
 </div>
 {% endblock %}
 
@@ -121,6 +128,7 @@
         // make active menuitem for this page
         $('ul.navbar-nav li').eq(1).addClass('active');
     </script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="{% static 'vendors/bower_components/flot/jquery.flot.categories.js' %}"></script>
     <script src="{% static 'vendors/bower_components/flot/jquery.flot.pie.js' %}"></script>
     <script src="{% static 'vendors/bootgrid/jquery.bootgrid.updated.min.js' %}"></script> 
