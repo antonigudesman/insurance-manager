@@ -9,7 +9,6 @@ Medical ( PPO, HMO, HDHP ) page
 """
 
 medical_quintile_attrs = [
-    't1_ercdhp'
 ]
 
 medical_quintile_attrs_inv = [
@@ -17,20 +16,13 @@ medical_quintile_attrs_inv = [
     'in_max_single',
     'out_ded_single',
     'out_max_single',
-    'rx_ded_single',
-    'rx_max_single',
     'in_coin',
     'pcp_copay',
-    'sp_copay',
     'er_copay',
-    'uc_copay',
     'lx_copay',
-    'op_copay',
     'ip_copay',
     'rx1_copay',
-    'rx2_copay',
     'rx3_copay',
-    'rx4_copay',
     't1_ee',
     't1_gross'
 ]
@@ -174,7 +166,6 @@ dental_quintile_attrs = [
 dental_quintile_attrs_inv = [
     'in_ded_single',
     'out_ded_single',
-    'in_prev_coin',
     'in_basic_coin',
     'in_major_coin',
     'in_ortho_coin',

@@ -9,14 +9,12 @@
 {% if num_employers >= EMPLOYER_THRESHOLD %}
 
     <div class="section">
+        <div class="section-header">
+            <h4>Medical/Rx In-Network Deductibles</h4>
+        </div>
         <div class="section-graph">
-            <p class="exhibit-text">In Network Deductibles<span>(Exhibit)</span></p>
             <div id="MEDICAL-1" class="flot-chart"></div>
         </div>
-        <div class="section-score">
-            <h5>Q-SCORE</h5>
-            <p><span id="prop_rank_in_ded_single"></span></p>           
-        </div> 
         <div class="section-content">
             <table class="table table-striped table-content">
                 <col width="50%">
@@ -24,194 +22,48 @@
                 <col width="25%">
                 <thead>
                     <tr>
-                        <th class="row-label">In Network Deductibles</th>
+                        <th class="row-label"></th>
                         <th>Benchmark</th>
-                        <th>Current Plan</th>
+                        <th>Current</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="row-label">Single Employees</td>
+                    <tr class="quintile-subject">
+                        <td class="row-label">Single Deductible *</td>
                         <td>{{ mdn_in_ded_single }}</td>
                         <td><span id="prop_in_ded_single"></span></td>
                     </tr>
                     <tr>
-                        <td class="row-label">Families</td>
+                        <td class="row-label">Family Deductible</td>
                         <td>{{ mdn_in_ded_family }}</td>
                         <td><span id="prop_in_ded_family"></span></td>
                     </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="section">
-        <div class="section-graph">
-            <p class="exhibit-text">In Network Maximums<span>(Exhibit)</span></p>
-            <div id="MEDICAL-2" class="flot-chart"></div>
-        </div>
-        <div class="section-score">
-            <h5>Q-SCORE</h5>
-            <p><span id="prop_rank_in_max_single"></span></p>           
-        </div> 
-        <div class="section-content">
-            <table class="table table-striped table-content">
-                <col width="50%">
-                <col width="25%">
-                <col width="25%">
-                <thead>
                     <tr>
-                        <th class="row-label">In Network Maximums</th>
-                        <th>Benchmark</th>
-                        <th>Current Plan</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="row-label">Singles</td>
-                        <td>{{ mdn_in_max_single }}</td>
-                        <td><span id="prop_in_max_single"></span></td>
-                    </tr>
-                    <tr>
-                        <td class="row-label">Family</td>
-                        <td>{{ mdn_in_max_family }}</td>
-                        <td><span id="prop_in_max_family"></span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="section out-benefit">
-        <div class="section-graph">
-            <p class="exhibit-text">Out of Network Deductibles<span>(Exhibit)</span></p>
-            <div id="MEDICAL-3" class="flot-chart"></div>
-        </div>
-        <div class="section-score">
-            <h5>Q-SCORE</h5>
-            <p><span id="prop_rank_out_ded_single"></span></p>           
-        </div> 
-        <div class="section-content">
-            <table class="table table-striped table-content">
-                <col width="50%">
-                <col width="25%">
-                <col width="25%">
-                <thead>
-                    <tr>
-                        <th class="row-label">Out of Network Deductibles</th>
-                        <th>Benchmark</th>
-                        <th>Current Plan</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="row-label">Single Employees</td>
-                        <td>{{ mdn_out_ded_single }}</td>
-                        <td><span id="prop_out_ded_single"></span></td>
-                    </tr>
-                    <tr>
-                        <td class="row-label">Families</td>
-                        <td>{{ mdn_out_ded_family }}</td>
-                        <td><span id="prop_out_ded_family"></span></td>
-                    </tr>
-                    <tr>
-                        <td class="row-label">Cross Accum</td>
-                        <td>{{ prcnt_ded_cross }}</td>
-                        <td><span id="prop_ded_cross"></span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="section out-benefit">
-        <div class="section-graph">
-            <p class="exhibit-text">Out of Network Maximums<span>(Exhibit)</span></p>
-            <div id="MEDICAL-4" class="flot-chart"></div>
-        </div>
-        <div class="section-score">
-            <h5>Q-SCORE</h5>
-            <p><span id="prop_rank_out_max_single"></span></p>           
-        </div> 
-        <div class="section-content">
-            <table class="table table-striped table-content">
-                <col width="50%">
-                <col width="25%">
-                <col width="25%">
-                <thead>
-                    <tr>
-                        <th class="row-label">Out of Network Maximums</th>
-                        <th>Benchmark</th>
-                        <th>Current Plan</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="row-label">Singles</td>
-                        <td>{{ mdn_out_max_single }}</td>
-                        <td><span id="prop_out_max_single"></span></td>
-                    </tr>
-                    <tr>
-                        <td class="row-label">Families</td>
-                        <td>{{ mdn_out_max_family }}</td>
-                        <td><span id="prop_out_max_family"></span></td>
-                    </tr>
-                    <tr>
-                        <td class="row-label">Cross Accum</td>
-                        <td>{{ prcnt_max_cross }}</td>
-                        <td><span id="prop_max_cross"></span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="section hdhp-benefit">
-        <div class="section-graph">
-            <p class="exhibit-text">Rx Deductibles<span>(Exhibit)</span></p>
-            <div id="MEDICAL-5" class="flot-chart"></div>
-        </div>
-        <div class="section-score">
-            <h5>Q-SCORE</h5>
-            <p><span id="prop_rank_rx_ded_single"></span></p>           
-        </div> 
-        <div class="section-content">
-            <table class="table table-striped table-content">
-                <col width="50%">
-                <col width="25%">
-                <col width="25%">
-                <thead>
-                    <tr>
-                        <th class="row-label">Rx Deductibles</th>
-                        <th>Benchmark</th>
-                        <th>Current Plan</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="row-label">Single Employees</td>
+                        <td class="row-label">Rx Single Deductible</td>
                         <td>{{ mdn_rx_ded_single }}</td>
                         <td><span id="prop_rx_ded_single"></span></td>
                     </tr>
                     <tr>
-                        <td class="row-label">Families</td>
+                        <td class="row-label">Rx Family Deductible</td>
                         <td>{{ mdn_rx_ded_family }}</td>
                         <td><span id="prop_rx_ded_family"></span></td>
                     </tr>
                 </tbody>
             </table>
         </div>
-    </div>
-
-    <div class="section hdhp-benefit">
-        <div class="section-graph">
-            <p class="exhibit-text">Rx Maximums<span>(Exhibit)</span></p>
-            <div id="MEDICAL-6" class="flot-chart"></div>
-        </div>
         <div class="section-score">
             <h5>Q-SCORE</h5>
-            <p><span id="prop_rank_rx_max_single"></span></p>           
+            <p><span id="prop_rank_in_ded_single"></span></p>           
         </div> 
+    </div>
+
+    <div class="section">
+        <div class="section-header">
+            <h4>Medical/Rx In-Network Maximums</h4>
+        </div>
+        <div class="section-graph">
+            <div id="MEDICAL-2" class="flot-chart"></div>
+        </div>
         <div class="section-content">
             <table class="table table-striped table-content">
                 <col width="50%">
@@ -219,36 +71,180 @@
                 <col width="25%">
                 <thead>
                     <tr>
-                        <th class="row-label">Rx Maximums</th>
+                        <th class="row-label"></th>
                         <th>Benchmark</th>
-                        <th>Current Plan</th>
+                        <th>Current</th>
                     </tr>
                 </thead>
                 <tbody>
+                    <tr class="quintile-subject">
+                        <td class="row-label">Single Maximum *</td>
+                        <td>{{ mdn_in_max_single }}</td>
+                        <td><span id="prop_in_max_single"></span></td>
+                    </tr>
                     <tr>
-                        <td class="row-label">Singles</td>
+                        <td class="row-label">Family Maximum</td>
+                        <td>{{ mdn_in_max_family }}</td>
+                        <td><span id="prop_in_max_family"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Rx Single Maximum</td>
                         <td>{{ mdn_rx_max_single }}</td>
                         <td><span id="prop_rx_max_single"></span></td>
                     </tr>
                     <tr>
-                        <td class="row-label">Families</td>
+                        <td class="row-label">Rx Family Maximum</td>
                         <td>{{ mdn_rx_max_family }}</td>
                         <td><span id="prop_rx_max_family"></span></td>
                     </tr>
                 </tbody>
             </table>
         </div>
+        <div class="section-score">
+            <h5>Q-SCORE</h5>
+            <p><span id="prop_rank_in_max_single"></span></p>           
+        </div> 
+    </div>
+
+    <div class="section out-benefit">
+        <div class="section-header">
+            <h4>Medical/Rx Out-of-Network Deductibles</h4>
+        </div>
+        <div class="section-graph">
+            <div id="MEDICAL-3" class="flot-chart"></div>
+        </div>
+        <div class="section-content">
+            <table class="table table-striped table-content">
+                <col width="50%">
+                <col width="25%">
+                <col width="25%">
+                <thead>
+                    <tr>
+                        <th class="row-label"></th>
+                        <th>Benchmark</th>
+                        <th>Current</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="quintile-subject">
+                        <td class="row-label">Single Deductible *</td>
+                        <td>{{ mdn_out_ded_single }}</td>
+                        <td><span id="prop_out_ded_single"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Family Deductible</td>
+                        <td>{{ mdn_out_ded_family }}</td>
+                        <td><span id="prop_out_ded_family"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Network Cross Accumulation</td>
+                        <td>{{ prcnt_ded_cross }}</td>
+                        <td><span id="prop_ded_cross"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="section-score">
+            <h5>Q-SCORE</h5>
+            <p><span id="prop_rank_out_ded_single"></span></p>           
+        </div> 
+    </div>
+
+    <div class="section out-benefit">
+        <div class="section-header">
+            <h4>Medical/Rx Out-of-Network Maximums</h4>
+        </div>
+        <div class="section-graph">
+            <div id="MEDICAL-4" class="flot-chart"></div>
+        </div>
+        <div class="section-content">
+            <table class="table table-striped table-content">
+                <col width="50%">
+                <col width="25%">
+                <col width="25%">
+                <thead>
+                    <tr>
+                        <th class="row-label"></th>
+                        <th>Benchmark</th>
+                        <th>Current</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="quintile-subject">
+                        <td class="row-label">Single Maximum *</td>
+                        <td>{{ mdn_out_max_single }}</td>
+                        <td><span id="prop_out_max_single"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Family Maximum</td>
+                        <td>{{ mdn_out_max_family }}</td>
+                        <td><span id="prop_out_max_family"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Network Cross Accumulation</td>
+                        <td>{{ prcnt_max_cross }}</td>
+                        <td><span id="prop_max_cross"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="section-score">
+            <h5>Q-SCORE</h5>
+            <p><span id="prop_rank_out_max_single"></span></p>           
+        </div> 
     </div>
 
     <div class="section">
+        <div class="section-header">
+            <h4>Medical/Rx Coinsurance</h4>
+        </div>
         <div class="section-graph">
-            <p class="exhibit-text">Coinsurance<span>(Exhibit)</span></p>
-            <div id="MEDICAL-7" class="flot-chart"></div>
+            <div id="MEDICAL-5" class="flot-chart"></div>
+        </div>
+        <div class="section-content">
+            <table class="table table-striped table-content">
+                <col width="50%">
+                <col width="25%">
+                <col width="25%">
+                <thead>
+                    <tr>
+                        <th class="row-label"></th>
+                        <th>Benchmark</th>
+                        <th>Current</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="quintile-subject">
+                        <td class="row-label">In-Network Coinsurance *</td>
+                        <td>{{ mdn_in_coin }}</td>
+                        <td><span id="prop_in_coin"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Rx Coinsurance</td>
+                        <td>{{ mdn_rx_coin }}</td>
+                        <td><span id="prop_rx_coin"></span></td>
+                    </tr>
+                    <tr class="out-benefit">
+                        <td class="row-label">Out-of-Network Coinsurance</td>
+                        <td>{{ mdn_out_coin }}</td>
+                        <td><span id="prop_out_coin"></span></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <div class="section-score">
             <h5>Q-SCORE</h5>
             <p><span id="prop_rank_in_coin"></span></p>           
         </div> 
+    </div>
+
+    <div class="section hdhp-benefit">
+        <div class="section-header">
+            <h4>Medical Physician Visits</h4>
+        </div>
+        <div class="section-graph">
+            <div id="MEDICAL-6" class="flot-chart"></div>
+        </div>
         <div class="section-content">
             <table class="table table-striped table-content">
                 <col width="50%">
@@ -256,83 +252,58 @@
                 <col width="25%">
                 <thead>
                     <tr>
-                        <th class="row-label">Coinsurance</th>
+                        <th class="row-label"></th>
                         <th>Benchmark</th>
-                        <th>Current Plan</th>
+                        <th>Current</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="row-label">In Network</td>
-                        <td>{{ mdn_in_coin }}</td>
-                        <td><span id="prop_in_coin"></span></td>
-                    </tr>
-                    <tr class="out-benefit">
-                        <td class="row-label">Out of Network</td>
-                        <td>{{ mdn_out_coin }}</td>
-                        <td><span id="prop_out_coin"></span></td>
+                    <tr class="quintile-subject">
+                        <td class="row-label">PCP Copay *</td>
+                        <td>{{ mdn_pcp_copay }}</td>
+                        <td><span id="prop_pcp_copay"></span></td>
                     </tr>
                     <tr>
-                        <td class="row-label">Rx</td>
-                        <td>{{ mdn_rx_coin }}</td>
-                        <td><span id="prop_rx_coin"></span></td>
+                        <td class="row-label">PCP Ded Applies</td>
+                        <td>{{ prcnt_pcp_ded_apply }}</td>
+                        <td><span id="prop_pcp_ded_apply"></span></td>
+                    </tr> 
+                    <tr>
+                        <td class="row-label">PCP Coinsurance Applies</td>
+                        <td>{{ prcnt_coin_pcp_ded_apply }}</td>
+                        <td><span id="prop_coin_pcp_ded_apply"></span></td>
                     </tr>
+                    <tr>
+                        <td class="row-label">Specialist Copay</td>
+                        <td>{{ mdn_sp_copay }}</td>
+                        <td><span id="prop_sp_copay"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Specialist Ded Applies</td>
+                        <td>{{ prcnt_sp_ded_apply }}</td>
+                        <td><span id="prop_sp_ded_apply"></span></td>
+                    </tr> 
+                    <tr>
+                        <td class="row-label">Specialist Coinsurance Applies</td>
+                        <td>{{ prcnt_coin_sp_ded_apply }}</td>
+                        <td><span id="prop_coin_sp_ded_apply"></span></td>
+                    </tr>                
                 </tbody>
             </table>
-        </div>
-    </div>
-
-    <div class="section hdhp-benefit">
-        <div class="section-graph">
-            <p class="exhibit-text">PCP<span>(Exhibit)</span></p>
-            <div id="MEDICAL-8" class="flot-chart"></div>
         </div>
         <div class="section-score">
             <h5>Q-SCORE</h5>
             <p><span id="prop_rank_pcp_copay"></span></p>           
         </div> 
-        <div class="section-content">
-            <table class="table table-striped table-content">
-                <col width="50%">
-                <col width="25%">
-                <col width="25%">
-                <thead>
-                    <tr>
-                        <th class="row-label">PCP</th>
-                        <th>Benchmark</th>
-                        <th>Current Plan</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="row-label">Copay</td>
-                        <td>{{ mdn_pcp_copay }}</td>
-                        <td><span id="prop_pcp_copay"></span></td>
-                    </tr>
-                    <tr>
-                        <td class="row-label">Ded Applies</td>
-                        <td>{{ prcnt_pcp_ded_apply }}</td>
-                        <td><span id="prop_pcp_ded_apply"></span></td>
-                    </tr> 
-                    <tr>
-                        <td class="row-label">Coinsurance Applies</td>
-                        <td>{{ prcnt_coin_pcp_ded_apply }}</td>
-                        <td><span id="prop_coin_pcp_ded_apply"></span></td>
-                    </tr>                   
-                </tbody>
-            </table>
-        </div>
     </div>
 
     <div class="section hdhp-benefit">
-        <div class="section-graph">
-            <p class="exhibit-text">SP<span>(Exhibit)</span></p>
-            <div id="MEDICAL-9" class="flot-chart"></div>
+        <div class="section-header">
+            <h4>Medical Emergency & Urgent Care Visits</h4>
         </div>
-        <div class="section-score">
-            <h5>Q-SCORE</h5>
-            <p><span id="prop_rank_sp_copay"></span></p>           
-        </div> 
+        <div class="section-graph">
+            <div id="MEDICAL-7" class="flot-chart"></div>
+        </div>
         <div class="section-content">
             <table class="table table-striped table-content">
                 <col width="50%">
@@ -340,125 +311,58 @@
                 <col width="25%">
                 <thead>
                     <tr>
-                        <th class="row-label">SP</th>
+                        <th class="row-label"></th>
                         <th>Benchmark</th>
-                        <th>Current Plan</th>
+                        <th>Current</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="row-label">Copay</td>
-                        <td>{{ mdn_sp_copay }}</td>
-                        <td><span id="prop_sp_copay"></span></td>
-                    </tr>
-                    <tr>
-                        <td class="row-label">Ded Applies</td>
-                        <td>{{ prcnt_sp_ded_apply }}</td>
-                        <td><span id="prop_sp_ded_apply"></span></td>
-                    </tr> 
-                    <tr>
-                        <td class="row-label">Coinsurance Applies</td>
-                        <td>{{ prcnt_coin_sp_ded_apply }}</td>
-                        <td><span id="prop_coin_sp_ded_apply"></span></td>
-                    </tr>                    
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="section hdhp-benefit">
-        <div class="section-graph">
-            <p class="exhibit-text">ER<span>(Exhibit)</span></p>
-            <div id="MEDICAL-10" class="flot-chart"></div>
-        </div>
-        <div class="section-score">
-            <h5>Q-SCORE</h5>
-            <p><span id="prop_rank_er_copay"></span></p>           
-        </div> 
-        <div class="section-content">
-            <table class="table table-striped table-content">
-                <col width="50%">
-                <col width="25%">
-                <col width="25%">
-                <thead>
-                    <tr>
-                        <th class="row-label">ER</th>
-                        <th>Benchmark</th>
-                        <th>Current Plan</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="row-label">Copay</td>
+                    <tr class="quintile-subject">
+                        <td class="row-label">ER Copay *</td>
                         <td>{{ mdn_er_copay }}</td>
                         <td><span id="prop_er_copay"></span></td>
                     </tr>
                     <tr>
-                        <td class="row-label">Ded Applies</td>
+                        <td class="row-label">ER Deductible Applies</td>
                         <td>{{ prcnt_er_ded_apply }}</td>
                         <td><span id="prop_er_ded_apply"></span></td>
                     </tr>
                     <tr>
-                        <td class="row-label">Coinsurance Applies</td>
+                        <td class="row-label">ER Coinsurance Applies</td>
                         <td>{{ prcnt_coin_er_ded_apply }}</td>
                         <td><span id="prop_coin_er_ded_apply"></span></td>
-                    </tr>                   
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="section hdhp-benefit">
-        <div class="section-graph">
-            <p class="exhibit-text">UC<span>(Exhibit)</span></p>
-            <div id="MEDICAL-11" class="flot-chart"></div>
-        </div>
-        <div class="section-score">
-            <h5>Q-SCORE</h5>
-            <p><span id="prop_rank_uc_copay"></span></p>           
-        </div> 
-        <div class="section-content">
-            <table class="table table-striped table-content">
-                <col width="50%">
-                <col width="25%">
-                <col width="25%">
-                <thead>
+                    </tr> 
                     <tr>
-                        <th class="row-label">UC</th>
-                        <th>Benchmark</th>
-                        <th>Current Plan</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="row-label">Copay</td>
+                        <td class="row-label">UC Copay</td>
                         <td>{{ mdn_uc_copay }}</td>
                         <td><span id="prop_uc_copay"></span></td>
                     </tr>
                     <tr>
-                        <td class="row-label">Ded Applies</td>
+                        <td class="row-label">UC Deductible Applies</td>
                         <td>{{ prcnt_uc_ded_apply }}</td>
                         <td><span id="prop_uc_ded_apply"></span></td>
                     </tr>  
                     <tr>
-                        <td class="row-label">Coinsurance Applies</td>
+                        <td class="row-label">UC Coinsurance Applies</td>
                         <td>{{ prcnt_coin_uc_ded_apply }}</td>
                         <td><span id="prop_coin_uc_ded_apply"></span></td>
                     </tr>                   
                 </tbody>
             </table>
         </div>
+        <div class="section-score">
+            <h5>Q-SCORE</h5>
+            <p><span id="prop_rank_er_copay"></span></p>           
+        </div> 
     </div>
 
     <div class="section hdhp-benefit">
-        <div class="section-graph">
-            <p class="exhibit-text">LX<span>(Exhibit)</span></p>
-            <div id="MEDICAL-12" class="flot-chart"></div>
+        <div class="section-header">
+            <h4>Medical Labs & X-Ray Services</h4>
         </div>
-        <div class="section-score">
-            <h5>Q-SCORE</h5>
-            <p><span id="prop_rank_lx_copay"></span></p>           
-        </div> 
+        <div class="section-graph">
+            <div id="MEDICAL-8" class="flot-chart"></div>
+        </div>
         <div class="section-content">
             <table class="table table-striped table-content">
                 <col width="50%">
@@ -466,19 +370,19 @@
                 <col width="25%">
                 <thead>
                     <tr>
-                        <th class="row-label">LX</th>
+                        <th class="row-label"></th>
                         <th>Benchmark</th>
-                        <th>Current Plan</th>
+                        <th>Current</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="row-label">Copay</td>
+                    <tr class="quintile-subject">
+                        <td class="row-label">Labs & X-Ray Copay *</td>
                         <td>{{ mdn_lx_copay }}</td>
                         <td><span id="prop_lx_copay"></span></td>
                     </tr>
                     <tr>
-                        <td class="row-label">Ded Applies</td>
+                        <td class="row-label">Deductible Applies</td>
                         <td>{{ prcnt_lx_ded_apply }}</td>
                         <td><span id="prop_lx_ded_apply"></span></td>
                     </tr>  
@@ -490,17 +394,19 @@
                 </tbody>
             </table>
         </div>
+        <div class="section-score">
+            <h5>Q-SCORE</h5>
+            <p><span id="prop_rank_lx_copay"></span></p>           
+        </div> 
     </div>
 
     <div class="section hdhp-benefit">
-        <div class="section-graph">
-            <p class="exhibit-text">OP<span>(Exhibit)</span></p>
-            <div id="MEDICAL-13" class="flot-chart"></div>
+        <div class="section-header">
+            <h4>Medical Inpatient & Outpatient Facilities</h4>
         </div>
-        <div class="section-score">
-            <h5>Q-SCORE</h5>
-            <p><span id="prop_rank_op_copay"></span></p>           
-        </div> 
+        <div class="section-graph">
+            <div id="MEDICAL-9" class="flot-chart"></div>
+        </div>
         <div class="section-content">
             <table class="table table-striped table-content">
                 <col width="50%">
@@ -508,41 +414,58 @@
                 <col width="25%">
                 <thead>
                     <tr>
-                        <th class="row-label">OP</th>
+                        <th class="row-label"></th>
                         <th>Benchmark</th>
-                        <th>Current Plan</th>
+                        <th>Current</th>
                     </tr>
                 </thead>
                 <tbody>
+                    <tr class="quintile-subject">
+                        <td class="row-label">Inpatient Copay *</td>
+                        <td>{{ mdn_ip_copay }}</td>
+                        <td><span id="prop_ip_copay"></span></td>
+                    </tr>
                     <tr>
-                        <td class="row-label">Copay</td>
+                        <td class="row-label">Inpatient Deductible Applies</td>
+                        <td>{{ prcnt_ip_ded_apply }}</td>
+                        <td><span id="prop_ip_ded_apply"></span></td>
+                    </tr>  
+                    <tr>
+                        <td class="row-label">Inpatient Coinsurance Applies</td>
+                        <td>{{ prcnt_coin_ip_ded_apply }}</td>
+                        <td><span id="prop_coin_ip_ded_apply"></span></td>
+                    </tr> 
+                    <tr>
+                        <td class="row-label">Outpatient Copay</td>
                         <td>{{ mdn_op_copay }}</td>
                         <td><span id="prop_op_copay"></span></td>
                     </tr>
                     <tr>
-                        <td class="row-label">Ded Applies</td>
+                        <td class="row-label">Outpatient Deductbile Applies</td>
                         <td>{{ prcnt_op_ded_apply }}</td>
                         <td><span id="prop_op_ded_apply"></span></td>
                     </tr>     
                     <tr>
-                        <td class="row-label">Coinsurance Applies</td>
+                        <td class="row-label">Outpatient Coinsurance Applies</td>
                         <td>{{ prcnt_coin_op_ded_apply }}</td>
                         <td><span id="prop_coin_op_ded_apply"></span></td>
-                    </tr>                
+                    </tr>                   
                 </tbody>
             </table>
-        </div>
-    </div>
-
-    <div class="section hdhp-benefit">
-        <div class="section-graph">
-            <p class="exhibit-text">IP<span>(Exhibit)</span></p>
-            <div id="MEDICAL-14" class="flot-chart"></div>
         </div>
         <div class="section-score">
             <h5>Q-SCORE</h5>
             <p><span id="prop_rank_ip_copay"></span></p>           
         </div> 
+    </div>
+
+    <div class="section hdhp-benefit">
+        <div class="section-header">
+            <h4>Rx Tier 1 & Tier 2</h4>
+        </div>
+        <div class="section-graph">
+            <div id="MEDICAL-10" class="flot-chart"></div>
+        </div>
         <div class="section-content">
             <table class="table table-striped table-content">
                 <col width="50%">
@@ -550,41 +473,58 @@
                 <col width="25%">
                 <thead>
                     <tr>
-                        <th class="row-label">IP</th>
+                        <th class="row-label"></th>
                         <th>Benchmark</th>
-                        <th>Current Plan</th>
+                        <th>Current</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="row-label">Copay</td>
-                        <td>{{ mdn_ip_copay }}</td>
-                        <td><span id="prop_ip_copay"></span></td>
+                    <tr class="quintile-subject">
+                        <td class="row-label">Tier 1 Retail Copay *</td>
+                        <td>{{ mdn_rx1_copay }}</td>
+                        <td><span id="prop_rx1_copay"></span></td>
                     </tr>
                     <tr>
-                        <td class="row-label">Ded Applies</td>
-                        <td>{{ prcnt_ip_ded_apply }}</td>
-                        <td><span id="prop_ip_ded_apply"></span></td>
-                    </tr>  
+                        <td class="row-label">Tier 1 Mail Copay</td>
+                        <td>{{ mdn_rx1_mail_copay }}</td>
+                        <td><span id="prop_rx1_mail_copay"></span></td>
+                    </tr>
                     <tr>
-                        <td class="row-label">Coinsurance Applies</td>
-                        <td>{{ prcnt_coin_ip_ded_apply }}</td>
-                        <td><span id="prop_coin_ip_ded_apply"></span></td>
-                    </tr>                   
+                        <td class="row-label">Tier 1 Deductible Applies</td>
+                        <td>{{ prcnt_rx1_ded_apply }}</td>
+                        <td><span id="prop_rx1_ded_apply"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Tier 2 Retail Copay</td>
+                        <td>{{ mdn_rx2_copay }}</td>
+                        <td><span id="prop_rx2_copay"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Tier 2 Mail Copay</td>
+                        <td>{{ mdn_rx2_mail_copay }}</td>
+                        <td><span id="prop_rx2_mail_copay"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Tier 2 Deductible Applies</td>
+                        <td>{{ prcnt_rx2_ded_apply }}</td>
+                        <td><span id="prop_rx2_ded_apply"></span></td>
+                    </tr>                
                 </tbody>
             </table>
-        </div>
-    </div>
-
-    <div class="section hdhp-benefit">
-        <div class="section-graph">
-            <p class="exhibit-text">Rx1<span>(Exhibit)</span></p>
-            <div id="MEDICAL-15" class="flot-chart"></div>
         </div>
         <div class="section-score">
             <h5>Q-SCORE</h5>
             <p><span id="prop_rank_rx1_copay"></span></p>           
         </div> 
+    </div>
+
+    <div class="section hdhp-benefit">
+        <div class="section-header">
+            <h4>Rx Tier 3 & Tier 4</h4>
+        </div>
+        <div class="section-graph">
+            <div id="MEDICAL-11" class="flot-chart"></div>
+        </div>
         <div class="section-content">
             <table class="table table-striped table-content">
                 <col width="50%">
@@ -592,187 +532,58 @@
                 <col width="25%">
                 <thead>
                     <tr>
-                        <th class="row-label">Rx 1</th>
+                        <th class="row-label"></th>
                         <th>Benchmark</th>
-                        <th>Current Plan</th>
+                        <th>Current</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="row-label">Retail Copay</td>
-                        <td>{{ mdn_rx1_copay }}</td>
-                        <td><span id="prop_rx1_copay"></span></td>
+                    <tr class="quintile-subject">
+                        <td class="row-label">Tier 3 Retail Copay *</td>
+                        <td>{{ mdn_rx3_copay }}</td>
+                        <td><span id="prop_rx3_copay"></span></td>
                     </tr>
                     <tr>
-                        <td class="row-label">Mail Copay</td>
-                        <td>{{ mdn_rx1_mail_copay }}</td>
-                        <td><span id="prop_rx1_mail_copay"></span></td>
+                        <td class="row-label">Tier 3 Mail Copay</td>
+                        <td>{{ mdn_rx3_mail_copay }}</td>
+                        <td><span id="prop_rx3_mail_copay"></span></td>
                     </tr>
                     <tr>
-                        <td class="row-label">Ded Applies</td>
-                        <td>{{ prcnt_rx1_ded_apply }}</td>
-                        <td><span id="prop_rx1_ded_apply"></span></td>
-                    </tr>     
+                        <td class="row-label">Tier 3 Deductible Applies</td>
+                        <td>{{ prcnt_rx3_ded_apply }}</td>
+                        <td><span id="prop_rx3_ded_apply"></span></td>
+                    </tr>
                     <tr>
-                        <td class="row-label">Coinsurance Applies</td>
-                        <td>{{ prcnt_coin_rx1_ded_apply }}</td>
-                        <td><span id="prop_coin_rx1_ded_apply"></span></td>
-                    </tr>                
+                        <td class="row-label">Tier 4 Retail Copay</td>
+                        <td>{{ mdn_rx4_copay }}</td>
+                        <td><span id="prop_rx4_copay"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Tier 4 Mail Copay</td>
+                        <td>{{ mdn_rx4_mail_copay }}</td>
+                        <td><span id="prop_rx4_mail_copay"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Tier 4 Deductible Applies</td>
+                        <td>{{ prcnt_rx4_ded_apply }}</td>
+                        <td><span id="prop_rx4_ded_apply"></span></td>
+                    </tr>                 
                 </tbody>
             </table>
-        </div>
-    </div>
-
-    <div class="section hdhp-benefit">
-        <div class="section-graph">
-            <p class="exhibit-text">Rx2<span>(Exhibit)</span></p>
-            <div id="MEDICAL-16" class="flot-chart"></div>
-        </div>
-        <div class="section-score">
-            <h5>Q-SCORE</h5>
-            <p><span id="prop_rank_rx2_copay"></span></p>           
-        </div> 
-        <div class="section-content">
-            <table class="table table-striped table-content">
-                <col width="50%">
-                <col width="25%">
-                <col width="25%">
-                <thead>
-                    <tr>
-                        <th class="row-label">Rx 2</th>
-                        <th>Benchmark</th>
-                        <th>Current Plan</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="row-label">Retail Copay</td>
-                        <td>{{ mdn_rx2_copay }}</td>
-                        <td><span id="prop_rx2_copay"></span></td>
-                    </tr>
-                    <tr>
-                        <td class="row-label">Mail Copay</td>
-                        <td>{{ mdn_rx2_mail_copay }}</td>
-                        <td><span id="prop_rx2_mail_copay"></span></td>
-                    </tr>
-                    <tr>
-                        <td class="row-label">Ded Applies</td>
-                        <td>{{ prcnt_rx2_ded_apply }}</td>
-                        <td><span id="prop_rx2_ded_apply"></span></td>
-                    </tr>  
-                    <tr>
-                        <td class="row-label">Coinsurance Applies</td>
-                        <td>{{ prcnt_coin_rx2_ded_apply }}</td>
-                        <td><span id="prop_coin_rx2_ded_apply"></span></td>
-                    </tr>                   
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="section hdhp-benefit">
-        <div class="section-graph">
-            <p class="exhibit-text">Rx3<span>(Exhibit)</span></p>
-            <div id="MEDICAL-17" class="flot-chart"></div>
         </div>
         <div class="section-score">
             <h5>Q-SCORE</h5>
             <p><span id="prop_rank_rx3_copay"></span></p>           
         </div> 
-        <div class="section-content">
-            <table class="table table-striped table-content">
-                <col width="50%">
-                <col width="25%">
-                <col width="25%">
-                <thead>
-                    <tr>
-                        <th class="row-label">Rx 3</th>
-                        <th>Benchmark</th>
-                        <th>Current Plan</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="row-label">Retail Copay</td>
-                        <td>{{ mdn_rx3_copay }}</td>
-                        <td><span id="prop_rx3_copay"></span></td>
-                    </tr>
-                    <tr>
-                        <td class="row-label">Mail Copay</td>
-                        <td>{{ mdn_rx3_mail_copay }}</td>
-                        <td><span id="prop_rx3_mail_copay"></span></td>
-                    </tr>
-                    <tr>
-                        <td class="row-label">Ded Applies</td>
-                        <td>{{ prcnt_rx3_ded_apply }}</td>
-                        <td><span id="prop_rx3_ded_apply"></span></td>
-                    </tr>  
-                    <tr>
-                        <td class="row-label">Coinsurance Applies</td>
-                        <td>{{ prcnt_coin_rx3_ded_apply }}</td>
-                        <td><span id="prop_coin_rx3_ded_apply"></span></td>
-                    </tr>                   
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="section hdhp-benefit">
-        <div class="section-graph">
-            <p class="exhibit-text">Rx4<span>(Exhibit)</span></p>
-            <div id="MEDICAL-19" class="flot-chart"></div>
-        </div>
-        <div class="section-score">
-            <h5>Q-SCORE</h5>
-            <p><span id="prop_rank_rx4_copay"></span></p>           
-        </div> 
-        <div class="section-content">
-            <table class="table table-striped table-content">
-                <col width="50%">
-                <col width="25%">
-                <col width="25%">
-                <thead>
-                    <tr>
-                        <th class="row-label">Rx 4</th>
-                        <th>Benchmark</th>
-                        <th>Current Plan</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="row-label">Retail Copay</td>
-                        <td>{{ mdn_rx4_copay }}</td>
-                        <td><span id="prop_rx4_copay"></span></td>
-                    </tr>
-                    <tr>
-                        <td class="row-label">Mail Copay</td>
-                        <td>{{ mdn_rx4_mail_copay }}</td>
-                        <td><span id="prop_rx4_mail_copay"></span></td>
-                    </tr>
-                    <tr>
-                        <td class="row-label">Ded Applies</td>
-                        <td>{{ prcnt_rx4_ded_apply }}</td>
-                        <td><span id="prop_rx4_ded_apply"></span></td>
-                    </tr>  
-                    <tr>
-                        <td class="row-label">Coinsurance Applies</td>
-                        <td>{{ prcnt_coin_rx4_ded_apply }}</td>
-                        <td><span id="prop_coin_rx4_ded_apply"></span></td>
-                    </tr>                   
-                </tbody>
-            </table>
-        </div>
     </div>
 
     <div class="section">
-        <div class="section-graph">
-            <p class="exhibit-text">Employee Annual Contributions <span>(Exhibit)</span></p>
-            <div id="MEDICAL-20" class="flot-chart"></div>
+        <div class="section-header">
+            <h4>Medical/Rx Employee Annual Contributions</h4>
         </div>
-        <div class="section-score">
-            <h5>Q-SCORE</h5>
-            <p><span id="prop_rank_t1_ee"></span></p>           
-        </div> 
+        <div class="section-graph">
+            <div id="MEDICAL-12" class="flot-chart"></div>
+        </div>
         <div class="section-content">
             <table class="table table-striped table-content">
                 <col width="50%">
@@ -780,14 +591,14 @@
                 <col width="25%">
                 <thead>
                     <tr>
-                        <th class="row-label">Employee Annual Contributions</th>
+                        <th class="row-label"></th>
                         <th>Benchmark</th>
-                        <th>Current Plan</th>
+                        <th>Current</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="row-label">Employee Only</td>
+                    <tr class="quintile-subject">
+                        <td class="row-label">Employee Only *</td>
                         <td>{{ mdn_t1_ee }}</td>
                         <td><span id="prop_t1_ee"></span></td>
                     </tr>
@@ -809,17 +620,19 @@
                 </tbody>
             </table>
         </div>
+        <div class="section-score">
+            <h5>Q-SCORE</h5>
+            <p><span id="prop_rank_t1_ee"></span></p>           
+        </div> 
     </div> 
 
     <div class="section">
-        <div class="section-graph">
-            <p class="exhibit-text">Employee Gross Cost <span>(Exhibit)</span></p>
-            <div id="MEDICAL-21" class="flot-chart"></div>
+        <div class="section-header">
+            <h4>Medical/Rx Employee Gross Cost</h4>
         </div>
-        <div class="section-score">
-            <h5>Q-SCORE</h5>
-            <p><span id="prop_rank_t1_gross"></span></p>           
-        </div> 
+        <div class="section-graph">
+            <div id="MEDICAL-13" class="flot-chart"></div>
+        </div>
         <div class="section-content">
             <table class="table table-striped table-content">
                 <col width="50%">
@@ -827,14 +640,14 @@
                 <col width="25%">
                 <thead>
                     <tr>
-                        <th class="row-label">Gross Annual Contributions</th>
+                        <th class="row-label"></th>
                         <th>Benchmark</th>
-                        <th>Current Plan</th>
+                        <th>Current</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="row-label">Employee Only</td>
+                    <tr class="quintile-subject">
+                        <td class="row-label">Employee Only *</td>
                         <td>{{ mdn_t1_gross }}</td>
                         <td><span id="prop_t1_gross"></span></td>
                     </tr>
@@ -854,24 +667,23 @@
                         <td><span id="prop_t4_gross"></span></td>
                     </tr>
                     <tr>
-                        <td class="row-label">Age Rating</td>
+                        <td class="row-label">Age-Banded Rates</td>
                         <td>{{ prcnt_age_rated }}</td>
                         <td><span id="prop_age_rated"></span></td>
                     </tr>
                 </tbody>
             </table>
         </div>
+        <div class="section-score">
+            <h5>Q-SCORE</h5>
+            <p><span id="prop_rank_t1_gross"></span></p>           
+        </div> 
     </div>  
 
     <div class="section">
-        <div class="section-graph">
-            <p class="exhibit-text">{% if request.session.benefit == 'HDHP ' %} HDHP {% else %} HRA {% endif %} Funding<span>(Exhibit)</span></p>
-            <div id="MEDICAL-22" class="flot-chart"></div>
+        <div class="section-header">
+            <h4>Medical/Rx {% if request.session.benefit == 'HDHP ' %} HDHP {% else %} HRA {% endif %} Funding</h4>
         </div>
-        <div class="section-score">
-            <h5>Q-SCORE</h5>
-            <p><span id="prop_rank_t1_ercdhp"></span></p>           
-        </div> 
         <div class="section-content">
             <table class="table table-striped table-content">
                 <col width="50%">
@@ -879,9 +691,9 @@
                 <col width="25%">
                 <thead>
                     <tr>
-                        <th class="row-label">Funding Amount</th>
+                        <th class="row-label"></th>
                         <th>Benchmark</th>
-                        <th>Current Plan</th>
+                        <th>Current</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -918,41 +730,41 @@
                 </tbody>
             </table>
         </div>
+        <div class="section-score">
+            <h5>Q-SCORE</h5>
+            <p><span id="prop_rank_t1_ercdhp"></span></p>           
+        </div> 
     </div> 
 
     <div class="section">
-        <div class="section-graph">
-            <p class="exhibit-text">PREVALENCE<span> (Exhibit)</span></p>
-            <div id="MEDICAL-18" class="flot-chart-pie"></div>
-            <div class="flc-donut hidden-xs"></div>
+        <div class="section-header">
+            <h4>Medical/Rx Prevalence</h4>
         </div>
-        <div class="section-score">  
-        </div> 
         <div class="section-content">
             <table class="table table-striped table-content">
                 <col width="60%">
                 <col width="40%">
                 <thead>
                     <tr>
-                        <th class="row-label">Number of Plans Offered</th>
+                        <th class="row-label"></th>
                         <th>Employers</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="row-label">Not Offered</td>
+                        <td class="row-label">No Plans Offered</td>
                         <td>{{ prcnt_plan0 }}%</td>
                     </tr>
                     <tr>
-                        <td class="row-label">1 Plan</td>
+                        <td class="row-label">One Plan Offered</td>
                         <td>{{ prcnt_plan1 }}%</td>
                     </tr>
                     <tr>
-                        <td class="row-label">2 Plans</td>
+                        <td class="row-label">Two Plans Offered</td>
                         <td>{{ prcnt_plan2 }}%</td>
                     </tr>
                     <tr>
-                        <td class="row-label">3 or More Plans</td>
+                        <td class="row-label">Three or More Plans Offered</td>
                         <td>{{ prcnt_plan3_or_more }}%</td>
                     </tr>
                 </tbody>
@@ -968,37 +780,22 @@
 
 <script type="text/javascript">
 
-var gh1_data, gh2_data, gh3_data, gh4_data, gh5_data, gh6_data, gh7_data, gh8_data, gh9_data, gh10_data, gh11_data, gh12_data, gh13_data, gh14_data, gh15_data, gh16_data, gh17_data, gh19_data, gh20_data, gh21_data, gh22_data, gh18_data;
+var gh1_data, gh2_data, gh3_data, gh4_data, gh5_data, gh6_data, gh7_data, gh8_data, gh9_data, gh10_data, gh11_data, gh12_data, gh13_data;
 
 {% if num_employers >= EMPLOYER_THRESHOLD %}
     gh1_data = {{ quintile_in_ded_single }};
     gh2_data = {{ quintile_in_max_single }};
     gh3_data = {{ quintile_out_ded_single }};
     gh4_data = {{ quintile_out_max_single }};
-    gh5_data = {{ quintile_rx_ded_single }};
-    gh6_data = {{ quintile_rx_max_single }};
-    gh7_data = {{ quintile_in_coin }};
-    gh8_data = {{ quintile_pcp_copay }};
-    gh9_data = {{ quintile_sp_copay }};
-    gh10_data = {{ quintile_er_copay }};
-    gh11_data = {{ quintile_uc_copay }};
-    gh12_data = {{ quintile_lx_copay }};
-    gh13_data = {{ quintile_op_copay }};
-    gh14_data = {{ quintile_ip_copay }};
-    gh15_data = {{ quintile_rx1_copay }};
-    gh16_data = {{ quintile_rx2_copay }};
-    gh17_data = {{ quintile_rx3_copay }};
-    gh19_data = {{ quintile_rx4_copay }};
-    gh20_data = {{ quintile_t1_ee }};
-    gh21_data = {{ quintile_t1_gross }};
-    gh22_data = {{ quintile_t1_ercdhp }};
-
-    gh18_data = [
-        {data: {{ prcnt_plan0 }}, color: '#F44336', label: 'Not Offered'},
-        {data: {{ prcnt_plan1 }}, color: '#03A9F4', label: '1 Plan'},
-        {data: {{ prcnt_plan2 }}, color: '#8BC34A', label: '2 Plans'},
-        {data: {{ prcnt_plan3_or_more }}, color: '#FFEB3B', label: '3+ Plans'},
-    ];
+    gh5_data = {{ quintile_in_coin }};
+    gh6_data = {{ quintile_pcp_copay }};
+    gh7_data = {{ quintile_er_copay }};
+    gh8_data = {{ quintile_lx_copay }};
+    gh9_data = {{ quintile_ip_copay }};
+    gh10_data = {{ quintile_rx1_copay }};
+    gh11_data = {{ quintile_rx3_copay }};
+    gh12_data = {{ quintile_t1_ee }};
+    gh13_data = {{ quintile_t1_gross }};
 
 {% endif %}
 </script>
