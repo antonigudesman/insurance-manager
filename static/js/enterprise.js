@@ -48,6 +48,10 @@ $(document).ready(function(){
     }
 });
 
+function show_print_pending_dialog() {
+    $( "#print_dialog" ).dialog();
+}
+
 function update_properties() {
     if (!print_template) 
         if (plan != -2) // not changed benefit
@@ -293,8 +297,6 @@ update_content = function(benefit) {
       
         draw_easy_pie_chart();
 
-        if ( benefit == "STD")
-            draw_donut_chart(benefit+'-18', gh18_data);
     } else if ($.inArray(benefit, ["STRATEGY"]) != -1) {
         gh1_data = generate_quintile_data(gh1_data, true);
         gh2_data = generate_quintile_data(gh2_data, true);
@@ -315,8 +317,7 @@ update_content = function(benefit) {
         draw_bar_chart(benefit+'-4', gh4_data, false, 7);        
         draw_bar_chart(benefit+'-5', gh5_data, false, 7);        
         draw_bar_chart(benefit+'-6', gh6_data, false, 7);        
-
-        draw_donut_chart(benefit+'-18', gh18_data);
+        
     } else if ($.inArray(benefit, ["DPPO", "DMO"]) != -1) {
         if (benefit == "DMO")
             $('.out-benefit').remove();
@@ -367,7 +368,7 @@ update_content = function(benefit) {
         draw_bar_chart('MEDICAL-2', gh2_data, false, 7);        
         draw_bar_chart('MEDICAL-3', gh3_data, false, 7);        
         draw_bar_chart('MEDICAL-4', gh4_data, false, 7);                
-        draw_bar_chart('MEDICAL-5', gh5_data, false, 7);        
+        draw_bar_chart('MEDICAL-5', gh5_data, true, 7);        
         draw_bar_chart('MEDICAL-6', gh6_data, false, 7);        
         draw_bar_chart('MEDICAL-7', gh7_data, false, 7);        
         draw_bar_chart('MEDICAL-8', gh8_data, false, 7);        

@@ -142,6 +142,8 @@ def get_medical_properties(request, plan, benefit_=None):
         medians, var_local, qs = get_medical_plan_(employers, num_companies, benefit_)
         instance = Medical.objects.get(id=plan)
         context['plan_info'] = ': {}, {}'.format(instance.employer.name, instance.title)
+        context['client_name'] = instance.employer.name
+        context['print_plan_name'] = instance.title
 
         get_dollar_properties(instance, medical_attrs_dollar, context)
         get_percent_properties(instance, medical_attrs_percent, context)
@@ -244,6 +246,8 @@ def get_dental_properties(request, plan, benefit_=None):
         medians, var_local, qs = get_dental_plan_(employers, num_companies, benefit_)
         instance = Dental.objects.get(id=plan)
         context['plan_info'] = ': {}, {}'.format(instance.employer.name, instance.title)
+        context['client_name'] = instance.employer.name
+        context['print_plan_name'] = instance.title
 
         get_dollar_properties(instance, dental_attrs_dollar, context)
         get_percent_properties(instance, dental_attrs_percent, context)
@@ -329,6 +333,8 @@ def get_vision_properties(request, plan, benefit_=None):
         medians, var_local = get_vision_plan_(employers, num_companies)
         instance = Vision.objects.get(id=plan)
         context['plan_info'] = ': {}, {}'.format(instance.employer.name, instance.title)
+        context['client_name'] = instance.employer.name
+        context['print_plan_name'] = instance.title
 
         get_dollar_properties(instance, vision_attrs_dollar, context)
         get_percent_properties(instance, vision_attrs_percent, context)
@@ -384,6 +390,8 @@ def get_life_properties(request, plan, benefit_=None):
         medians, var_local, _ = get_life_plan_(employers, num_companies)
         instance = Life.objects.get(id=plan)
         context['plan_info'] = ': {}, {}'.format(instance.employer.name, instance.title)
+        context['client_name'] = instance.employer.name
+        context['print_plan_name'] = instance.title
 
         get_dollar_properties(instance, life_attrs_dollar, context)
         get_float_properties(instance, life_attrs_int, context)
@@ -442,6 +450,8 @@ def get_std_properties(request, plan, benefit_=None):
         medians, var_local, _ = get_std_plan_(employers, num_companies)
         instance = STD.objects.get(id=plan)
         context['plan_info'] = ': {}, {}'.format(instance.employer.name, instance.title)
+        context['client_name'] = instance.employer.name
+        context['print_plan_name'] = instance.title
 
         get_dollar_properties(instance, std_attrs_dollar, context)
         get_percent_properties(instance, std_attrs_percent, context)
@@ -492,6 +502,8 @@ def get_ltd_properties(request, plan, benefit_=None):
         medians, var_local, _ = get_ltd_plan_(employers, num_companies)
         instance = LTD.objects.get(id=plan)
         context['plan_info'] = ': {}, {}'.format(instance.employer.name, instance.title)
+        context['client_name'] = instance.employer.name
+        context['print_plan_name'] = instance.title
 
         get_dollar_properties(instance, ltd_attrs_dollar, context)
         get_percent_properties(instance, ltd_attrs_percent, context)
@@ -556,6 +568,7 @@ def get_strategy_properties(request, plan, benefit_=None):
         medians, var_local, qs = get_strategy_plan_(employers, num_companies)
         instance = Strategy.objects.get(id=plan)
         context['plan_info'] = ': {}'.format(instance.employer.name)
+        context['client_name'] = instance.employer.name
 
         get_dollar_properties(instance, strategy_attrs_dollar, context)
         get_boolean_properties(instance, strategy_attrs_boolean, context)
