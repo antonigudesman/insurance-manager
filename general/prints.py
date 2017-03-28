@@ -26,11 +26,38 @@ def print_template(request):
     ft_other = request.session['ft_other']
     ft_regions = request.session['ft_regions']
 
+    ft_industries_label = 'All'
+    ft_head_counts_label = 'All'
+    ft_other_label = 'All'
+    ft_regions_label = 'All'
+
+    return get_response_template(request, 
+                                 benefit, 
+                                 ft_industries, 
+                                 ft_head_counts, 
+                                 ft_other, 
+                                 ft_regions, 
+                                 True,
+                                 ft_industries_label,
+                                 ft_head_counts_label,
+                                 ft_other_label,
+                                 ft_regions_label)
+
+
+@login_required(login_url='/admin/login')
+def print_template_header(request):
+    #Retrieve data or whatever you need
+    benefit = request.session['benefit']
+    ft_industries = request.session['ft_industries']
+    ft_head_counts = request.session['ft_head_counts']
+    ft_other = request.session['ft_other']
+    ft_regions = request.session['ft_regions']
+
     ft_industries_label = ', '.join(request.session['ft_industries_label'])
     ft_head_counts_label = ', '.join(request.session['ft_head_counts_label'])
     ft_other_label = ', '.join(request.session['ft_other_label'])
     ft_regions_label = ', '.join(request.session['ft_regions_label'])
-
+    
     return get_response_template(request, 
                                  benefit, 
                                  ft_industries, 
@@ -76,13 +103,32 @@ def print_page(request):
         pass
 
     # convert png into pdf using fpdf
-    margin = 20
-    width, height = Image.open(img_path).size
+    # split the image in proper size
+    origin = Image.open(img_path)
+    header_height = 141 - 4
+    width, height = origin.size
 
-    pdf = FPDF(unit="pt", format=[width+2*margin, height+2*margin])
-    pdf.add_page()
+    num_pages = int(( height - header_height ) / 1200.0 + 0.5)
 
-    pdf.image(img_path, margin, margin)
+    for idx in range(num_pages):
+        img_path_s = '{}_{}.png'.format(base_path, idx)
+        height_s = header_height + 1200 * (idx + 1) + 1
+        if height_s > height:
+            height_s = height
+
+        origin.crop((0,header_height+1200*idx, width, height_s)).save(img_path_s)
+
+    # build a pdf with images
+    margin_v = 30
+    margin_h = 103
+    pdf = FPDF(orientation='L', format=(1200+2*margin_v, 1425+2*margin_h), unit='pt')
+    pdf.set_auto_page_break(False)
+
+    for idx in range(num_pages):
+        img_path_s = '{}_{}.png'.format(base_path, idx)
+        pdf.add_page()
+        pdf.image(img_path_s, margin_h, margin_v)
+        os.remove(img_path_s)
 
     pdf.output(pdf_path, "F")
     os.remove(img_path)
