@@ -47,39 +47,39 @@
 
     .header-filter {
         float: left;
-        width: 7%;
+        width: 6%;
         padding-top: 5px;
-        padding-left: 10px;
+        padding-left: 0;
     }
 
     .industry-filter {
         float: left;
-        width: 33%;
-        padding: 0 4px 0 0;
+        width: 37%;
+        padding: 0 7px 0 0;
     }
 
     .headcount-filter {
         float: left;
-        width: 11%;
-        padding: 0 4px 0 0;
+        width: 13%;
+        padding: 0 7px 0 0;
     }
 
     .region-filter {
         float: left;
-        width: 13%;
-        padding: 0 4px 0 0;
+        width: 15%;
+        padding: 0 7px 0 0;
     }
 
     .other-filter {
         float: left;
-        width: 11%;
+        width: 14%;
         padding: 0;
     }
 
     .employer-filter-count {
         float: left;
-        width: 12%;
-        padding: 3px 0 0 80px;
+        width: 7%;
+        padding: 3px 0 0 5px;
     }
 
     .filter-control {
@@ -96,7 +96,7 @@
 
     .plan-selector {
         float: left;
-        width: 68%;
+        width: 79%;
         margin-bottom: 9px;
     }
 
@@ -114,18 +114,19 @@
         width: 22px;
         float: left;
         padding: 0;
-        margin: 4px 0 0 10px;
+        margin: 4px 0 0 5px;
     }
 
     .control-buttons {
         display: block;
         float: right;
-        width: 24%;
+        width: 7%;
         padding: 0;
-        margin-bottom: 9px;
+/*        margin-bottom: 9px;*/
     }
 
-    .header-filter h6 {
+    .header-filter h6,
+    .employer-filter-count h6 {
         font-size: 18px;
     }
 
@@ -133,18 +134,19 @@
     .filter-control,
     .plan-control,
     .control-buttons h6,
-    .employer-filter-count h6,
     .btn-primary,
-    .btn-print {
+    .btn-print-report,
+    .btn-print-page, {
         font-size: 16px;
     }
 
-    .btn-primary,
-    .btn-print {
+/*    .btn-primary,
+    .btn-print-report,
+    .btn-print-page, {
         float: right;
         margin: 0 0 0 8px;
         padding: 2px 10px;
-    }
+    }*/
 
     .header-filter h6,
     .control-buttons h6,
@@ -424,7 +426,8 @@ li.active,
     float: right;
 }
 
-.btn-print {
+.btn-print-report,
+.btn-print-page {
     background-color: #51b351;
 }
 
@@ -443,7 +446,8 @@ li.active,
 }
 
 .btn-primary,
-.btn-print,
+.btn-print-report,
+.btn-print-page,
 li.active,
 .nav-tabs,
 .nav-tabs > li > a,
@@ -455,7 +459,8 @@ li.active,
 }
 
 .btn-primary,
-.btn-print,
+.btn-print-report,
+.btn-print-page,
 .pie-title {
     text-transform: capitalize;
 }

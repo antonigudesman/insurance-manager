@@ -42,13 +42,26 @@ $(document).ready(function(){
 
         // choose plan
         $('#plans').change(function() {
-            update_properties();
+            if (benefit == 'EMPLOYERS') {
+                // do not call update_properties for employers
+                var company_id = $('#plans').val();
+                if ( company_id == 0 ) {
+                    $('.btn-print-report').attr('disabled', true);
+                    $('.btn-print-report').attr('href', 'javascript:void(0);');
+                } else {
+                    $('.btn-print-report').removeAttr('disabled');
+                    $('.btn-print-report').attr('href', '/print_report?company_id='+company_id);
+                }                
+            } else {
+                update_properties();                
+            }
         });    
 
     }
 });
 
 function show_print_pending_dialog() {
+    $( '#print_benefit' ).html(benefit);
     $( "#print_dialog" ).dialog();
 }
 
@@ -278,9 +291,28 @@ generate_quintile_data = function(raw_data, inverse){
 }
 
 update_content = function(benefit) {
+    $('.btn-print-report').hide();
+    $('.btn-print-page').show();
+
     if(benefit == 'EMPLOYERS') {
-        load_employers();
-    } else if ($.inArray(benefit, ["LIFE", "STD", "LTD"]) != -1) {
+        $('.btn-print-report').show();
+        $('.btn-print-page').hide();
+        load_employers();        
+    } else if ($.inArray(benefit, ["STRATEGY"]) != -1) {
+        gh1_data = generate_quintile_data(gh1_data, true);
+        gh2_data = generate_quintile_data(gh2_data, true);
+        
+        draw_bar_chart(benefit+'-1', gh1_data, 'dollar', 6.8);        
+        draw_bar_chart(benefit+'-2', gh2_data, 'dollar', 6.8);        
+    } else if ($.inArray(benefit, ["LIFE"]) != -1) {
+        gh1_data = generate_quintile_data(gh1_data);
+        gh2_data = generate_quintile_data(gh2_data);
+        
+        draw_bar_chart(benefit+'-1', gh1_data, 'dollar', 6.7);                
+        draw_bar_chart(benefit+'-2', gh2_data, 'dollar', 6.7);        
+      
+        draw_easy_pie_chart();
+    } else if ($.inArray(benefit, ["STD", "LTD"]) != -1) {
         gh1_data = generate_quintile_data(gh1_data);
 
         if ( benefit == "LTD")
@@ -288,21 +320,10 @@ update_content = function(benefit) {
         else
             gh2_data = generate_quintile_data(gh2_data);
         
-        draw_bar_chart(benefit+'-1', gh1_data);        
-        
-        if ( benefit == "LIFE")
-            draw_bar_chart(benefit+'-2', gh2_data);        
-        else
-            draw_bar_chart(benefit+'-2', gh2_data, true, 7);        
+        draw_bar_chart(benefit+'-1', gh1_data, 'dollar', 7);        
+        draw_bar_chart(benefit+'-2', gh2_data, 'int', 7.2);        
       
         draw_easy_pie_chart();
-
-    } else if ($.inArray(benefit, ["STRATEGY"]) != -1) {
-        gh1_data = generate_quintile_data(gh1_data, true);
-        gh2_data = generate_quintile_data(gh2_data, true);
-        
-        draw_bar_chart(benefit+'-1', gh1_data);        
-        draw_bar_chart(benefit+'-2', gh2_data);        
     } else if ($.inArray(benefit, ["VISION"]) != -1) {
         gh1_data = generate_quintile_data(gh1_data, true);
         gh2_data = generate_quintile_data(gh2_data, true);
@@ -311,13 +332,13 @@ update_content = function(benefit) {
         gh5_data = generate_quintile_data(gh5_data, true);
         gh6_data = generate_quintile_data(gh6_data, true);        
         
-        draw_bar_chart(benefit+'-1', gh1_data, false, 7);        
-        draw_bar_chart(benefit+'-2', gh2_data, false, 7);        
-        draw_bar_chart(benefit+'-3', gh3_data, false, 7);        
-        draw_bar_chart(benefit+'-4', gh4_data, false, 7);        
-        draw_bar_chart(benefit+'-5', gh5_data, false, 7);        
-        draw_bar_chart(benefit+'-6', gh6_data, false, 7);        
-        
+        draw_bar_chart(benefit+'-1', gh1_data, 'dollar', 7);        
+        draw_bar_chart(benefit+'-2', gh2_data, 'dollar', 7);        
+        draw_bar_chart(benefit+'-3', gh3_data, 'dollar', 7);        
+        draw_bar_chart(benefit+'-4', gh4_data, 'dollar', 7);        
+        draw_bar_chart(benefit+'-5', gh5_data, 'dollar', 7);        
+        draw_bar_chart(benefit+'-6', gh6_data, 'dollar', 7);        
+
     } else if ($.inArray(benefit, ["DPPO", "DMO"]) != -1) {
         if (benefit == "DMO")
             $('.out-benefit').remove();
@@ -332,15 +353,15 @@ update_content = function(benefit) {
         gh9_data = generate_quintile_data(gh9_data, true);
         gh10_data = generate_quintile_data(gh10_data, true);        
         
-        draw_bar_chart('DENTAL-1', gh1_data, false, 7);        
-        draw_bar_chart('DENTAL-2', gh2_data, false, 7);        
-        draw_bar_chart('DENTAL-3', gh3_data, false, 7);        
-        draw_bar_chart('DENTAL-4', gh4_data, false, 7);        
-        draw_bar_chart('DENTAL-6', gh6_data, false, 7);       
-        draw_bar_chart('DENTAL-7', gh7_data, false, 7);        
-        draw_bar_chart('DENTAL-8', gh8_data, false, 7);        
-        draw_bar_chart('DENTAL-9', gh9_data, false, 7);        
-        draw_bar_chart('DENTAL-10', gh10_data, false, 7);        
+        draw_bar_chart('DENTAL-1', gh1_data, 'dollar', 7);        
+        draw_bar_chart('DENTAL-2', gh2_data, 'dollar', 7);        
+        draw_bar_chart('DENTAL-3', gh3_data, 'dollar', 7);        
+        draw_bar_chart('DENTAL-4', gh4_data, 'dollar', 7);        
+        draw_bar_chart('DENTAL-6', gh6_data, 'percent', 7);       
+        draw_bar_chart('DENTAL-7', gh7_data, 'percent', 7);        
+        draw_bar_chart('DENTAL-8', gh8_data, 'percent', 7);        
+        draw_bar_chart('DENTAL-9', gh9_data, 'dollar', 6.8);        
+        draw_bar_chart('DENTAL-10', gh10_data, 'dollar', 6.8);        
 
     } else if ($.inArray(benefit, ["PPO", "HMO", "HDHP"]) != -1) {
         if (benefit == "HMO")
@@ -364,19 +385,19 @@ update_content = function(benefit) {
         gh12_data = generate_quintile_data(gh12_data, true);
         gh13_data = generate_quintile_data(gh13_data, true);
         
-        draw_bar_chart('MEDICAL-1', gh1_data, false, 7);        
-        draw_bar_chart('MEDICAL-2', gh2_data, false, 7);        
-        draw_bar_chart('MEDICAL-3', gh3_data, false, 7);        
-        draw_bar_chart('MEDICAL-4', gh4_data, false, 7);                
-        draw_bar_chart('MEDICAL-5', gh5_data, true, 7);        
-        draw_bar_chart('MEDICAL-6', gh6_data, false, 7);        
-        draw_bar_chart('MEDICAL-7', gh7_data, false, 7);        
-        draw_bar_chart('MEDICAL-8', gh8_data, false, 7);        
-        draw_bar_chart('MEDICAL-9', gh9_data, false, 7);        
-        draw_bar_chart('MEDICAL-10', gh10_data, false, 7);        
-        draw_bar_chart('MEDICAL-11', gh11_data, false, 7);        
-        draw_bar_chart('MEDICAL-12', gh12_data, false, 7);        
-        draw_bar_chart('MEDICAL-13', gh13_data, false, 7); 
+        draw_bar_chart('MEDICAL-1', gh1_data, 'dollar', 6.8);        
+        draw_bar_chart('MEDICAL-2', gh2_data, 'dollar', 6.8);        
+        draw_bar_chart('MEDICAL-3', gh3_data, 'dollar', 6.8);        
+        draw_bar_chart('MEDICAL-4', gh4_data, 'dollar', 6.8);                
+        draw_bar_chart('MEDICAL-5', gh5_data, 'percent', 7);        
+        draw_bar_chart('MEDICAL-6', gh6_data, 'dollar', 7);        
+        draw_bar_chart('MEDICAL-7', gh7_data, 'dollar', 7);        
+        draw_bar_chart('MEDICAL-8', gh8_data, 'dollar', 7);        
+        draw_bar_chart('MEDICAL-9', gh9_data, 'dollar', 7);        
+        draw_bar_chart('MEDICAL-10', gh10_data, 'dollar', 7);        
+        draw_bar_chart('MEDICAL-11', gh11_data, 'dollar', 7);        
+        draw_bar_chart('MEDICAL-12', gh12_data, 'dollar', 6.8);        
+        draw_bar_chart('MEDICAL-13', gh13_data, 'dollar', 6.8); 
     }
 
     $('.page-loader').fadeOut();
