@@ -25,8 +25,7 @@
                 <li><a href="javascript:void(0);">STD</a></li>
                 <li><a href="javascript:void(0);">LTD</a></li>
                 <li><a href="javascript:void(0);">STRATEGY</a></li>                
-                <li><a href="javascript:void(0);">EMPLOYERS</a></li>               
-                <li><a href="javascript:void(0);">TICKET</a></li>
+                <li><a href="javascript:void(0);">EMPLOYERS</a></li>
             </ul>
         </nav>
     </div>
@@ -79,9 +78,12 @@
             <div class="zoom-icon">
                 <img src="{% static 'img/icons/menu.png' %}" class="dropdown-icon" alt="">
             </div>
-            <div class="employer-filter-count">
-                <h6>EMPLOYERS:&nbsp;<span id="num_employers"></span></h6>
+            <div class="control-buttons">
+                <a class="btn btn-primary" href="javascript:void(0);" onclick="get_body();">Run Filters</a>
             </div>
+<!--             <div class="employer-filter-count">
+                <h6>EMPLOYERS:&nbsp;<span id="num_employers"></span></h6>
+            </div> -->
         </div>
         <div class="control-wrapper">
             <div class="header-filter">
@@ -93,9 +95,8 @@
                 </select>
             </div>
             <div class="control-buttons">
-                <a class="btn btn-print" href="" onclick="">Print Report</a>
-                <a class="btn btn-print" href="/print_page" onclick="show_print_pending_dialog();">Print Page</a>
-                <a class="btn btn-primary" href="javascript:void(0);" onclick="get_body();">Run Filters</a>
+                <a class="btn btn-print-report" style="display: none;" disabled="true">Print Report</a>
+                <a class="btn btn-print-page" href="/print_page" onclick="show_print_pending_dialog();">Print Page</a>
             </div>
         </div>
     </div>
@@ -110,7 +111,7 @@
 
 <div id="print_dialog" title="Printing Page Confirmation" style="display: none;">
   <br>
-  <p>Please wait while your <b>{{ request.session.benefit }} Benchmarking Report</b> is generated.</p>
+  <p>Please wait while your <b><span id="print_benefit"></span> Benchmarking Report</b> is generated.</p>
   <p>You will be alerted as soon as the report is ready to download.</p> 
 </div>
 {% endblock %}

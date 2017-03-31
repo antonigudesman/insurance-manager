@@ -27,7 +27,8 @@ MODEL_MAP = {
     'STRATEGY': Strategy, 
     'VISION': Vision,
     'DENTAL': Dental,
-    'MEDICAL': Medical
+    'MEDICAL': Medical,
+    'EMPLOYERS': Employer
 }
 
 PLAN_ALLOWED_BENEFITS = ['LIFE', 'STD', 'LTD', 'STRATEGY', 'VISION', 'DENTAL', 'MEDICAL']
@@ -292,7 +293,7 @@ def get_plans(request):
         benefit_ = benefit      # store original benefit
         benefit = 'MEDICAL'
 
-    if benefit in PLAN_ALLOWED_BENEFITS:
+    if benefit in PLAN_ALLOWED_BENEFITS + ['EMPLOYERS']:
         plans = get_plans_(benefit, group, benefit_)
 
     return render(request, 'includes/plans.html', { 'plans': plans })
@@ -303,7 +304,10 @@ def get_plans_(benefit, group, benefit_):
     if group == 'bnchmrk':
         objects = model.objects.all()
     else:
-        objects = model.objects.filter(employer__broker=group)
+        if benefit == 'EMPLOYERS':
+            objects = model.objects.filter(broker=group)
+        else:
+            objects = model.objects.filter(employer__broker=group)
 
     if benefit_ in ['DPPO', 'DMO']:     # for DPPO, DMO pages
         objects = objects.filter(type=benefit_)
@@ -329,7 +333,11 @@ def get_plans_(benefit, group, benefit_):
                    [item.id, '{}'.format(item.employer.name)]
                    for item in objects.order_by('employer__name')
                ]
-
+    elif benefit in ['EMPLOYERS']:
+        return [
+                   [item.id, '{}'.format(item.name)]
+                   for item in objects.order_by('name')
+               ]
 
 def contact_us(request):
     return render(request, 'contact_us.html')

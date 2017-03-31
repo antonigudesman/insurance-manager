@@ -55,6 +55,7 @@ urlpatterns += [
     url(r"^98Wf37r2-3h4X2_jh9$", print_template, name="print_template"),
     url(r"^25Wfr7r2-3h4X25t$", print_template_header, name="print_template_header"),
     url(r"^print_page", print_page, name="print_page"),
+    url(r"^print_report", print_report, name="print_report"),
     # other pages
     url(r"^company", company, name="company"),
     url(r"^contact_us", contact_us, name="contact_us"),
