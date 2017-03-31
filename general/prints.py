@@ -19,8 +19,11 @@ from .views import *
 
 @login_required(login_url='/admin/login')
 def print_template(request):
+    benefit = request.GET.get('benefit')
+    plan = request.GET.get('plan')
+    #Retrieve data or whatever you need
+    request.session['plan'] = plan
     # Retrieve data or whatever you need
-    benefit = request.session['benefit']
     ft_industries = request.session['ft_industries']
     ft_head_counts = request.session['ft_head_counts']
     ft_other = request.session['ft_other']
@@ -46,9 +49,10 @@ def print_template(request):
 
 @login_required(login_url='/admin/login')
 def print_template_header(request):
+    benefit = request.GET.get('benefit')
+    plan = request.GET.get('plan')
     #Retrieve data or whatever you need
-    benefit = request.session['benefit']
-    print benefit, '@@@@@@'
+    request.session['plan'] = plan
     ft_industries = request.session['ft_industries']
     ft_head_counts = request.session['ft_head_counts']
     ft_other = request.session['ft_other']
@@ -82,10 +86,6 @@ def print_page(request):
 
 
 def get_pdf(request, benefits, plans):
-    # store original benefit and plan for front end
-    benefit_o = request.session['benefit']
-    plan_o = request.session['plan']
-
     # get screenshot for current page with same session using selenium    
     driver = webdriver.PhantomJS()
     driver.set_window_size(1360, 1000)
@@ -114,17 +114,15 @@ def get_pdf(request, benefits, plans):
     img_path_header = base_path + '_header.png'
 
     for uidx in range(len(benefits)):
-        request.session['benefit'] = benefits[uidx]
-        request.session['plan'] = plans[uidx]            
-        request.session.modified = True
-        
         # for body
-        driver.get('http://{}/98Wf37r2-3h4X2_jh9'.format(request.META.get('HTTP_HOST')))        
+        url = 'http://{}/98Wf37r2-3h4X2_jh9?benefit={}&plan={}'.format(request.META.get('HTTP_HOST'), benefits[uidx], plans[uidx])
+        driver.get(url)        
         time.sleep(2)
         driver.save_screenshot(img_path)
 
         # for header
-        driver.get('http://{}/25Wfr7r2-3h4X25t'.format(request.META.get('HTTP_HOST')))
+        url = 'http://{}/25Wfr7r2-3h4X25t?benefit={}&plan={}'.format(request.META.get('HTTP_HOST'), benefits[uidx], plans[uidx])
+        driver.get(url)
         time.sleep(2)
         driver.save_screenshot(img_path_header)
         
@@ -159,10 +157,7 @@ def get_pdf(request, benefits, plans):
         driver.quit()
     except Exception as e:
         pass
-
-    # restore benefit and plan
-    request.session['benefit'] = benefit_o
-    request.session['plan'] = plan_o                
+               
     return get_download_response(pdf_path)    
 
 
