@@ -60,9 +60,9 @@ $(document).ready(function(){
     }
 });
 
-function show_print_pending_dialog() {
+function show_print_pending_dialog(id) {
     $( '#print_benefit' ).html(benefit);
-    $( "#print_dialog" ).dialog();
+    $( "#"+id ).dialog();
 }
 
 function update_properties() {

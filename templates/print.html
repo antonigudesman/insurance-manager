@@ -32,6 +32,7 @@
 
 {% block extra_js %}
     <script type="text/javascript">
+        var EMPLOYER_THRESHOLD_MESSAGE = "{{ EMPLOYER_THRESHOLD_MESSAGE }}";
         var benefit = '{{ request.session.benefit }}';
         var print_template = true;
     </script>

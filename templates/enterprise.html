@@ -95,8 +95,8 @@
                 </select>
             </div>
             <div class="control-buttons">
-                <a class="btn btn-print-report" style="display: none;" disabled="true">Print Report</a>
-                <a class="btn btn-print-page" href="/print_page" onclick="show_print_pending_dialog();">Print Page</a>
+                <a class="btn btn-print-report" style="display: none;" disabled="true" onclick="show_print_pending_dialog('print_report_dialog');">Print Report</a>
+                <a class="btn btn-print-page" href="/print_page" onclick="show_print_pending_dialog('print_page_dialog');">Print Page</a>
             </div>
         </div>
     </div>
@@ -109,9 +109,14 @@
     </div>
 </div>
 
-<div id="print_dialog" title="Printing Page Confirmation" style="display: none;">
+<div id="print_page_dialog" title="Printing Page Confirmation" style="display: none;">
   <br>
   <p>Please wait while your <b><span id="print_benefit"></span> Benchmarking Report</b> is generated.</p>
+  <p>You will be alerted as soon as the report is ready to download.</p> 
+</div>
+<div id="print_report_dialog" title="Printing Report Confirmation" style="display: none;">
+  <br>
+  <p>Please wait while your <b>Benchmarking Report</b> is generated.</p>
   <p>You will be alerted as soon as the report is ready to download.</p> 
 </div>
 {% endblock %}

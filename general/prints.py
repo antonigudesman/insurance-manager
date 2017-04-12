@@ -22,6 +22,7 @@ def print_template(request):
     benefit = request.GET.get('benefit')
     plan = request.GET.get('plan')
     #Retrieve data or whatever you need
+    request.session['benefit'] = benefit
     request.session['plan'] = plan
     # Retrieve data or whatever you need
     ft_industries = request.session['ft_industries']
@@ -52,6 +53,7 @@ def print_template_header(request):
     benefit = request.GET.get('benefit')
     plan = request.GET.get('plan')
     #Retrieve data or whatever you need
+    request.session['benefit'] = benefit
     request.session['plan'] = plan
     ft_industries = request.session['ft_industries']
     ft_head_counts = request.session['ft_head_counts']
@@ -86,6 +88,10 @@ def print_page(request):
 
 
 def get_pdf(request, benefits, plans):
+    # store original benefit and plan for front end
+    benefit_o = request.session['benefit']
+    plan_o = request.session['plan']    
+
     # get screenshot for current page with same session using selenium    
     driver = webdriver.PhantomJS()
     driver.set_window_size(1360, 1000)
@@ -110,54 +116,63 @@ def get_pdf(request, benefits, plans):
 
     base_path = '/tmp/page{}'.format(random.randint(-100000000, 100000000))
     pdf_path = base_path + '.pdf'
-    img_path = base_path + '.png'        
-    img_path_header = base_path + '_header.png'
 
+    vars_d = {}
     for uidx in range(len(benefits)):
+        vars_d['img_path_{}'.format(uidx)] = '{}_{}.png'.format(base_path, uidx)
+        vars_d['img_path_header_{}'.format(uidx)] = '{}_{}_header.png'.format(base_path, uidx)
+
         # for body
         url = 'http://{}/98Wf37r2-3h4X2_jh9?benefit={}&plan={}'.format(request.META.get('HTTP_HOST'), benefits[uidx], plans[uidx])
         driver.get(url)        
-        time.sleep(2)
-        driver.save_screenshot(img_path)
+        time.sleep(3)
+        if benefits[uidx] in ['PPO', 'HDHP', 'HMO']:
+            time.sleep(2)
+
+        driver.save_screenshot(vars_d['img_path_{}'.format(uidx)])
 
         # for header
         url = 'http://{}/25Wfr7r2-3h4X25t?benefit={}&plan={}'.format(request.META.get('HTTP_HOST'), benefits[uidx], plans[uidx])
         driver.get(url)
         time.sleep(2)
-        driver.save_screenshot(img_path_header)
+        driver.save_screenshot(vars_d['img_path_header_{}'.format(uidx)])
         
         # build a pdf with images using fpdf
         pdf.add_page()
-        pdf.image(img_path_header, margin_h, margin_v)
+        pdf.image(vars_d['img_path_header_{}'.format(uidx)], margin_h, margin_v)
 
         # split the image in proper size
-        origin = Image.open(img_path)
+        origin = Image.open(vars_d['img_path_{}'.format(uidx)])
         header_height = 141 - 4
         width, height = origin.size
 
         num_pages = int(( height - header_height ) / 1200.0 + 0.5)
 
         for idx in range(num_pages):
-            img_path_s = '{}_{}.png'.format(base_path, idx)
+            vars_d['img_path_s_{}_{}'.format(uidx, idx)] = '{}_{}_{}s.png'.format(base_path, idx, uidx)
             height_s = header_height + 1200 * (idx + 1) + 1
             if height_s > height:
                 height_s = height
-            origin.crop((0,header_height+1200*idx, width, height_s)).save(img_path_s)
+            origin.crop((0,header_height+1200*idx, width, height_s)).save(vars_d['img_path_s_{}_{}'.format(uidx, idx)])
 
             pdf.add_page()
-            pdf.image(img_path_s, margin_h, margin_v)
-            os.remove(img_path_s)
+            pdf.image(vars_d['img_path_s_{}_{}'.format(uidx, idx)], margin_h, margin_v)
+            os.remove(vars_d['img_path_s_{}_{}'.format(uidx, idx)])
+        # remove image files
+        os.remove(vars_d['img_path_{}'.format(uidx)])
+        os.remove(vars_d['img_path_header_{}'.format(uidx)])
 
     pdf.output(pdf_path, "F")
-    # remove image files
-    os.remove(img_path)
-    os.remove(img_path_header)
 
     try:
         driver.quit()
     except Exception as e:
         pass
-               
+       
+    # restore benefit and plan
+    request.session['benefit'] = benefit_o
+    request.session['plan'] = plan_o                 
+
     return get_download_response(pdf_path)    
 
 
@@ -187,8 +202,8 @@ def print_report(request):
 
             benefits.append(benefit)
             plans.append(plan)
-    print benefits, plans
-    return get_pdf(request, [benefits[1]], [plans[1]])
+    # print benefits, plans
+    return get_pdf(request, benefits, plans)
 
 
 def get_download_response(path):
