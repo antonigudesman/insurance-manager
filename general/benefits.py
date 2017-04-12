@@ -103,6 +103,13 @@ def get_medical_plan(employers, num_companies, benefit_=None):
     medians, var_local, qs = get_medical_plan_(employers, num_companies, benefit_)
     prcnt_plan_count = get_plan_percentages(employers, num_companies, 'med')
 
+    num_t = Medical.objects.filter(employer__in=employers, type__in=['PPO', 'POS']).values('employer_id').distinct()
+    var_local['prcnt_ppo'] = '{:,.0f}%'.format(len(num_t) * 100 / num_companies)
+    num_t = Medical.objects.filter(employer__in=employers, type__in=['HMO', 'EPO']).values('employer_id').distinct()
+    var_local['prcnt_hmo'] = '{:,.0f}%'.format(len(num_t) * 100 / num_companies)
+    num_t = Medical.objects.filter(employer__in=employers, type__in=['HDHP']).values('employer_id').distinct()
+    var_local['prcnt_hdhp'] = '{:,.0f}%'.format(len(num_t) * 100 / num_companies)
+
     for attr in medical_attrs_boolean:
         var_local['prcnt_'+attr] = get_percent_count(qs, attr)
 
@@ -217,6 +224,11 @@ dental_attrs_boolean = [
 def get_dental_plan(employers, num_companies, benefit_=None):
     medians, var_local, qs = get_dental_plan_(employers, num_companies, benefit_)
     prcnt_plan_count = get_plan_percentages(employers, num_companies, 'den')
+
+    num_t = Dental.objects.filter(employer__in=employers, type__in=['DPPO']).values('employer_id').distinct()
+    var_local['prcnt_dppo'] = '{:,.0f}%'.format(len(num_t) * 100 / num_companies)
+    num_t = Dental.objects.filter(employer__in=employers, type__in=['DMO']).values('employer_id').distinct()
+    var_local['prcnt_dmo'] = '{:,.0f}%'.format(len(num_t) * 100 / num_companies)
 
     for attr in dental_attrs_boolean:
         var_local['prcnt_'+attr] = get_percent_count(qs, attr)

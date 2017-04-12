@@ -444,7 +444,29 @@
         <div class="section-header">
             <h4>{{ request.session.benefit }} Prevalence</h4>
         </div>
-        <div class="section-content">
+        <div class="section-content-left">
+            <table class="table table-striped table-content">
+                <col width="60%">
+                <col width="40%">
+                <thead>
+                    <tr>
+                        <th class="row-label"></th>
+                        <th>Employers</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-label">Offer DPPO</td>
+                        <td>{{ prcnt_dppo }}</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Offer DMO</td>
+                        <td>{{ prcnt_dmo }}</td>
+                    </tr>
+                </tbody>
+            </table> 
+        </div>
+        <div class="section-content-right">
             <table class="table table-striped table-content">
                 <col width="60%">
                 <col width="40%">
