@@ -4,11 +4,11 @@
 {% block title %}{{ title }} | Mezzanine{% endblock %}
 
 {% block extrahead %}
-<link rel="stylesheet" href="{% static 'mezzanine/css/admin/global.css' %}">
+<link rel="stylesheet" href="{% static 'css/admin.css' %}">
 <link rel="stylesheet" href="{% static 'css/app.min.1.css' %}">
 <link rel="stylesheet" href="{% static 'css/app.min.2.css' %}">
 <link rel="stylesheet" href="{% static 'css/bnchmrk.css' %}">
-<link rel="stylesheet" href="{% static 'css/admin.css' %}">
+<link rel="stylesheet" href="{% static 'mezzanine/css/admin/global.css' %}">
 
 <style>
     /* These are set in PageAdmin's view methods, and mezzanine.utils.admin.SingletonAdmin */
@@ -58,7 +58,28 @@ jQuery(function($) {
 
 {% block before_content %}
 {% if user.is_staff and not is_popup and not request.GET.pop %}
-{% admin_dropdown_menu %}
+<div id="panel">
+    <h2>Account Menu</h2>
+    <ul>
+        <li>
+            <ul class="dropdown-menu-menu1">
+                <li><a href="/admin/general/medical/">Medical Plans</a></li>
+                <li><a href="/admin/general/dental/">Dental Plans</a></li>
+                <li><a href="/admin/general/vision/">Vision Plans</a></li>
+                <li><a href="/admin/general/life/">Life Plans</a></li>
+                <li><a href="/admin/general/std/">STD Plans</a></li>    
+                <li><a href="/admin/general/ltd/">LTD Plans</a></li>
+                <li><a href="/admin/general/strategy/">Strategies</a></li>
+                <li><a href="/admin/general/employer/">Employers</a></li>
+            </ul>
+        </li>        
+        <li>
+            <ul class="dropdown-menu-menu">
+                <li><a href="/admin/password_change">Change Password</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
 {% endif %}
 {% endblock %}
 

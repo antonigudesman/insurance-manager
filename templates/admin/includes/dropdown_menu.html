@@ -1,16 +1,13 @@
 {% load i18n mezzanine_tags %}
+
+<!-- <span>{{ request.user.first_name }} {{ request.user.last_name }}</span> -->
+
 <div id="panel">
+    <h2>Account Menu</h2>
     <ul>
-        <li>
-            <ul class="dropdown-menu-menu">
-                <li class="first"><a href="javascript:void(0);">{{ request.user.first_name }} {{ request.user.last_name }}</a></li>
-                <li><a href="/admin/password_change">Change Password</a></li>
-            </ul>
-        </li>
         {% for app in dropdown_menu_app_list %}
         {% if app.name != 'Content' or app.name == 'Content' and request.user.is_superuser %}
         <li>
-            <a href="#">{% trans app.name %}</a>
             <ul class="dropdown-menu-menu">
             {% for model in app.models %}
                 {% if model.perms.add or model.perms.change or model.perms.custom %}
@@ -22,6 +19,11 @@
         </li>
         {% endif %}
         {% endfor %}
+        <li>
+            <ul class="dropdown-menu-menu">
+                <li><a href="/admin/password_change">Change Password</a></li>
+            </ul>
+        </li>
     </ul>
 
     {% if settings.USE_L10N and LANGUAGES|length > 1 %}

@@ -1,0 +1,24 @@
+<fieldset class="module aligned {{ fieldset.classes }}">
+  {% if fieldset.name %}<h2>{{ fieldset.name }}</h2>{% endif %}
+  {% if fieldset.description %}<div class="description">{{ fieldset.description|safe }}</div>{% endif %}
+  {% for line in fieldset %}
+      {{ line.errors }}
+      {% for field in line %}
+      {% if field.field.name in "title,id,broker,name"|slice:',' %}
+      <div class="col-md-12 form-row{% if line.errors %} errors{% endif %} {% for field in line %}{{ field.field.name }} {% endfor %} ">
+      {% else %}
+      <div class="col-md-6 form-row{% if line.errors %} errors{% endif %} {% for field in line %}{{ field.field.name }} {% endfor %} ">
+      {% endif %}
+      <div{% if not line.fields|length_is:"1" %} class="field-box"{% endif %}>
+          {% if field.is_readonly %}
+              {{ field.label_tag }}{{ field.contents }}
+          {% else %}
+              {{ field.label_tag }}{{ field.field }} <span class="nbsp">&nbsp;</span>
+          {% endif %}
+          {% if field.field.field.help_text %}<p class="help">{{ field.field.field.help_text|safe }}</p>{% endif %}
+      </div>
+      </div>
+      <!-- <div class="clear"></div> -->
+      {% endfor %}
+  {% endfor %}
+</fieldset>
