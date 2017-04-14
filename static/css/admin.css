@@ -126,3 +126,7 @@
 .submit-row {
     position: relative;
 }
+
+div.result-list table tbody tr td {
+    padding: 0 5px;
+}

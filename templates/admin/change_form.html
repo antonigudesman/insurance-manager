@@ -33,18 +33,10 @@
 <!-- CONTENT -->
 {% block content %}
 <div id="content-main">
-
     <!-- Object-Tools -->
     {% block object-tools %}
     {% if change %}
     {% if not is_popup %}
-    <ul class="object-tools">
-        {% block object-tools-items %}
-            {% url opts|admin_urlname:'history' original.pk|admin_urlquote as history_url %}
-            <li><a href="{{ history_url }}">{% trans "History" %}</a></li>
-            {% if has_absolute_url %}<li><a href="{{ absolute_url }}" class="focus" target="_blank">{% trans "View on site" %}</a></li>{% endif%}
-        {% endblock %}
-    </ul>
     {% endif %}
     {% endif %}
     {% endblock %}
@@ -108,7 +100,17 @@
             {% block after_related_objects %}{% endblock %}
 
             <!-- Submit-Row -->
-            {% block submit_buttons_bottom %}{% submit_row %}{% endblock %}
+            {% block submit_buttons_bottom %}
+            <div class="submit-row">
+                <p class="deletelink-box"><a href="/admin/general/life/3084/delete/" class="deletelink">Delete</a></p>
+                <a href="{{ history_url }}">{% trans "History" %}</a>
+                <input value="Cancel" class="warning" name="_cancel" onclick="history.go(-1);" type="button">
+                <input value="Save" class="default" name="_save" type="submit">
+                
+                <input class="change-view-save-another" value="Save and add another" name="_addanother" type="submit">
+                <input class="change-view-save-continue" value="Save and continue editing" name="_continue" type="submit">
+            </div>
+            {% endblock %}
 
             <!-- JS for prepopulated fields -->
             {% prepopulated_fields_js %}
