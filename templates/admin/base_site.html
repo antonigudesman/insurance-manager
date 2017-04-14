@@ -46,6 +46,9 @@ jQuery(function($) {
     // This line can be removed after a decent amount of time has passed since
     // https://github.com/stephenmcd/grappelli-safe/pull/56/files occurring.
     $("#id_sitepermissions-__prefix__-sites").parent().parent().parent().remove();
+
+    // make active menuitem for this page
+    $('ul.navbar-nav li').eq(2).addClass('active');    
 });
 </script>
 
@@ -63,6 +66,7 @@ jQuery(function($) {
     <ul>
         <li>
             <ul class="dropdown-menu-menu1">
+                <li><a href="/admin/general/employer/">Employers</a></li>
                 <li><a href="/admin/general/medical/">Medical Plans</a></li>
                 <li><a href="/admin/general/dental/">Dental Plans</a></li>
                 <li><a href="/admin/general/vision/">Vision Plans</a></li>
@@ -70,14 +74,9 @@ jQuery(function($) {
                 <li><a href="/admin/general/std/">STD Plans</a></li>    
                 <li><a href="/admin/general/ltd/">LTD Plans</a></li>
                 <li><a href="/admin/general/strategy/">Strategies</a></li>
-                <li><a href="/admin/general/employer/">Employers</a></li>
-            </ul>
-        </li>        
-        <li>
-            <ul class="dropdown-menu-menu">
                 <li><a href="/admin/password_change">Change Password</a></li>
             </ul>
-        </li>
+        </li>        
     </ul>
 </div>
 {% endif %}
