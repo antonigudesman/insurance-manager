@@ -94,7 +94,8 @@ USE_MODELTRANSLATION = False
 # See https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = [
     "localhost",
-    "127.0.0.1"
+    "127.0.0.1",
+    "54.148.203.146"
 ]
 
 # Local time zone for this installation. Choices can be found here:
