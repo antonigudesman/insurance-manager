@@ -43,6 +43,16 @@
                 acrossQuestions: "div.actions li.question",
                 acrossClears: "div.actions li.clear-selection"
             });
+    
+            // highlight left panel item
+            var model_name = '{{cl.opts.model_name}}';
+            $('.dropdown-menu-menu-bnchmrk li a').removeClass('active');
+            $('.dropdown-menu-menu-bnchmrk li a').each(function() {
+                var link = $(this).attr('href');
+                if (link.includes(model_name)) {
+                    $(this).addClass('active');
+                }
+            });
         });
     </script>
     {% endif %}

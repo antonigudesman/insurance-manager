@@ -6,13 +6,15 @@ from .models import *
 
 
 class EmployerAdmin(admin.ModelAdmin):
-    list_display = ['name','broker','industry1','industry2','industry3',
-                    'state','formatted_size','nonprofit','med_count','den_count',
-                    'vis_count', 'life_count','std_count','ltd_count']
+    list_display = ['name','broker','industry1','industry2','industry3','formatted_size',
+                    'med_count','den_count','vis_count', 'life_count','std_count','ltd_count']
     search_fields = ('name','broker')
     list_filter = ('broker',)
     change_form_template = 'admin/change_form_employer.html'
-    fields = ('name', 'broker', 'industry1', 'state', 'industry2', 'size', 'industry3')
+    fields = ('name', 'broker', 'industry1', 'state', 'industry2', 'size', 'industry3',
+        'nonprofit', 'govt_contractor', 'new_england', 'med_count', 'mid_atlantic',
+        'den_count', 'south_atlantic', 'vis_count', 'south_cental', 'life_count', 
+        'east_central', 'std_count', 'west_central', 'ltd_count', 'mountain', 'pacific')
 
     def get_queryset(self, request):
         qs = super(EmployerAdmin, self).get_queryset(request)
@@ -73,7 +75,16 @@ class MedicalAdmin(admin.ModelAdmin):
     search_fields = ('employer__name', 'title',)
     list_filter = ('type',)
     form = MedicalForm
-    fields = ('title', 'employer')
+    fields = ('title', 'employer', 'type', 'in_ded_single', 'out_ded_single', 'in_max_single', 
+        'out_ded_family', 'in_ded_family', 'out_max_single', 'in_max_family', 'out_max_family', 
+        'in_coin', 'out_coin', 'rx_ded_single', 'rx_max_single', 'rx_ded_family', 'rx_max_family', 
+        'pcp_ded_apply', 'ded_cross', 'pcp_copay', 'max_cross', 'sp_ded_apply', 'rx1_ded_apply', 
+        'sp_copay', 'rx1_copay', 'er_ded_apply', 'rx1_mail_copay', 'er_copay', 'rx2_ded_apply', 
+        'uc_ded_apply', 'rx2_copay', 'uc_copay', 'rx2_mail_copay', 'lx_ded_apply', 'rx3_ded_apply', 
+        'lx_copay', 'rx3_copay', 'ip_ded_apply', 'rx3_mail_copay', 'ip_copay', 'rx4_ded_apply', 
+        'op_ded_apply', 'rx4_copay', 'op_copay', 'rx4_mail_copay', 't1_ee', 't1_gross', 't2_ee', 
+        't2_gross', 't3_ee', 't3_gross', 't4_ee', 't4_gross', 't1_ercdhp', 'hsa', 't2_ercdhp', 
+        'hra', 't3_ercdhp', 'age_rated', 't4_ercdhp', 'rx_coin', )
 
     def get_queryset(self, request):
         qs = super(MedicalAdmin, self).get_queryset(request)
@@ -112,7 +123,13 @@ class DentalAdmin(admin.ModelAdmin):
                     'formatted_in_max','formatted_in_max_ortho']
     search_fields = ('employer__name', 'title',)
     list_filter = ('type',)
-    fields = ('title', 'employer')
+    fields = ('title', 'employer', 'type', 'in_ded_single', 'out_ded_single', 
+        'in_ded_family', 'out_ded_family', 'in_max', 'out_max', 'in_max_ortho', 
+        'out_max_ortho', 't1_ee', 't1_gross', 't2_ee', 't2_gross', 't3_ee', 't3_gross', 
+        't4_ee', 't4_gross', 'prev_ded_apply', 'basic_ded_apply', 'in_prev_coin', 
+        'in_basic_coin', 'out_prev_coin', 'out_basic_coin', 'in_ortho_coin', 
+        'major_ded_apply', 'out_ortho_coin', 'in_major_coin', 'ortho_ded_apply', 
+        'out_major_coin', 'ortho_age_limit')
 
     def get_queryset(self, request):
         qs = super(DentalAdmin, self).get_queryset(request)
@@ -152,7 +169,12 @@ class VisionAdmin(admin.ModelAdmin):
     list_display = ['title','employer','formatted_exam_copay','formatted_lenses_copay',
                     'formatted_frames_allowance','formatted_contacts_allowance']
     search_fields = ('employer__name', 'title',)
-    fields = ('title', 'employer')
+    fields = ('title', 'employer', 'exam_copay', 'lenses_copay', 'exam_frequency', 
+        'lenses_frequency', 'exam_out_allowance', 'lenses_out_allowance', 'frames_copay', 
+        'contacts_copay', 'frames_allowance', 'contacts_allowance', 'frames_coinsurance', 
+        'contacts_coinsurance', 'frames_frequency', 'contacts_frequency', 'frames_out_allowance', 
+        'contacts_out_allowance', 't1_ee', 't1_gross', 't2_ee', 't2_gross', 't3_ee', 
+        't3_gross', 't4_ee', 't4_gross')
     
     def get_queryset(self, request):
         qs = super(VisionAdmin, self).get_queryset(request)
@@ -200,7 +222,7 @@ class LifeAdmin(admin.ModelAdmin):
     list_display = ['title', 'employer', 'type', 'multiple', 
                     'formatted_multiple_max', 'formatted_flat_amount', 'add', 'cost_share']
     search_fields = ('employer__name',)
-    fields = ('title', 'employer')
+    fields = ('title', 'employer', 'type', 'multiple', 'flat_amount', 'multiple_max', 'add', 'cost_share')
     
     def get_queryset(self, request):
         qs = super(LifeAdmin, self).get_queryset(request)
@@ -232,7 +254,7 @@ class STDAdmin(admin.ModelAdmin):
     list_display = ['title', 'employer', 'waiting_days', 'duration_weeks', 
                     'formatted_percentage', 'formatted_weekly_max', 'cost_share']
     search_fields = ('employer__name', 'title',)
-    fields = ('title', 'employer')
+    fields = ('title', 'employer', 'waiting_days', 'duration_weeks', 'waiting_days_sick', 'percentage', 'weekly_max', 'cost_share', 'salary_cont')
     
     def get_queryset(self, request):
         qs = super(STDAdmin, self).get_queryset(request)
@@ -264,7 +286,7 @@ class LTDAdmin(admin.ModelAdmin):
     list_display = ['title', 'employer', 'waiting_weeks', 
                     'formatted_percentage', 'formatted_monthly_max', 'cost_share']
     search_fields = ('employer__name', 'title',)
-    fields = ('title', 'employer')
+    fields = ('title', 'employer', 'waiting_weeks', 'percentage', 'monthly_max', 'cost_share')
     
     def get_queryset(self, request):
         qs = super(LTDAdmin, self).get_queryset(request)
@@ -295,7 +317,11 @@ class LTDAdmin(admin.ModelAdmin):
 class StrategyAdmin(admin.ModelAdmin):
     list_display = ['employer',]
     search_fields = ('employer__name', 'title',)
-    fields = ('employer', 'offer_vol_life')
+    fields = ('employer', 'offer_vol_life', 'offer_vol_std', 'offer_vol_ltd', 'offer_fsa', 
+        'spousal_surcharge', 'narrow_network', 'spousal_surcharge_amount', 'mec', 
+        'tobacco_surcharge', 'mvp', 'tobacco_surcharge_amount', 'contribution_bundle', 
+        'pt_medical', 'defined_contribution', 'pt_dental', 'salary_banding', 'pt_vision', 
+        'wellness_banding', 'pt_life', 'pt_std', 'pt_ltd')
     
 
     def get_queryset(self, request):

@@ -1,206 +1,156 @@
+
+/*  Print Section */
+
+.print-cover-content,
+.print-benefit-details,
+.print-cover-logo {
+    width: 1425px;
+}
+
+.print-cover-content {
+    height: 1200px;
+}
+
+.print-benefit-details {
+    height: 300px;
+    top: 300px;
+    left: 0px;
+    padding: 0 60px;
+}
+
+.print-cover-logo {
+    height: 400px;
+    top: 600px;
+    left: 0px;
+    padding: 60px;
+}
+
+.print-cover-logo > img {
+    margin: auto;
+}
+
+.print-benefit-details h4 {
+    font-size: 30px;
+}
+
+.print-benefit-details h6 {
+    font-size: 20px;
+}
+
+.print-benefit-details h6 > span {
+    font-size: 15px;
+}
+
+
+/*  Desktop Format */
+
 @media (min-width: 1200px) {
 
     body {
         margin-top: 156px;
     }
 
-    /* Enterprise Navigation Bar */
+    /* Top Navigation */
 
     .enterprise-menu {
-        position: fixed;
         top: 40px;
-        right: 0;
-        left: 0;
-        z-index: 1030;
-        width: 100%;
     }
 
-    /* Top Nav Bar */
-
-    .enterprise-navbar {
-        overflow: auto;
+    .enterprise-control-wrapper {
+        top: 75px;
     }
 
     .enterprise-nav > li > a {
         padding: 5px;
-        font-size: 16px;
-    }
-
-    /* Lower/Filter Nav Bar */
-
-    .enterprise-control-wrapper {
-        position: fixed;
-        top: 75px;
-        right: 0;
-        left: 0;
-        z-index: 1030;
-        width: 100%;
-        padding: 0;
-        margin: 0;
     }
 
     .control-wrapper {
-        overflow: auto;
-        width: 100%;
         padding: 9px 9px 0 9px;
     }
 
     .header-filter {
-        float: left;
-        width: 6%;
-        padding-top: 5px;
-        padding-left: 0;
+        width: 7%;
+        padding: 5px 0 0 25px;
     }
 
     .industry-filter {
-        float: left;
         width: 37%;
-        padding: 0 7px 0 0;
-    }
-
-    .headcount-filter {
-        float: left;
-        width: 13%;
-        padding: 0 7px 0 0;
+        padding-right: 7px;
     }
 
     .region-filter {
-        float: left;
         width: 15%;
-        padding: 0 7px 0 0;
+        padding-right: 7px;
+    }
+
+    .headcount-filter {
+        width: 13%;
+        padding-right: 7px;
     }
 
     .other-filter {
-        float: left;
         width: 14%;
-        padding: 0;
     }
 
-    .employer-filter-count {
-        float: left;
+    .zoom-icon {
         width: 7%;
-        padding: 3px 0 0 5px;
+        padding: 4px 0 0 5px;
     }
 
-    .filter-control {
-        display: block;
-        width: 100%;
-        float: left;
-        font-size: 16px;
-        padding-bottom: 3px;
-    }
-
-    .filter-control > option {
-        padding-top: 4px;
+    .control-buttons {
+        width: 7%;
+        padding-right: 25px;
     }
 
     .plan-selector {
-        float: left;
         width: 79%;
         margin-bottom: 9px;
     }
 
+    .filter-control,
     .plan-control {
-        display: block;
-        width: 100%;
-        float: left;
-        font-size: 16px;
-        padding-top: 3px;
         padding-bottom: 3px;
     }
 
-    img.dropdown-icon {
-        display: block;
-        width: 22px;
-        float: left;
-        padding: 0;
-        margin: 4px 0 0 5px;
+    .filter-control > option,
+    .plan-control > option {
+        padding-top: 4px;
     }
 
-    .control-buttons {
-        display: block;
-        float: right;
-        width: 7%;
-        padding: 0;
-/*        margin-bottom: 9px;*/
+    .btn-primary {
+        padding: 1px 17px;
     }
 
-    .header-filter h6,
-    .employer-filter-count h6 {
-        font-size: 18px;
+    .btn-print-page {
+        padding: 1px 19px;
     }
 
-    .enterprise-nav > li > a,
-    .filter-control,
-    .plan-control,
-    .control-buttons h6,
-    .btn-primary,
-    .btn-print-report,
-    .btn-print-page, {
-        font-size: 16px;
+    .btn-print-report {
+        padding: 1px 13px;
     }
-
-/*    .btn-primary,
-    .btn-print-report,
-    .btn-print-page, {
-        float: right;
-        margin: 0 0 0 8px;
-        padding: 2px 10px;
-    }*/
-
-    .header-filter h6,
-    .control-buttons h6,
-    .employer-filter-count h6 {
-        margin: 0;
-        padding: 0;
-    }
-
-    /* Benefit Header Section */
+    
+    
+    /* Benefit Header */
 
     .benefit-header {
-        overflow: auto;
-        position: relative;
-        width: 100%;
         padding-top: 5px;
     }
 
     .benefit-details {
-        width: 100%;
-        float: right;
-        padding: 0 20px 0 20px;
-    }
-
-    .benefit-header h4,
-    .benefit-header h6, {
-        padding: 0 0 5px 0;
-        margin: 0;
+        padding: 0 20px;
     }
 
     .other-filter > input {
-        margin: 0 0 0 10px;
-    }
-
-    .benefit-header h4 {
-        font-size: 20px;
+        margin-left: 10px;
     }
 
 
-    /*    
+    /* Feature Sections */
 
-    .client-logo > img {
-        max-height: 140px;
-        float: left;
-        padding: 20px 0 10px 10px;
+    .section,
+    .section-header {
+        width: 1425px;
     }
-
-    .client-logo {
-        width: 11%;
-        float: left;
-    }
-
-    */
-
-    /* Benefit Feature Sections */
 
     .section,
     .section-graph,
@@ -209,30 +159,14 @@
         height: 300px;
     }
 
-    .section {
-        overflow: hidden;
-        position: relative;
-        width: 1425px;
-    }
-
     .section-header {
-        position: absolute;
         top: 0px;
         left: 0px;
         height: 40px;
-        width: 1425px;
         padding: 0 20px;
-        background-color: #f2f2f2;
-    }
-
-    .section-header h4 {
-        font-weight: 800;
-        color: #555;
-        font-size: 20px;
     }
 
     .section-graph {
-        position: absolute;
         top: 70px;
         left: 0px;
         height: 230px;
@@ -241,7 +175,6 @@
     }
 
     .section-content-left {
-        position: absolute;
         top: 50px;
         left: 220px;
         height: 250px;
@@ -249,7 +182,6 @@
     }
 
     .section-content-right {
-        position: absolute;
         top: 50px;
         left: 800px;
         height: 250px;
@@ -257,7 +189,6 @@
     }
 
     .section-content {
-        position: absolute;
         top: 50px;
         left: 800px;
         height: 250px;
@@ -265,7 +196,6 @@
     }
 
     .section-score {
-        position: absolute;
         top: 50px;
         left: 1275px;
         height: 250px;
@@ -274,35 +204,13 @@
     }
 
     .section-score h5 {
-        font-weight: 600;
-        color: #555;
-        text-transform: uppercase;
-        font-size: 16px;
         margin: 6px 0;
     }
 
-    .section-score p {
-        font-size: 50px;
-        font-weight: bold;
-        border: 1px solid #c0c0c0;
-    }
 
-    p.exhibit-text {
-        margin-bottom: 6px;
-        font-size: 20px;
-    }
-
-    p.exhibit-text > span {
-        font-size: 12px;
-    }
-
-
-
-    /* Section Graphs */
+    /* Easy Pie Graphs */
 
     .easy-pie {
-        display: inline-block;
-        position: relative;
         padding: 20px 70px 5px 70px;
     }
 
@@ -310,21 +218,8 @@
         top: 120px;
     }
 
-    .pie-title {
-        font-size: 12px;
-    }
-
-
 
     /* Section Content & Tables */
-
-    .table > tbody > tr > td {
-        font-size: 14px;
-    }
-
-    .table > thead > tr > th {
-        font-size: 14px;
-    }
 
     .table-content > thead > tr > th,
     .table-content > tbody > tr > td {
@@ -339,91 +234,182 @@
     /* Benefit Error */
 
     .benefit-error {
-        width: 100%;
         height: 800px;
     }
 
-    /*Print Section*/
 
-    .print-cover-content {
-        position: relative;
-        width: 1425px;
-        height: 1200px;
-        border: 1px solid #e0e0e0;
+    /* Font Size */
+
+    .pie-title {
+        font-size: 12px;
     }
 
-    .print-benefit-details {
-        position: absolute;
-        width: 1425px;
-        height: 300px;
-        top: 300px;
-        left: 0px;
-        padding: 0 60px;
-        text-align: center;
+    .table > tbody > tr > td,
+    .table > thead > tr > th {
+        font-size: 14px;
     }
 
-    .print-cover-logo {
-        position: absolute;
-        width: 1425px;
-        height: 400px;
-        top: 600px;
-        left: 0px;
-        padding: 60px;
+    .filter-control,
+    .enterprise-nav > li > a,
+    .plan-control,
+    .control-buttons h6,
+    .section-score h5 {
+        font-size: 16px;
     }
 
-    .print-cover-logo > img {
-        display: block;
-        margin: auto;
+    .header-filter h6,
+    .employer-filter-count h6,
+    .btn-primary,
+    .btn-print-report,
+    .btn-print-page {
+        font-size: 18px;
     }
 
-    .print-benefit-details h4 {
-        font-size: 30px;
-    }
-
-    .print-benefit-details h6 {
+    .benefit-header h4,
+    .section-header h4{
         font-size: 20px;
     }
 
-    .print-benefit-details h6 > span {
-        font-size: 15px;
+    .section-score p {
+        font-size: 50px;
     }
 
 }
 
-.benefit-details > h4 {
-    font-weight: 800;
-    color: #555;
-    text-transform: uppercase;
+.enterprise-menu,
+.enterprise-control-wrapper,
+.control-wrapper,
+.filter-control,
+.plan-control,
+.benefit-header,
+.benefit-details,
+.benefit-error {
+    width: 100%;
+}
+
+.header-filter h6,
+.control-buttons h6,
+.employer-filter-count h6,
+.benefit-details > p,
+.benefit-details > h6 {
+    padding: 0;
+}
+
+.header-filter h6,
+.control-buttons h6,
+.employer-filter-count h6,
+.benefit-details > p,
+.benefit-details > h6 {
+    margin: 0;
+}
+
+.enterprise-menu,
+.enterprise-control-wrapper {
+    right: 0;
+    left: 0;
+}
+
+.header-filter,
+.industry-filter,
+.headcount-filter,
+.region-filter,
+.other-filter,
+.zoom-icon,
+.filter-control,
+.plan-selector,
+.plan-control,
+img.dropdown-icon,
+.header-filter h6,
+.employer-filter-count h6 {
+    float: left;
+}
+
+.btn-primary,
+.btn-print-report,
+.btn-print-page,
+.control-buttons,
+.benefit-details {
+    float: right;
+}
+
+.enterprise-control-wrapper,
+.enterprise-menu {
+    position: fixed;
+}
+
+.section-header,
+.section-content,
+.section-graph,
+.section-content-right,
+.section-content-left,
+.section-score,
+.print-benefit-details,
+.print-cover-logo {
+    position: absolute;
+}
+
+.enterprise-navbar,
+.control-wrapper,
+.benefit-header {
+    overflow: auto;
+}
+
+.section {
+    overflow: hidden;
+}
+
+.benefit-header,
+.section,
+.easy-pie,
+.print-cover-content {
+    position: relative;
+}
+
+.header-filter h6,
+.employer-filter-count h6,
+.filter-control,
+.plan-control,
+img.dropdown-icon,
+.control-buttons,
+.print-cover-logo > img {
+    display: block;
 }
 
 .benefit-details > p,
 .benefit-details > h6 {
-    margin: 0 0 1px 0;
-    padding: 0;
     display: inline;
 }
 
-li.active,
-.control-buttons h6,
-.pie-title {
-    font-weight: bold;
+.easy-pie {
+    display: inline-block;
 }
+
+.enterprise-control-wrapper,
+.enterprise-menu {
+    z-index: 1030;
+}
+
+
+
+/*  Background Colors  */
 
 .enterprise-menu,
 .enterprise-control-wrapper,
 .other-filter,
 .bottom-menu {
-    background-color:#333333;
+    background-color: #333333;
 }
 
-.nav-tabs,
-.control-wrapper{
-    background-color:#222222;
+.nav-tabs {
+    background-color: #444444;
+}
+
+.control-wrapper {
+    background-color: #222222;
 }
 
 .btn-primary {
     background-color: #ee7123;
-    float: right;
 }
 
 .btn-print-report,
@@ -438,79 +424,30 @@ li.active,
     background-color: #ffffff;
 }
 
-
-.header-filter h6,
-.employer-filter-count h6 {
-    display: block;
-    float: left;
-}
-
-.btn-primary,
-.btn-print-report,
-.btn-print-page,
-li.active,
-.nav-tabs,
-.nav-tabs > li > a,
-.nav-tabs > li > a:hover > li > a,
-.control-buttons h6,
-.header-filter h6,
-.employer-filter-count h6 {
-    color: #ffffff;
-}
-
-.btn-primary,
-.btn-print-report,
-.btn-print-page,
-.pie-title {
-    text-transform: capitalize;
-}
-
-.section-score h5,
-p.exhibit-text {
-    font-weight: 800;
-    color: #555;
-    text-transform: uppercase;
-}
-
-p.exhibit-text > span {
-    font-weight: 100;
-    color: #999999;
-    text-transform: capitalize;
-    font-style: italic;
-}
-
-.filter-control,
-.plan-control,
-.pie-title {
-    color: #5e5e5e;
-}
-
-.exhibit-text {
-    color: #b3b3b3;
-}
-
-.nav-tabs > li > a {
-    border: 1px solid #c0c0c0;
-}
-
 .nav-tabs > li > a:hover {
     background-color: #33cc33;
 }
 
-.control-wrapper {
-    border-left: 1px solid #c0c0c0;
-    border-right: 1px solid #c0c0c0;
+.section-header {
+    background-color: #f2f2f2;
 }
 
-.filter-control,
-.plan-control {
-    border: 1px solid #e0e0e0;
-}
 
-.benefit-header {
+/*  Borders  */
+
+.section-score p,
+.benefit-header,
+.nav-tabs > li > a {
     border: 1px solid #c0c0c0;
 }
 
+.filter-control,
+.plan-control,
+.print-cover-content {
+    border: 1px solid #e0e0e0;
+}
+
+.control-wrapper,
 .bootgrid-footer,
 .table-responsive {
     border-left: 1px solid #c0c0c0;
@@ -527,15 +464,48 @@ p.exhibit-text > span {
     border-right: 1px solid #c0c0c0;
 }
 
+
+
+/*  Font Color  */
+
+.section-score h5,
+.benefit-details > h4,
+.section-header h4,
+.section-score h5,
+.table-content > thead > tr > th {
+    color: #555;
+}
+
+p.threshold-error {
+    color: red;
+}
+
+.btn-primary,
+.btn-print-report,
+.btn-print-page,
+li.active,
+.nav-tabs,
+.nav-tabs > li > a,
+.nav-tabs > li > a:hover > li > a,
+.control-buttons h6,
+.header-filter h6,
+.employer-filter-count h6 {
+    color: #ffffff;
+}
+
+.filter-control,
+.plan-control,
+.pie-title {
+    color: #5e5e5e;
+}
+
+
+
+/*  Text Alignment & Transformation */
+
 .table-content > thead > tr > th,
 .table-content > tbody > tr > td {
     text-align: right; 
-}
-
-.table-content > thead > tr > th {
-    font-weight: 600;
-    color: #555;
-    text-transform: uppercase;
 }
 
 .table-content > thead > tr > th.row-label,
@@ -543,16 +513,36 @@ p.exhibit-text > span {
     text-align: left;
 }
 
-.table-content > tbody > tr.quintile-subject > td {
-   font-weight: bold;
+.section-score h5,
+.section-score p,
+div.easy-pie div.percent,
+.print-benefit-details {
+    text-align: center;
 }
 
-p.threshold-error {
-    color: red;
+.btn-primary,
+.btn-print-report,
+.btn-print-page,
+.pie-title {
+    text-transform: capitalize;
+}
+
+.table-content > tbody > tr.quintile-subject > td,
+li.active,
+.control-buttons h6,
+.pie-title,
+.section-score p,
+.section-score h5,
+.table-content > thead > tr > th,
+.section-header h4,
+.section-score h5,
+.benefit-details > h4 {
+    font-weight: bold;
 }
 
 .section-score h5,
-.section-score p,
-div.easy-pie div.percent {
-    text-align: center;
+.benefit-details > h4,
+.table-content > thead > tr > th,
+.section-score h5 {
+    text-transform: uppercase;
 }

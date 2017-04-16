@@ -9,24 +9,28 @@
       {% if field.field.name in "title,broker,name"|slice:',' %}
       <div class="col-md-12 form-row{% if line.errors %} errors{% endif %} {% for field in line %}{{ field.field.name }} {% endfor %} ">
       {% else %}
-      <div class="col-md-6 form-row{% if line.errors %} errors{% endif %} {% for field in line %}{{ field.field.name }} {% endfor %} ">
+      <div class="col-md-6 clearfix form-row{% if line.errors %} errors{% endif %} {% for field in line %}{{ field.field.name }} {% endfor %} ">
       {% endif %}
-      <div{% if not line.fields|length_is:"1" %} class="field-box"{% endif %}>
         {% if field.is_checkbox %}
-          <label>{{ field.field.label }}:</label>
-          {{ field.field }}
+          <div class="col-md-6"><label>{{ field.field.label }}:</label></div>
+          <div class="col-md-6">{{ field.field }}</div>
         {% else %}
           {% if field.is_readonly %}
               {{ field.label_tag }}{{ field.contents }}
           {% else %}
-              {{ field.label_tag }}{{ field.field }} <span class="nbsp">&nbsp;</span>
+              {% if field.field.name in "title,broker,name"|slice:',' %}
+              <div class="col-md-3">{{ field.label_tag }}</div>
+              {% else %}
+              <div class="col-md-6">{{ field.label_tag }}</div>
+              {% endif %}
+              <div class="col-md-6">{{ field.field }} </div>
+              <!-- <span class="nbsp">&nbsp;</span> -->
           {% endif %}
 
           {% if field.field.field.help_text %}<p class="help">{{ field.field.field.help_text|safe }}</p>{% endif %}
         {% endif %}
       </div>
-      </div>
-      <!-- <div class="clear"></div> -->
+      <!-- <div class="clearfix"></div> -->
       {% endif %}
       {% endfor %}
   {% endfor %}

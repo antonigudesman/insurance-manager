@@ -97,13 +97,17 @@
         text-transform: uppercase;
     }
 
-    ul.dropdown-menu-menu > li {
+    ul.dropdown-menu-menu-bnchmrk > li {
         padding: 5px 0;
     }
 
-    ul.dropdown-menu-menu > li > a {
+    ul.dropdown-menu-menu-bnchmrk > li > a {
         padding-left: 15px;
         color: #555;
+    }
+
+    ul.dropdown-menu-menu-bnchmrk > li > a.active {
+        font-weight: 800;
     }
 
     .result-list-container > h1 {
@@ -127,6 +131,15 @@
     position: relative;
 }
 
-div.result-list table tbody tr td {
-    padding: 0 5px;
+div.result-list table tbody tr td,
+div.result-list table tbody tr th {
+    padding: 0 7px;
+}
+
+div.result-list table tbody tr td.action-checkbox {
+    padding: 0 0 0 10px;
+}
+
+.aligned label {
+    width: 100%;
 }
