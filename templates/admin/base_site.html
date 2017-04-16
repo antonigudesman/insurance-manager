@@ -47,8 +47,9 @@ jQuery(function($) {
     // https://github.com/stephenmcd/grappelli-safe/pull/56/files occurring.
     $("#id_sitepermissions-__prefix__-sites").parent().parent().parent().remove();
 
-    // make active menuitem for this page
-    $('ul.navbar-nav li').eq(2).addClass('active');    
+    if ($('ul.navbar-nav li a').eq(2).html() != 'INSIGHTS')
+        // make active menuitem for this page
+        $('ul.navbar-nav li').eq(2).addClass('active');    
 });
 </script>
 
