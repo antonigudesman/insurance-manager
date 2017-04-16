@@ -254,7 +254,6 @@ INSTALLED_APPS = (
     "mezzanine.galleries",
     "mezzanine.twitter",
     "general",
-    "wkhtmltopdf"
     # "mezzanine.accounts",
     # "mezzanine.mobile",
 )
