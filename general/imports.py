@@ -210,7 +210,7 @@ def import_vision(request):
                 print '#{}#'.format(row['EMPLOYERNAME__C'])
                 # break
 
-    return HttpResponse('Successfully imported ({})!'.format(Dental.objects.all().count()))
+    return HttpResponse('Successfully imported ({})!'.format(Vision.objects.all().count()))
 
 
 def import_life(request):
