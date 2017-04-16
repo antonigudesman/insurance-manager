@@ -1,12 +1,9 @@
 
-body {
-    margin-top: 41px;
-}
-
-/* Home Page Starts Here */
-/* Home Page - Responsive Section */
-
 @media (min-width: 1200px) {
+
+    body {
+        margin-top: 41px;
+    }
 
     .home-header,
     .home-subheader,
