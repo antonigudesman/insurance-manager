@@ -1,7 +1,9 @@
 from __future__ import unicode_literals
 
 import uuid
+
 from django.db import models
+from django.core.validators import MinValueValidator
 
 INDUSTRY_CHOICES = (
     (None, 'NULL'),
@@ -157,7 +159,7 @@ class Employer(models.Model):
     industry2 = models.CharField('Industry 2',max_length=75, null=True, blank=True, choices=INDUSTRY_CHOICES) 
     industry3 = models.CharField('Industry 3',max_length=75, null=True, blank=True, choices=INDUSTRY_CHOICES) 
     state = models.CharField('State',max_length=25, null=True, blank=True, choices=STATE_CHOICES)
-    size = models.IntegerField('Size',blank=True, null=True)
+    size = models.PositiveIntegerField('Size', validators=[MinValueValidator(1)])
     nonprofit = models.BooleanField('Non-Profit')
     govt_contractor = models.BooleanField('Govt Contractors')
     new_england = models.BooleanField('New England Region')
