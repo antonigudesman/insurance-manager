@@ -296,7 +296,8 @@ class LifeAdmin(admin.ModelAdmin):
     list_display = ['title', 'employer', 'type', 'multiple', 
                     'formatted_multiple_max', 'formatted_flat_amount', 'add', 'cost_share']
     search_fields = ('employer__name',)
-    fields = ('title', 'employer', 'type', 'multiple', 'flat_amount', 'multiple_max', 'add', 'cost_share')
+    fields = ('title', 'employer', 'type', 'multiple', 'flat_amount', 
+              'multiple_max', 'add', 'cost_share')
     change_form_template = 'admin/change_form_life.html'
     
     def get_queryset(self, request):
@@ -338,7 +339,9 @@ class STDAdmin(admin.ModelAdmin):
     list_display = ['title', 'employer', 'waiting_days', 'duration_weeks', 
                     'formatted_percentage', 'formatted_weekly_max', 'cost_share']
     search_fields = ('employer__name', 'title',)
-    fields = ('title', 'employer', 'waiting_days', 'duration_weeks', 'waiting_days_sick', 'percentage', 'weekly_max', 'cost_share', 'salary_cont')
+    fields = ('title', 'employer', 'waiting_days', 'duration_weeks', 'waiting_days_sick', 
+              'percentage', 'weekly_max', 'cost_share', 'salary_cont')
+    change_form_template = 'admin/change_form_std.html'
     
     def get_queryset(self, request):
         qs = super(STDAdmin, self).get_queryset(request)
