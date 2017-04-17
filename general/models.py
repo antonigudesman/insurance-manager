@@ -125,28 +125,29 @@ STATE_CHOICES = (
 )
 
 BROKER_CHOICES = (
-    ('Aon': 'Aon'),
-    ('Ascension': 'Ascension'),
-    ('Assurance': 'Assurance'),
-    ('BSG': 'BSG'),
-    ('Core': 'Core'),
-    ('Diversified': 'Diversified'),
-    ('EBS': 'EBS'),
-    ('GFI': 'GFI'),
-    ('Ironwood': 'Ironwood'),
-    ('Marshal & Sterling': 'Marshal & Sterling'),
-    ('MAX': 'MAX'),
-    ('MSI Benefits': 'MSI Benefits'),
-    ('NFP': 'NFP'),
-    ('Pilot': 'Pilot'),
-    ('PJ': 'PJ'),
-    ('PSA': 'PSA'),
-    ('Scruggs': 'Scruggs'),
-    ('Seubert': 'Seubert'),
-    ('ShawHankins': 'ShawHankins'),
-    ('USI': 'USI'),
-    ('Wells': 'Wells')
+    ('Aon', 'Aon'),
+    ('Ascension', 'Ascension'),
+    ('Assurance', 'Assurance'),
+    ('BSG', 'BSG'),
+    ('Core', 'Core'),
+    ('Diversified', 'Diversified'),
+    ('EBS', 'EBS'),
+    ('GFI', 'GFI'),
+    ('Ironwood', 'Ironwood'),
+    ('Marshal & Sterling', 'Marshal & Sterling'),
+    ('MAX', 'MAX'),
+    ('MSI Benefits', 'MSI Benefits'),
+    ('NFP', 'NFP'),
+    ('Pilot', 'Pilot'),
+    ('PJ', 'PJ'),
+    ('PSA', 'PSA'),
+    ('Scruggs', 'Scruggs'),
+    ('Seubert', 'Seubert'),
+    ('ShawHankins', 'ShawHankins'),
+    ('USI', 'USI'),
+    ('Wells', 'Wells')
 )
+
 
 class Employer(models.Model):
     id = models.CharField(max_length=18, primary_key=True)
