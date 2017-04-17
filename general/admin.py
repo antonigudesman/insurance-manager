@@ -175,6 +175,8 @@ class DentalAdmin(admin.ModelAdmin):
                     'formatted_in_max','formatted_in_max_ortho']
     search_fields = ('employer__name', 'title',)
     list_filter = ('type',)
+    change_form_template = 'admin/change_form_dental.html'
+
     fields = ('title', 'employer', 'type', 'in_ded_single', 'out_ded_single', 
         'in_ded_family', 'out_ded_family', 'in_max', 'out_max', 'in_max_ortho', 
         'out_max_ortho', 't1_ee', 't1_gross', 't2_ee', 't2_gross', 't3_ee', 't3_gross', 
