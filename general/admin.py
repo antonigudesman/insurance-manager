@@ -103,7 +103,7 @@ class MedicalForm(forms.ModelForm):
         t1_gross = self.cleaned_data.get('t1_gross')
 
         # add custom validation rules 
-        if t1_ee > t1_gross:
+        if t1_ee > t1_gross or not t1_gross:
             self._errors['t1_ee'] = ErrorList([''])
             self._errors['t1_gross'] = ErrorList([''])
             raise forms.ValidationError("Single Employee Cost should be less than Single Gross Cost!")
