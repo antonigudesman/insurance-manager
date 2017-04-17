@@ -138,7 +138,7 @@ class MedicalAdmin(admin.ModelAdmin):
         return qs
 
     def get_actions(self, request):
-        actions = super(EmployerAdmin, self).get_actions(request)
+        actions = super(MedicalAdmin, self).get_actions(request)
         group = request.user.groups.first().name
 
         if group != 'bnchmrk':
@@ -192,7 +192,7 @@ class DentalAdmin(admin.ModelAdmin):
         return qs
 
     def get_actions(self, request):
-        actions = super(EmployerAdmin, self).get_actions(request)
+        actions = super(DentalAdmin, self).get_actions(request)
         group = request.user.groups.first().name
 
         if group != 'bnchmrk':
@@ -246,7 +246,7 @@ class VisionAdmin(admin.ModelAdmin):
         return qs
 
     def get_actions(self, request):
-        actions = super(EmployerAdmin, self).get_actions(request)
+        actions = super(VisionAdmin, self).get_actions(request)
         group = request.user.groups.first().name
 
         if group != 'bnchmrk':
@@ -303,7 +303,7 @@ class LifeAdmin(admin.ModelAdmin):
         return qs
 
     def get_actions(self, request):
-        actions = super(EmployerAdmin, self).get_actions(request)
+        actions = super(LifeAdmin, self).get_actions(request)
         group = request.user.groups.first().name
 
         if group != 'bnchmrk':
@@ -344,7 +344,7 @@ class STDAdmin(admin.ModelAdmin):
         return qs
 
     def get_actions(self, request):
-        actions = super(EmployerAdmin, self).get_actions(request)
+        actions = super(STDAdmin, self).get_actions(request)
         group = request.user.groups.first().name
 
         if group != 'bnchmrk':
@@ -385,7 +385,7 @@ class LTDAdmin(admin.ModelAdmin):
         return qs
 
     def get_actions(self, request):
-        actions = super(EmployerAdmin, self).get_actions(request)
+        actions = super(LTDAdmin, self).get_actions(request)
         group = request.user.groups.first().name
 
         if group != 'bnchmrk':
@@ -429,7 +429,7 @@ class StrategyAdmin(admin.ModelAdmin):
         return qs
 
     def get_actions(self, request):
-        actions = super(EmployerAdmin, self).get_actions(request)
+        actions = super(StrategyAdmin, self).get_actions(request)
         group = request.user.groups.first().name
 
         if group != 'bnchmrk':
