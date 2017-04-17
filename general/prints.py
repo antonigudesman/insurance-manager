@@ -84,6 +84,7 @@ def print_page(request):
     # for universal format
     benefit = request.session['benefit']
     plan = request.session['plan']
+    print benefit, plan, '##### from print_page ##########'
     return get_pdf(request, [benefit], [plan])
 
 
