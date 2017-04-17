@@ -251,11 +251,11 @@ class Medical(models.Model):
     rx2_ded_apply = models.CharField('Rx Tier 2 Ded Applies',max_length=20, blank=True, null=True, choices=MED_BOOL_CHOICES)
     rx3_ded_apply = models.CharField('Rx Tier 3 Ded Applies',max_length=20, blank=True, null=True, choices=MED_BOOL_CHOICES)
     rx4_ded_apply = models.CharField('Rx Tier 4 Ded Applies',max_length=20, blank=True, null=True, choices=MED_BOOL_CHOICES)
-    age_rated = models.NullBooleanField('Age Banded Rates')
-    hra = models.NullBooleanField('Offer HRA')
-    hsa = models.NullBooleanField('Offer HSA')
-    ded_cross = models.NullBooleanField('Ded Cross Accumulate')
-    max_cross = models.NullBooleanField('Max Cross Accumulate')
+    age_rated = models.BooleanField('Age Banded Rates')
+    hra = models.BooleanField('Offer HRA')
+    hsa = models.BooleanField('Offer HSA')
+    ded_cross = models.BooleanField('Ded Cross Accumulate')
+    max_cross = models.BooleanField('Max Cross Accumulate')
     t1_ee = models.IntegerField('Single Employee Cost',blank=True, null=True)
     t2_ee = models.IntegerField('EE & Spouse Employee Cost',blank=True, null=True)
     t3_ee = models.IntegerField('EE & Child(ren) Employee Cost',blank=True, null=True)
@@ -425,7 +425,7 @@ class LTD(models.Model):
         
 
 CB_CHOICES = (
-    (None, 'NULL'),
+    (None, '-'),
     ('Med + Den', 'Med + Den'),
     ('Med + Vision', 'Med + Vision'),
     ('Med + Den + Vision', 'Med + Den + Vision'),
