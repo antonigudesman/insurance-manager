@@ -1,0 +1,16 @@
+{% extends 'index.html' %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block body %}
+	<h2>This is company page</h2>
+{% endblock %}
+
+{% block extra_js %}
+    <script type="text/javascript">
+        // make active menuitem for this page
+        $('ul.navbar-nav li').eq(1).addClass('active');
+    </script>        
+{% endblock %}
+

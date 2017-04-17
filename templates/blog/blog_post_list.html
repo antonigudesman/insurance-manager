@@ -71,3 +71,11 @@
 </div>
 
 {% endblock %}
+
+{% block extra_js %}
+    <script type="text/javascript">
+        // make active menuitem for this page
+        $('ul.navbar-nav li').eq(2).addClass('active');
+    </script>        
+{% endblock %}
+

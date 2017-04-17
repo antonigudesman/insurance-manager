@@ -1,0 +1,195 @@
+{% extends base_template %}
+{% load humanize %}
+{% load pages_tags mezzanine_tags i18n staticfiles %}
+
+{% block page_content %}
+<div class="benefit-content">
+{% include 'includes/benefit-header.html' %}
+
+{% if num_employers >= EMPLOYER_THRESHOLD %}
+
+    <div class="section">
+        <div class="section-header">
+            <h4>LTD Benefit Amounts</h4>
+        </div>
+        <div class="section-graph">
+            <div id="LTD-1" class="flot-chart"></div>
+        </div>
+        <div class="section-content">
+            <table class="table table-striped table-content">
+                <col width="50%">
+                <col width="25%">
+                <col width="25%">
+                <thead>
+                    <tr>
+                        <th class="row-label"></th>
+                        <th>Benchmark</th>
+                        <th>Current</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="quintile-subject">
+                        <td class="row-label">LTD Monthly Maximum *</td>
+                        <td>{{ mdn_monthly_max }}</td>
+                        <td><span id="prop_monthly_max"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">LTD Percentage</td>
+                        <td>{{ mdn_percentage }}</td>
+                        <td><span id="prop_percentage"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="section-score">
+            <h5>Q-SCORE</h5>
+            <p><span id="prop_rank_monthly_max"></span></p>           
+        </div> 
+    </div>
+
+    <div class="section">
+        <div class="section-header">
+            <h4>LTD Waiting Periods</h4>
+        </div>
+        <div class="section-graph">
+            <div id="LTD-2" class="flot-chart"></div>
+        </div>
+        <div class="section-content">
+            <table class="table table-striped table-content">
+                <col width="50%">
+                <col width="25%">
+                <col width="25%">
+                <thead>
+                    <tr>
+                        <th class="row-label"></th>
+                        <th>Benchmark</th>
+                        <th>Current</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="quintile-subject">
+                        <td class="row-label">LTD Waiting Weeks *</td>
+                        <td>{{ mdn_waiting_weeks }}</td>
+                        <td><span id="prop_waiting_weeks"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="section-score">
+            <h5>Q-SCORE</h5>
+            <p><span id="prop_rank_waiting_weeks"></span></p>      
+        </div> 
+    </div>
+
+    <div class="section">
+        <div class="section-header">
+            <h4>LTD Cost Share</h4>
+        </div>
+        <div class="section-graph">
+            <div class="easy-pie LTD-12" data-percent="{{ prcnt_paid }}">
+                <div class="percent">{{ prcnt_paid }}</div>
+                <div class="pie-title">100% Employer Paid Only</div>
+            </div>
+            <div class="easy-pie LTD-13" data-percent="{{ prcnt_share }}">
+                <div class="percent">{{ prcnt_share }}</div>
+                <div class="pie-title">Employee Cost Share Only</div>
+            </div>
+            <div class="easy-pie LTD-14" data-percent="{{ prcnt_paid_share }}">
+                <div class="percent">{{ prcnt_paid_share }}</div>
+                <div class="pie-title">Core & Buy Up Plans</div>
+            </div>
+        </div>
+        <div class="section-content">
+            <table class="table table-striped table-content">
+                <col width="60%">
+                <col width="40%">
+                <thead>
+                    <th class="row-label"></th>
+                    <th>Employers</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-label">100% Employer Paid Only</td>
+                        <td>{{ prcnt_paid }}%</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Employee Cost Share Only</td>
+                        <td>{{ prcnt_share }}%</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Core & Buy Up Plans</td>
+                        <td>{{ prcnt_paid_share }}%</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Not Reported</td>
+                        <td>{{ prcnt_non_reported }}%</td>
+                    </tr>
+                </tbody>
+            </table>  
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-header">
+            <h4>LTD Prevalence</h4>
+        </div>
+        <div class="section-graph">
+            <div id="LTD-18" class="flot-chart-pie"></div>
+            <div class="flc-donut hidden-xs"></div>
+        </div>
+        <div class="section-content">
+            <table class="table table-striped table-content">
+                <col width="60%">
+                <col width="40%">
+                <thead>
+                    <tr>
+                        <th class="row-label"></th>
+                        <th>Employers</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-label">No Plans Offered</td>
+                        <td>{{ prcnt_plan0 }}%</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">One Plan Offered</td>
+                        <td>{{ prcnt_plan1 }}%</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Two Plans Offered</td>
+                        <td>{{ prcnt_plan2 }}%</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Three or More Plans Offered</td>
+                        <td>{{ prcnt_plan3_or_more }}%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {% else %}
+        {% include 'includes/too-few-employers.html' %}
+    {% endif %}
+
+</div>
+
+<script type="text/javascript">
+
+var gh1_data, gh2_data, gh18_data;
+
+{% if num_employers >= EMPLOYER_THRESHOLD %}
+    gh1_data = {{ quintile_monthly_max }};
+    gh2_data = {{ quintile_waiting_weeks }};
+
+    gh18_data = [
+        {data: {{ prcnt_plan0 }}, color: '#F44336', label: 'Not Offered'},
+        {data: {{ prcnt_plan1 }}, color: '#03A9F4', label: 'One Plan'},
+        {data: {{ prcnt_plan2 }}, color: '#8BC34A', label: 'Two Plans'},
+        {data: {{ prcnt_plan3_or_more }}, color: '#FFEB3B', label: 'Three or More Plans'},
+    ];
+
+{% endif %}
+</script>
+{% endblock %}

@@ -1,8 +1,10 @@
 *.pyc
 *.pyo
 *.db
+*.pdf
 .DS_Store
 .coverage
 local_settings.py
 material
 migrations
+ghostdriver.log

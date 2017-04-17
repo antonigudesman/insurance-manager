@@ -1,12 +1,9 @@
 
-body {
-    margin-top: 50px;
-}
-
-/* Home Page Starts Here */
-/* Home Page - Responsive Section */
-
 @media (min-width: 1200px) {
+
+    body {
+        margin-top: 41px;
+    }
 
     .home-header,
     .home-subheader,
@@ -20,11 +17,15 @@ body {
     }
 
     .navbar-header {
-        width: 880px;
+        width: 930px;
     }
 
     .navbar-nav {
-        width: 545px;
+        width: 495px;
+    }
+
+    .navbar-collapse > ul.loggedin{
+        padding-left: 60px;
     }
 
     .home-header {
@@ -138,9 +139,7 @@ body {
     }
 
     .footer-links h6,
-    .footer-links-2 h6,
-    .footer-links > ul > li > a,
-    .footer-links-2 > ul > li > a {
+    .footer-links > ul > li > a {
         font-size: 17px;
     }
 
@@ -156,12 +155,7 @@ body {
 
     .footer-links{
         float: left;
-        width: 200px;
-    }
-
-    .footer-links-2 {
-        float: left;
-        width: 300px;
+        width: 500px;
     }
 
     .footer-logo {
@@ -195,15 +189,13 @@ body {
 .home-testimonial h5,
 .footer-links h6,
 .footer-links > ul > li > a,
-.footer-links-2 h6,
-.footer-links-2 > ul > li > a,
 .footer-copyright h6,
 .footer-logo h6 {
-    font-family: Spinnaker,sans-serif;
+    font-family: Arial,sans-serif;
 }
 
 .navbar-nav > li.active {
-    background-color: #666666;
+    background-color: #808080;
     font-weight: bold;
 }
 
@@ -229,8 +221,7 @@ a.filled-button {
 .home-header-text h2,
 a.clear-button,
 a.filled-button,
-.footer-links h6,
-.footer-links-2 h6,
+.footer-links > ul > li > a,
 .footer-copyright h6,
 .footer-logo h6 {
     color: #ffffff;
@@ -248,12 +239,17 @@ a.filled-button,
     color: #cc8033;
 }
 
+.footer-links h6 {
+    color: #33cc33;
+}
+
 .navbar-header {
     float: left;
     margin: 0;
 }
 
 .navbar-nav {
+    position: relative;
     float: right;
     margin: 0;
 }
@@ -331,20 +327,14 @@ a.filled-button,
     background-color: #222222;
 }
 
-.footer-links > ul,
-.footer-links-2 > ul {
+.footer-links > ul {
     list-style: none;
-    padding: 0;
+    padding: 0 0 0 100px;
 }
 
-.footer-links h6,
-.footer-links-2 h6 {
+.footer-links h6 {
     font-weight: bold;
-}
-
-.footer-links > ul > li > a,
-.footer-links-2 > ul > li > a {
-    color: #ee7123;
+    padding: 0 0 0 100px;
 }
 
 .footer-social,

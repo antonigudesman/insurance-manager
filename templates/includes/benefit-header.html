@@ -1,0 +1,15 @@
+{% load staticfiles %}
+
+<div class="benefit-header">
+    <div class="benefit-details">
+        <h4>{{ request.session.benefit }} BENCHMARKING<span id='prop_plan_info'></span></h4>
+        <h6>INDUSTRIES:&nbsp;</h6><p><span id='lbl_ft_industries'>{{ ft_industries_label }}</span></p><br>
+        <h6>REGIONS:&nbsp;</h6><p><span id='lbl_ft_regions'>{{ ft_regions_label }}</span></p><br>
+        <h6>HEADCOUNTS:&nbsp;</h6><p><span id='lbl_ft_headcounts'>{{ ft_head_counts_label }}</span></p><br>
+        <h6>OTHER:&nbsp;</h6><p><span id='lbl_ft_other'>{{ ft_other_label }}</span></p><br>
+        <p style="float: right;"><i>Reporting Date: {{ today }}</i></p>
+    </div>
+<!--     <div class="client-logo">
+        <img src="{% static 'img/bnchmrk_logo_stacked.jpg' %}" alt="">
+    </div> -->
+</div>

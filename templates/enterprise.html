@@ -4,6 +4,7 @@
 {% block extra_css %}
 <link href="{% static 'vendors/bootgrid/jquery.bootgrid.min.css' %}" rel="stylesheet">
 <link href="{% static 'css/enterprise.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 {% endblock %}
 
 {% block body %}
@@ -16,8 +17,7 @@
                 <li><a href="javascript:void(0);">HOME</a></li>
                 <li><a href="javascript:void(0);">PPO</a></li>
                 <li><a href="javascript:void(0);">HMO</a></li>
-                <li><a href="javascript:void(0);">HSA</a></li>
-                <li><a href="javascript:void(0);">HRA</a></li>
+                <li><a href="javascript:void(0);">HDHP</a></li>
                 <li><a href="javascript:void(0);">DPPO</a></li>
                 <li><a href="javascript:void(0);">DMO</a></li>
                 <li><a href="javascript:void(0);">VISION</a></li>
@@ -25,8 +25,7 @@
                 <li><a href="javascript:void(0);">STD</a></li>
                 <li><a href="javascript:void(0);">LTD</a></li>
                 <li><a href="javascript:void(0);">STRATEGY</a></li>                
-                <li><a href="javascript:void(0);">EMPLOYERS</a></li>               
-                <li><a href="javascript:void(0);">TICKET</a></li>
+                <li><a href="javascript:void(0);">EMPLOYERS</a></li>
             </ul>
         </nav>
     </div>
@@ -35,7 +34,7 @@
 <div class="enterprise-control-wrapper">
     <div class="container">
         <div class="control-wrapper">
-            <div class="header-filter">
+            <div class="header-filter top-header-filter">
                 <h6>Filters:</h6>
             </div>
             <div class="industry-filter">
@@ -75,32 +74,26 @@
                     <option value="nonprofit">Non-Profit</option>
                     <option value="govt_contractor">Gov't Contractor</option>
                 </select>
-                <!-- <input type="checkbox" class="other_filter" value="nonprofit"> <label>Non-Profit</label>
-                <input type="checkbox" class="other_filter" value="govt_contractor"> <label>Gov't Contractor</label>   -->      
             </div>
             <div class="zoom-icon">
                 <img src="{% static 'img/icons/menu.png' %}" class="dropdown-icon" alt="">
             </div>
-            <div class="employer-filter-count">
-                <h6>Employers:<span id="num_employers"></span></h6>
+            <div class="control-buttons">
+                <a class="btn btn-primary" href="javascript:void(0);" onclick="get_body();">Run Filters</a>
             </div>
         </div>
         <div class="control-wrapper">
             <div class="header-filter">
-                <h6>Clients:</h6>
+                <h6>Plans:</h6>
             </div>
             <div class="plan-selector">
-                <select name="" id="" class="plan-control" size="1">
-                    <option value="*">Fill Plans</option>
-                    <option value="*">ABC Company - HSA Plan - Option 1</option>
-                    <option value="*">ABC Company - HSA Plan - Option 2</option>
-                    <option value="*">ABC Company - HSA Plan - Option 3</option>
+                <select name="" id="plans" class="plan-control" size="1">
+                    <option value="0">No Comparison</option>
                 </select>
             </div>
             <div class="control-buttons">
-                <a class="btn btn-print" href="" onclick="">Print Report</a>
-                <a class="btn btn-print" href="" onclick="">Print Page</a>
-                <a class="btn btn-primary" href="javascript:void(0);" onclick="get_body();">Run Filters</a>
+                <a class="btn btn-print-report" style="display: none;" disabled="true" onclick="show_print_pending_dialog('print_report_dialog');">Print Report</a>
+                <a class="btn btn-print-page" href="/print_page" onclick="show_print_pending_dialog('print_page_dialog');">Print Page</a>
             </div>
         </div>
     </div>
@@ -108,9 +101,24 @@
 <div class="container">
     <div class="bnchmrk_table">
         <div class="card" id="bnchmrk_card">
+        
         </div>
     </div>
 </div>
+
+<div id="print_page_dialog" title="Printing Page Confirmation" style="display: none;">
+  <br>
+  <p>Please wait while your <b><span id="print_benefit"></span> Benchmarking Report</b> is generated.</p>
+  <p>You will be alerted as soon as the report is ready to download.</p> 
+</div>
+<div id="print_report_dialog" title="Printing Report Confirmation" style="display: none;">
+  <br>
+  <p>Please wait while your <b>Benchmarking Report</b> is generated.</p>
+  <p>You will be alerted as soon as the report is ready to download.</p> 
+</div>
+{% endblock %}
+
+{% block footer %}
 {% endblock %}
 
 {% block extra_js %}
@@ -119,6 +127,11 @@
         var benefit = '{{ request.session.benefit }}';
         var print_template = false;        
     </script>
+    <script type="text/javascript">
+        // make active menuitem for this page
+        $('ul.navbar-nav li').eq(1).addClass('active');
+    </script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="{% static 'vendors/bower_components/flot/jquery.flot.categories.js' %}"></script>
     <script src="{% static 'vendors/bower_components/flot/jquery.flot.pie.js' %}"></script>
     <script src="{% static 'vendors/bootgrid/jquery.bootgrid.updated.min.js' %}"></script> 
