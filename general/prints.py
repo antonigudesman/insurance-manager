@@ -127,7 +127,7 @@ def get_pdf(request, benefits, plans):
         driver.get(url)        
         time.sleep(1)
         if benefits[uidx] in ['PPO', 'HDHP', 'HMO']:
-            time.sleep(1)
+            time.sleep(2)
 
         driver.save_screenshot(vars_d['img_path_{}'.format(uidx)])
 
