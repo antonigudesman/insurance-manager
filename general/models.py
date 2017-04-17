@@ -124,10 +124,34 @@ STATE_CHOICES = (
     ('Wyoming', 'Wyoming')
 )
 
+BROKER_CHOICES = (
+    ('Aon': 'Aon'),
+    ('Ascension': 'Ascension'),
+    ('Assurance': 'Assurance'),
+    ('BSG': 'BSG'),
+    ('Core': 'Core'),
+    ('Diversified': 'Diversified'),
+    ('EBS': 'EBS'),
+    ('GFI': 'GFI'),
+    ('Ironwood': 'Ironwood'),
+    ('Marshal & Sterling': 'Marshal & Sterling'),
+    ('MAX': 'MAX'),
+    ('MSI Benefits': 'MSI Benefits'),
+    ('NFP': 'NFP'),
+    ('Pilot': 'Pilot'),
+    ('PJ': 'PJ'),
+    ('PSA': 'PSA'),
+    ('Scruggs': 'Scruggs'),
+    ('Seubert': 'Seubert'),
+    ('ShawHankins': 'ShawHankins'),
+    ('USI': 'USI'),
+    ('Wells': 'Wells')
+)
+
 class Employer(models.Model):
     id = models.CharField(max_length=18, primary_key=True)
     name = models.CharField('Name',max_length=100)
-    broker = models.CharField('Broker',max_length=75, null=True, blank=True) 
+    broker = models.CharField('Broker',max_length=75, null=True, blank=True, choices=BROKER_CHOICES) 
     industry1 = models.CharField('Industry 1',max_length=75, null=True, blank=True, choices=INDUSTRY_CHOICES)
     industry2 = models.CharField('Industry 2',max_length=75, null=True, blank=True, choices=INDUSTRY_CHOICES) 
     industry3 = models.CharField('Industry 3',max_length=75, null=True, blank=True, choices=INDUSTRY_CHOICES) 
