@@ -232,6 +232,8 @@ class VisionAdmin(admin.ModelAdmin):
     list_display = ['title','employer','formatted_exam_copay','formatted_lenses_copay',
                     'formatted_frames_allowance','formatted_contacts_allowance']
     search_fields = ('employer__name', 'title',)
+    change_form_template = 'admin/change_form_vision.html'
+
     fields = ('title', 'employer', 'exam_copay', 'lenses_copay', 'exam_frequency', 
         'lenses_frequency', 'exam_out_allowance', 'lenses_out_allowance', 'frames_copay', 
         'contacts_copay', 'frames_allowance', 'contacts_allowance', 'frames_coinsurance', 
