@@ -117,6 +117,7 @@ class MedicalAdmin(admin.ModelAdmin):
     search_fields = ('employer__name', 'title',)
     list_filter = ('type',)
     form = MedicalForm
+    change_form_template = 'admin/change_form_medical.html'
     fields = ('title', 'employer', 'type', 'in_ded_single', 'out_ded_single', 'in_max_single', 
         'out_ded_family', 'in_ded_family', 'out_max_single', 'in_max_family', 'out_max_family', 
         'in_coin', 'out_coin', 'rx_ded_single', 'rx_max_single', 'rx_ded_family', 'rx_max_family', 
