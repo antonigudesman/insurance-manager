@@ -84,7 +84,6 @@ def print_page(request):
     # for universal format
     benefit = request.session['benefit']
     plan = request.session['plan']
-    print benefit, plan, '##### from print_page ##########'
     return get_pdf(request, [benefit], [plan])
 
 
@@ -98,7 +97,7 @@ def get_pdf(request, benefits, plans):
     driver.set_window_size(1360, 1000)
 
     cc = { 
-        'domain': 'localhost', 
+        'domain': request.META.get('HTTP_HOST'), 
         'name': 'sessionid', 
         'value': request.COOKIES.get('sessionid'), 
         'path': '/'
