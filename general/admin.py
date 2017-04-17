@@ -297,6 +297,7 @@ class LifeAdmin(admin.ModelAdmin):
                     'formatted_multiple_max', 'formatted_flat_amount', 'add', 'cost_share']
     search_fields = ('employer__name',)
     fields = ('title', 'employer', 'type', 'multiple', 'flat_amount', 'multiple_max', 'add', 'cost_share')
+    change_form_template = 'admin/change_form_life.html'
     
     def get_queryset(self, request):
         qs = super(LifeAdmin, self).get_queryset(request)
