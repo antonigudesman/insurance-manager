@@ -229,6 +229,8 @@ def get_response_template(request,
 
         template = 'benefit/{}_plan.html'.format(benefit.lower())
         if is_print_header:
+            group = request.user.groups.first().name
+            context['group'] = group.lower()
             template = 'includes/print_header.html'
 
         return render(request, template, context)
