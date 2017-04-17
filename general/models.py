@@ -282,6 +282,12 @@ DEN_TYPE_CHOICES = (
     ('DMO', 'DMO'),
 )
 
+BOOLEAN_CHOICES =  (
+    (None, '-'),
+    (True, 'True'),
+    (False, 'False')
+)
+
 class Dental(models.Model):
     title = models.CharField('Title', max_length=20)
     employer = models.ForeignKey(Employer)
@@ -296,16 +302,16 @@ class Dental(models.Model):
     out_max_ortho = models.IntegerField('OON Ortho Max (PP)', blank=True, null=True)
     in_prev_coin = models.IntegerField('IN Preventive', blank=True, null=True)
     out_prev_coin = models.IntegerField('OON Preventive', blank=True, null=True)
-    prev_ded_apply = models.NullBooleanField('Preventive Ded Applies')
+    prev_ded_apply = models.NullBooleanField('Preventive Ded Applies', choices=BOOLEAN_CHOICES)
     in_basic_coin = models.IntegerField('IN Basic', blank=True, null=True)
     out_basic_coin = models.IntegerField('OON Basic', blank=True, null=True)
-    basic_ded_apply = models.NullBooleanField('Basic Ded Applies')
+    basic_ded_apply = models.NullBooleanField('Basic Ded Applies', choices=BOOLEAN_CHOICES)
     in_major_coin = models.IntegerField('IN Major', blank=True, null=True)
     out_major_coin = models.IntegerField('OON Major', blank=True, null=True)
-    major_ded_apply = models.NullBooleanField('Major Ded Applies')
+    major_ded_apply = models.NullBooleanField('Major Ded Applies', choices=BOOLEAN_CHOICES)
     in_ortho_coin = models.IntegerField('IN Ortho', blank=True, null=True)
     out_ortho_coin = models.IntegerField('OON Ortho', blank=True, null=True)
-    ortho_ded_apply = models.NullBooleanField('Ortho Ded Applies')
+    ortho_ded_apply = models.NullBooleanField('Ortho Ded Applies', choices=BOOLEAN_CHOICES)
     ortho_age_limit = models.IntegerField('Ortho Age Limit', blank=True, null=True)
     t1_ee = models.IntegerField('Single Employee Cost',blank=True, null=True)
     t2_ee = models.IntegerField('EE & Spouse Employee Cost',blank=True, null=True)
