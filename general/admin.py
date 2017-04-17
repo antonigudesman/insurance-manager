@@ -15,12 +15,12 @@ class EmployerForm(forms.ModelForm):
         industry2 = self.cleaned_data.get('industry2')
         industry3 = self.cleaned_data.get('industry3')
 
-        print industry1, '@@@@@@@@@'
         # add custom validation rules 
-        # if t1_ee > t1_gross:
-        #     self._errors['t1_ee'] = ErrorList([''])
-        #     self._errors['t1_gross'] = ErrorList([''])
-        #     raise forms.ValidationError("Single Employee Cost should be less than Single Gross Cost!")
+        if not (industry1 or industry2 or industry3):
+            self._errors['industry1'] = ErrorList([''])
+            self._errors['industry2'] = ErrorList([''])
+            self._errors['industry3'] = ErrorList([''])
+            raise forms.ValidationError("Please select at least one Industry!")
 
         return self.cleaned_data
 
