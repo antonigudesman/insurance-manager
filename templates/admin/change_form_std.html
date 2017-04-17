@@ -1,0 +1,168 @@
+{% extends "admin/base_site.html" %}
+
+<!-- LOADING -->
+{% load i18n admin_urls admin_static admin_modify %}
+
+<!-- JAVASCRIPTS -->
+{% block javascripts %}
+    {{ block.super }}
+    {% url "admin:jsi18n" as jsi18nurl %}
+    <script src="{{ jsi18nurl|default:"../../../jsi18n/" }}"></script>
+    {{ media }}
+    {% if inline_admin_formsets %}
+    <script src="{% static "grappelli/js/admin/Inline.js" %}"></script>
+    <script src="{% static "grappelli/js/admin/CollapsedInlineFieldsets.js" %}"></script>
+    {% endif %}
+{% endblock %}
+
+<!-- COLTYPE/BODYCLASS -->
+{% block coltype %}colM{% endblock %}
+{% block bodyclass %}{{ opts.app_label }}-{{ opts.object_name.lower }} change-form{% endblock %}
+
+<!-- BREADCRUMBS -->
+{% block breadcrumbs %}{% if not is_popup %}
+<div class="breadcrumbs">
+    {% url "admin:index" as admin_index_url %}
+    <a href="{{ admin_index_url }}">{% trans "Home" %}</a> &rsaquo;
+    <a href="../../">{{ app_label|capfirst|escape }}</a> &rsaquo;
+    {% if has_change_permission %}<a href="../">{{ opts.verbose_name_plural|capfirst }}</a>{% else %}{{ opts.verbose_name_plural|capfirst }}{% endif %} &rsaquo;
+    {% if add %}{% trans "Add" %} {{ opts.verbose_name }}{% else %}{{ original|truncatewords:"18" }}{% endif %}
+</div>
+{% endif %}{% endblock %}
+
+<!-- CONTENT -->
+{% block content %}
+<div id="content-main">
+    <!-- Object-Tools -->
+    {% block object-tools %}
+    {% if change %}
+    {% if not is_popup %}
+    {% endif %}
+    {% endif %}
+    {% endblock %}
+
+    <form {% if has_file_field %}enctype="multipart/form-data" {% endif %}action="{{ form_url }}" method="post" id="{{ opts.model_name }}_form">{% csrf_token %}{% block form_top %}{% endblock %}
+        <div>
+            <!-- Popup Hidden Field -->
+            {% if is_popup %}<input type="hidden" name="_popup" value="1" />{% endif %}
+
+            <!-- To Field Hidden Field -->
+            {% if to_field %}<input type="hidden" name="{{ to_field_var }}" value="{{ to_field }}" />{% endif %}
+
+            <!-- Submit-Row -->
+            {% if save_on_top %}{% block submit_buttons_top %}{% submit_row %}{% endblock %}{% endif %}
+
+            <!-- Related-objects js that was brought in with Django 1.8 (merge from grappelli) -->
+            {% block admin_change_form_document_ready %}
+            <script type="text/javascript">
+                (function($) {
+                    $(document).ready(function() {
+                        $('.add-another').click(function(e) {
+                            e.preventDefault();
+                            showAddAnotherPopup(this);
+                        });
+                        $('.related-lookup').click(function(e) {
+                            e.preventDefault();
+                            showRelatedObjectLookupPopup(this);
+                        });
+                    {% if adminform and add %}
+                        $('form#{{ opts.model_name }}_form :input:visible:enabled:first').focus()
+                    {% endif %}
+                        // highlight left panel item
+                        var model_name = '{{opts.model_name}}';
+                        $('.dropdown-menu-menu-bnchmrk li a').removeClass('active');
+                        $('.dropdown-menu-menu-bnchmrk li a').each(function() {
+                            var link = $(this).attr('href');
+                            if (link.includes(model_name)) {
+                                $(this).addClass('active');
+                            }
+                        });
+                    });
+                })(django.jQuery);
+            </script>
+            {% endblock %}
+
+            <!-- Errors -->
+            {% if errors %}
+            <p class="errornote">
+                {% blocktrans count errors|length as counter %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktrans %}
+            </p>
+            <ul class="errorlist">{% for error in adminform.form.non_field_errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+
+            <!-- Fieldsets -->
+            {% block field_sets %}
+            {% for fieldset in adminform %}
+<fieldset class="module aligned ">
+    <h2>{{ title }}</h2>  
+    <table>
+        <col width="20%">
+        <col width="30%">
+        <col width="20%">
+        <col width="30%">
+      <tbody>
+        <tr>
+            <td colspan=2 {% if fieldset.form.title.errors %} class="errors"{% endif %}>{{ fieldset.form.title.errors }}{{ fieldset.form.title.label_tag }}</td>
+            <td colspan=2 {% if fieldset.form.title.errors %} class="errors"{% endif %}>{{ fieldset.form.title }}</td>
+        </tr>
+        <tr>
+            <td {% if fieldset.form.employer.errors %} class="errors"{% endif %}>{{ fieldset.form.employer.errors }}{{ fieldset.form.employer.label_tag }}</td>
+            <td {% if fieldset.form.employer.errors %} class="errors"{% endif %}>{{ fieldset.form.employer }}</td>
+            <td {% if fieldset.form.waiting_days.errors %} class="errors"{% endif %}>{{ fieldset.form.waiting_days.errors }}{{ fieldset.form.waiting_days.label_tag }}</td>
+            <td {% if fieldset.form.waiting_days.errors %} class="errors"{% endif %}>{{ fieldset.form.waiting_days }}</td>            
+        </tr>
+        <tr>
+            <td {% if fieldset.form.duration_weeks.errors %} class="errors"{% endif %}>{{ fieldset.form.duration_weeks.errors }}{{ fieldset.form.duration_weeks.label_tag }}</td>
+            <td {% if fieldset.form.duration_weeks.errors %} class="errors"{% endif %}>{{ fieldset.form.duration_weeks }}</td>
+            <td {% if fieldset.form.waiting_days_sick.errors %} class="errors"{% endif %}>{{ fieldset.form.waiting_days_sick.errors }}{{ fieldset.form.waiting_days_sick.label_tag }}</td>
+            <td {% if fieldset.form.waiting_days_sick.errors %} class="errors"{% endif %}>{{ fieldset.form.waiting_days_sick }}</td>                    
+        </tr>
+        <tr>
+            <td {% if fieldset.form.percentage.errors %} class="errors"{% endif %}>{{ fieldset.form.percentage.errors }}{{ fieldset.form.percentage.label_tag }}</td>
+            <td {% if fieldset.form.percentage.errors %} class="errors"{% endif %}>{{ fieldset.form.percentage }}</td>
+            <td {% if fieldset.form.weekly_max.errors %} class="errors"{% endif %}>{{ fieldset.form.weekly_max.errors }}{{ fieldset.form.weekly_max.label_tag }}</td>
+            <td {% if fieldset.form.weekly_max.errors %} class="errors"{% endif %}>{{ fieldset.form.weekly_max }}</td>                                
+        </tr>
+        <tr>
+            <td {% if fieldset.form.cost_share.errors %} class="errors"{% endif %}>{{ fieldset.form.cost_share.errors }}{{ fieldset.form.cost_share.label_tag }}</td>
+            <td {% if fieldset.form.cost_share.errors %} class="errors"{% endif %}>{{ fieldset.form.cost_share }}</td>
+            <td {% if fieldset.form.salary_cont.errors %} class="errors"{% endif %}>{{ fieldset.form.salary_cont.errors }}{{ fieldset.form.salary_cont.label_tag }}</td>
+            <td {% if fieldset.form.salary_cont.errors %} class="errors"{% endif %}>{{ fieldset.form.salary_cont }}</td>
+        </tr>
+      </tbody>
+    </table>
+</fieldset>
+            {% endfor %}
+            {% endblock %}
+
+            {% block after_field_sets %}{% endblock %}
+
+            <!-- Inlines -->
+            {% block inline_field_sets %}
+            {% for inline_admin_formset in inline_admin_formsets %}
+            {% include inline_admin_formset.opts.template %}
+            {% endfor %}
+            {% endblock %}
+
+            {% block after_related_objects %}{% endblock %}
+
+            <!-- Submit-Row -->
+            {% block submit_buttons_bottom %}
+            <div class="submit-row">
+                <p class="deletelink-box"><a href="/admin/general/life/3084/delete/" class="deletelink">Delete</a></p>
+                <a href="{{ history_url }}">{% trans "History" %}</a>
+                <input value="Cancel" class="warning" name="_cancel" onclick="history.go(-1);" type="button">
+                <input value="Save" class="default" name="_save" type="submit">
+                
+                <input class="change-view-save-another" value="Save and add another" name="_addanother" type="submit">
+                <input class="change-view-save-continue" value="Save and continue editing" name="_continue" type="submit">
+            </div>
+            {% endblock %}
+
+            <!-- JS for prepopulated fields -->
+            {% prepopulated_fields_js %}
+
+        </div>
+    </form>
+</div>
+{% endblock %}
