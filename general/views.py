@@ -559,6 +559,7 @@ class PDFView(PDFTemplateView):
 
 
 def print_pdf(request):
+    print request.COOKIES, '@@@@@@'
     #Retrieve data or whatever you need
     benefit = request.session['benefit']
     ft_industries = request.session['ft_industries']
@@ -576,7 +577,5 @@ def print_pdf(request):
                                                           ft_regions)
         context = get_life_plan(employers, num_companies)
         context['base_template'] = 'print.html'       
-        return render_to_pdf('life_plan.html', context)
+        # return render_to_pdf('life_plan.html', context)
         return render(request, 'life_plan.html', context)
-
-
