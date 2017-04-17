@@ -158,7 +158,7 @@ class Employer(models.Model):
         verbose_name_plural = 'Employers'
 
     def save(self, *args, **kwargs):
-        if self.pk is None:
+        if not self.pk:
             self.id = str(uuid.uuid4())[:18]
         super(Employer, self).save(*args, **kwargs)
 
