@@ -383,6 +383,7 @@ class LTDAdmin(admin.ModelAdmin):
                     'formatted_percentage', 'formatted_monthly_max', 'cost_share']
     search_fields = ('employer__name', 'title',)
     fields = ('title', 'employer', 'waiting_weeks', 'percentage', 'monthly_max', 'cost_share')
+    change_form_template = 'admin/change_form_ltd.html'
     
     def get_queryset(self, request):
         qs = super(LTDAdmin, self).get_queryset(request)
