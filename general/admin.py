@@ -5,6 +5,26 @@ from django.forms.utils import ErrorList
 from .models import *
 
 
+class EmployerForm(forms.ModelForm):
+    class Meta:
+        model = Employer
+        fields = '__all__'
+
+    def clean(self):
+        industry1 = self.cleaned_data.get('industry1')
+        industry2 = self.cleaned_data.get('industry2')
+        industry3 = self.cleaned_data.get('industry3')
+
+        print industry1, '@@@@@@@@@'
+        # add custom validation rules 
+        # if t1_ee > t1_gross:
+        #     self._errors['t1_ee'] = ErrorList([''])
+        #     self._errors['t1_gross'] = ErrorList([''])
+        #     raise forms.ValidationError("Single Employee Cost should be less than Single Gross Cost!")
+
+        return self.cleaned_data
+
+
 class EmployerAdmin(admin.ModelAdmin):
     list_display = ['name','broker','industry1','industry2','industry3','formatted_size',
                     'med_count','den_count','vis_count', 'life_count','std_count','ltd_count']
@@ -15,6 +35,7 @@ class EmployerAdmin(admin.ModelAdmin):
         'nonprofit', 'govt_contractor', 'new_england', 'med_count', 'mid_atlantic',
         'den_count', 'south_atlantic', 'vis_count', 'south_cental', 'life_count', 
         'east_central', 'std_count', 'west_central', 'ltd_count', 'mountain', 'pacific')
+    form = EmployerForm
 
     def get_queryset(self, request):
         qs = super(EmployerAdmin, self).get_queryset(request)
