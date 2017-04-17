@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
-
+import uuid
 
 INDUSTRY_CHOICES = (
     (None, 'NULL'),
@@ -156,6 +156,11 @@ class Employer(models.Model):
     class Meta:
         verbose_name = 'Employer'
         verbose_name_plural = 'Employers'
+
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            self.id = str(uuid.uuid4())[:18]
+            super(ScrapyTask, self).save(*args, **kwargs)
 
 
 MED_TYPE_CHOICES = (
