@@ -58,6 +58,15 @@ class EmployerAdmin(admin.ModelAdmin):
             
         return qs
 
+    def get_actions(self, request):
+        actions = super(EmployerAdmin, self).get_actions(request)
+        group = request.user.groups.first().name
+
+        if group != 'bnchmrk':
+            if 'delete_selected' in actions:
+                del actions['delete_selected']
+        return actions
+        
     def change_view(self, request, object_id, form_url='', extra_context=None):
         extra_context = extra_context or {}
         plans = []
