@@ -66,7 +66,7 @@ class EmployerAdmin(admin.ModelAdmin):
             if 'delete_selected' in actions:
                 del actions['delete_selected']
         return actions
-        
+
     def change_view(self, request, object_id, form_url='', extra_context=None):
         extra_context = extra_context or {}
         plans = []
@@ -137,6 +137,15 @@ class MedicalAdmin(admin.ModelAdmin):
             
         return qs
 
+    def get_actions(self, request):
+        actions = super(EmployerAdmin, self).get_actions(request)
+        group = request.user.groups.first().name
+
+        if group != 'bnchmrk':
+            if 'delete_selected' in actions:
+                del actions['delete_selected']
+        return actions
+        
     def formatted_ded_single(self, obj):
         try:
             return '${:,.0f}'.format(obj.in_ded_single)
@@ -182,6 +191,15 @@ class DentalAdmin(admin.ModelAdmin):
             
         return qs
 
+    def get_actions(self, request):
+        actions = super(EmployerAdmin, self).get_actions(request)
+        group = request.user.groups.first().name
+
+        if group != 'bnchmrk':
+            if 'delete_selected' in actions:
+                del actions['delete_selected']
+        return actions
+        
     def formatted_ded_single(self, obj):
         try:
             return '${:,.0f}'.format(obj.in_ded_single)
@@ -227,6 +245,15 @@ class VisionAdmin(admin.ModelAdmin):
             
         return qs
 
+    def get_actions(self, request):
+        actions = super(EmployerAdmin, self).get_actions(request)
+        group = request.user.groups.first().name
+
+        if group != 'bnchmrk':
+            if 'delete_selected' in actions:
+                del actions['delete_selected']
+        return actions
+        
     def formatted_exam_copay(self, obj):
         try:
             return '${:,.0f}'.format(obj.exam_copay)
@@ -275,6 +302,15 @@ class LifeAdmin(admin.ModelAdmin):
             
         return qs
 
+    def get_actions(self, request):
+        actions = super(EmployerAdmin, self).get_actions(request)
+        group = request.user.groups.first().name
+
+        if group != 'bnchmrk':
+            if 'delete_selected' in actions:
+                del actions['delete_selected']
+        return actions
+        
     def formatted_multiple_max(self, obj):
         try:
             return '${:,.0f}'.format(obj.multiple_max)
@@ -307,6 +343,15 @@ class STDAdmin(admin.ModelAdmin):
             
         return qs
 
+    def get_actions(self, request):
+        actions = super(EmployerAdmin, self).get_actions(request)
+        group = request.user.groups.first().name
+
+        if group != 'bnchmrk':
+            if 'delete_selected' in actions:
+                del actions['delete_selected']
+        return actions
+        
     def formatted_percentage(self, obj):
         try:
             return '{:.0f}%'.format(obj.percentage)
@@ -339,6 +384,15 @@ class LTDAdmin(admin.ModelAdmin):
             
         return qs
 
+    def get_actions(self, request):
+        actions = super(EmployerAdmin, self).get_actions(request)
+        group = request.user.groups.first().name
+
+        if group != 'bnchmrk':
+            if 'delete_selected' in actions:
+                del actions['delete_selected']
+        return actions
+        
     def formatted_percentage(self, obj):
         try:
             return '{:.0f}%'.format(obj.percentage)
@@ -365,7 +419,6 @@ class StrategyAdmin(admin.ModelAdmin):
         'pt_medical', 'defined_contribution', 'pt_dental', 'salary_banding', 'pt_vision', 
         'wellness_banding', 'pt_life', 'pt_std', 'pt_ltd')
     
-
     def get_queryset(self, request):
         qs = super(StrategyAdmin, self).get_queryset(request)
         group = request.user.groups.first().name
@@ -374,6 +427,16 @@ class StrategyAdmin(admin.ModelAdmin):
             qs = qs.filter(employer__broker=group)
             
         return qs
+
+    def get_actions(self, request):
+        actions = super(EmployerAdmin, self).get_actions(request)
+        group = request.user.groups.first().name
+
+        if group != 'bnchmrk':
+            if 'delete_selected' in actions:
+                del actions['delete_selected']
+        return actions
+        
 
 admin.site.register(Employer, EmployerAdmin)
 admin.site.register(Life, LifeAdmin)
