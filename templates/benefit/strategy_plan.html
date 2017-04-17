@@ -1,0 +1,228 @@
+{% extends base_template %}
+{% load humanize %}
+{% load pages_tags mezzanine_tags i18n staticfiles %}
+
+{% block page_content %}
+<div class="benefit-content">
+{% include 'includes/benefit-header.html' %}
+
+{% if num_employers >= EMPLOYER_THRESHOLD %}
+
+    <div class="section">
+        <div class="section-header">
+            <h4>Tobacco Surcharge</h4>
+        </div>
+        <div class="section-graph">
+            <div id="STRATEGY-1" class="flot-chart"></div>
+        </div>
+        <div class="section-content">
+            <table class="table table-striped table-content">
+                <col width="50%">
+                <col width="25%">
+                <col width="25%">
+                <thead>
+                    <tr>
+                        <th class="row-label"></th>
+                        <th>Benchmark</th>
+                        <th>Current</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="quintile-subject">
+                        <td class="row-label">Annual Surcharge *</td>
+                        <td>{{ mdn_tobacco_surcharge_amount }}</td>
+                        <td><span id="prop_tobacco_surcharge_amount"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Employers w/ Surcharge</td>
+                        <td>{{ prcnt_tobacco_surcharge }}</td>
+                        <td><span id="prop_tobacco_surcharge"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="section-score">
+            <h5>Q-SCORE</h5>
+            <p><span id="prop_rank_tobacco_surcharge_amount"></span></p>           
+        </div> 
+    </div>
+
+    <div class="section">
+        <div class="section-header">
+            <h4>Spousal Surcharge</h4>
+        </div>
+        <div class="section-graph">
+            <div id="STRATEGY-2" class="flot-chart"></div>
+        </div>
+        <div class="section-content">
+            <table class="table table-striped table-content">
+                <col width="50%">
+                <col width="25%">
+                <col width="25%">
+                <thead>
+                    <tr>
+                        <th class="row-label"></th>
+                        <th>Benchmark</th>
+                        <th>Current</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="quintile-subject">
+                        <td class="row-label">Surcharge Amount *</td>
+                        <td>{{ mdn_spousal_surcharge_amount }}</td>
+                        <td><span id="prop_spousal_surcharge_amount"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Employers w/ Surcharge</td>
+                        <td>{{ prcnt_spousal_surcharge }}</td>
+                        <td><span id="prop_spousal_surcharge"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="section-score">
+            <h5>Q-SCORE</h5>
+            <p><span id="prop_rank_spousal_surcharge_amount"></span></p>           
+        </div> 
+    </div>
+
+    <div class="section">
+        <div class="section-header">
+            <h4>Part-Time & Voluntary Offering</h4>
+        </div>
+        <div class="section-content-left">
+            <table class="table table-striped table-content">
+                <col width="60%">
+                <col width="40%">
+                <thead>
+                    <th class="row-label"></th>
+                    <th>Employers</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-label">Offer Part-Time Medical</td>
+                        <td>{{ prcnt_pt_medical }}</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Offer Part-Time Dental</td>
+                        <td>{{ prcnt_pt_dental }}</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Offer Part-Time Vision</td>
+                        <td>{{ prcnt_pt_vision }}</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Offer Part-Time Life</td>
+                        <td>{{ prcnt_pt_life }}</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Offer Part-Time STD</td>
+                        <td>{{ prcnt_pt_std }}</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Offer Part-Time LTD</td>
+                        <td>{{ prcnt_pt_ltd }}</td>
+                    </tr>
+                </tbody>
+            </table>  
+        </div>
+        <div class="section-content-right">
+            <table class="table table-striped table-content">
+                <col width="60%">
+                <col width="40%">
+                <thead>
+                    <th class="row-label"></th>
+                    <th>Employers</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-label">Offer Voluntary Life</td>
+                        <td>{{ prcnt_offer_vol_life }}</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Offer Voluntary STD</td>
+                        <td>{{ prcnt_offer_vol_std }}</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Offer Voluntary LTD</td>
+                        <td>{{ prcnt_offer_vol_ltd }}</td>
+                    </tr>
+                </tbody>
+            </table>  
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-header">
+            <h4>Contribution & Other Strategies</h4>
+        </div>
+        <div class="section-content-left">
+            <table class="table table-striped table-content">
+                <col width="60%">
+                <col width="40%">
+                <thead>
+                    <th class="row-label"></th>
+                    <th>Employers</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-label">Defined Contribution</td>
+                        <td>{{ prcnt_defined_contribution }}</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Salary Banding</td>
+                        <td>{{ prcnt_salary_banding }}</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Wellness Banding</td>
+                        <td>{{ prcnt_wellness_banding }}</td>
+                    </tr>
+                </tbody>
+            </table>  
+        </div>
+        <div class="section-content-right">
+            <table class="table table-striped table-content">
+                <col width="60%">
+                <col width="40%">
+                <thead>
+                    <th class="row-label"></th>
+                    <th>Employers</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-label">Offer FSA</td>
+                        <td>{{ prcnt_offer_fsa }}</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Narrow Networks</td>
+                        <td>{{ prcnt_narrow_network }}</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Offer MVP Plans</td>
+                        <td>{{ prcnt_mvp }}</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Offer MEC Plans</td>
+                        <td>{{ prcnt_mec }}</td>
+                    </tr>
+                </tbody>
+            </table>  
+        </div>
+    </div>
+
+    {% else %}
+        {% include 'includes/too-few-employers.html' %}
+    {% endif %}
+
+</div>
+
+<script type="text/javascript">
+
+var gh1_data, gh2_data;
+
+{% if num_employers >= EMPLOYER_THRESHOLD %}
+    gh1_data = {{ quintile_tobacco_surcharge_amount }};
+    gh2_data = {{ quintile_spousal_surcharge_amount }};
+{% endif %}
+</script>
+{% endblock %}

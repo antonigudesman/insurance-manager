@@ -40,21 +40,22 @@
                     </a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        {% if user.is_authenticated %}
-                            <li><h6>Welcome, {{ request.user.first_name }} {{ request.user.last_name }}</h6></li>
-                            <li><a href="/enterprise">ENTERPRISE</a></li>
-                            <li><a href="/">MY ACCOUNT</a></li>
-                            <li><a href="/logout">LOGOUT</a></li>
-                        {% else %}
-                            <li><a href="/">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
-                            <li><a href="/">HOME</a></li>
-                            <li><a href="/">COMPANY</a></li>
-                            <li><a href="/blog">INSIGHTS</a></li>
-                            <li><a href="/">CONTACT US</a></li>
-                            <li><a href="/login">LOGIN</a></li>
-                        {% endif %}
+                    {% if user.is_authenticated %}
+                    <ul class="nav navbar-nav loggedin">
+                        <li><a href="/">HOME</a></li>
+                        <li><a href="/enterprise">ENTERPRISE</a></li>
+                        <li><a href="/admin/general/employer/">MY ACCOUNT</a></li>
+                        <li><a href="/logout">LOGOUT</a></li>
                     </ul>
+                    {% else %}
+                    <ul class="nav navbar-nav">
+                        <li><a href="/">HOME</a></li>
+                        <li><a href="/company">COMPANY</a></li>
+                        <li><a href="/blog">INSIGHTS</a></li>
+                        <li><a href="/contact_us">CONTACT US</a></li>
+                        <li><a href="/admin/login?next=/enterprise">LOGIN</a></li>
+                    </ul>
+                    {% endif %}
                 </div>
             </div>
         </nav>
@@ -142,20 +143,13 @@
             <div class="container">
                 <div class="top-footer">
                     <div class="footer-links">
-                        <h6>Product</h6>
-                        <ul>
-                            <li><a href="/">Solution</a></li>
-                            <li><a href="/">How it Works</a></li>
-                            <li><a href="/blog">Insights</a></li> 
-                            <li><a href="/">Home</a></li> 
-                        </ul>
-                    </div>
-                    <div class="footer-links-2">
-                        <h6>About</h6>
-                        <ul>
+                        <h6>Navigation</h6>
+                        <ul> 
+                            <li><a href="/">Home</a></li>
                             <li><a href="/">Company</a></li>
-                            <li><a href="/">We're Hiring</a></li> 
-                            <li><a href="/">Contact</a></li> 
+                            <li><a href="/blog">Insights</a></li>
+                            <li><a href="/">Contact Us</a></li>
+                            <li><a href="/">Login</a></li> 
                         </ul>
                     </div>
                     <div class="footer-logo">
@@ -214,6 +208,10 @@
         <script src="{% static 'js/flot-charts/line-chart.js' %}"></script>
         <script src="{% static 'js/functions.js' %}"></script>
         {% block extra_js %}
+            <script type="text/javascript">
+                // make active menuitem for this page
+                $('ul.navbar-nav li').eq(0).addClass('active');
+            </script>        
         {% endblock %}
     </body>
   </html>

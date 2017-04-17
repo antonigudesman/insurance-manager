@@ -95,7 +95,8 @@ USE_MODELTRANSLATION = False
 # See https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = [
     "localhost",
-    "127.0.0.1"
+    "127.0.0.1",
+    "54.148.203.146"
 ]
 
 # Local time zone for this installation. Choices can be found here:
@@ -255,7 +256,6 @@ INSTALLED_APPS = (
     "mezzanine.galleries",
     "mezzanine.twitter",
     "general",
-    "wkhtmltopdf"
     # "mezzanine.accounts",
     # "mezzanine.mobile",
 )
@@ -346,9 +346,6 @@ except ImportError:
 else:
     set_dynamic_settings(globals())
 
-EMPLOYER_THRESHOLD = 25
-EMPLOYER_THRESHOLD_MESSAGE = 'Current search criteria resulted in less 25 employers. Please expand it by selecting additional filters before refreshing.'
-FLAT_BUCKET_SIZE = 10000
-
-MULTIPLE_MAX_BUCKET_SIZE = 250000
+EMPLOYER_THRESHOLD = 10
+EMPLOYER_THRESHOLD_MESSAGE = 'Current search criteria resulted in less 10 employers. Please expand it by selecting additional filters before refreshing.'
 MAX_POINTS = 50

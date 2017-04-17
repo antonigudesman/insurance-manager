@@ -1,0 +1,145 @@
+@media (min-width: 1200px) {
+
+    #login-form {
+        margin-top: 0;
+    }
+
+    .login #content-main {
+        padding-bottom: 10px;
+        padding-top: 15px;   
+    }
+
+    .login .form-row label {
+        width: 100px;
+        padding-top: 4px;
+
+    }
+
+    .login .form-row {
+        height: 85px;
+    }
+
+    .login .form-row #id_username, .login .form-row #id_password {
+        height: 35px;
+        width: 100%;
+    }
+
+    .form-row {
+        padding: 8px 15px;
+        border-top: none;
+        border-bottom: none;
+    }
+
+    .login .submit-row ,
+    .submit-row input {
+        margin: 0;
+        padding-left: 14px;
+    }
+
+    .submit-row input {
+    }
+
+    input[type="submit"] {
+        background: #333333;
+    }
+
+    #forgot-password {
+        margin-top: 15px;
+    }
+
+    #forgot-password > a:link,
+    #forgot-password > a:visited {
+        color: #333333;
+    }
+
+    p.errornote {
+        text-align: center;
+    }
+
+    #container {
+        clear: both;
+        width: 1425px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    #panel {
+        border: 1px solid #c0c0c0;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        width: 225px;
+        float: left;
+        font-size: 15px;
+        background-color: #eee;
+        border-radius: 5px;
+    }
+
+    #panel h2 {
+        margin: 0;
+        font-size: 12px;
+        border-bottom: 1px solid #d4d4d4;
+        background-color: #e0e0e0;
+        padding: 7px 5px 6px 10px;
+        color: #444;
+        font-size: 12px;
+        line-height: 16px;
+        font-weight: bold;
+        border-bottom: 1px solid #d4d4d4;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+
+    #panel > ul > li > a {
+        padding-top: 15px;
+        font-weight: 800;
+        color: #555;
+        text-transform: uppercase;
+    }
+
+    ul.dropdown-menu-menu-bnchmrk > li {
+        padding: 5px 0;
+    }
+
+    ul.dropdown-menu-menu-bnchmrk > li > a {
+        padding-left: 15px;
+        color: #555;
+    }
+
+    ul.dropdown-menu-menu-bnchmrk > li > a.active {
+        font-weight: 800;
+    }
+
+    .result-list-container > h1 {
+        margin: 0;
+        font-size: 12px;
+        border-bottom: 1px solid #d4d4d4;
+        background-color: #e0e0e0;
+        padding: 7px 5px 6px 10px;
+        color: #444;
+        font-size: 12px;
+        line-height: 16px;
+        font-weight: bold;
+        border-bottom: 1px solid #d4d4d4;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+
+}
+
+.submit-row {
+    position: relative;
+}
+
+div.result-list table tbody tr td,
+div.result-list table tbody tr th {
+    padding: 0 7px;
+}
+
+div.result-list table tbody tr td.action-checkbox {
+    padding: 0 0 0 10px;
+}
+
+.aligned label {
+    width: 100%;
+}

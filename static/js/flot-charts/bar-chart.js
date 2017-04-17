@@ -1,21 +1,29 @@
-digits = function(digit_str) {
+function digits(digit_str) {
     return digit_str.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
 }
 
-yaxis_formatter = function(val, axis) {
+var yaxis_formatter = [];
+
+yaxis_formatter['dollar'] = function(val, axis) {
     return '$' + digits(val.toString());
 }
 
-function NormalDensityZx(x, Mean, StdDev)
-{
-    var a = x - Mean;
-    return Math.exp(-(a * a) / (2 * StdDev * StdDev)) / (Math.sqrt(2 * Math.PI) * StdDev); 
+yaxis_formatter['percent'] = function(val, axis) {
+    return digits(val.toString()) + '%';
 }
 
-function draw_bar_chart(id, data, tip=true) {       
+yaxis_formatter['int'] = function(val, axis) {
+    return digits(val.toString());
+}
+
+function draw_bar_chart(id, data, unit, label_xpos_factor) {       
     // This is not a bar chart anymore.
     // This is a incremental stack chart with color coding
+    tickFormatter = yaxis_formatter[unit];
     
+    if (typeof label_xpos_factor === 'undefined')
+        label_xpos_factor = 6.5;
+
     var ticks = [[0, "0%"], [20, "20%"], [40, "40%"], [60, "60%"], [80, "80%"]];
 
     if ($('#'+id)[0]) {
@@ -25,12 +33,13 @@ function draw_bar_chart(id, data, tip=true) {
                 show : true,
                 hoverable : true,
                 clickable : true,
+                borderColor: '#ddd',
             },
             
             yaxis: {
                 tickColor: '#eee',
                 tickDecimals: 0,
-                tickFormatter: yaxis_formatter,
+                tickFormatter: tickFormatter,
                 font :{
                     lineHeight: 15,
                     style: "normal",
@@ -68,18 +77,26 @@ function draw_bar_chart(id, data, tip=true) {
             },
         });
 
-        if (tip) {
-            $.each(p.getData()[0].data, function(i, el){
-                var o = p.pointOffset({x: i, y: el[1]});
-                if (el[0] % 20 == 0) {
-                    $('<div class="data-point-label"><b>' + '$'+digits(el[1].toString()) + '</b></div>').css( {
-                        position: 'absolute',
-                        left: 27 + el[0] * 7.5,
-                        top: o.top - 25,
-                        display: 'none'
-                    }).appendTo(p.getPlaceholder()).fadeIn('slow');                
-                }
-            });                    
-        }
+        var UNIT = {
+            'dollar': '$',
+            'percent': '%',
+            'int': ''
+        };
+
+        $.each(p.getData()[0].data, function(i, el){
+            var o = p.pointOffset({x: i, y: el[1]});
+            var content = UNIT[unit] + digits(el[1].toString());
+            if (unit == 'percent')
+                content = digits(el[1].toString()) + UNIT[unit];
+
+            if (el[0] % 20 == 0) {
+                $('<div class="data-point-label"><b>' + content + '</b></div>').css( {
+                    position: 'absolute',
+                    left: 30 + el[0] * label_xpos_factor,
+                    top: o.top - 25,
+                    display: 'none'
+                }).appendTo(p.getPlaceholder()).fadeIn('slow');                
+            }
+        });                    
     }    
 }

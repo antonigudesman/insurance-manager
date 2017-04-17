@@ -1,0 +1,19 @@
+{% extends base_template %}
+{% load humanize %}
+{% load pages_tags mezzanine_tags i18n staticfiles %}
+
+{% block page_content %}
+<div class="print-cover-content">
+    <div class="print-benefit-details">
+        <h4>{{ request.session.benefit }} Benchmarking Analysis</h4>
+        <h4><span id='prop_client_name'></span></h4>
+        <h4><span id='prop_print_plan_name'></span></h4>
+        <h6>Comparison Set Includes: {{ num_employers|intcomma }} Employers</h6>
+        <p><b>Industries:</b> <span id='lbl_ft_industries'>{{ ft_industries_label }}</span>, <b>Regions:</b> <span id='lbl_ft_regions'>{{ ft_regions_label }}</span>, <b>Headcounts:</b> <span id='lbl_ft_headcounts'>{{ ft_head_counts_label }}</span>, <b>Other Filters:</b> <span id='lbl_ft_other'>{{ ft_other_label }}</span></p>
+        <p>Reporting Date: {{ today }}</p>
+    </div>
+    <div class="print-cover-logo">
+        <img src="{% static 'img/bnchmrk_logo_stacked.jpg' %}" alt="">
+    </div>
+</div>
+{% endblock %}
