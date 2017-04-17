@@ -102,27 +102,7 @@
             <!-- Fieldsets -->
             {% block field_sets %}
             {% for fieldset in adminform %}
-<fieldset class="module aligned ">
-  <h2>Change Employer</h2>  
-  <table>
-        <col width="20%">
-        <col width="30%">
-        <col width="20%">
-        <col width="30%">
-        <tbody>
-      <tr>
-          <td colspan=2>{{ fieldset.0.0 }}</td>
-          <td colspan=2>{{ fieldset.0 }}</td>
-      </tr>
-      <tr>
-          <td>{{ fieldset.1.0.label_tag }}</td>
-          <td>{{ fieldset.1.0.field }}</td>
-          <td>{{ fieldset.3.0.label_tag }}</td>
-          <td>{{ fieldset.3.0.field }}</td>
-      </tr>
-        </tbody>
-  </table>
-</fieldset>
+            {% include "admin/includes/fieldset.html" %}
             {% endfor %}
             {% endblock %}
 
