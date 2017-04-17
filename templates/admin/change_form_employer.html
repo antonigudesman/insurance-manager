@@ -103,25 +103,85 @@
             {% block field_sets %}
             {% for fieldset in adminform %}
 <fieldset class="module aligned ">
-  <h2>Change Employer</h2>  
-  <table>
+    <h2>Change Employer</h2>  
+    <table>
         <col width="20%">
         <col width="30%">
         <col width="20%">
         <col width="30%">
-        <tbody>
-      <tr>
-          <td colspan=2>{{ fieldset.form.name.label_tag }}</td>
-          <td colspan=2>{{ fieldset.form.name }}</td>
-      </tr>
-      <tr>
-          <td>{{ fieldset.form.broker.label_tag }}</td>
-          <td>{{ fieldset.form.broker }}</td>
-          <td>{{ fieldset.form.state.label_tag }}</td>
-          <td>{{ fieldset.form.state }}</td>
-      </tr>
-        </tbody>
-  </table>
+      <tbody>
+        <tr>
+            <td colspan=2>{{ fieldset.form.name.label_tag }}</td>
+            <td colspan=2>{{ fieldset.form.name }}</td>
+        </tr>
+        <tr>
+            <td>{{ fieldset.form.broker.label_tag }}</td>
+            <td>{{ fieldset.form.broker }}</td>
+            <td>{{ fieldset.form.state.label_tag }}</td>
+            <td>{{ fieldset.form.state }}</td>
+        </tr>
+        <tr>
+            <td>{{ fieldset.form.industry1.label_tag }}</td>
+            <td>{{ fieldset.form.industry1 }}</td>
+            <td>{{ fieldset.form.size.label_tag }}</td>
+            <td>{{ fieldset.form.size }}</td>
+        </tr>
+        <tr>
+            <td>{{ fieldset.form.industry2.label_tag }}</td>
+            <td>{{ fieldset.form.industry2 }}</td>
+            <td>{{ fieldset.form.nonprofit.label_tag }}</td>
+            <td>{{ fieldset.form.nonprofit }}</td>
+        </tr>
+        <tr>
+            <td>{{ fieldset.form.industry3.label_tag }}</td>
+            <td>{{ fieldset.form.industry3 }}</td>
+            <td>{{ fieldset.form.govt_contractor.label_tag }}</td>
+            <td>{{ fieldset.form.govt_contractor }}</td>
+        </tr>
+        <tr>
+            <td>{{ fieldset.form.med_count.label_tag }}</td>
+            <td>{{ fieldset.form.med_count }}</td>
+            <td>{{ fieldset.form.new_england.label_tag }}</td>
+            <td>{{ fieldset.form.new_england }}</td>
+        </tr>
+        <tr>
+            <td>{{ fieldset.form.den_count.label_tag }}</td>
+            <td>{{ fieldset.form.den_count }}</td>
+            <td>{{ fieldset.form.mid_atlantic.label_tag }}</td>
+            <td>{{ fieldset.form.mid_atlantic }}</td>
+        </tr>
+        <tr>
+            <td>{{ fieldset.form.vis_count.label_tag }}</td>
+            <td>{{ fieldset.form.vis_count }}</td>
+            <td>{{ fieldset.form.south_atlantic.label_tag }}</td>
+            <td>{{ fieldset.form.south_atlantic }}</td>
+        </tr>
+        <tr>
+            <td>{{ fieldset.form.life_count.label_tag }}</td>
+            <td>{{ fieldset.form.life_count }}</td>
+            <td>{{ fieldset.form.south_cental.label_tag }}</td>
+            <td>{{ fieldset.form.south_cental }}</td>
+        </tr>
+        <tr>
+            <td>{{ fieldset.form.std_count.label_tag }}</td>
+            <td>{{ fieldset.form.std_count }}</td>
+            <td>{{ fieldset.form.east_central.label_tag }}</td>
+            <td>{{ fieldset.form.east_central }}</td>
+        </tr>
+        <tr>
+            <td>{{ fieldset.form.ltd_count.label_tag }}</td>
+            <td>{{ fieldset.form.ltd_count }}</td>
+            <td>{{ fieldset.form.west_central.label_tag }}</td>
+            <td>{{ fieldset.form.west_central }}</td>
+        </tr>
+        <tr>
+            <td>{{ fieldset.form.pacific.label_tag }}</td>
+            <td>{{ fieldset.form.pacific }}</td>
+            <td>{{ fieldset.form.mountain.label_tag }}</td>
+            <td>{{ fieldset.form.mountain }}</td>
+        </tr>        
+      </tbody>
+    </table>
 </fieldset>
             {% endfor %}
             {% endblock %}
