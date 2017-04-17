@@ -423,6 +423,8 @@ class LTDAdmin(admin.ModelAdmin):
 class StrategyAdmin(admin.ModelAdmin):
     list_display = ['employer',]
     search_fields = ('employer__name', 'title',)
+    change_form_template = 'admin/change_form_strategy.html'
+
     fields = ('employer', 'offer_vol_life', 'offer_vol_std', 'offer_vol_ltd', 'offer_fsa', 
         'spousal_surcharge', 'narrow_network', 'spousal_surcharge_amount', 'mec', 
         'tobacco_surcharge', 'mvp', 'tobacco_surcharge_amount', 'contribution_bundle', 
