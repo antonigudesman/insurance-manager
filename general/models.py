@@ -152,7 +152,7 @@ BROKER_CHOICES = (
 class Employer(models.Model):
     id = models.CharField(max_length=18, primary_key=True)
     name = models.CharField('Name',max_length=100)
-    broker = models.CharField('Broker',max_length=75, null=True, blank=True, choices=BROKER_CHOICES) 
+    broker = models.CharField('Broker',max_length=75, choices=BROKER_CHOICES) 
     industry1 = models.CharField('Industry 1',max_length=75, null=True, blank=True, choices=INDUSTRY_CHOICES)
     industry2 = models.CharField('Industry 2',max_length=75, null=True, blank=True, choices=INDUSTRY_CHOICES) 
     industry3 = models.CharField('Industry 3',max_length=75, null=True, blank=True, choices=INDUSTRY_CHOICES) 
