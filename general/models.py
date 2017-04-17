@@ -6,7 +6,7 @@ from django.db import models
 from django.core.validators import MinValueValidator
 
 INDUSTRY_CHOICES = (
-    (None, 'NULL'),
+    (None, '-'),
     ('Accommodation & Food Services - All', 'Accommodation & Food Services - All'),
     ('Agriculture, Forestry, Fishing & Hunting - All', 'Agriculture, Forestry, Fishing & Hunting - All'),
     ('Arts, Entertainment, & Recreation - All', 'Arts, Entertainment, & Recreation - All'),
@@ -72,7 +72,7 @@ INDUSTRY_CHOICES = (
 )
 
 STATE_CHOICES = (
-    (None, 'NULL'),
+    (None, '-'),
     ('Alabama', 'Alabama'),
     ('Alaska', 'Alaska'),
     ('Arizona', 'Arizona'),
@@ -199,7 +199,7 @@ MED_TYPE_CHOICES = (
 )
 
 MED_BOOL_CHOICES = (
-    (None, 'NULL'),
+    (None, '-'),
     ('FALSE', 'False'),
     ('False/Coin', 'False/Coin'),
     ('TRUE', 'True'),
