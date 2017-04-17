@@ -101,7 +101,7 @@ class MedicalForm(forms.ModelForm):
     def clean(self):
         t1_ee = self.cleaned_data.get('t1_ee')
         t1_gross = self.cleaned_data.get('t1_gross')
-
+        print t1_gross, '########'
         # add custom validation rules 
         if t1_ee > t1_gross or not t1_gross:
             self._errors['t1_ee'] = ErrorList([''])
