@@ -143,7 +143,7 @@ def get_pdf(request, benefits, plans):
 
         # split the image in proper size
         origin = Image.open(vars_d['img_path_{}'.format(uidx)])
-        header_height = 141 - 4
+        header_height = 141 - 5
         width, height = origin.size
 
         num_pages = int(( height - header_height ) / 1200.0 + 0.5)
