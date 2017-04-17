@@ -147,7 +147,8 @@ BROKER_CHOICES = (
     ('Seubert', 'Seubert'),
     ('ShawHankins', 'ShawHankins'),
     ('USI', 'USI'),
-    ('Wells', 'Wells')
+    ('Wells', 'Wells'),
+    ('Higginbotham', 'Higginbotham')
 )
 
 
