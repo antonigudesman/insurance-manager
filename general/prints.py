@@ -125,16 +125,16 @@ def get_pdf(request, benefits, plans):
         # for body
         url = 'http://{}/98Wf37r2-3h4X2_jh9?benefit={}&plan={}'.format(request.META.get('HTTP_HOST'), benefits[uidx], plans[uidx])
         driver.get(url)        
-        time.sleep(3)
+        time.sleep(1)
         if benefits[uidx] in ['PPO', 'HDHP', 'HMO']:
-            time.sleep(2)
+            time.sleep(1)
 
         driver.save_screenshot(vars_d['img_path_{}'.format(uidx)])
 
         # for header
         url = 'http://{}/25Wfr7r2-3h4X25t?benefit={}&plan={}'.format(request.META.get('HTTP_HOST'), benefits[uidx], plans[uidx])
         driver.get(url)
-        time.sleep(2)
+        time.sleep(1)
         driver.save_screenshot(vars_d['img_path_header_{}'.format(uidx)])
         
         # build a pdf with images using fpdf
