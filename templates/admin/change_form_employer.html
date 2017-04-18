@@ -102,7 +102,87 @@
             <!-- Fieldsets -->
             {% block field_sets %}
             {% for fieldset in adminform %}
-            {% include "admin/includes/fieldset.html" %}
+<fieldset class="module aligned ">
+    <h2>Change Employer</h2>  
+    <table>
+        <col width="20%">
+        <col width="30%">
+        <col width="20%">
+        <col width="30%">
+      <tbody>
+        <tr>
+            <td colspan=2 {% if fieldset.form.name.errors %} class="errors"{% endif %}>{{ fieldset.form.name.errors }}{{ fieldset.form.name.label_tag }}</td>
+            <td colspan=2 {% if fieldset.form.name.errors %} class="errors"{% endif %}>{{ fieldset.form.name }}</td>
+        </tr>
+        <tr>
+            <td {% if fieldset.form.broker.errors %} class="errors"{% endif %}>{{ fieldset.form.broker.errors }}{{ fieldset.form.broker.label_tag }}</td>
+            <td {% if fieldset.form.broker.errors %} class="errors"{% endif %}>{{ fieldset.form.broker }}</td>
+            <td {% if fieldset.form.state.errors %} class="errors"{% endif %}>{{ fieldset.form.state.errors }}{{ fieldset.form.state.label_tag }}</td>
+            <td {% if fieldset.form.state.errors %} class="errors"{% endif %}>{{ fieldset.form.state }}</td>            
+        </tr>
+        <tr>
+            <td {% if fieldset.form.industry1.errors %} class="errors"{% endif %}>{{ fieldset.form.industry1.errors }}{{ fieldset.form.industry1.label_tag }}</td>
+            <td {% if fieldset.form.industry1.errors %} class="errors"{% endif %}>{{ fieldset.form.industry1 }}</td>
+            <td {% if fieldset.form.size.errors %} class="errors"{% endif %}>{{ fieldset.form.size.errors }}{{ fieldset.form.size.label_tag }}</td>
+            <td {% if fieldset.form.size.errors %} class="errors"{% endif %}>{{ fieldset.form.size }}</td>                    
+        </tr>
+        <tr>
+            <td {% if fieldset.form.industry2.errors %} class="errors"{% endif %}>{{ fieldset.form.industry2.errors }}{{ fieldset.form.industry2.label_tag }}</td>
+            <td {% if fieldset.form.industry2.errors %} class="errors"{% endif %}>{{ fieldset.form.industry2 }}</td>
+            <td {% if fieldset.form.nonprofit.errors %} class="errors"{% endif %}>{{ fieldset.form.nonprofit.errors }}{{ fieldset.form.nonprofit.label_tag }}</td>
+            <td {% if fieldset.form.nonprofit.errors %} class="errors"{% endif %}>{{ fieldset.form.nonprofit }}</td>
+        </tr>
+        <tr>
+            <td {% if fieldset.form.industry3.errors %} class="errors"{% endif %}>{{ fieldset.form.industry3.errors }}{{ fieldset.form.industry3.label_tag }}</td>
+            <td {% if fieldset.form.industry3.errors %} class="errors"{% endif %}>{{ fieldset.form.industry3 }}</td>
+            <td {% if fieldset.form.govt_contractor.errors %} class="errors"{% endif %}>{{ fieldset.form.govt_contractor.errors }}{{ fieldset.form.govt_contractor.label_tag }}</td>
+            <td {% if fieldset.form.govt_contractor.errors %} class="errors"{% endif %}>{{ fieldset.form.govt_contractor }}</td>                                
+        </tr>
+        <tr>
+            <td {% if fieldset.form.med_count.errors %} class="errors"{% endif %}>{{ fieldset.form.med_count.errors }}{{ fieldset.form.med_count.label_tag }}</td>
+            <td {% if fieldset.form.med_count.errors %} class="errors"{% endif %}>{{ fieldset.form.med_count }}</td>
+            <td {% if fieldset.form.new_england.errors %} class="errors"{% endif %}>{{ fieldset.form.new_england.errors }}{{ fieldset.form.new_england.label_tag }}</td>
+            <td {% if fieldset.form.new_england.errors %} class="errors"{% endif %}>{{ fieldset.form.new_england }}</td>                         
+        </tr>
+        <tr>
+            <td {% if fieldset.form.den_count.errors %} class="errors"{% endif %}>{{ fieldset.form.den_count.errors }}{{ fieldset.form.den_count.label_tag }}</td>
+            <td {% if fieldset.form.den_count.errors %} class="errors"{% endif %}>{{ fieldset.form.den_count }}</td>
+            <td {% if fieldset.form.mid_atlantic.errors %} class="errors"{% endif %}>{{ fieldset.form.mid_atlantic.errors }}{{ fieldset.form.mid_atlantic.label_tag }}</td>
+            <td {% if fieldset.form.mid_atlantic.errors %} class="errors"{% endif %}>{{ fieldset.form.mid_atlantic }}</td>  
+        </tr>
+        <tr>
+            <td {% if fieldset.form.vis_count.errors %} class="errors"{% endif %}>{{ fieldset.form.vis_count.errors }}{{ fieldset.form.vis_count.label_tag }}</td>
+            <td {% if fieldset.form.vis_count.errors %} class="errors"{% endif %}>{{ fieldset.form.vis_count }}</td>
+            <td {% if fieldset.form.south_atlantic.errors %} class="errors"{% endif %}>{{ fieldset.form.south_atlantic.errors }}{{ fieldset.form.south_atlantic.label_tag }}</td>
+            <td {% if fieldset.form.south_atlantic.errors %} class="errors"{% endif %}>{{ fieldset.form.south_atlantic }}</td>                           
+        </tr>
+        <tr>
+            <td {% if fieldset.form.life_count.errors %} class="errors"{% endif %}>{{ fieldset.form.life_count.errors }}{{ fieldset.form.life_count.label_tag }}</td>
+            <td {% if fieldset.form.life_count.errors %} class="errors"{% endif %}>{{ fieldset.form.life_count }}</td>
+            <td {% if fieldset.form.south_cental.errors %} class="errors"{% endif %}>{{ fieldset.form.south_cental.errors }}{{ fieldset.form.south_cental.label_tag }}</td>
+            <td {% if fieldset.form.south_cental.errors %} class="errors"{% endif %}>{{ fieldset.form.south_cental }}</td>  
+        </tr>
+        <tr>
+            <td {% if fieldset.form.std_count.errors %} class="errors"{% endif %}>{{ fieldset.form.std_count.errors }}{{ fieldset.form.std_count.label_tag }}</td>
+            <td {% if fieldset.form.std_count.errors %} class="errors"{% endif %}>{{ fieldset.form.std_count }}</td>        
+            <td {% if fieldset.form.east_central.errors %} class="errors"{% endif %}>{{ fieldset.form.east_central.errors }}{{ fieldset.form.east_central.label_tag }}</td>
+            <td {% if fieldset.form.east_central.errors %} class="errors"{% endif %}>{{ fieldset.form.east_central }}</td> 
+        </tr>
+        <tr>
+            <td {% if fieldset.form.ltd_count.errors %} class="errors"{% endif %}>{{ fieldset.form.ltd_count.errors }}{{ fieldset.form.ltd_count.label_tag }}</td>
+            <td {% if fieldset.form.ltd_count.errors %} class="errors"{% endif %}>{{ fieldset.form.ltd_count }}</td>
+            <td {% if fieldset.form.west_central.errors %} class="errors"{% endif %}>{{ fieldset.form.west_central.errors }}{{ fieldset.form.west_central.label_tag }}</td>
+            <td {% if fieldset.form.west_central.errors %} class="errors"{% endif %}>{{ fieldset.form.west_central }}</td>      
+        </tr>
+        <tr>
+            <td {% if fieldset.form.pacific.errors %} class="errors"{% endif %}>{{ fieldset.form.pacific.errors }}{{ fieldset.form.pacific.label_tag }}</td>
+            <td {% if fieldset.form.pacific.errors %} class="errors"{% endif %}>{{ fieldset.form.pacific }}</td>
+            <td {% if fieldset.form.mountain.errors %} class="errors"{% endif %}>{{ fieldset.form.mountain.errors }}{{ fieldset.form.mountain.label_tag }}</td>
+            <td {% if fieldset.form.mountain.errors %} class="errors"{% endif %}>{{ fieldset.form.mountain }}</td>                           
+        </tr>        
+      </tbody>
+    </table>
+</fieldset>
             {% endfor %}
             {% endblock %}
 
@@ -138,7 +218,9 @@
             <!-- Submit-Row -->
             {% block submit_buttons_bottom %}
             <div class="submit-row">
+                {% if delete %}
                 <p class="deletelink-box"><a href="/admin/general/life/3084/delete/" class="deletelink">Delete</a></p>
+                {% endif %}
                 <a href="{{ history_url }}">{% trans "History" %}</a>
                 <input value="Cancel" class="warning" name="_cancel" onclick="history.go(-1);" type="button">
                 <input value="Save" class="default" name="_save" type="submit">

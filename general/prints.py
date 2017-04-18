@@ -97,7 +97,7 @@ def get_pdf(request, benefits, plans):
     driver.set_window_size(1360, 1000)
 
     cc = { 
-        'domain': 'localhost', 
+        'domain': request.META.get('HTTP_HOST'), 
         'name': 'sessionid', 
         'value': request.COOKIES.get('sessionid'), 
         'path': '/'
@@ -126,7 +126,7 @@ def get_pdf(request, benefits, plans):
         url = 'http://{}/98Wf37r2-3h4X2_jh9?benefit={}&plan={}'.format(request.META.get('HTTP_HOST'), benefits[uidx], plans[uidx])
         print url, '@@@@@@@@@@@@'
         driver.get(url)        
-        time.sleep(3)
+        time.sleep(1)
         if benefits[uidx] in ['PPO', 'HDHP', 'HMO']:
             time.sleep(2)
 
@@ -136,7 +136,7 @@ def get_pdf(request, benefits, plans):
         url = 'http://{}/25Wfr7r2-3h4X25t?benefit={}&plan={}'.format(request.META.get('HTTP_HOST'), benefits[uidx], plans[uidx])
         print url, '@@@@@@@@@@@@'
         driver.get(url)
-        time.sleep(2)
+        time.sleep(1)
         driver.save_screenshot(vars_d['img_path_header_{}'.format(uidx)])
         
         # build a pdf with images using fpdf
@@ -145,7 +145,7 @@ def get_pdf(request, benefits, plans):
 
         # split the image in proper size
         origin = Image.open(vars_d['img_path_{}'.format(uidx)])
-        header_height = 141 - 4
+        header_height = 141 - 5
         width, height = origin.size
 
         num_pages = int(( height - header_height ) / 1200.0 + 0.5)
