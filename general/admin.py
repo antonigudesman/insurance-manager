@@ -5,6 +5,38 @@ from django.forms.utils import ErrorList
 from .models import *
 
 
+class EmployerForm(forms.ModelForm):
+    class Meta:
+        model = Employer
+        fields = '__all__'
+
+    def clean(self):
+        industry1 = self.cleaned_data.get('industry1')
+        industry2 = self.cleaned_data.get('industry2')
+        industry3 = self.cleaned_data.get('industry3')
+
+        # add custom validation rules 
+        # for industries
+        if not (industry1 or industry2 or industry3):
+            self._errors['industry1'] = ErrorList([''])
+            self._errors['industry2'] = ErrorList([''])
+            self._errors['industry3'] = ErrorList([''])
+            raise forms.ValidationError("Please select at least one Industry!")
+
+        # for regions
+        regions = ['new_england', 'mid_atlantic', 'south_atlantic', 'south_cental', 
+                   'east_central', 'west_central', 'mountain', 'pacific']
+        region_choosen = ''
+        for region in regions:
+            region_choosen = region_choosen or self.cleaned_data.get(region)
+
+        if not region_choosen:
+            for region in regions:
+                self._errors[region] = ErrorList([''])
+            raise forms.ValidationError("Please select at least one Region!")            
+        return self.cleaned_data
+
+
 class EmployerAdmin(admin.ModelAdmin):
     list_display = ['name','broker','industry1','industry2','industry3','formatted_size',
                     'med_count','den_count','vis_count', 'life_count','std_count','ltd_count']
@@ -15,6 +47,7 @@ class EmployerAdmin(admin.ModelAdmin):
         'nonprofit', 'govt_contractor', 'new_england', 'med_count', 'mid_atlantic',
         'den_count', 'south_atlantic', 'vis_count', 'south_cental', 'life_count', 
         'east_central', 'std_count', 'west_central', 'ltd_count', 'mountain', 'pacific')
+    form = EmployerForm
 
     def get_queryset(self, request):
         qs = super(EmployerAdmin, self).get_queryset(request)
@@ -24,6 +57,15 @@ class EmployerAdmin(admin.ModelAdmin):
             qs = qs.filter(broker=group)
             
         return qs
+
+    def get_actions(self, request):
+        actions = super(EmployerAdmin, self).get_actions(request)
+        group = request.user.groups.first().name
+
+        if group != 'bnchmrk':
+            if 'delete_selected' in actions:
+                del actions['delete_selected']
+        return actions
 
     def change_view(self, request, object_id, form_url='', extra_context=None):
         extra_context = extra_context or {}
@@ -61,10 +103,11 @@ class MedicalForm(forms.ModelForm):
         t1_gross = self.cleaned_data.get('t1_gross')
 
         # add custom validation rules 
-        # if t1_ee > t1_gross:
-        #     self._errors['t1_ee'] = ErrorList([''])
-        #     self._errors['t1_gross'] = ErrorList([''])
-        #     raise forms.ValidationError("Single Employee Cost should be less than Single Gross Cost!")
+
+        if t1_ee > t1_gross and t1_gross:
+            self._errors['t1_ee'] = ErrorList([''])
+            self._errors['t1_gross'] = ErrorList([''])
+            raise forms.ValidationError("Single Employee Cost should be less than Single Gross Cost!")
 
         return self.cleaned_data
 
@@ -75,6 +118,7 @@ class MedicalAdmin(admin.ModelAdmin):
     search_fields = ('employer__name', 'title',)
     list_filter = ('type',)
     form = MedicalForm
+    change_form_template = 'admin/change_form_medical.html'
     fields = ('title', 'employer', 'type', 'in_ded_single', 'out_ded_single', 'in_max_single', 
         'out_ded_family', 'in_ded_family', 'out_max_single', 'in_max_family', 'out_max_family', 
         'in_coin', 'out_coin', 'rx_ded_single', 'rx_max_single', 'rx_ded_family', 'rx_max_family', 
@@ -95,6 +139,15 @@ class MedicalAdmin(admin.ModelAdmin):
             
         return qs
 
+    def get_actions(self, request):
+        actions = super(MedicalAdmin, self).get_actions(request)
+        group = request.user.groups.first().name
+
+        if group != 'bnchmrk':
+            if 'delete_selected' in actions:
+                del actions['delete_selected']
+        return actions
+        
     def formatted_ded_single(self, obj):
         try:
             return '${:,.0f}'.format(obj.in_ded_single)
@@ -123,6 +176,8 @@ class DentalAdmin(admin.ModelAdmin):
                     'formatted_in_max','formatted_in_max_ortho']
     search_fields = ('employer__name', 'title',)
     list_filter = ('type',)
+    change_form_template = 'admin/change_form_dental.html'
+
     fields = ('title', 'employer', 'type', 'in_ded_single', 'out_ded_single', 
         'in_ded_family', 'out_ded_family', 'in_max', 'out_max', 'in_max_ortho', 
         'out_max_ortho', 't1_ee', 't1_gross', 't2_ee', 't2_gross', 't3_ee', 't3_gross', 
@@ -140,6 +195,15 @@ class DentalAdmin(admin.ModelAdmin):
             
         return qs
 
+    def get_actions(self, request):
+        actions = super(DentalAdmin, self).get_actions(request)
+        group = request.user.groups.first().name
+
+        if group != 'bnchmrk':
+            if 'delete_selected' in actions:
+                del actions['delete_selected']
+        return actions
+        
     def formatted_ded_single(self, obj):
         try:
             return '${:,.0f}'.format(obj.in_ded_single)
@@ -169,6 +233,8 @@ class VisionAdmin(admin.ModelAdmin):
     list_display = ['title','employer','formatted_exam_copay','formatted_lenses_copay',
                     'formatted_frames_allowance','formatted_contacts_allowance']
     search_fields = ('employer__name', 'title',)
+    change_form_template = 'admin/change_form_vision.html'
+
     fields = ('title', 'employer', 'exam_copay', 'lenses_copay', 'exam_frequency', 
         'lenses_frequency', 'exam_out_allowance', 'lenses_out_allowance', 'frames_copay', 
         'contacts_copay', 'frames_allowance', 'contacts_allowance', 'frames_coinsurance', 
@@ -185,6 +251,15 @@ class VisionAdmin(admin.ModelAdmin):
             
         return qs
 
+    def get_actions(self, request):
+        actions = super(VisionAdmin, self).get_actions(request)
+        group = request.user.groups.first().name
+
+        if group != 'bnchmrk':
+            if 'delete_selected' in actions:
+                del actions['delete_selected']
+        return actions
+        
     def formatted_exam_copay(self, obj):
         try:
             return '${:,.0f}'.format(obj.exam_copay)
@@ -222,7 +297,9 @@ class LifeAdmin(admin.ModelAdmin):
     list_display = ['title', 'employer', 'type', 'multiple', 
                     'formatted_multiple_max', 'formatted_flat_amount', 'add', 'cost_share']
     search_fields = ('employer__name',)
-    fields = ('title', 'employer', 'type', 'multiple', 'flat_amount', 'multiple_max', 'add', 'cost_share')
+    fields = ('title', 'employer', 'type', 'multiple', 'flat_amount', 
+              'multiple_max', 'add', 'cost_share')
+    change_form_template = 'admin/change_form_life.html'
     
     def get_queryset(self, request):
         qs = super(LifeAdmin, self).get_queryset(request)
@@ -233,6 +310,15 @@ class LifeAdmin(admin.ModelAdmin):
             
         return qs
 
+    def get_actions(self, request):
+        actions = super(LifeAdmin, self).get_actions(request)
+        group = request.user.groups.first().name
+
+        if group != 'bnchmrk':
+            if 'delete_selected' in actions:
+                del actions['delete_selected']
+        return actions
+        
     def formatted_multiple_max(self, obj):
         try:
             return '${:,.0f}'.format(obj.multiple_max)
@@ -254,7 +340,9 @@ class STDAdmin(admin.ModelAdmin):
     list_display = ['title', 'employer', 'waiting_days', 'duration_weeks', 
                     'formatted_percentage', 'formatted_weekly_max', 'cost_share']
     search_fields = ('employer__name', 'title',)
-    fields = ('title', 'employer', 'waiting_days', 'duration_weeks', 'waiting_days_sick', 'percentage', 'weekly_max', 'cost_share', 'salary_cont')
+    fields = ('title', 'employer', 'waiting_days', 'duration_weeks', 'waiting_days_sick', 
+              'percentage', 'weekly_max', 'cost_share', 'salary_cont')
+    change_form_template = 'admin/change_form_std.html'
     
     def get_queryset(self, request):
         qs = super(STDAdmin, self).get_queryset(request)
@@ -265,6 +353,15 @@ class STDAdmin(admin.ModelAdmin):
             
         return qs
 
+    def get_actions(self, request):
+        actions = super(STDAdmin, self).get_actions(request)
+        group = request.user.groups.first().name
+
+        if group != 'bnchmrk':
+            if 'delete_selected' in actions:
+                del actions['delete_selected']
+        return actions
+        
     def formatted_percentage(self, obj):
         try:
             return '{:.0f}%'.format(obj.percentage)
@@ -287,6 +384,7 @@ class LTDAdmin(admin.ModelAdmin):
                     'formatted_percentage', 'formatted_monthly_max', 'cost_share']
     search_fields = ('employer__name', 'title',)
     fields = ('title', 'employer', 'waiting_weeks', 'percentage', 'monthly_max', 'cost_share')
+    change_form_template = 'admin/change_form_ltd.html'
     
     def get_queryset(self, request):
         qs = super(LTDAdmin, self).get_queryset(request)
@@ -297,6 +395,15 @@ class LTDAdmin(admin.ModelAdmin):
             
         return qs
 
+    def get_actions(self, request):
+        actions = super(LTDAdmin, self).get_actions(request)
+        group = request.user.groups.first().name
+
+        if group != 'bnchmrk':
+            if 'delete_selected' in actions:
+                del actions['delete_selected']
+        return actions
+        
     def formatted_percentage(self, obj):
         try:
             return '{:.0f}%'.format(obj.percentage)
@@ -317,13 +424,14 @@ class LTDAdmin(admin.ModelAdmin):
 class StrategyAdmin(admin.ModelAdmin):
     list_display = ['employer',]
     search_fields = ('employer__name', 'title',)
+    change_form_template = 'admin/change_form_strategy.html'
+
     fields = ('employer', 'offer_vol_life', 'offer_vol_std', 'offer_vol_ltd', 'offer_fsa', 
         'spousal_surcharge', 'narrow_network', 'spousal_surcharge_amount', 'mec', 
         'tobacco_surcharge', 'mvp', 'tobacco_surcharge_amount', 'contribution_bundle', 
         'pt_medical', 'defined_contribution', 'pt_dental', 'salary_banding', 'pt_vision', 
         'wellness_banding', 'pt_life', 'pt_std', 'pt_ltd')
     
-
     def get_queryset(self, request):
         qs = super(StrategyAdmin, self).get_queryset(request)
         group = request.user.groups.first().name
@@ -332,6 +440,16 @@ class StrategyAdmin(admin.ModelAdmin):
             qs = qs.filter(employer__broker=group)
             
         return qs
+
+    def get_actions(self, request):
+        actions = super(StrategyAdmin, self).get_actions(request)
+        group = request.user.groups.first().name
+
+        if group != 'bnchmrk':
+            if 'delete_selected' in actions:
+                del actions['delete_selected']
+        return actions
+        
 
 admin.site.register(Employer, EmployerAdmin)
 admin.site.register(Life, LifeAdmin)

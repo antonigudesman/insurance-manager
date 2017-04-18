@@ -1,10 +1,12 @@
 from __future__ import unicode_literals
 
-from django.db import models
+import uuid
 
+from django.db import models
+from django.core.validators import MinValueValidator
 
 INDUSTRY_CHOICES = (
-    (None, 'NULL'),
+    (None, '-'),
     ('Accommodation & Food Services - All', 'Accommodation & Food Services - All'),
     ('Agriculture, Forestry, Fishing & Hunting - All', 'Agriculture, Forestry, Fishing & Hunting - All'),
     ('Arts, Entertainment, & Recreation - All', 'Arts, Entertainment, & Recreation - All'),
@@ -70,7 +72,7 @@ INDUSTRY_CHOICES = (
 )
 
 STATE_CHOICES = (
-    (None, 'NULL'),
+    (None, '-'),
     ('Alabama', 'Alabama'),
     ('Alaska', 'Alaska'),
     ('Arizona', 'Arizona'),
@@ -124,15 +126,41 @@ STATE_CHOICES = (
     ('Wyoming', 'Wyoming')
 )
 
+BROKER_CHOICES = (
+    ('Aon', 'Aon'),
+    ('Ascension', 'Ascension'),
+    ('Assurance', 'Assurance'),
+    ('BSG', 'BSG'),
+    ('Core', 'Core'),
+    ('Diversified', 'Diversified'),
+    ('EBS', 'EBS'),
+    ('GFI', 'GFI'),
+    ('Ironwood', 'Ironwood'),
+    ('Marshal & Sterling', 'Marshal & Sterling'),
+    ('MAX', 'MAX'),
+    ('MSI Benefits', 'MSI Benefits'),
+    ('NFP', 'NFP'),
+    ('Pilot', 'Pilot'),
+    ('PJ', 'PJ'),
+    ('PSA', 'PSA'),
+    ('Scruggs', 'Scruggs'),
+    ('Seubert', 'Seubert'),
+    ('ShawHankins', 'ShawHankins'),
+    ('USI', 'USI'),
+    ('Wells', 'Wells'),
+    ('Higginbotham', 'Higginbotham')
+)
+
+
 class Employer(models.Model):
     id = models.CharField(max_length=18, primary_key=True)
     name = models.CharField('Name',max_length=100)
-    broker = models.CharField('Broker',max_length=75, null=True, blank=True) 
+    broker = models.CharField('Broker',max_length=75, choices=BROKER_CHOICES) 
     industry1 = models.CharField('Industry 1',max_length=75, null=True, blank=True, choices=INDUSTRY_CHOICES)
     industry2 = models.CharField('Industry 2',max_length=75, null=True, blank=True, choices=INDUSTRY_CHOICES) 
     industry3 = models.CharField('Industry 3',max_length=75, null=True, blank=True, choices=INDUSTRY_CHOICES) 
     state = models.CharField('State',max_length=25, null=True, blank=True, choices=STATE_CHOICES)
-    size = models.IntegerField('Size',blank=True, null=True)
+    size = models.PositiveIntegerField('Size', validators=[MinValueValidator(1)])
     nonprofit = models.BooleanField('Non-Profit')
     govt_contractor = models.BooleanField('Govt Contractors')
     new_england = models.BooleanField('New England Region')
@@ -157,6 +185,11 @@ class Employer(models.Model):
         verbose_name = 'Employer'
         verbose_name_plural = 'Employers'
 
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.id = str(uuid.uuid4())[:18]
+        super(Employer, self).save(*args, **kwargs)
+
 
 MED_TYPE_CHOICES = (
     ('PPO', 'PPO'),
@@ -167,7 +200,7 @@ MED_TYPE_CHOICES = (
 )
 
 MED_BOOL_CHOICES = (
-    (None, 'NULL'),
+    (None, '-'),
     ('FALSE', 'False'),
     ('False/Coin', 'False/Coin'),
     ('TRUE', 'True'),
@@ -219,11 +252,11 @@ class Medical(models.Model):
     rx2_ded_apply = models.CharField('Rx Tier 2 Ded Applies',max_length=20, blank=True, null=True, choices=MED_BOOL_CHOICES)
     rx3_ded_apply = models.CharField('Rx Tier 3 Ded Applies',max_length=20, blank=True, null=True, choices=MED_BOOL_CHOICES)
     rx4_ded_apply = models.CharField('Rx Tier 4 Ded Applies',max_length=20, blank=True, null=True, choices=MED_BOOL_CHOICES)
-    age_rated = models.NullBooleanField('Age Banded Rates')
-    hra = models.NullBooleanField('Offer HRA')
-    hsa = models.NullBooleanField('Offer HSA')
-    ded_cross = models.NullBooleanField('Ded Cross Accumulate')
-    max_cross = models.NullBooleanField('Max Cross Accumulate')
+    age_rated = models.BooleanField('Age Banded Rates')
+    hra = models.BooleanField('Offer HRA')
+    hsa = models.BooleanField('Offer HSA')
+    ded_cross = models.BooleanField('Ded Cross Accumulate')
+    max_cross = models.BooleanField('Max Cross Accumulate')
     t1_ee = models.IntegerField('Single Employee Cost',blank=True, null=True)
     t2_ee = models.IntegerField('EE & Spouse Employee Cost',blank=True, null=True)
     t3_ee = models.IntegerField('EE & Child(ren) Employee Cost',blank=True, null=True)
@@ -250,6 +283,12 @@ DEN_TYPE_CHOICES = (
     ('DMO', 'DMO'),
 )
 
+BOOLEAN_CHOICES =  (
+    (None, '-'),
+    (True, 'True'),
+    (False, 'False')
+)
+
 class Dental(models.Model):
     title = models.CharField('Title', max_length=20)
     employer = models.ForeignKey(Employer)
@@ -264,16 +303,16 @@ class Dental(models.Model):
     out_max_ortho = models.IntegerField('OON Ortho Max (PP)', blank=True, null=True)
     in_prev_coin = models.IntegerField('IN Preventive', blank=True, null=True)
     out_prev_coin = models.IntegerField('OON Preventive', blank=True, null=True)
-    prev_ded_apply = models.NullBooleanField('Preventive Ded Applies')
+    prev_ded_apply = models.NullBooleanField('Preventive Ded Applies', choices=BOOLEAN_CHOICES)
     in_basic_coin = models.IntegerField('IN Basic', blank=True, null=True)
     out_basic_coin = models.IntegerField('OON Basic', blank=True, null=True)
-    basic_ded_apply = models.NullBooleanField('Basic Ded Applies')
+    basic_ded_apply = models.NullBooleanField('Basic Ded Applies', choices=BOOLEAN_CHOICES)
     in_major_coin = models.IntegerField('IN Major', blank=True, null=True)
     out_major_coin = models.IntegerField('OON Major', blank=True, null=True)
-    major_ded_apply = models.NullBooleanField('Major Ded Applies')
+    major_ded_apply = models.NullBooleanField('Major Ded Applies', choices=BOOLEAN_CHOICES)
     in_ortho_coin = models.IntegerField('IN Ortho', blank=True, null=True)
     out_ortho_coin = models.IntegerField('OON Ortho', blank=True, null=True)
-    ortho_ded_apply = models.NullBooleanField('Ortho Ded Applies')
+    ortho_ded_apply = models.NullBooleanField('Ortho Ded Applies', choices=BOOLEAN_CHOICES)
     ortho_age_limit = models.IntegerField('Ortho Age Limit', blank=True, null=True)
     t1_ee = models.IntegerField('Single Employee Cost',blank=True, null=True)
     t2_ee = models.IntegerField('EE & Spouse Employee Cost',blank=True, null=True)
@@ -393,7 +432,7 @@ class LTD(models.Model):
         
 
 CB_CHOICES = (
-    (None, 'NULL'),
+    (None, '-'),
     ('Med + Den', 'Med + Den'),
     ('Med + Vision', 'Med + Vision'),
     ('Med + Den + Vision', 'Med + Den + Vision'),
