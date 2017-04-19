@@ -212,7 +212,7 @@ def print_report(request):
     log.debug(benefits)
     log.debug(plans)
     log.debug('@@@@@@@@@@@2')
-    return get_pdf(request, benefits[-6:], plans[-6:])
+    return get_pdf(request, benefits[-6:-1], plans[-6:-1])
 
 
 def get_download_response(path):
