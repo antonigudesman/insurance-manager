@@ -344,4 +344,4 @@ else:
 
 EMPLOYER_THRESHOLD = 10
 EMPLOYER_THRESHOLD_MESSAGE = 'Current search criteria resulted in less 10 employers. Please expand it by selecting additional filters before refreshing.'
-MAX_POINTS = 50
+MAX_POINTS = 30
