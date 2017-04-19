@@ -166,7 +166,7 @@ def get_pdf(request, benefits, plans):
             os.remove(vars_d['img_path_header_{}'.format(uidx)])
     except Exception, e:
         log.debug(str(e))
-        log.debug('@@@@@@@@@@@2')
+        log.debug('###########32')
 
 
     pdf.output(pdf_path, "F")
@@ -212,7 +212,7 @@ def print_report(request):
     log.debug(benefits)
     log.debug(plans)
     log.debug('@@@@@@@@@@@2')
-    return get_pdf(request, benefits, plans)
+    return get_pdf(request, benefits[-2:], plans[-2:])
 
 
 def get_download_response(path):
