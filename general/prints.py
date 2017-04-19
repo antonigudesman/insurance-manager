@@ -16,6 +16,8 @@ from selenium import webdriver
 
 from .views import *
 
+import logging
+log = logging.getLogger(__name__)
 
 @login_required(login_url='/admin/login')
 def print_template(request):
@@ -205,7 +207,9 @@ def print_report(request):
 
             benefits.append(benefit)
             plans.append(plan)
-    print benefits, plans, '@@@@@@@@@@@2'
+    log.debug(benefits)
+    log.debug(plans)
+    log.debug('@@@@@@@@@@@2')
     return get_pdf(request, benefits, plans)
 
 
