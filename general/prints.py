@@ -205,7 +205,7 @@ def print_report(request):
 
             benefits.append(benefit)
             plans.append(plan)
-    # print benefits, plans
+    print benefits, plans, '@@@@@@@@@@@2'
     return get_pdf(request, benefits, plans)
 
 
