@@ -209,10 +209,10 @@ def print_report(request):
 
             benefits.append(benefit)
             plans.append(plan)
-    log.debug(benefits)
-    log.debug(plans)
-    log.debug('@@@@@@@@@@@2')
-    return get_pdf(request, benefits[-7:-1], plans[-7:-1])
+    # log.debug(benefits)
+    # log.debug(plans)
+    # log.debug('@@@@@@@@@@@2')
+    return get_pdf(request, benefits, plans)
 
 
 def get_download_response(path):
