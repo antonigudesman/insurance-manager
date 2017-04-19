@@ -165,7 +165,9 @@ def get_pdf(request, benefits, plans):
             os.remove(vars_d['img_path_{}'.format(uidx)])
             os.remove(vars_d['img_path_header_{}'.format(uidx)])
     except Exception, e:
-        print str(e), '############3'
+        log.debug(str(e))
+        log.debug('@@@@@@@@@@@2')
+
 
     pdf.output(pdf_path, "F")
 
