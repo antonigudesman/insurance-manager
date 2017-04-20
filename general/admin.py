@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django import forms
 from django.forms.utils import ErrorList
+from django.db.models.functions import Lower
 
 from .models import *
 
@@ -138,6 +139,9 @@ class MedicalAdmin(admin.ModelAdmin):
             qs = qs.filter(employer__broker=group)
             
         return qs
+
+    def get_ordering(self, request):
+        return ['employer__name']  # sort case insensitive
 
     def get_actions(self, request):
         actions = super(MedicalAdmin, self).get_actions(request)
