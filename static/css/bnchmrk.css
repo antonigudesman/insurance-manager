@@ -69,23 +69,23 @@
 
     .home-feature,
     .home-feature-alt {
-        height: 400px;
+        height: 340px;
     }
 
     .home-feature-text {
-        padding: 75px 200px 0 25px;
+        padding: 45px 175px 0 25px;
     }
 
     .home-feature-img {
-        padding: 22px 0 0 200px;
+        padding: 22px 0 0 150px;
     }
 
     .home-feature-text-alt {
-        padding: 75px 0 0 200px;
+        padding: 45px 0 0 230px;
     }
 
     .home-feature-img-alt {
-        padding: 22px 200px 0 0;
+        padding: 22px 150px 0 0;
     }
 
     .home-feature-text h6,
@@ -110,7 +110,7 @@
 
     .home-feature-text > ul > li,
     .home-feature-text-alt > ul > li {
-        font-size: 16px;
+        font-size: 17px;
         padding-bottom: 15px;
     }
 
@@ -265,6 +265,7 @@ a.filled-button,
 
 .home-header-text h2 span {
     font-weight: bold;
+    color: #33cc33;
 }
 
 .home-feature-alt {
@@ -282,24 +283,24 @@ a.filled-button,
     margin: 0;
 }
 
-.home-feature-text {
-    width: 60%;
-    float: right;
-}
-
-.home-feature-img {
-    width: 40%;
-    float: left;
-}
-
-.home-feature-text-alt {
-    width: 60%;
-    float: left;
-}
-
+.home-feature-img,
 .home-feature-img-alt {
-    width: 40%;
+    width: 30%;
+}
+
+.home-feature-text,
+.home-feature-text-alt {
+    width: 70%;
+}
+
+.home-feature-text,
+.home-feature-img-alt {
     float: right;
+}
+
+.home-feature-img,
+.home-feature-text-alt {
+    float: left;
 }
 
 .home-feature-img > img,

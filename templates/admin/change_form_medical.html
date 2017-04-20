@@ -96,194 +96,242 @@
 <fieldset class="module aligned ">
     <h2>{{ title }}</h2>  
     <table>
-        <col width="20%">
-        <col width="30%">
-        <col width="20%">
-        <col width="30%">
+        <col width="25%">
+        <col width="25%">
+        <col width="25%">
+        <col width="25%">
       <tbody>
         <tr>
-            <td colspan=2 {% if fieldset.form.title.errors %} class="errors"{% endif %}>{{ fieldset.form.title.errors }}{{ fieldset.form.title.label_tag }}</td>
-            <td colspan=2 {% if fieldset.form.title.errors %} class="errors"{% endif %}>{{ fieldset.form.title }}</td>
+            <td {% if fieldset.form.title.errors %} class="errors"{% endif %}>{{ fieldset.form.title.errors }}{{ fieldset.form.title.label_tag }}</td>
+            <td colspan="3" {% if fieldset.form.title.errors %} class="errors"{% endif %}>{{ fieldset.form.title }}</td>
         </tr>
         <tr>
             <td {% if fieldset.form.employer.errors %} class="errors"{% endif %}>{{ fieldset.form.employer.errors }}{{ fieldset.form.employer.label_tag }}</td>
             <td {% if fieldset.form.employer.errors %} class="errors"{% endif %}>{{ fieldset.form.employer }}</td>
             <td {% if fieldset.form.type.errors %} class="errors"{% endif %}>{{ fieldset.form.type.errors }}{{ fieldset.form.type.label_tag }}</td>
-            <td {% if fieldset.form.type.errors %} class="errors"{% endif %}>{{ fieldset.form.type }}</td>            
+            <td {% if fieldset.form.type.errors %} class="errors"{% endif %}>{{ fieldset.form.type }}</td>
+        </tr>
+        <tr>
+            <td colspan="2" class="change-header">In-Network Cost Share</td>    
+            <td colspan="2" class="change-header">Rx-Only Cost Share</td>        
         </tr>
         <tr>
             <td {% if fieldset.form.in_ded_single.errors %} class="errors"{% endif %}>{{ fieldset.form.in_ded_single.errors }}{{ fieldset.form.in_ded_single.label_tag }}</td>
-            <td {% if fieldset.form.in_ded_single.errors %} class="errors"{% endif %}>{{ fieldset.form.in_ded_single }}</td>
-            <td {% if fieldset.form.out_ded_single.errors %} class="errors"{% endif %}>{{ fieldset.form.out_ded_single.errors }}{{ fieldset.form.out_ded_single.label_tag }}</td>
-            <td {% if fieldset.form.out_ded_single.errors %} class="errors"{% endif %}>{{ fieldset.form.out_ded_single }}</td>                    
+            <td {% if fieldset.form.in_ded_single.errors %} class="errors"{% endif %}>{{ fieldset.form.in_ded_single }}</td> 
+            <td {% if fieldset.form.rx_ded_single.errors %} class="errors"{% endif %}>{{ fieldset.form.rx_ded_single.errors }}{{ fieldset.form.rx_ded_single.label_tag }}</td>
+            <td {% if fieldset.form.rx_ded_single.errors %} class="errors"{% endif %}>{{ fieldset.form.rx_ded_single }}</td>                 
         </tr>
         <tr>
             <td {% if fieldset.form.in_max_single.errors %} class="errors"{% endif %}>{{ fieldset.form.in_max_single.errors }}{{ fieldset.form.in_max_single.label_tag }}</td>
             <td {% if fieldset.form.in_max_single.errors %} class="errors"{% endif %}>{{ fieldset.form.in_max_single }}</td>
-            <td {% if fieldset.form.out_ded_family.errors %} class="errors"{% endif %}>{{ fieldset.form.out_ded_family.errors }}{{ fieldset.form.out_ded_family.label_tag }}</td>
-            <td {% if fieldset.form.out_ded_family.errors %} class="errors"{% endif %}>{{ fieldset.form.out_ded_family }}</td>
+            <td {% if fieldset.form.rx_ded_family.errors %} class="errors"{% endif %}>{{ fieldset.form.rx_ded_family.errors }}{{ fieldset.form.rx_ded_family.label_tag }}</td>
+            <td {% if fieldset.form.rx_ded_family.errors %} class="errors"{% endif %}>{{ fieldset.form.rx_ded_family }}</td>
         </tr>
         <tr>
             <td {% if fieldset.form.in_ded_family.errors %} class="errors"{% endif %}>{{ fieldset.form.in_ded_family.errors }}{{ fieldset.form.in_ded_family.label_tag }}</td>
-            <td {% if fieldset.form.in_ded_family.errors %} class="errors"{% endif %}>{{ fieldset.form.in_ded_family }}</td>
-            <td {% if fieldset.form.out_max_single.errors %} class="errors"{% endif %}>{{ fieldset.form.out_max_single.errors }}{{ fieldset.form.out_max_single.label_tag }}</td>
-            <td {% if fieldset.form.out_max_single.errors %} class="errors"{% endif %}>{{ fieldset.form.out_max_single }}</td>                                
+            <td {% if fieldset.form.in_ded_family.errors %} class="errors"{% endif %}>{{ fieldset.form.in_ded_family }}</td>   
+            <td {% if fieldset.form.rx_max_single.errors %} class="errors"{% endif %}>{{ fieldset.form.rx_max_single.errors }}{{ fieldset.form.rx_max_single.label_tag }}</td>
+            <td {% if fieldset.form.rx_max_single.errors %} class="errors"{% endif %}>{{ fieldset.form.rx_max_single }}</td>                            
         </tr>
         <tr>
             <td {% if fieldset.form.in_max_family.errors %} class="errors"{% endif %}>{{ fieldset.form.in_max_family.errors }}{{ fieldset.form.in_max_family.label_tag }}</td>
             <td {% if fieldset.form.in_max_family.errors %} class="errors"{% endif %}>{{ fieldset.form.in_max_family }}</td>
-            <td {% if fieldset.form.out_max_family.errors %} class="errors"{% endif %}>{{ fieldset.form.out_max_family.errors }}{{ fieldset.form.out_max_family.label_tag }}</td>
-            <td {% if fieldset.form.out_max_family.errors %} class="errors"{% endif %}>{{ fieldset.form.out_max_family }}</td>                         
+            <td {% if fieldset.form.rx_max_family.errors %} class="errors"{% endif %}>{{ fieldset.form.rx_max_family.errors }}{{ fieldset.form.rx_max_family.label_tag }}</td>
+            <td {% if fieldset.form.rx_max_family.errors %} class="errors"{% endif %}>{{ fieldset.form.rx_max_family }}</td>                         
         </tr>
         <tr>
             <td {% if fieldset.form.in_coin.errors %} class="errors"{% endif %}>{{ fieldset.form.in_coin.errors }}{{ fieldset.form.in_coin.label_tag }}</td>
             <td {% if fieldset.form.in_coin.errors %} class="errors"{% endif %}>{{ fieldset.form.in_coin }}</td>
+            <td {% if fieldset.form.rx_coin.errors %} class="errors"{% endif %}>{{ fieldset.form.rx_coin.errors }}{{ fieldset.form.rx_coin.label_tag }}</td>
+            <td {% if fieldset.form.rx_coin.errors %} class="errors"{% endif %}>{{ fieldset.form.rx_coin }}</td>  
+        </tr>
+        <tr>
+            <td colspan="4" class="change-header">Out-of-Network Cost Share</td>           
+        </tr>
+        <tr>
+            <td {% if fieldset.form.out_ded_single.errors %} class="errors"{% endif %}>{{ fieldset.form.out_ded_single.errors }}{{ fieldset.form.out_ded_single.label_tag }}</td>
+            <td {% if fieldset.form.out_ded_single.errors %} class="errors"{% endif %}>{{ fieldset.form.out_ded_single }}</td>         
+            <td {% if fieldset.form.ded_cross.errors %} class="errors"{% endif %}>{{ fieldset.form.ded_cross.errors }}{{ fieldset.form.ded_cross.label_tag }}</td>
+            <td {% if fieldset.form.ded_cross.errors %} class="errors"{% endif %}>{{ fieldset.form.ded_cross }}</td>                    
+        </tr>
+        <tr>
+            
+            <td {% if fieldset.form.out_ded_family.errors %} class="errors"{% endif %}>{{ fieldset.form.out_ded_family.errors }}{{ fieldset.form.out_ded_family.label_tag }}</td>
+            <td {% if fieldset.form.out_ded_family.errors %} class="errors"{% endif %}>{{ fieldset.form.out_ded_family }}</td>
+            <td {% if fieldset.form.max_cross.errors %} class="errors"{% endif %}>{{ fieldset.form.max_cross.errors }}{{ fieldset.form.max_cross.label_tag }}</td>
+            <td {% if fieldset.form.max_cross.errors %} class="errors"{% endif %}>{{ fieldset.form.max_cross }}</td> 
+        </tr>
+        <tr>
+            
+            <td {% if fieldset.form.out_max_single.errors %} class="errors"{% endif %}>{{ fieldset.form.out_max_single.errors }}{{ fieldset.form.out_max_single.label_tag }}</td>
+            <td {% if fieldset.form.out_max_single.errors %} class="errors"{% endif %}>{{ fieldset.form.out_max_single }}</td> 
+            <td></td>
+            <td></td>                               
+        </tr>
+        <tr>
+            
+            <td {% if fieldset.form.out_max_family.errors %} class="errors"{% endif %}>{{ fieldset.form.out_max_family.errors }}{{ fieldset.form.out_max_family.label_tag }}</td>
+            <td {% if fieldset.form.out_max_family.errors %} class="errors"{% endif %}>{{ fieldset.form.out_max_family }}</td>    
+            <td></td>
+            <td></td>                      
+        </tr>
+        <tr>
             <td {% if fieldset.form.out_coin.errors %} class="errors"{% endif %}>{{ fieldset.form.out_coin.errors }}{{ fieldset.form.out_coin.label_tag }}</td>
-            <td {% if fieldset.form.out_coin.errors %} class="errors"{% endif %}>{{ fieldset.form.out_coin }}</td>  
+            <td {% if fieldset.form.out_coin.errors %} class="errors"{% endif %}>{{ fieldset.form.out_coin }}</td>
+            <td></td>
+            <td></td>
         </tr>
         <tr>
-            <td {% if fieldset.form.rx_ded_single.errors %} class="errors"{% endif %}>{{ fieldset.form.rx_ded_single.errors }}{{ fieldset.form.rx_ded_single.label_tag }}</td>
-            <td {% if fieldset.form.rx_ded_single.errors %} class="errors"{% endif %}>{{ fieldset.form.rx_ded_single }}</td>
-            <td {% if fieldset.form.rx_max_single.errors %} class="errors"{% endif %}>{{ fieldset.form.rx_max_single.errors }}{{ fieldset.form.rx_max_single.label_tag }}</td>
-            <td {% if fieldset.form.rx_max_single.errors %} class="errors"{% endif %}>{{ fieldset.form.rx_max_single }}</td>                           
-        </tr>
-        <tr>
-            <td {% if fieldset.form.rx_ded_family.errors %} class="errors"{% endif %}>{{ fieldset.form.rx_ded_family.errors }}{{ fieldset.form.rx_ded_family.label_tag }}</td>
-            <td {% if fieldset.form.rx_ded_family.errors %} class="errors"{% endif %}>{{ fieldset.form.rx_ded_family }}</td>
-            <td {% if fieldset.form.rx_max_family.errors %} class="errors"{% endif %}>{{ fieldset.form.rx_max_family.errors }}{{ fieldset.form.rx_max_family.label_tag }}</td>
-            <td {% if fieldset.form.rx_max_family.errors %} class="errors"{% endif %}>{{ fieldset.form.rx_max_family }}</td>  
+            <td colspan="4" class="change-header">Office/Facility Visits</td>           
         </tr>
         <tr>
             <td {% if fieldset.form.pcp_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.pcp_ded_apply.errors }}{{ fieldset.form.pcp_ded_apply.label_tag }}</td>
-            <td {% if fieldset.form.pcp_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.pcp_ded_apply }}</td>        
-            <td {% if fieldset.form.ded_cross.errors %} class="errors"{% endif %}>{{ fieldset.form.ded_cross.errors }}{{ fieldset.form.ded_cross.label_tag }}</td>
-            <td {% if fieldset.form.ded_cross.errors %} class="errors"{% endif %}>{{ fieldset.form.ded_cross }}</td> 
+            <td {% if fieldset.form.pcp_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.pcp_ded_apply }}</td> 
+            <td {% if fieldset.form.sp_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.sp_ded_apply.errors }}{{ fieldset.form.sp_ded_apply.label_tag }}</td>
+            <td {% if fieldset.form.sp_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.sp_ded_apply }}</td>
         </tr>
         <tr>
             <td {% if fieldset.form.pcp_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.pcp_copay.errors }}{{ fieldset.form.pcp_copay.label_tag }}</td>
-            <td {% if fieldset.form.pcp_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.pcp_copay }}</td>
-            <td {% if fieldset.form.max_cross.errors %} class="errors"{% endif %}>{{ fieldset.form.max_cross.errors }}{{ fieldset.form.max_cross.label_tag }}</td>
-            <td {% if fieldset.form.max_cross.errors %} class="errors"{% endif %}>{{ fieldset.form.max_cross }}</td>      
-        </tr>
-        <tr>
-            <td {% if fieldset.form.sp_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.sp_ded_apply.errors }}{{ fieldset.form.sp_ded_apply.label_tag }}</td>
-            <td {% if fieldset.form.sp_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.sp_ded_apply }}</td>
-            <td {% if fieldset.form.rx1_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.rx1_ded_apply.errors }}{{ fieldset.form.rx1_ded_apply.label_tag }}</td>
-            <td {% if fieldset.form.rx1_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.rx1_ded_apply }}</td>                           
-        </tr>        
-        <tr>
+            <td {% if fieldset.form.pcp_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.pcp_copay }}</td>     
             <td {% if fieldset.form.sp_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.sp_copay.errors }}{{ fieldset.form.sp_copay.label_tag }}</td>
             <td {% if fieldset.form.sp_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.sp_copay }}</td>
-            <td {% if fieldset.form.rx1_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.rx1_copay.errors }}{{ fieldset.form.rx1_copay.label_tag }}</td>
-            <td {% if fieldset.form.rx1_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.rx1_copay }}</td>                           
-        </tr>  
+        </tr>
         <tr>
             <td {% if fieldset.form.er_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.er_ded_apply.errors }}{{ fieldset.form.er_ded_apply.label_tag }}</td>
-            <td {% if fieldset.form.er_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.er_ded_apply }}</td>
-            <td {% if fieldset.form.rx1_mail_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.rx1_mail_copay.errors }}{{ fieldset.form.rx1_mail_copay.label_tag }}</td>
-            <td {% if fieldset.form.rx1_mail_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.rx1_mail_copay }}</td>                           
+            <td {% if fieldset.form.er_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.er_ded_apply }}</td>  
+            <td {% if fieldset.form.uc_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.uc_ded_apply.errors }}{{ fieldset.form.uc_ded_apply.label_tag }}</td>
+            <td {% if fieldset.form.uc_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.uc_ded_apply }}</td>                    
         </tr>  
         <tr>
             <td {% if fieldset.form.er_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.er_copay.errors }}{{ fieldset.form.er_copay.label_tag }}</td>
             <td {% if fieldset.form.er_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.er_copay }}</td>
-            <td {% if fieldset.form.rx2_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.rx2_ded_apply.errors }}{{ fieldset.form.rx2_ded_apply.label_tag }}</td>
-            <td {% if fieldset.form.rx2_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.rx2_ded_apply }}</td>                           
-        </tr>  
-        <tr>
-            <td {% if fieldset.form.uc_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.uc_ded_apply.errors }}{{ fieldset.form.uc_ded_apply.label_tag }}</td>
-            <td {% if fieldset.form.uc_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.uc_ded_apply }}</td>
-            <td {% if fieldset.form.rx2_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.rx2_copay.errors }}{{ fieldset.form.rx2_copay.label_tag }}</td>
-            <td {% if fieldset.form.rx2_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.rx2_copay }}</td>                           
-        </tr>  
-        <tr>
             <td {% if fieldset.form.uc_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.uc_copay.errors }}{{ fieldset.form.uc_copay.label_tag }}</td>
             <td {% if fieldset.form.uc_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.uc_copay }}</td>
-            <td {% if fieldset.form.rx2_mail_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.rx2_mail_copay.errors }}{{ fieldset.form.rx2_mail_copay.label_tag }}</td>
-            <td {% if fieldset.form.rx2_mail_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.rx2_mail_copay }}</td>                           
-        </tr>  
-        <tr>
-            <td {% if fieldset.form.lx_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.lx_ded_apply.errors }}{{ fieldset.form.lx_ded_apply.label_tag }}</td>
-            <td {% if fieldset.form.lx_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.lx_ded_apply }}</td>
-            <td {% if fieldset.form.rx3_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.rx3_ded_apply.errors }}{{ fieldset.form.rx3_ded_apply.label_tag }}</td>
-            <td {% if fieldset.form.rx3_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.rx3_ded_apply }}</td>                           
-        </tr>  
-        <tr>
-            <td {% if fieldset.form.lx_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.lx_copay.errors }}{{ fieldset.form.lx_copay.label_tag }}</td>
-            <td {% if fieldset.form.lx_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.lx_copay }}</td>
-            <td {% if fieldset.form.rx3_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.rx3_copay.errors }}{{ fieldset.form.rx3_copay.label_tag }}</td>
-            <td {% if fieldset.form.rx3_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.rx3_copay }}</td>                           
         </tr>  
         <tr>
             <td {% if fieldset.form.ip_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.ip_ded_apply.errors }}{{ fieldset.form.ip_ded_apply.label_tag }}</td>
             <td {% if fieldset.form.ip_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.ip_ded_apply }}</td>
-            <td {% if fieldset.form.rx3_mail_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.rx3_mail_copay.errors }}{{ fieldset.form.rx3_mail_copay.label_tag }}</td>
-            <td {% if fieldset.form.rx3_mail_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.rx3_mail_copay }}</td>                           
-        </tr>  
+            <td {% if fieldset.form.op_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.op_ded_apply.errors }}{{ fieldset.form.op_ded_apply.label_tag }}</td>
+            <td {% if fieldset.form.op_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.op_ded_apply }}</td>                          
+        </tr> 
         <tr>
             <td {% if fieldset.form.ip_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.ip_copay.errors }}{{ fieldset.form.ip_copay.label_tag }}</td>
             <td {% if fieldset.form.ip_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.ip_copay }}</td>
-            <td {% if fieldset.form.rx4_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.rx4_ded_apply.errors }}{{ fieldset.form.rx4_ded_apply.label_tag }}</td>
-            <td {% if fieldset.form.rx4_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.rx4_ded_apply }}</td>                           
-        </tr>  
-        <tr>
-            <td {% if fieldset.form.op_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.op_ded_apply.errors }}{{ fieldset.form.op_ded_apply.label_tag }}</td>
-            <td {% if fieldset.form.op_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.op_ded_apply }}</td>
-            <td {% if fieldset.form.rx4_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.rx4_copay.errors }}{{ fieldset.form.rx4_copay.label_tag }}</td>
-            <td {% if fieldset.form.rx4_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.rx4_copay }}</td>                           
-        </tr>  
-        <tr>
             <td {% if fieldset.form.op_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.op_copay.errors }}{{ fieldset.form.op_copay.label_tag }}</td>
             <td {% if fieldset.form.op_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.op_copay }}</td>
+        </tr>
+        <tr>
+            <td {% if fieldset.form.lx_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.lx_ded_apply.errors }}{{ fieldset.form.lx_ded_apply.label_tag }}</td>
+            <td {% if fieldset.form.lx_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.lx_ded_apply }}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td {% if fieldset.form.lx_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.lx_copay.errors }}{{ fieldset.form.lx_copay.label_tag }}</td>
+            <td {% if fieldset.form.lx_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.lx_copay }}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="4" class="change-header">Rx Cost Share</td>           
+        </tr>
+        <tr>
+            <td {% if fieldset.form.rx1_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.rx1_ded_apply.errors }}{{ fieldset.form.rx1_ded_apply.label_tag }}</td>
+            <td {% if fieldset.form.rx1_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.rx1_ded_apply }}</td>                           
+            <td {% if fieldset.form.rx2_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.rx2_ded_apply.errors }}{{ fieldset.form.rx2_ded_apply.label_tag }}</td>
+            <td {% if fieldset.form.rx2_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.rx2_ded_apply }}</td>                           
+        </tr>        
+        <tr>
+            <td {% if fieldset.form.rx1_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.rx1_copay.errors }}{{ fieldset.form.rx1_copay.label_tag }}</td>
+            <td {% if fieldset.form.rx1_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.rx1_copay }}</td>                           
+            <td {% if fieldset.form.rx2_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.rx2_copay.errors }}{{ fieldset.form.rx2_copay.label_tag }}</td>
+            <td {% if fieldset.form.rx2_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.rx2_copay }}</td>                           
+        </tr>  
+        <tr>
+            <td {% if fieldset.form.rx1_mail_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.rx1_mail_copay.errors }}{{ fieldset.form.rx1_mail_copay.label_tag }}</td>
+            <td {% if fieldset.form.rx1_mail_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.rx1_mail_copay }}</td> 
+            <td {% if fieldset.form.rx2_mail_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.rx2_mail_copay.errors }}{{ fieldset.form.rx2_mail_copay.label_tag }}</td>
+            <td {% if fieldset.form.rx2_mail_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.rx2_mail_copay }}</td>                           
+        </tr>  
+        <tr>
+            
+            <td {% if fieldset.form.rx3_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.rx3_ded_apply.errors }}{{ fieldset.form.rx3_ded_apply.label_tag }}</td>
+            <td {% if fieldset.form.rx3_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.rx3_ded_apply }}</td>   
+            <td {% if fieldset.form.rx4_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.rx4_ded_apply.errors }}{{ fieldset.form.rx4_ded_apply.label_tag }}</td>
+            <td {% if fieldset.form.rx4_ded_apply.errors %} class="errors"{% endif %}>{{ fieldset.form.rx4_ded_apply }}</td>                         
+        </tr>  
+        <tr>
+            <td {% if fieldset.form.rx3_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.rx3_copay.errors }}{{ fieldset.form.rx3_copay.label_tag }}</td>
+            <td {% if fieldset.form.rx3_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.rx3_copay }}</td> 
+            <td {% if fieldset.form.rx4_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.rx4_copay.errors }}{{ fieldset.form.rx4_copay.label_tag }}</td>
+            <td {% if fieldset.form.rx4_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.rx4_copay }}</td>        
+        </tr>  
+        <tr>
+            <td {% if fieldset.form.rx3_mail_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.rx3_mail_copay.errors }}{{ fieldset.form.rx3_mail_copay.label_tag }}</td>
+            <td {% if fieldset.form.rx3_mail_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.rx3_mail_copay }}</td>                     
             <td {% if fieldset.form.rx4_mail_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.rx4_mail_copay.errors }}{{ fieldset.form.rx4_mail_copay.label_tag }}</td>
             <td {% if fieldset.form.rx4_mail_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.rx4_mail_copay }}</td>                           
         </tr>  
         <tr>
-            <td {% if fieldset.form.t1_ee.errors %} class="errors"{% endif %}>{{ fieldset.form.t1_ee.errors }}{{ fieldset.form.t1_ee.label_tag }}</td>
-            <td {% if fieldset.form.t1_ee.errors %} class="errors"{% endif %}>{{ fieldset.form.t1_ee }}</td>
+            <td colspan="2" class="change-header">Gross Annual Rates</td>  
+            <td colspan="2" class="change-header">Employee Annual Rates</td>          
+        </tr>
+        <tr>
             <td {% if fieldset.form.t1_gross.errors %} class="errors"{% endif %}>{{ fieldset.form.t1_gross.errors }}{{ fieldset.form.t1_gross.label_tag }}</td>
-            <td {% if fieldset.form.t1_gross.errors %} class="errors"{% endif %}>{{ fieldset.form.t1_gross }}</td>                           
+            <td {% if fieldset.form.t1_gross.errors %} class="errors"{% endif %}>{{ fieldset.form.t1_gross }}</td>
+            <td {% if fieldset.form.t1_ee.errors %} class="errors"{% endif %}>{{ fieldset.form.t1_ee.errors }}{{ fieldset.form.t1_ee.label_tag }}</td>
+            <td {% if fieldset.form.t1_ee.errors %} class="errors"{% endif %}>{{ fieldset.form.t1_ee }}</td>                         
         </tr>                  
         <tr>
-            <td {% if fieldset.form.t2_ee.errors %} class="errors"{% endif %}>{{ fieldset.form.t2_ee.errors }}{{ fieldset.form.t2_ee.label_tag }}</td>
-            <td {% if fieldset.form.t2_ee.errors %} class="errors"{% endif %}>{{ fieldset.form.t2_ee }}</td>
             <td {% if fieldset.form.t2_gross.errors %} class="errors"{% endif %}>{{ fieldset.form.t2_gross.errors }}{{ fieldset.form.t2_gross.label_tag }}</td>
-            <td {% if fieldset.form.t2_gross.errors %} class="errors"{% endif %}>{{ fieldset.form.t2_gross }}</td>                           
+            <td {% if fieldset.form.t2_gross.errors %} class="errors"{% endif %}>{{ fieldset.form.t2_gross }}</td>
+            <td {% if fieldset.form.t2_ee.errors %} class="errors"{% endif %}>{{ fieldset.form.t2_ee.errors }}{{ fieldset.form.t2_ee.label_tag }}</td>
+            <td {% if fieldset.form.t2_ee.errors %} class="errors"{% endif %}>{{ fieldset.form.t2_ee }}</td>                        
         </tr>  
         <tr>
-            <td {% if fieldset.form.t3_ee.errors %} class="errors"{% endif %}>{{ fieldset.form.t3_ee.errors }}{{ fieldset.form.t3_ee.label_tag }}</td>
-            <td {% if fieldset.form.t3_ee.errors %} class="errors"{% endif %}>{{ fieldset.form.t3_ee }}</td>
             <td {% if fieldset.form.t3_gross.errors %} class="errors"{% endif %}>{{ fieldset.form.t3_gross.errors }}{{ fieldset.form.t3_gross.label_tag }}</td>
-            <td {% if fieldset.form.t3_gross.errors %} class="errors"{% endif %}>{{ fieldset.form.t3_gross }}</td>                           
+            <td {% if fieldset.form.t3_gross.errors %} class="errors"{% endif %}>{{ fieldset.form.t3_gross }}</td>
+            <td {% if fieldset.form.t3_ee.errors %} class="errors"{% endif %}>{{ fieldset.form.t3_ee.errors }}{{ fieldset.form.t3_ee.label_tag }}</td>
+            <td {% if fieldset.form.t3_ee.errors %} class="errors"{% endif %}>{{ fieldset.form.t3_ee }}</td>                           
         </tr>  
         <tr>
-            <td {% if fieldset.form.t4_ee.errors %} class="errors"{% endif %}>{{ fieldset.form.t4_ee.errors }}{{ fieldset.form.t4_ee.label_tag }}</td>
-            <td {% if fieldset.form.t4_ee.errors %} class="errors"{% endif %}>{{ fieldset.form.t4_ee }}</td>
             <td {% if fieldset.form.t4_gross.errors %} class="errors"{% endif %}>{{ fieldset.form.t4_gross.errors }}{{ fieldset.form.t4_gross.label_tag }}</td>
-            <td {% if fieldset.form.t4_gross.errors %} class="errors"{% endif %}>{{ fieldset.form.t4_gross }}</td>                           
-        </tr>  
+            <td {% if fieldset.form.t4_gross.errors %} class="errors"{% endif %}>{{ fieldset.form.t4_gross }}</td>
+            <td {% if fieldset.form.t4_ee.errors %} class="errors"{% endif %}>{{ fieldset.form.t4_ee.errors }}{{ fieldset.form.t4_ee.label_tag }}</td>
+            <td {% if fieldset.form.t4_ee.errors %} class="errors"{% endif %}>{{ fieldset.form.t4_ee }}</td>                          
+        </tr> 
+        <tr>
+            <td {% if fieldset.form.age_rated.errors %} class="errors"{% endif %}>{{ fieldset.form.age_rated.errors }}{{ fieldset.form.age_rated.label_tag }}</td>
+            <td {% if fieldset.form.age_rated.errors %} class="errors"{% endif %}>{{ fieldset.form.age_rated }}</td> 
+            <td>Salary Banded</td>
+            <td>Convert from Strategy</td>
+        </tr>
+        <tr>
+            <td colspan="4" class="change-header">CDHP Employer-Provided Funding</td>           
+        </tr> 
         <tr>
             <td {% if fieldset.form.t1_ercdhp.errors %} class="errors"{% endif %}>{{ fieldset.form.t1_ercdhp.errors }}{{ fieldset.form.t1_ercdhp.label_tag }}</td>
             <td {% if fieldset.form.t1_ercdhp.errors %} class="errors"{% endif %}>{{ fieldset.form.t1_ercdhp }}</td>
             <td {% if fieldset.form.hsa.errors %} class="errors"{% endif %}>{{ fieldset.form.hsa.errors }}{{ fieldset.form.hsa.label_tag }}</td>
-            <td {% if fieldset.form.hsa.errors %} class="errors"{% endif %}>{{ fieldset.form.hsa }}</td>                           
+            <td {% if fieldset.form.hsa.errors %} class="errors"{% endif %}>{{ fieldset.form.hsa }}</td>
         </tr>  
         <tr>
             <td {% if fieldset.form.t2_ercdhp.errors %} class="errors"{% endif %}>{{ fieldset.form.t2_ercdhp.errors }}{{ fieldset.form.t2_ercdhp.label_tag }}</td>
             <td {% if fieldset.form.t2_ercdhp.errors %} class="errors"{% endif %}>{{ fieldset.form.t2_ercdhp }}</td>
             <td {% if fieldset.form.hra.errors %} class="errors"{% endif %}>{{ fieldset.form.hra.errors }}{{ fieldset.form.hra.label_tag }}</td>
-            <td {% if fieldset.form.hra.errors %} class="errors"{% endif %}>{{ fieldset.form.hra }}</td>                           
+            <td {% if fieldset.form.hra.errors %} class="errors"{% endif %}>{{ fieldset.form.hra }}</td>
         </tr>  
         <tr>
             <td {% if fieldset.form.t3_ercdhp.errors %} class="errors"{% endif %}>{{ fieldset.form.t3_ercdhp.errors }}{{ fieldset.form.t3_ercdhp.label_tag }}</td>
-            <td {% if fieldset.form.t3_ercdhp.errors %} class="errors"{% endif %}>{{ fieldset.form.t3_ercdhp }}</td>
-            <td {% if fieldset.form.age_rated.errors %} class="errors"{% endif %}>{{ fieldset.form.age_rated.errors }}{{ fieldset.form.age_rated.label_tag }}</td>
-            <td {% if fieldset.form.age_rated.errors %} class="errors"{% endif %}>{{ fieldset.form.age_rated }}</td>                           
+            <td {% if fieldset.form.t3_ercdhp.errors %} class="errors"{% endif %}>{{ fieldset.form.t3_ercdhp }}</td> 
+            <td></td>                        
+            <td></td>                         
         </tr>  
          <tr>
             <td {% if fieldset.form.t4_ercdhp.errors %} class="errors"{% endif %}>{{ fieldset.form.t4_ercdhp.errors }}{{ fieldset.form.t4_ercdhp.label_tag }}</td>
             <td {% if fieldset.form.t4_ercdhp.errors %} class="errors"{% endif %}>{{ fieldset.form.t4_ercdhp }}</td>
-            <td {% if fieldset.form.rx_coin.errors %} class="errors"{% endif %}>{{ fieldset.form.rx_coin.errors }}{{ fieldset.form.rx_coin.label_tag }}</td>
-            <td {% if fieldset.form.rx_coin.errors %} class="errors"{% endif %}>{{ fieldset.form.rx_coin }}</td>                           
+            <td></td>                        
+            <td></td>
         </tr>  
       </tbody>
     </table>

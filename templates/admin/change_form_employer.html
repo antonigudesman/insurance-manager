@@ -105,26 +105,35 @@
 <fieldset class="module aligned ">
     <h2>Change Employer</h2>  
     <table>
-        <col width="20%">
-        <col width="30%">
-        <col width="20%">
-        <col width="30%">
+        <col width="25%">
+        <col width="25%">
+        <col width="25%">
+        <col width="25%">
       <tbody>
         <tr>
-            <td colspan=2 {% if fieldset.form.name.errors %} class="errors"{% endif %}>{{ fieldset.form.name.errors }}{{ fieldset.form.name.label_tag }}</td>
-            <td colspan=2 {% if fieldset.form.name.errors %} class="errors"{% endif %}>{{ fieldset.form.name }}</td>
+            <td {% if fieldset.form.name.errors %} class="errors"{% endif %}>{{ fieldset.form.name.errors }}{{ fieldset.form.name.label_tag }}</td>
+            <td colspan=3 {% if fieldset.form.name.errors %} class="errors"{% endif %}>{{ fieldset.form.name }}</td>
         </tr>
         <tr>
             <td {% if fieldset.form.broker.errors %} class="errors"{% endif %}>{{ fieldset.form.broker.errors }}{{ fieldset.form.broker.label_tag }}</td>
             <td {% if fieldset.form.broker.errors %} class="errors"{% endif %}>{{ fieldset.form.broker }}</td>
-            <td {% if fieldset.form.state.errors %} class="errors"{% endif %}>{{ fieldset.form.state.errors }}{{ fieldset.form.state.label_tag }}</td>
-            <td {% if fieldset.form.state.errors %} class="errors"{% endif %}>{{ fieldset.form.state }}</td>            
+            <td>Renewal Date</td>
+            <td>Need to Add Field</td>           
+        </tr>
+        <tr>
+            <td>User</td>
+            <td>Need to Add Field</td> 
+            <td {% if fieldset.form.size.errors %} class="errors"{% endif %}>{{ fieldset.form.size.errors }}{{ fieldset.form.size.label_tag }}</td>
+            <td {% if fieldset.form.size.errors %} class="errors"{% endif %}>{{ fieldset.form.size }}</td>          
+        </tr>
+        <tr>
+            <td colspan="4" class="change-header">Industry Data Points</td>
         </tr>
         <tr>
             <td {% if fieldset.form.industry1.errors %} class="errors"{% endif %}>{{ fieldset.form.industry1.errors }}{{ fieldset.form.industry1.label_tag }}</td>
             <td {% if fieldset.form.industry1.errors %} class="errors"{% endif %}>{{ fieldset.form.industry1 }}</td>
-            <td {% if fieldset.form.size.errors %} class="errors"{% endif %}>{{ fieldset.form.size.errors }}{{ fieldset.form.size.label_tag }}</td>
-            <td {% if fieldset.form.size.errors %} class="errors"{% endif %}>{{ fieldset.form.size }}</td>                    
+            <td {% if fieldset.form.govt_contractor.errors %} class="errors"{% endif %}>{{ fieldset.form.govt_contractor.errors }}{{ fieldset.form.govt_contractor.label_tag }}</td>
+            <td {% if fieldset.form.govt_contractor.errors %} class="errors"{% endif %}>{{ fieldset.form.govt_contractor }}</td>
         </tr>
         <tr>
             <td {% if fieldset.form.industry2.errors %} class="errors"{% endif %}>{{ fieldset.form.industry2.errors }}{{ fieldset.form.industry2.label_tag }}</td>
@@ -135,51 +144,91 @@
         <tr>
             <td {% if fieldset.form.industry3.errors %} class="errors"{% endif %}>{{ fieldset.form.industry3.errors }}{{ fieldset.form.industry3.label_tag }}</td>
             <td {% if fieldset.form.industry3.errors %} class="errors"{% endif %}>{{ fieldset.form.industry3 }}</td>
-            <td {% if fieldset.form.govt_contractor.errors %} class="errors"{% endif %}>{{ fieldset.form.govt_contractor.errors }}{{ fieldset.form.govt_contractor.label_tag }}</td>
-            <td {% if fieldset.form.govt_contractor.errors %} class="errors"{% endif %}>{{ fieldset.form.govt_contractor }}</td>                                
+            <td></td>
+            <td></td>
         </tr>
         <tr>
-            <td {% if fieldset.form.med_count.errors %} class="errors"{% endif %}>{{ fieldset.form.med_count.errors }}{{ fieldset.form.med_count.label_tag }}</td>
-            <td {% if fieldset.form.med_count.errors %} class="errors"{% endif %}>{{ fieldset.form.med_count }}</td>
+            <td colspan="4" class="change-header">Regional Data Points</td>
+        </tr>
+        <tr>
             <td {% if fieldset.form.new_england.errors %} class="errors"{% endif %}>{{ fieldset.form.new_england.errors }}{{ fieldset.form.new_england.label_tag }}</td>
-            <td {% if fieldset.form.new_england.errors %} class="errors"{% endif %}>{{ fieldset.form.new_england }}</td>                         
-        </tr>
-        <tr>
-            <td {% if fieldset.form.den_count.errors %} class="errors"{% endif %}>{{ fieldset.form.den_count.errors }}{{ fieldset.form.den_count.label_tag }}</td>
-            <td {% if fieldset.form.den_count.errors %} class="errors"{% endif %}>{{ fieldset.form.den_count }}</td>
+            <td {% if fieldset.form.new_england.errors %} class="errors"{% endif %}>{{ fieldset.form.new_england }}</td>  
             <td {% if fieldset.form.mid_atlantic.errors %} class="errors"{% endif %}>{{ fieldset.form.mid_atlantic.errors }}{{ fieldset.form.mid_atlantic.label_tag }}</td>
-            <td {% if fieldset.form.mid_atlantic.errors %} class="errors"{% endif %}>{{ fieldset.form.mid_atlantic }}</td>  
+            <td {% if fieldset.form.mid_atlantic.errors %} class="errors"{% endif %}>{{ fieldset.form.mid_atlantic }}</td>                         
         </tr>
         <tr>
-            <td {% if fieldset.form.vis_count.errors %} class="errors"{% endif %}>{{ fieldset.form.vis_count.errors }}{{ fieldset.form.vis_count.label_tag }}</td>
-            <td {% if fieldset.form.vis_count.errors %} class="errors"{% endif %}>{{ fieldset.form.vis_count }}</td>
+            <td {% if fieldset.form.south_cental.errors %} class="errors"{% endif %}>{{ fieldset.form.south_cental.errors }}{{ fieldset.form.south_cental.label_tag }}</td>
+            <td {% if fieldset.form.south_cental.errors %} class="errors"{% endif %}>{{ fieldset.form.south_cental }}</td>  
             <td {% if fieldset.form.south_atlantic.errors %} class="errors"{% endif %}>{{ fieldset.form.south_atlantic.errors }}{{ fieldset.form.south_atlantic.label_tag }}</td>
             <td {% if fieldset.form.south_atlantic.errors %} class="errors"{% endif %}>{{ fieldset.form.south_atlantic }}</td>                           
         </tr>
         <tr>
-            <td {% if fieldset.form.life_count.errors %} class="errors"{% endif %}>{{ fieldset.form.life_count.errors }}{{ fieldset.form.life_count.label_tag }}</td>
-            <td {% if fieldset.form.life_count.errors %} class="errors"{% endif %}>{{ fieldset.form.life_count }}</td>
-            <td {% if fieldset.form.south_cental.errors %} class="errors"{% endif %}>{{ fieldset.form.south_cental.errors }}{{ fieldset.form.south_cental.label_tag }}</td>
-            <td {% if fieldset.form.south_cental.errors %} class="errors"{% endif %}>{{ fieldset.form.south_cental }}</td>  
-        </tr>
-        <tr>
-            <td {% if fieldset.form.std_count.errors %} class="errors"{% endif %}>{{ fieldset.form.std_count.errors }}{{ fieldset.form.std_count.label_tag }}</td>
-            <td {% if fieldset.form.std_count.errors %} class="errors"{% endif %}>{{ fieldset.form.std_count }}</td>        
             <td {% if fieldset.form.east_central.errors %} class="errors"{% endif %}>{{ fieldset.form.east_central.errors }}{{ fieldset.form.east_central.label_tag }}</td>
             <td {% if fieldset.form.east_central.errors %} class="errors"{% endif %}>{{ fieldset.form.east_central }}</td> 
-        </tr>
-        <tr>
-            <td {% if fieldset.form.ltd_count.errors %} class="errors"{% endif %}>{{ fieldset.form.ltd_count.errors }}{{ fieldset.form.ltd_count.label_tag }}</td>
-            <td {% if fieldset.form.ltd_count.errors %} class="errors"{% endif %}>{{ fieldset.form.ltd_count }}</td>
             <td {% if fieldset.form.west_central.errors %} class="errors"{% endif %}>{{ fieldset.form.west_central.errors }}{{ fieldset.form.west_central.label_tag }}</td>
-            <td {% if fieldset.form.west_central.errors %} class="errors"{% endif %}>{{ fieldset.form.west_central }}</td>      
+            <td {% if fieldset.form.west_central.errors %} class="errors"{% endif %}>{{ fieldset.form.west_central }}</td>  
         </tr>
         <tr>
-            <td {% if fieldset.form.pacific.errors %} class="errors"{% endif %}>{{ fieldset.form.pacific.errors }}{{ fieldset.form.pacific.label_tag }}</td>
-            <td {% if fieldset.form.pacific.errors %} class="errors"{% endif %}>{{ fieldset.form.pacific }}</td>
             <td {% if fieldset.form.mountain.errors %} class="errors"{% endif %}>{{ fieldset.form.mountain.errors }}{{ fieldset.form.mountain.label_tag }}</td>
-            <td {% if fieldset.form.mountain.errors %} class="errors"{% endif %}>{{ fieldset.form.mountain }}</td>                           
-        </tr>        
+            <td {% if fieldset.form.mountain.errors %} class="errors"{% endif %}>{{ fieldset.form.mountain }}</td>
+            <td {% if fieldset.form.pacific.errors %} class="errors"{% endif %}>{{ fieldset.form.pacific.errors }}{{ fieldset.form.pacific.label_tag }}</td>
+            <td {% if fieldset.form.pacific.errors %} class="errors"{% endif %}>{{ fieldset.form.pacific }}</td>                           
+        </tr> 
+        <tr>
+            <td colspan="4" class="change-header">Plan Counts</td>
+        </tr>
+        <tr>
+            <td {% if fieldset.form.med_count.errors %} class="errors"{% endif %}>{{ fieldset.form.med_count.errors }}{{ fieldset.form.med_count.label_tag }}</td>
+            <td {% if fieldset.form.med_count.errors %} class="errors"{% endif %}>{{ fieldset.form.med_count }}</td>
+            <td {% if fieldset.form.den_count.errors %} class="errors"{% endif %}>{{ fieldset.form.den_count.errors }}{{ fieldset.form.den_count.label_tag }}</td>
+            <td {% if fieldset.form.den_count.errors %} class="errors"{% endif %}>{{ fieldset.form.den_count }}</td>
+        </tr>
+        <tr>
+            <td {% if fieldset.form.vis_count.errors %} class="errors"{% endif %}>{{ fieldset.form.vis_count.errors }}{{ fieldset.form.vis_count.label_tag }}</td>
+            <td {% if fieldset.form.vis_count.errors %} class="errors"{% endif %}>{{ fieldset.form.vis_count }}</td>
+            <td {% if fieldset.form.life_count.errors %} class="errors"{% endif %}>{{ fieldset.form.life_count.errors }}{{ fieldset.form.life_count.label_tag }}</td>
+            <td {% if fieldset.form.life_count.errors %} class="errors"{% endif %}>{{ fieldset.form.life_count }}</td>
+        </tr>
+        
+        <tr>
+            <td {% if fieldset.form.std_count.errors %} class="errors"{% endif %}>{{ fieldset.form.std_count.errors }}{{ fieldset.form.std_count.label_tag }}</td>
+            <td {% if fieldset.form.std_count.errors %} class="errors"{% endif %}>{{ fieldset.form.std_count }}</td>  
+            <td {% if fieldset.form.ltd_count.errors %} class="errors"{% endif %}>{{ fieldset.form.ltd_count.errors }}{{ fieldset.form.ltd_count.label_tag }}</td>
+            <td {% if fieldset.form.ltd_count.errors %} class="errors"{% endif %}>{{ fieldset.form.ltd_count }}</td>     
+        </tr>
+        <tr>
+            <td colspan="4" class="change-header">Demographics</td>           
+        </tr>
+        <tr>
+            <td>Address Line 1</td>
+            <td>Need to Add Field</td> 
+            <td>Employer URL</td>
+            <td>Need to Add Field</td>           
+        </tr>
+        <tr>
+            <td>Address Line 2</td>
+            <td>Need to Add Field</td> 
+            <td>Benefits URL</td>
+            <td>Need to Add Field</td>            
+        </tr>
+        <tr>
+            <td {% if fieldset.form.state.errors %} class="errors"{% endif %}>{{ fieldset.form.state.errors }}{{ fieldset.form.state.label_tag }}</td>
+            <td {% if fieldset.form.state.errors %} class="errors"{% endif %}>{{ fieldset.form.state }}</td>  
+            <td>Stock Symbol</td>
+            <td>Need to Add Field</td>        
+        </tr>
+        <tr>
+            <td>Zipcode</td>
+            <td>Need to Add Field</td> 
+            <td>AVID</td>
+            <td>Need to Add Field</td>           
+        </tr>
+        <tr>
+            <td>Phone</td>
+            <td>Need to Add Field</td>
+            <td>NAICS</td>
+            <td>Need to Add Field</td>  
+        </tr>    
       </tbody>
     </table>
 </fieldset>
