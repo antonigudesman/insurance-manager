@@ -42,8 +42,12 @@
                 allContainer: "div.actions li.all",
                 acrossQuestions: "div.actions li.question",
                 acrossClears: "div.actions li.clear-selection"
-            });
-    
+            });    
+        });
+    </script>
+    {% endif %}
+    <script type="text/javascript">
+        django.jQuery(function($) {
             // highlight left panel item
             var model_name = '{{cl.opts.model_name}}';
             console.log(model_name);
@@ -54,9 +58,8 @@
                     $(this).addClass('active');
                 }
             });
-        });
-    </script>
-    {% endif %}
+        });        
+    </script>    
 {% endblock %}
 
 <!-- COLTYPE/BODYCLASS-- >
