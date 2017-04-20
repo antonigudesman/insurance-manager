@@ -177,6 +177,19 @@ class Employer(models.Model):
     life_count = models.IntegerField('Life Plans',default=0) 
     std_count = models.IntegerField('STD Plans',default=0) 
     ltd_count = models.IntegerField('LTD Plans',default=0) 
+    qc = models.BooleanField('QC')
+    renewal_date = models.DateField('Renewal Date')
+    address_line_1 = models.CharField('Address 1', max_length=50, blank=True, null=True)
+    address_line_2 = models.CharField('Address 2', max_length=50, blank=True, null=True)
+    zip_code = models.CharField('Zip Code', max_length=10, blank=True, null=True)
+    phone = models.CharField('Phone', max_length=15, blank=True, null=True)
+    country = models.CharField('Country', max_length=30, blank=True, null=True)
+    naics_2012_code = models.IntegerField('NAICS', blank=True, null=True)
+    avid = models.IntegerField('AVID', blank=True, null=True)
+    employercity = models.CharField('City', max_length=50, blank=True, null=True)
+    employerurl = models.CharField('URL', max_length=150, blank=True, null=True)
+    employerbenefitsurl = models.CharField('Benefit URL', max_length=100, blank=True, null=True)
+    stock_symbol = models.CharField('Stock Symbol', max_length=5, blank=True, null=True)
 
     def __unicode__(self):
         return self.name
@@ -215,7 +228,7 @@ BOOLEAN_CHOICES =  (
 )
 
 class Medical(models.Model):
-    title = models.CharField('Plan Name',max_length=20)
+    title = models.CharField('Plan Name',max_length=30)
     employer = models.ForeignKey(Employer)
     type = models.  CharField('Type',max_length=4, choices=MED_TYPE_CHOICES)
     in_ded_single = models.IntegerField('Individual Deductible', blank=True, null=True)
@@ -276,7 +289,7 @@ class Medical(models.Model):
     t2_ercdhp = models.IntegerField('EE & Spouse',blank=True, null=True)
     t3_ercdhp = models.IntegerField('EE & Child(ren)',blank=True, null=True)
     t4_ercdhp = models.IntegerField('Family',blank=True, null=True)
-    carrier = models.CharField('Carrier', max_length=20, blank=True, null=True)
+    carrier = models.CharField('Carrier', max_length=30, blank=True, null=True)
     per_day_ip = models.NullBooleanField('Per Day IP', choices=BOOLEAN_CHOICES)
 
     def __unicode__(self):
@@ -293,7 +306,7 @@ DEN_TYPE_CHOICES = (
 )
 
 class Dental(models.Model):
-    title = models.CharField('Plan Name', max_length=20)
+    title = models.CharField('Plan Name', max_length=30)
     employer = models.ForeignKey(Employer)
     type = models.CharField('Type', max_length=4, choices=DEN_TYPE_CHOICES)
     in_ded_single = models.IntegerField('Individual Deductible', blank=True, null=True)
@@ -325,7 +338,7 @@ class Dental(models.Model):
     t2_gross = models.IntegerField('EE & Spouse',blank=True, null=True)
     t3_gross = models.IntegerField('EE & Child(ren)',blank=True, null=True)
     t4_gross = models.IntegerField('Family',blank=True, null=True)
-    carrier = models.CharField('Carrier', max_length=20, blank=True, null=True)
+    carrier = models.CharField('Carrier', max_length=30, blank=True, null=True)
 
     def __unicode__(self):
         return self.employer.name
@@ -336,7 +349,7 @@ class Dental(models.Model):
     
 
 class Vision(models.Model):
-    title = models.CharField('Plan Name', max_length=20)
+    title = models.CharField('Plan Name', max_length=30)
     employer = models.ForeignKey(Employer)
     exam_copay = models.IntegerField('Exam Copay', blank=True, null=True)
     exam_frequency = models.IntegerField('Exam Frequency', blank=True, null=True)
@@ -362,6 +375,11 @@ class Vision(models.Model):
     t2_gross = models.IntegerField('EE & Spouse',blank=True, null=True)
     t3_gross = models.IntegerField('EE & Child(ren)',blank=True, null=True)
     t4_gross = models.IntegerField('Family',blank=True, null=True)
+    carrier = models.CharField('Carrier', max_length=30, blank=True, null=True)
+    exam_allowance = models.IntegerField('Exam Allowance', blank=True, null=True)
+    exam_balance_coinsurance = models.IntegerField('Exam Coinsurance', blank=True, null=True)
+    lenses_allowance = models.IntegerField('Lenses Allowance',blank=True, null=True)
+    lenses_balance_coinsurance = models.IntegerField('Lenses Coinsurance', blank=True, null=True)
 
     def __unicode__(self):
         return self.employer.name
@@ -383,7 +401,7 @@ COSTSHARE_CHOICES = (
 
 
 class Life(models.Model):
-    title = models.CharField('Plan Name', max_length=20)
+    title = models.CharField('Plan Name', max_length=30)
     employer = models.ForeignKey(Employer)
     type = models.CharField('Type', max_length=18, choices=LIFE_TYPE_CHOICES)
     multiple = models.FloatField('Multiple Factor', blank=True, null=True)
@@ -391,6 +409,7 @@ class Life(models.Model):
     flat_amount = models.IntegerField('Flat Amount', blank=True, null=True)
     add = models.BooleanField('ADD')
     cost_share = models.CharField('Cost Share', max_length=19, null=True, blank=True, choices=COSTSHARE_CHOICES)
+    carrier = models.CharField(max_length=30, blank=True, null=True)
 
     def __unicode__(self):
         return self.employer.name
@@ -401,7 +420,7 @@ class Life(models.Model):
     
 
 class STD(models.Model):
-    title = models.CharField('Title', max_length=20)
+    title = models.CharField('Title', max_length=30)
     employer = models.ForeignKey(Employer)
     salary_cont = models.BooleanField('Salary Continuation')
     waiting_days = models.IntegerField('Waiting Days (Injury)', blank=True, null=True)
@@ -410,6 +429,7 @@ class STD(models.Model):
     percentage = models.IntegerField('Replacement Percentage', blank=True, null=True)
     weekly_max = models.IntegerField('Weekly Maximum', blank=True, null=True)
     cost_share = models.CharField('Cost Share', max_length=19, null=True, blank=True, choices=COSTSHARE_CHOICES)
+    carrier = models.CharField(max_length=30, blank=True, null=True)
 
     def __unicode__(self):
         return self.employer.name
@@ -420,12 +440,13 @@ class STD(models.Model):
 
 
 class LTD(models.Model):
-    title = models.CharField('Title', max_length=20)
+    title = models.CharField('Title', max_length=30)
     employer = models.ForeignKey(Employer)
     waiting_weeks = models.IntegerField('Waiting Weeks', blank=True, null=True)
     percentage = models.IntegerField('Replacement Percentage', blank=True, null=True)
     monthly_max = models.IntegerField('Monthly Maximum', blank=True, null=True)
     cost_share = models.CharField('Cost Share', max_length=19, null=True, blank=True, choices=COSTSHARE_CHOICES)
+    carrier = models.CharField(max_length=30, blank=True, null=True)
 
     def __unicode__(self):
         return self.employer.name

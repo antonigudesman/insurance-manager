@@ -2,6 +2,12 @@ import csv
 from django.http import HttpResponse
 from .models import *
 
+import logging
+log = logging.getLogger(__name__)
+
+def get_employer_name(employer_id):
+    return Employer.objects.get(id=employer_id).name
+
 
 def import_employer(request):
     path = '/home/akimmel/work/table extracts/employers.csv'
@@ -35,10 +41,24 @@ def import_employer(request):
                     east_central=row['DISTRICT_EAST_NORTH_CENTRAL__C']=='TRUE',
                     west_central=row['DISTRICT_WEST_NORTH_CENTRAL__C']=='TRUE',
                     mountain=row['DISTRICT_MOUNTAIN__C']=='TRUE',
-                    pacific=row['DISTRICT_PACIFIC__C']=='TRUE')
+                    pacific=row['DISTRICT_PACIFIC__C']=='TRUE',
+                    qc=row['QC__C']=='TRUE',
+                    renewal_date=row['RENEWAL_DATE__C'],
+                    address_line_1=row['ADDRESS_LINE_1__C'] or None,
+                    address_line_2=row['ADDRESS_LINE_2__C'] or None,
+                    zip_code=row['ZIP_CODE__C'] or None,
+                    phone=row['PHONE__C'] or None,
+                    country=row['COUNTRY__C'] or None,
+                    naics_2012_code=row['NAICS_2012_CODE__C'] or None,
+                    avid=row['AVID__C'] or None,
+                    employercity=row['EMPLOYERCITY__C'] or None,
+                    employerurl=row['EMPLOYERURL__C'] or None,
+                    employerbenefitsurl=row['EMPLOYERBENEFITSURL__C'] or None,
+                    stock_symbol=row['STOCK_SYMBOL__C'] or None
+                )            
             except Exception as e:
-                print str(e)
-                print row['ID'], '#{}#'.format(row['EMPLOYERHEADCOUNT__C'])
+                log.debug(str(e))
+                log.debug('#{}#'.format(get_employer_name(row['ID'])))
 
     return HttpResponse('Successfully imported ({})!'.format(Employer.objects.all().count()))
 
@@ -117,9 +137,8 @@ def import_medical(request):
                     per_day_ip=get_3_state_boolean(row['MP_IP_PER_DAY__C']),
                 )
             except Exception as e:
-                print str(e)
-                print '#{}#'.format(row['EMPLOYERNAME__C'])
-                # break
+                log.debug(str(e))
+                log.debug('#{}#, {}'.format(get_employer_name(row['EMPLOYERNAME__C']), row['MP_TITLE__C']))
 
     return HttpResponse('Successfully imported ({})!'.format(Medical.objects.all().count()))
 
@@ -168,9 +187,8 @@ def import_dental(request):
                     carrier=row['DP_CARRIER__C'] or None
                 )
             except Exception as e:
-                print str(e)
-                print '#{}#'.format(row['EMPLOYERNAME__C'])
-                # break
+                log.debug(str(e))
+                log.debug('#{}#, {}'.format(get_employer_name(row['EMPLOYERNAME__C']), row['DP_TITLE__C']))
 
     return HttpResponse('Successfully imported ({})!'.format(Dental.objects.all().count()))
 
@@ -184,7 +202,7 @@ def import_vision(request):
         for row in reader:
             try:
                 vision = Vision.objects.create(          
-                    title='Option V',
+                    title=row['VP_TITLE__C'],
                     employer_id=row['EMPLOYERNAME__C'],
                     exam_copay=row['VP_EXAM_COPAY__C'] or None,
                     exam_frequency=row['VP_EXAM_FREQUENCY__C'] or None,
@@ -209,11 +227,16 @@ def import_vision(request):
                     t1_gross=row['VP_T1_ANNUAL_GROSS__C'] or None,
                     t2_gross=row['VP_T2_ANNUAL_GROSS__C'] or None,
                     t3_gross=row['VP_T3_ANNUAL_GROSS__C'] or None,
-                    t4_gross=row['VP_T4_ANNUAL_GROSS__C'] or None)
+                    t4_gross=row['VP_T4_ANNUAL_GROSS__C'] or None,
+                    carrier=row['VP_CARRIER__C'] or None,
+                    exam_allowance=row['VP_EXAM_ALLOWANCE__C'] or None,
+                    exam_balance_coinsurance=row['VP_EXAM_BALANCE_COINSURANCE__C'] or None,
+                    lenses_allowance=row['VP_LENSES_ALLOWANCE__C'] or None,
+                    lenses_balance_coinsurance=row['VP_LENSES_BALANCE_COINSURANCE__C'] or None
+                )
             except Exception as e:
-                print str(e)
-                print '#{}#'.format(row['EMPLOYERNAME__C'])
-                # break
+                log.debug(str(e))
+                log.debug('#{}#, {}'.format(get_employer_name(row['EMPLOYERNAME__C']), row['VP_TITLE__C']))
 
     return HttpResponse('Successfully imported ({})!'.format(Vision.objects.all().count()))
 
@@ -227,18 +250,19 @@ def import_life(request):
         for row in reader:
             try:
                 life = Life.objects.create(          
-                    title='Option X',
+                    title=row['LP_TITLE__C'],
                     employer_id=row['EMPLOYERNAME__C'],
                     type=row['LP_TYPE__C'],
                     multiple=row['LP_MULTIPLE__C'] or None,
                     multiple_max=row['LP_MULTIPLE_MAX__C'] or None,
                     flat_amount=row['LP_FLAT_AMOUNT__C'] or None,
                     add=row['LP_ADD__C']=='TRUE',
-                    cost_share=row['LP_COST_SHARE__C'])
+                    cost_share=row['LP_COST_SHARE__C'],
+                    carrier=row['LP_CARRIER__C'] or None
+                )
             except Exception as e:
-                print str(e)
-                print '#{}#'.format(row['LP_MULTIPLE__C']), row['EMPLOYERNAME__C'], row['LP_TYPE__C']
-                # break
+                log.debug(str(e))
+                log.debug('#{}#, {}'.format(get_employer_name(row['EMPLOYERNAME__C']), row['LP_TITLE__C']))
 
     return HttpResponse('Successfully imported ({})!'.format(Life.objects.all().count()))
 
@@ -252,7 +276,7 @@ def import_std(request):
         for row in reader:
             try:
                 std = STD.objects.create(           
-                    title='Option Y',
+                    title=row['STD_TITLE__C'],
                     employer_id=row['EMPLOYER_NAME__C'],
                     salary_cont=row['STD_SALARY_CONTINUATION__C']=='TRUE',
                     waiting_days=row['STD_WAITING_DAYS__C'] or None,
@@ -260,10 +284,12 @@ def import_std(request):
                     duration_weeks=row['STD_DURATION_WEEKS__C'] or None,
                     percentage=row['STD_PERCENTAGE__C'] or None,
                     weekly_max=row['STD_WEEKLY_MAX__C'] or None,
-                    cost_share=row['STD_COST_SHARE__C'])
+                    cost_share=row['STD_COST_SHARE__C'],
+                    carrier=row['STD_CARRIER__C'] or None
+                )
             except Exception as e:
-                print str(e)
-                print '#{}#'.format(row['STD_COST_SHARE__C']), row['EMPLOYER_NAME__C']
+                log.debug(str(e))
+                log.debug('#{}#, {}'.format(get_employer_name(row['EMPLOYER_NAME__C']), row['STD_TITLE__C']))
 
     return HttpResponse('Successfully imported ({})!'.format(STD.objects.all().count()))
 
@@ -277,15 +303,17 @@ def import_ltd(request):
         for row in reader:
             try:
                 ltd = LTD.objects.create(               
-                    title='Option Z',                                  
+                    title=row['LTD_TITLE__C'],                            
                     employer_id=row['EMPLOYERNAME__C'],
                     waiting_weeks=row['LTD_WAITING_WEEKS__C'] or None,
                     percentage=row['LTD_PERCENTAGE__C'] or None,
                     monthly_max=row['LTD_MONTHLY_MAX__C'] or None,
-                    cost_share=row['LTD_COST_SHARE__C'])
+                    cost_share=row['LTD_COST_SHARE__C'],
+                    carrier=row['LTD_CARRIER__C'] or None
+                )
             except Exception as e:
-                print str(e)
-                print '#{}#'.format(row['LTD_COST_SHARE__C']), row['EMPLOYER_NAME__C']
+                log.debug(str(e))
+                log.debug('#{}#, {}'.format(get_employer_name(row['EMPLOYERNAME__C']), row['LTD_TITLE__C']))
 
     return HttpResponse('Successfully imported ({})!'.format(LTD.objects.all().count()))
 
@@ -323,8 +351,8 @@ def import_strategy(request):
                     contribution_bundle=row['CONTRIBUTION_BUNDLING__C'])
 
             except Exception as e:
-                print str(e)
-                print row['EMPLOYERNAME__C']
+                log.debug(str(e))
+                log.debug('#{}#'.format(get_employer_name(row['EMPLOYERNAME__C'])))
 
     return HttpResponse('Successfully imported ({})!'.format(Strategy.objects.all().count()))
 
