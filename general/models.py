@@ -207,6 +207,13 @@ MED_BOOL_CHOICES = (
     ('True/Coin', 'True/Coin')
 )
 
+
+BOOLEAN_CHOICES =  (
+    (None, '-'),
+    (True, 'True'),
+    (False, 'False')
+)
+
 class Medical(models.Model):
     title = models.CharField('Plan Name',max_length=20)
     employer = models.ForeignKey(Employer)
@@ -269,6 +276,8 @@ class Medical(models.Model):
     t2_ercdhp = models.IntegerField('EE & Spouse',blank=True, null=True)
     t3_ercdhp = models.IntegerField('EE & Child(ren)',blank=True, null=True)
     t4_ercdhp = models.IntegerField('Family',blank=True, null=True)
+    carrier = models.CharField('Carrier', max_length=20, blank=True, null=True)
+    per_day_ip = models.NullBooleanField('Per Day IP', choices=BOOLEAN_CHOICES)
 
     def __unicode__(self):
         return self.employer.name
@@ -281,12 +290,6 @@ class Medical(models.Model):
 DEN_TYPE_CHOICES = (
     ('DPPO', 'DPPO'),
     ('DMO', 'DMO'),
-)
-
-BOOLEAN_CHOICES =  (
-    (None, '-'),
-    (True, 'True'),
-    (False, 'False')
 )
 
 class Dental(models.Model):
@@ -322,6 +325,7 @@ class Dental(models.Model):
     t2_gross = models.IntegerField('EE & Spouse',blank=True, null=True)
     t3_gross = models.IntegerField('EE & Child(ren)',blank=True, null=True)
     t4_gross = models.IntegerField('Family',blank=True, null=True)
+    carrier = models.CharField('Carrier', max_length=20, blank=True, null=True)
 
     def __unicode__(self):
         return self.employer.name

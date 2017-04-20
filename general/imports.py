@@ -52,7 +52,7 @@ def import_medical(request):
         for row in reader:
             try:
                 medical = Medical.objects.create(          
-                    title='Option M',
+                    title=row['MP_TITLE__C'],
                     employer_id=row['EMPLOYERNAME__C'],
                     type=row['MP_TYPE__C'] or None,
                     in_ded_single=row['MP_IN_DEDUCTIBLE_S__C'] or None,
@@ -112,7 +112,10 @@ def import_medical(request):
                     t1_ercdhp=row['MP_T1_ANNUAL_ERCDHP__C'] or None,
                     t2_ercdhp=row['MP_T2_ANNUAL_ERCDHP__C'] or None,
                     t3_ercdhp=row['MP_T3_ANNUAL_ERCDHP__C'] or None,
-                    t4_ercdhp=row['MP_T4_ANNUAL_ERCDHP__C'] or None)
+                    t4_ercdhp=row['MP_T4_ANNUAL_ERCDHP__C'] or None,
+                    carrier=row['MP_CARRIER__C'] or None,
+                    per_day_ip=get_3_state_boolean(row['MP_IP_PER_DAY__C']),
+                )
             except Exception as e:
                 print str(e)
                 print '#{}#'.format(row['EMPLOYERNAME__C'])
@@ -130,7 +133,7 @@ def import_dental(request):
         for row in reader:
             try:
                 dental = Dental.objects.create(          
-                    title='Option D',
+                    title=row['DP_TITLE__C'],
                     employer_id=row['EMPLOYERNAME__C'],
                     type=row['DP_TYPE__C'] or None,
                     in_ded_single=row['DP_IN_DEDUCTIBLE_S__C'] or None,
@@ -161,7 +164,9 @@ def import_dental(request):
                     t1_gross=row['DP_T1_ANNUAL_GROSS__C'] or None,
                     t2_gross=row['DP_T2_ANNUAL_GROSS__C'] or None,
                     t3_gross=row['DP_T3_ANNUAL_GROSS__C'] or None,
-                    t4_gross=row['DP_T4_ANNUAL_GROSS__C'] or None)
+                    t4_gross=row['DP_T4_ANNUAL_GROSS__C'] or None,
+                    carrier=row['DP_CARRIER__C'] or None
+                )
             except Exception as e:
                 print str(e)
                 print '#{}#'.format(row['EMPLOYERNAME__C'])
