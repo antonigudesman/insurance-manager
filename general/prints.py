@@ -16,6 +16,8 @@ from selenium import webdriver
 
 from .views import *
 
+import logging
+log = logging.getLogger(__name__)
 
 @login_required(login_url='/admin/login')
 def print_template(request):
@@ -117,52 +119,55 @@ def get_pdf(request, benefits, plans):
     base_path = '/tmp/page{}'.format(random.randint(-100000000, 100000000))
     pdf_path = base_path + '.pdf'
 
-    vars_d = {}
-    for uidx in range(len(benefits)):
-        vars_d['img_path_{}'.format(uidx)] = '{}_{}.png'.format(base_path, uidx)
-        vars_d['img_path_header_{}'.format(uidx)] = '{}_{}_header.png'.format(base_path, uidx)
+    try:
+        vars_d = {}
+        for uidx in range(len(benefits)):
+            vars_d['img_path_{}'.format(uidx)] = '{}_{}.png'.format(base_path, uidx)
+            vars_d['img_path_header_{}'.format(uidx)] = '{}_{}_header.png'.format(base_path, uidx)
 
-        # for body
-        url = 'http://{}/98Wf37r2-3h4X2_jh9?benefit={}&plan={}'.format(request.META.get('HTTP_HOST'), benefits[uidx], plans[uidx])
-        print url, '@@@@@@@@@@@@'
-        driver.get(url)        
-        time.sleep(1)
-        if benefits[uidx] in ['PPO', 'HDHP', 'HMO']:
-            time.sleep(2)
+            # for body
+            url = 'http://{}/98Wf37r2-3h4X2_jh9?benefit={}&plan={}'.format(request.META.get('HTTP_HOST'), benefits[uidx], plans[uidx])
+            driver.get(url)        
+            time.sleep(0.6)
+            if benefits[uidx] in ['PPO', 'HDHP', 'HMO']:
+                time.sleep(1.2)
 
-        driver.save_screenshot(vars_d['img_path_{}'.format(uidx)])
+            driver.save_screenshot(vars_d['img_path_{}'.format(uidx)])
 
-        # for header
-        url = 'http://{}/25Wfr7r2-3h4X25t?benefit={}&plan={}'.format(request.META.get('HTTP_HOST'), benefits[uidx], plans[uidx])
-        print url, '@@@@@@@@@@@@'
-        driver.get(url)
-        time.sleep(1)
-        driver.save_screenshot(vars_d['img_path_header_{}'.format(uidx)])
-        
-        # build a pdf with images using fpdf
-        pdf.add_page()
-        pdf.image(vars_d['img_path_header_{}'.format(uidx)], margin_h, margin_v)
-
-        # split the image in proper size
-        origin = Image.open(vars_d['img_path_{}'.format(uidx)])
-        header_height = 141 - 5
-        width, height = origin.size
-
-        num_pages = int(( height - header_height ) / 1200.0 + 0.5)
-
-        for idx in range(num_pages):
-            vars_d['img_path_s_{}_{}'.format(uidx, idx)] = '{}_{}_{}s.png'.format(base_path, idx, uidx)
-            height_s = header_height + 1200 * (idx + 1) + 1
-            if height_s > height:
-                height_s = height
-            origin.crop((0,header_height+1200*idx, width, height_s)).save(vars_d['img_path_s_{}_{}'.format(uidx, idx)])
-
+            # for header
+            url = 'http://{}/25Wfr7r2-3h4X25t?benefit={}&plan={}'.format(request.META.get('HTTP_HOST'), benefits[uidx], plans[uidx])
+            driver.get(url)
+            time.sleep(0.4)
+            driver.save_screenshot(vars_d['img_path_header_{}'.format(uidx)])
+            
+            # build a pdf with images using fpdf
             pdf.add_page()
-            pdf.image(vars_d['img_path_s_{}_{}'.format(uidx, idx)], margin_h, margin_v)
-            os.remove(vars_d['img_path_s_{}_{}'.format(uidx, idx)])
-        # remove image files
-        os.remove(vars_d['img_path_{}'.format(uidx)])
-        os.remove(vars_d['img_path_header_{}'.format(uidx)])
+            pdf.image(vars_d['img_path_header_{}'.format(uidx)], margin_h, margin_v)
+
+            # split the image in proper size
+            origin = Image.open(vars_d['img_path_{}'.format(uidx)])
+            header_height = 141 - 5
+            width, height = origin.size
+
+            num_pages = int(( height - header_height ) / 1200.0 + 0.5)
+
+            for idx in range(num_pages):
+                vars_d['img_path_s_{}_{}'.format(uidx, idx)] = '{}_{}_{}s.png'.format(base_path, idx, uidx)
+                height_s = header_height + 1200 * (idx + 1) + 1
+                if height_s > height:
+                    height_s = height
+                origin.crop((0,header_height+1200*idx, width, height_s)).save(vars_d['img_path_s_{}_{}'.format(uidx, idx)])
+
+                pdf.add_page()
+                pdf.image(vars_d['img_path_s_{}_{}'.format(uidx, idx)], margin_h, margin_v)
+                os.remove(vars_d['img_path_s_{}_{}'.format(uidx, idx)])
+            # remove image files
+            os.remove(vars_d['img_path_{}'.format(uidx)])
+            os.remove(vars_d['img_path_header_{}'.format(uidx)])
+    except Exception, e:
+        log.debug(str(e))
+        log.debug('###########32')
+
 
     pdf.output(pdf_path, "F")
 
@@ -204,7 +209,9 @@ def print_report(request):
 
             benefits.append(benefit)
             plans.append(plan)
-    # print benefits, plans
+    # log.debug(benefits)
+    # log.debug(plans)
+    # log.debug('@@@@@@@@@@@2')
     return get_pdf(request, benefits, plans)
 
 
