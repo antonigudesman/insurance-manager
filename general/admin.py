@@ -38,7 +38,7 @@ class EmployerForm(forms.ModelForm):
 
 
 class EmployerAdmin(admin.ModelAdmin):
-    list_display = ['name','broker','industry1','industry2','industry3','formatted_size',
+    list_display = ['name','broker','industry1','formatted_size',
                     'med_count','den_count','vis_count', 'life_count','std_count','ltd_count']
     search_fields = ('name','broker')
     list_filter = ('broker',)
@@ -297,6 +297,7 @@ class LifeAdmin(admin.ModelAdmin):
     list_display = ['title', 'employer', 'type', 'multiple', 
                     'formatted_multiple_max', 'formatted_flat_amount', 'add', 'cost_share']
     search_fields = ('employer__name',)
+    list_filter = ('type',)
     fields = ('title', 'employer', 'type', 'multiple', 'flat_amount', 
               'multiple_max', 'add', 'cost_share')
     change_form_template = 'admin/change_form_life.html'
@@ -422,7 +423,7 @@ class LTDAdmin(admin.ModelAdmin):
 
 
 class StrategyAdmin(admin.ModelAdmin):
-    list_display = ['employer',]
+    list_display = ['employer', 'spousal_surcharge', 'tobacco_surcharge', 'offer_fsa', 'salary_banding']
     search_fields = ('employer__name', 'title',)
     change_form_template = 'admin/change_form_strategy.html'
 

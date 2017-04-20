@@ -102,85 +102,113 @@
         <col width="30%">
       <tbody>
         <tr>
-            <td colspan=2 {% if fieldset.form.title.errors %} class="errors"{% endif %}>{{ fieldset.form.title.errors }}{{ fieldset.form.title.label_tag }}</td>
-            <td colspan=2 {% if fieldset.form.title.errors %} class="errors"{% endif %}>{{ fieldset.form.title }}</td>
+            <td colspan="1" {% if fieldset.form.title.errors %} class="errors"{% endif %}>{{ fieldset.form.title.errors }}{{ fieldset.form.title.label_tag }}</td>
+            <td colspan="3" {% if fieldset.form.title.errors %} class="errors"{% endif %}>{{ fieldset.form.title }}</td>
         </tr>
         <tr>
             <td {% if fieldset.form.employer.errors %} class="errors"{% endif %}>{{ fieldset.form.employer.errors }}{{ fieldset.form.employer.label_tag }}</td>
             <td {% if fieldset.form.employer.errors %} class="errors"{% endif %}>{{ fieldset.form.employer }}</td>
+            <td></td>
+            <td></td>           
+        </tr>
+        <tr>
+            <td colspan="4" class="change-header">Benefit Requencies</td>   
+        </tr> 
+        <tr>
+            <td {% if fieldset.form.exam_frequency.errors %} class="errors"{% endif %}>{{ fieldset.form.exam_frequency.errors }}{{ fieldset.form.exam_frequency.label_tag }}</td>
+            <td {% if fieldset.form.exam_frequency.errors %} class="errors"{% endif %}>{{ fieldset.form.exam_frequency }}</td> 
+            <td {% if fieldset.form.lenses_frequency.errors %} class="errors"{% endif %}>{{ fieldset.form.lenses_frequency.errors }}{{ fieldset.form.lenses_frequency.label_tag }}</td>
+            <td {% if fieldset.form.lenses_frequency.errors %} class="errors"{% endif %}>{{ fieldset.form.lenses_frequency }}</td>
+        </tr>
+        <tr>
+            <td {% if fieldset.form.frames_frequency.errors %} class="errors"{% endif %}>{{ fieldset.form.frames_frequency.errors }}{{ fieldset.form.frames_frequency.label_tag }}</td>
+            <td {% if fieldset.form.frames_frequency.errors %} class="errors"{% endif %}>{{ fieldset.form.frames_frequency }}</td>
+            <td {% if fieldset.form.contacts_frequency.errors %} class="errors"{% endif %}>{{ fieldset.form.contacts_frequency.errors }}{{ fieldset.form.contacts_frequency.label_tag }}</td>
+            <td {% if fieldset.form.contacts_frequency.errors %} class="errors"{% endif %}>{{ fieldset.form.contacts_frequency }}</td>
+        </tr>
+        <tr>
+            <td colspan="2" class="change-header">Copays</td>   
+            <td colspan="2" class="change-header">Allowance & Balance Coinsurance</td>   
+        </tr> 
+        <tr>
             <td {% if fieldset.form.exam_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.exam_copay.errors }}{{ fieldset.form.exam_copay.label_tag }}</td>
-            <td {% if fieldset.form.exam_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.type }}</td>            
+            <td {% if fieldset.form.exam_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.exam_copay }}</td>            
+            <td></td>                 
+            <td></td>
         </tr>
         <tr>
             <td {% if fieldset.form.lenses_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.lenses_copay.errors }}{{ fieldset.form.lenses_copay.label_tag }}</td>
-            <td {% if fieldset.form.lenses_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.lenses_copay }}</td>
-            <td {% if fieldset.form.exam_frequency.errors %} class="errors"{% endif %}>{{ fieldset.form.exam_frequency.errors }}{{ fieldset.form.exam_frequency.label_tag }}</td>
-            <td {% if fieldset.form.exam_frequency.errors %} class="errors"{% endif %}>{{ fieldset.form.exam_frequency }}</td>                    
+            <td {% if fieldset.form.lenses_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.lenses_copay }}</td>        
+            <td></td>                 
+            <td></td>
         </tr>
         <tr>
-            <td {% if fieldset.form.lenses_frequency.errors %} class="errors"{% endif %}>{{ fieldset.form.lenses_frequency.errors }}{{ fieldset.form.lenses_frequency.label_tag }}</td>
-            <td {% if fieldset.form.lenses_frequency.errors %} class="errors"{% endif %}>{{ fieldset.form.lenses_frequency }}</td>
-            <td {% if fieldset.form.exam_out_allowance.errors %} class="errors"{% endif %}>{{ fieldset.form.exam_out_allowance.errors }}{{ fieldset.form.exam_out_allowance.label_tag }}</td>
-            <td {% if fieldset.form.exam_out_allowance.errors %} class="errors"{% endif %}>{{ fieldset.form.exam_out_allowance }}</td>
-        </tr>
-        <tr>
-            <td {% if fieldset.form.lenses_out_allowance.errors %} class="errors"{% endif %}>{{ fieldset.form.lenses_out_allowance.errors }}{{ fieldset.form.lenses_out_allowance.label_tag }}</td>
-            <td {% if fieldset.form.lenses_out_allowance.errors %} class="errors"{% endif %}>{{ fieldset.form.lenses_out_allowance }}</td>
             <td {% if fieldset.form.frames_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.frames_copay.errors }}{{ fieldset.form.frames_copay.label_tag }}</td>
-            <td {% if fieldset.form.frames_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.frames_copay }}</td>                                
+            <td {% if fieldset.form.frames_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.frames_copay }}</td>   
+            <td {% if fieldset.form.frames_allowance.errors %} class="errors"{% endif %}>{{ fieldset.form.frames_allowance.errors }}{{ fieldset.form.frames_allowance.label_tag }}</td>
+            <td {% if fieldset.form.cframes_allowance.errors %} class="errors"{% endif %}>{{ fieldset.form.frames_allowance }}</td> 
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td {% if fieldset.form.frames_coinsurance.errors %} class="errors"{% endif %}>{{ fieldset.form.frames_coinsurance.errors }}{{ fieldset.form.frames_coinsurance.label_tag }}</td>
+            <td {% if fieldset.form.frames_coinsurance.errors %} class="errors"{% endif %}>{{ fieldset.form.frames_coinsurance }}</td>
         </tr>
         <tr>
             <td {% if fieldset.form.contacts_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.contacts_copay.errors }}{{ fieldset.form.contacts_copay.label_tag }}</td>
-            <td {% if fieldset.form.contacts_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.contacts_copay }}</td>
-            <td {% if fieldset.form.frames_allowance.errors %} class="errors"{% endif %}>{{ fieldset.form.frames_allowance.errors }}{{ fieldset.form.frames_allowance.label_tag }}</td>
-            <td {% if fieldset.form.frames_allowance.errors %} class="errors"{% endif %}>{{ fieldset.form.frames_allowance }}</td>                         
-        </tr>
-        <tr>
+            <td {% if fieldset.form.contacts_copay.errors %} class="errors"{% endif %}>{{ fieldset.form.contacts_copay }}</td>    
             <td {% if fieldset.form.contacts_allowance.errors %} class="errors"{% endif %}>{{ fieldset.form.contacts_allowance.errors }}{{ fieldset.form.contacts_allowance.label_tag }}</td>
-            <td {% if fieldset.form.contacts_allowance.errors %} class="errors"{% endif %}>{{ fieldset.form.contacts_allowance }}</td>
-            <td {% if fieldset.form.frames_coinsurance.errors %} class="errors"{% endif %}>{{ fieldset.form.frames_coinsurance.errors }}{{ fieldset.form.frames_coinsurance.label_tag }}</td>
-            <td {% if fieldset.form.frames_coinsurance.errors %} class="errors"{% endif %}>{{ fieldset.form.frames_coinsurance }}</td>  
+            <td {% if fieldset.form.contacts_allowance.errors %} class="errors"{% endif %}>{{ fieldset.form.contacts_allowance }}</td>                                
         </tr>
         <tr>
+            <td></td>
+            <td></td>
             <td {% if fieldset.form.contacts_coinsurance.errors %} class="errors"{% endif %}>{{ fieldset.form.contacts_coinsurance.errors }}{{ fieldset.form.contacts_coinsurance.label_tag }}</td>
-            <td {% if fieldset.form.contacts_coinsurance.errors %} class="errors"{% endif %}>{{ fieldset.form.contacts_coinsurance }}</td>
-            <td {% if fieldset.form.frames_frequency.errors %} class="errors"{% endif %}>{{ fieldset.form.frames_frequency.errors }}{{ fieldset.form.frames_frequency.label_tag }}</td>
-            <td {% if fieldset.form.frames_frequency.errors %} class="errors"{% endif %}>{{ fieldset.form.frames_frequency }}</td>                           
+            <td {% if fieldset.form.contacts_coinsurance.errors %} class="errors"{% endif %}>{{ fieldset.form.contacts_coinsurance }}</td> 
         </tr>
         <tr>
-            <td {% if fieldset.form.contacts_frequency.errors %} class="errors"{% endif %}>{{ fieldset.form.contacts_frequency.errors }}{{ fieldset.form.contacts_frequency.label_tag }}</td>
-            <td {% if fieldset.form.contacts_frequency.errors %} class="errors"{% endif %}>{{ fieldset.form.contacts_frequency }}</td>
+            <td colspan="4" class="change-header">Out-of-Network Allowances</td>   
+        </tr> 
+        <tr>
+            <td {% if fieldset.form.exam_out_allowance.errors %} class="errors"{% endif %}>{{ fieldset.form.exam_out_allowance.errors }}{{ fieldset.form.exam_out_allowance.label_tag }}</td>
+            <td {% if fieldset.form.exam_out_allowance.errors %} class="errors"{% endif %}>{{ fieldset.form.exam_out_allowance }}</td>
+            <td {% if fieldset.form.lenses_out_allowance.errors %} class="errors"{% endif %}>{{ fieldset.form.lenses_out_allowance.errors }}{{ fieldset.form.lenses_out_allowance.label_tag }}</td>
+            <td {% if fieldset.form.lenses_out_allowance.errors %} class="errors"{% endif %}>{{ fieldset.form.lenses_out_allowance }}</td>                   
+        </tr>
+        <tr>
             <td {% if fieldset.form.frames_out_allowance.errors %} class="errors"{% endif %}>{{ fieldset.form.frames_out_allowance.errors }}{{ fieldset.form.frames_out_allowance.label_tag }}</td>
-            <td {% if fieldset.form.frames_out_allowance.errors %} class="errors"{% endif %}>{{ fieldset.form.frames_out_allowance }}</td>  
+            <td {% if fieldset.form.frames_out_allowance.errors %} class="errors"{% endif %}>{{ fieldset.form.frames_out_allowance }}</td> 
+            <td {% if fieldset.form.contacts_out_allowance.errors %} class="errors"{% endif %}>{{ fieldset.form.contacts_out_allowance.errors }}{{ fieldset.form.contacts_out_allowance.label_tag }}</td>
+            <td {% if fieldset.form.contacts_out_allowance.errors %} class="errors"{% endif %}>{{ fieldset.form.contacts_out_allowance }}</td>     
         </tr>
         <tr>
-            <td {% if fieldset.form.contacts_out_allowance.errors %} class="errors"{% endif %}>{{ fieldset.form.contacts_out_allowance.errors }}{{ fieldset.form.contacts_out_allowance.label_tag }}</td>
-            <td {% if fieldset.form.contacts_out_allowance.errors %} class="errors"{% endif %}>{{ fieldset.form.contacts_out_allowance }}</td>        
+            <td colspan="2" class="change-header">Gross Annual Rates</td>  
+            <td colspan="2" class="change-header">Employee Annual Rates</td>  
+        </tr> 
+        <tr>     
+            <td {% if fieldset.form.t1_gross.errors %} class="errors"{% endif %}>{{ fieldset.form.t1_gross.errors }}{{ fieldset.form.t1_gross.label_tag }}</td>
+            <td {% if fieldset.form.t1_gross.errors %} class="errors"{% endif %}>{{ fieldset.form.t1_gross }}</td>
             <td {% if fieldset.form.t1_ee.errors %} class="errors"{% endif %}>{{ fieldset.form.t1_ee.errors }}{{ fieldset.form.t1_ee.label_tag }}</td>
             <td {% if fieldset.form.t1_ee.errors %} class="errors"{% endif %}>{{ fieldset.form.t1_ee }}</td>
         </tr>       
         <tr>
-            <td {% if fieldset.form.t1_gross.errors %} class="errors"{% endif %}>{{ fieldset.form.t1_gross.errors }}{{ fieldset.form.t1_gross.label_tag }}</td>
-            <td {% if fieldset.form.t1_gross.errors %} class="errors"{% endif %}>{{ fieldset.form.t1_gross }}</td>                           
+            <td {% if fieldset.form.t2_gross.errors %} class="errors"{% endif %}>{{ fieldset.form.t2_gross.errors }}{{ fieldset.form.t2_gross.label_tag }}</td>
+            <td {% if fieldset.form.t2_gross.errors %} class="errors"{% endif %}>{{ fieldset.form.t2_gross }}</td>
             <td {% if fieldset.form.t2_ee.errors %} class="errors"{% endif %}>{{ fieldset.form.t2_ee.errors }}{{ fieldset.form.t2_ee.label_tag }}</td>
             <td {% if fieldset.form.t2_ee.errors %} class="errors"{% endif %}>{{ fieldset.form.t2_ee }}</td>
         </tr>                  
         <tr>
-            <td {% if fieldset.form.t2_gross.errors %} class="errors"{% endif %}>{{ fieldset.form.t2_gross.errors }}{{ fieldset.form.t2_gross.label_tag }}</td>
-            <td {% if fieldset.form.t2_gross.errors %} class="errors"{% endif %}>{{ fieldset.form.t2_gross }}</td>                           
+            <td {% if fieldset.form.t3_gross.errors %} class="errors"{% endif %}>{{ fieldset.form.t3_gross.errors }}{{ fieldset.form.t3_gross.label_tag }}</td>
+            <td {% if fieldset.form.t3_gross.errors %} class="errors"{% endif %}>{{ fieldset.form.t3_gross }}</td>
             <td {% if fieldset.form.t3_ee.errors %} class="errors"{% endif %}>{{ fieldset.form.t3_ee.errors }}{{ fieldset.form.t3_ee.label_tag }}</td>
             <td {% if fieldset.form.t3_ee.errors %} class="errors"{% endif %}>{{ fieldset.form.t3_ee }}</td>
         </tr>  
         <tr>
-            <td {% if fieldset.form.t3_gross.errors %} class="errors"{% endif %}>{{ fieldset.form.t3_gross.errors }}{{ fieldset.form.t3_gross.label_tag }}</td>
-            <td {% if fieldset.form.t3_gross.errors %} class="errors"{% endif %}>{{ fieldset.form.t3_gross }}</td>                           
+            <td {% if fieldset.form.t4_gross.errors %} class="errors"{% endif %}>{{ fieldset.form.t4_gross.errors }}{{ fieldset.form.t4_gross.label_tag }}</td>
+            <td {% if fieldset.form.t4_gross.errors %} class="errors"{% endif %}>{{ fieldset.form.t4_gross }}</td>
             <td {% if fieldset.form.t4_ee.errors %} class="errors"{% endif %}>{{ fieldset.form.t4_ee.errors }}{{ fieldset.form.t4_ee.label_tag }}</td>
             <td {% if fieldset.form.t4_ee.errors %} class="errors"{% endif %}>{{ fieldset.form.t4_ee }}</td>
-        </tr>  
-        <tr>
-            <td {% if fieldset.form.t4_gross.errors %} class="errors"{% endif %}>{{ fieldset.form.t4_gross.errors }}{{ fieldset.form.t4_gross.label_tag }}</td>
-            <td {% if fieldset.form.t4_gross.errors %} class="errors"{% endif %}>{{ fieldset.form.t4_gross }}</td>                           
-        </tr>         
+        </tr>          
       </tbody>
     </table>
 </fieldset>

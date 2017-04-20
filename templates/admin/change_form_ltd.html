@@ -96,20 +96,32 @@
 <fieldset class="module aligned ">
     <h2>{{ title }}</h2>  
     <table>
-        <col width="20%">
-        <col width="30%">
-        <col width="20%">
-        <col width="30%">
+        <col width="25%">
+        <col width="25%">
+        <col width="25%">
+        <col width="25%">
       <tbody>
         <tr>
-            <td colspan=2 {% if fieldset.form.title.errors %} class="errors"{% endif %}>{{ fieldset.form.title.errors }}{{ fieldset.form.title.label_tag }}</td>
-            <td colspan=2 {% if fieldset.form.title.errors %} class="errors"{% endif %}>{{ fieldset.form.title }}</td>
+            <td colspan="1" {% if fieldset.form.title.errors %} class="errors"{% endif %}>{{ fieldset.form.title.errors }}{{ fieldset.form.title.label_tag }}</td>
+            <td colspan="3" {% if fieldset.form.title.errors %} class="errors"{% endif %}>{{ fieldset.form.title }}</td>
         </tr>
         <tr>
             <td {% if fieldset.form.employer.errors %} class="errors"{% endif %}>{{ fieldset.form.employer.errors }}{{ fieldset.form.employer.label_tag }}</td>
             <td {% if fieldset.form.employer.errors %} class="errors"{% endif %}>{{ fieldset.form.employer }}</td>
+            <td></td>
+            <td></td>           
+        </tr>
+        <tr>
+            <td colspan="4" class="change-header">Waiting Weeks</td>    
+        </tr> 
+        <tr>
             <td {% if fieldset.form.waiting_weeks.errors %} class="errors"{% endif %}>{{ fieldset.form.waiting_weeks.errors }}{{ fieldset.form.waiting_weeks.label_tag }}</td>
-            <td {% if fieldset.form.waiting_weeks.errors %} class="errors"{% endif %}>{{ fieldset.form.waiting_weeks }}</td>            
+            <td {% if fieldset.form.waiting_weeks.errors %} class="errors"{% endif %}>{{ fieldset.form.waiting_weeks }}</td> 
+            <td></td>
+            <td></td> 
+        </tr>
+        <tr>
+            <td colspan="4" class="change-header">Benefit Amounts</td>    
         </tr>
         <tr>
             <td {% if fieldset.form.percentage.errors %} class="errors"{% endif %}>{{ fieldset.form.percentage.errors }}{{ fieldset.form.percentage.label_tag }}</td>
@@ -118,8 +130,13 @@
             <td {% if fieldset.form.monthly_max.errors %} class="errors"{% endif %}>{{ fieldset.form.monthly_max }}</td>                                
         </tr>       
         <tr>
+            <td colspan="4" class="change-header">Cost Share</td>    
+        </tr> 
+        <tr>
             <td {% if fieldset.form.cost_share.errors %} class="errors"{% endif %}>{{ fieldset.form.cost_share.errors }}{{ fieldset.form.cost_share.label_tag }}</td>
             <td {% if fieldset.form.cost_share.errors %} class="errors"{% endif %}>{{ fieldset.form.cost_share }}</td>
+            <td></td>
+            <td></td> 
         </tr>
       </tbody>
     </table>

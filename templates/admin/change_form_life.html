@@ -96,21 +96,24 @@
 <fieldset class="module aligned ">
     <h2>{{ title }}</h2>  
     <table>
-        <col width="20%">
-        <col width="30%">
-        <col width="20%">
-        <col width="30%">
+        <col width="25%">
+        <col width="25%">
+        <col width="25%">
+        <col width="25%">
       <tbody>
         <tr>
-            <td colspan=2 {% if fieldset.form.title.errors %} class="errors"{% endif %}>{{ fieldset.form.title.errors }}{{ fieldset.form.title.label_tag }}</td>
-            <td colspan=2 {% if fieldset.form.title.errors %} class="errors"{% endif %}>{{ fieldset.form.title }}</td>
+            <td colspan="1" {% if fieldset.form.title.errors %} class="errors"{% endif %}>{{ fieldset.form.title.errors }}{{ fieldset.form.title.label_tag }}</td>
+            <td colspan="3" {% if fieldset.form.title.errors %} class="errors"{% endif %}>{{ fieldset.form.title }}</td>
         </tr>
         <tr>
             <td {% if fieldset.form.employer.errors %} class="errors"{% endif %}>{{ fieldset.form.employer.errors }}{{ fieldset.form.employer.label_tag }}</td>
             <td {% if fieldset.form.employer.errors %} class="errors"{% endif %}>{{ fieldset.form.employer }}</td>
             <td {% if fieldset.form.type.errors %} class="errors"{% endif %}>{{ fieldset.form.type.errors }}{{ fieldset.form.type.label_tag }}</td>
-            <td {% if fieldset.form.type.errors %} class="errors"{% endif %}>{{ fieldset.form.type }}</td>            
+            <td {% if fieldset.form.type.errors %} class="errors"{% endif %}>{{ fieldset.form.type }}</td>
         </tr>
+        <tr>
+            <td colspan="4" class="change-header">Benefit Amount</td>    
+        </tr> 
         <tr>
             <td {% if fieldset.form.multiple.errors %} class="errors"{% endif %}>{{ fieldset.form.multiple.errors }}{{ fieldset.form.multiple.label_tag }}</td>
             <td {% if fieldset.form.multiple.errors %} class="errors"{% endif %}>{{ fieldset.form.multiple }}</td>
@@ -120,12 +123,17 @@
         <tr>
             <td {% if fieldset.form.multiple_max.errors %} class="errors"{% endif %}>{{ fieldset.form.multiple_max.errors }}{{ fieldset.form.multiple_max.label_tag }}</td>
             <td {% if fieldset.form.multiple_max.errors %} class="errors"{% endif %}>{{ fieldset.form.multiple_max }}</td>
-            <td {% if fieldset.form.add.errors %} class="errors"{% endif %}>{{ fieldset.form.add.errors }}{{ fieldset.form.add.label_tag }}</td>
-            <td {% if fieldset.form.add.errors %} class="errors"{% endif %}>{{ fieldset.form.add }}</td>                                
+            <td></td>
+            <td></td>
         </tr>
+        <tr>
+            <td colspan="4" class="change-header">Cost Share & ADD</td>    
+        </tr> 
         <tr>
             <td {% if fieldset.form.cost_share.errors %} class="errors"{% endif %}>{{ fieldset.form.cost_share.errors }}{{ fieldset.form.cost_share.label_tag }}</td>
             <td {% if fieldset.form.cost_share.errors %} class="errors"{% endif %}>{{ fieldset.form.cost_share }}</td>
+            <td {% if fieldset.form.add.errors %} class="errors"{% endif %}>{{ fieldset.form.add.errors }}{{ fieldset.form.add.label_tag }}</td>
+            <td {% if fieldset.form.add.errors %} class="errors"{% endif %}>{{ fieldset.form.add }}</td>
         </tr>
       </tbody>
     </table>
