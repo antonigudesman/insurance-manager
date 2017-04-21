@@ -45,21 +45,7 @@
             });    
         });
     </script>
-    {% endif %}
-    <script type="text/javascript">
-        django.jQuery(function($) {
-            // highlight left panel item
-            var model_name = '{{cl.opts.model_name}}';
-            console.log(model_name);
-            $('.dropdown-menu-menu-bnchmrk li a').removeClass('active');
-            $('.dropdown-menu-menu-bnchmrk li a').each(function() {
-                var link = $(this).attr('href');
-                if (link.includes(model_name)) {
-                    $(this).addClass('active');
-                }
-            });
-        });        
-    </script>    
+    {% endif %}  
 {% endblock %}
 
 <!-- COLTYPE/BODYCLASS-- >

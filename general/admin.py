@@ -85,7 +85,7 @@ class EmployerAdmin(admin.ModelAdmin):
         extra_context['plans'] = plans
         extra_context['broker'] = request.user.groups.first().name
         extra_context['id'] = object_id
-        
+
         return super(EmployerAdmin, self).change_view(
             request, object_id, form_url, extra_context=extra_context,
         )
@@ -141,6 +141,10 @@ class MedicalAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         qs = super(MedicalAdmin, self).get_queryset(request)
+        type = request.GET.get('e', '').split(',')
+        if type != ['']:
+            qs = qs.filter(type__in=type)
+
         group = request.user.groups.first().name
 
         if group != 'bnchmrk':
@@ -164,6 +168,14 @@ class MedicalAdmin(admin.ModelAdmin):
             return '-'
     formatted_ded_single.short_description = 'IN Deductible (Ind)'
     formatted_ded_single.admin_order_field = 'in_ded_single' 
+
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        extra_context = extra_context or {}
+        extra_context['type'] = Medical.objects.get(id=object_id).type
+
+        return super(MedicalAdmin, self).change_view(
+            request, object_id, form_url, extra_context=extra_context,
+        )
 
     def get_ordering(self, request):
         return ['employer__name']
@@ -216,11 +228,22 @@ class DentalAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         qs = super(DentalAdmin, self).get_queryset(request)
         group = request.user.groups.first().name
+        type = request.GET.get('e', '').split(',')
+        if type != ['']:
+            qs = qs.filter(type__in=type)
 
         if group != 'bnchmrk':
             qs = qs.filter(employer__broker=group)
             
         return qs
+
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        extra_context = extra_context or {}
+        extra_context['type'] = Dental.objects.get(id=object_id).type
+
+        return super(DentalAdmin, self).change_view(
+            request, object_id, form_url, extra_context=extra_context,
+        )
 
     def get_actions(self, request):
         actions = super(DentalAdmin, self).get_actions(request)

@@ -69,7 +69,7 @@
                         $('form#{{ opts.model_name }}_form :input:visible:enabled:first').focus()
                     {% endif %}
                         // highlight left panel item
-                        var model_name = '{{opts.model_name}}';
+                        var model_name = '{{type}}' || '{{opts.model_name}}';
                         $('.dropdown-menu-menu-bnchmrk li a').removeClass('active');
                         $('.dropdown-menu-menu-bnchmrk li a').each(function() {
                             var link = $(this).attr('href');

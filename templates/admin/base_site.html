@@ -41,6 +41,7 @@
 {% endif %}
 
 <script>
+var tmp;
 jQuery(function($) {
     $('.admin-title').click(function() {location = window.__admin_url;});
     // This line can be removed after a decent amount of time has passed since
@@ -50,9 +51,18 @@ jQuery(function($) {
     if ($('ul.navbar-nav li a').eq(2).html() != 'INSIGHTS')
         // make active menuitem for this page
         $('ul.navbar-nav li').eq(2).addClass('active');    
-});
-</script>
 
+    // highlight left panel item
+    var benefit = '{{request.GET.e}}' || '{{cl.opts.model_name}}';    
+    $('.dropdown-menu-menu-bnchmrk li a').removeClass('active');
+    $('.dropdown-menu-menu-bnchmrk li a').each(function() {
+        var link = $(this).attr('href');
+        if (link.includes(benefit)) {
+            $(this).addClass('active');
+        }
+    });
+});
+</script>  
 {% endblock %}
 
 {% block rtl_styles %}
@@ -68,8 +78,11 @@ jQuery(function($) {
         <li>
             <ul class="dropdown-menu-menu-bnchmrk">
                 <li><a href="/admin/general/employer/">Employers</a></li>
-                <li><a href="/admin/general/medical/">Medical Plans</a></li>
-                <li><a href="/admin/general/dental/">Dental Plans</a></li>
+                <li><a href="/admin/general/medical/?e=PPO,POS">PPO Plans</a></li>
+                <li><a href="/admin/general/medical/?e=HMO,EPO">HMO Plans</a></li>
+                <li><a href="/admin/general/medical/?e=HDHP">HDHP Plans</a></li>
+                <li><a href="/admin/general/dental/?e=DPPO">DPPO Plans</a></li>
+                <li><a href="/admin/general/dental/?e=DMO">DMO Plans</a></li>
                 <li><a href="/admin/general/vision/">Vision Plans</a></li>
                 <li><a href="/admin/general/life/">Life Plans</a></li>
                 <li><a href="/admin/general/std/">STD Plans</a></li>    
