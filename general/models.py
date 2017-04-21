@@ -231,7 +231,7 @@ BOOLEAN_CHOICES =  (
 class Medical(models.Model):
     title = models.CharField('Plan Name',max_length=30)
     employer = models.ForeignKey(Employer)
-    type = models.  CharField('Type',max_length=4, choices=MED_TYPE_CHOICES)
+    type = models.CharField('Type',max_length=4, choices=MED_TYPE_CHOICES)
     in_ded_single = models.IntegerField('Individual Deductible', blank=True, null=True)
     in_max_single = models.IntegerField('Family Deductible', blank=True, null=True)
     in_ded_family = models.IntegerField('Individual Out-of-Pocket Maximum',blank=True, null=True)
