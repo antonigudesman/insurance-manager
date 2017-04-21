@@ -132,9 +132,11 @@ BROKER_CHOICES = (
     ('Assurance', 'Assurance'),
     ('BSG', 'BSG'),
     ('Core', 'Core'),
+    ('Corporate Synergies', 'Corporate Synergies'),
     ('Diversified', 'Diversified'),
     ('EBS', 'EBS'),
     ('GFI', 'GFI'),
+    ('Higginbotham', 'Higginbotham'),
     ('Ironwood', 'Ironwood'),
     ('Marshal & Sterling', 'Marshal & Sterling'),
     ('MAX', 'MAX'),
@@ -147,8 +149,7 @@ BROKER_CHOICES = (
     ('Seubert', 'Seubert'),
     ('ShawHankins', 'ShawHankins'),
     ('USI', 'USI'),
-    ('Wells', 'Wells'),
-    ('Higginbotham', 'Higginbotham')
+    ('Wells', 'Wells')
 )
 
 
@@ -177,7 +178,7 @@ class Employer(models.Model):
     life_count = models.IntegerField('Life Plans',default=0) 
     std_count = models.IntegerField('STD Plans',default=0) 
     ltd_count = models.IntegerField('LTD Plans',default=0) 
-    qc = models.BooleanField('QC')
+    qc = models.BooleanField('QC', default=False)
     renewal_date = models.DateField('Renewal Date')
     address_line_1 = models.CharField('Address 1', max_length=50, blank=True, null=True)
     address_line_2 = models.CharField('Address 2', max_length=50, blank=True, null=True)
