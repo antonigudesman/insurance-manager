@@ -17,18 +17,16 @@ $(document).ready(function(){
         update_properties();
         update_content(benefit);
     } else {
-        $('.enterprise-navbar li').each(function() {
-            if (benefit == $(this).find('a').html()) {
-                $(this).addClass('active');
-            }
-        });
+        // select benefit from server
+        $("#benefits").val(benefit);
 
         get_body();
 
         // change benefit
-        $('.enterprise-navbar li').click(function() {
-            $('.enterprise-navbar li').removeClass('active');
-            $(this).addClass('active');
+        $('#benefits').change(function() {
+            // hide print dialogs
+            $('.ui-dialog-content').dialog('close');
+
             plan = -2;
             get_body();
         });
@@ -143,7 +141,7 @@ function get_filters() {
     head_counts = [];
     others = [];
 
-    benefit = $('.enterprise-navbar li.active a').html();    
+    benefit = $('#benefits option:selected').text();  
 
     $('#industries :selected').each(function() {
         industries.push($(this).val());

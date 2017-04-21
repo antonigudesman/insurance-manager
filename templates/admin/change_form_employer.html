@@ -40,8 +40,6 @@
     {% if not is_popup %}
     <ul class="object-tools">
         {% block object-tools-items %}
-            {% url opts|admin_urlname:'history' original.pk|admin_urlquote as history_url %}
-            <li><a href="{{ history_url }}">{% trans "History" %}</a></li>
             {% if has_absolute_url %}<li><a href="{{ absolute_url }}" class="focus" target="_blank">{% trans "View on site" %}</a></li>{% endif%}
         {% endblock %}
     </ul>
@@ -115,17 +113,21 @@
             <td colspan=3 {% if fieldset.form.name.errors %} class="errors"{% endif %}>{{ fieldset.form.name }}</td>
         </tr>
         <tr>
-            <td {% if fieldset.form.broker.errors %} class="errors"{% endif %}>{{ fieldset.form.broker.errors }}{{ fieldset.form.broker.label_tag }}</td>
-            <td {% if fieldset.form.broker.errors %} class="errors"{% endif %}>{{ fieldset.form.broker }}</td>
-            <td>Renewal Date</td>
-            <td>Need to Add Field</td>           
-        </tr>
-        <tr>
-            <td>User</td>
-            <td>Need to Add Field</td> 
             <td {% if fieldset.form.size.errors %} class="errors"{% endif %}>{{ fieldset.form.size.errors }}{{ fieldset.form.size.label_tag }}</td>
             <td {% if fieldset.form.size.errors %} class="errors"{% endif %}>{{ fieldset.form.size }}</td>          
+            <td {% if fieldset.form.renewal_date.errors %} class="errors"{% endif %}>{{ fieldset.form.renewal_date.errors }}{{ fieldset.form.renewal_date.label_tag }}</td>
+            <td {% if fieldset.form.renewal_date.errors %} class="errors"{% endif %}>{{ fieldset.form.renewal_date }}</td>
         </tr>
+        {% if fieldset.form.broker.value == 'bnchmrk' or broker == 'bnchmrk' %}
+        <tr>
+            <td {% if fieldset.form.broker.errors %} class="errors"{% endif %}>{{ fieldset.form.broker.errors }}{{ fieldset.form.broker.label_tag }}</td>
+            <td {% if fieldset.form.broker.errors %} class="errors"{% endif %}>{{ fieldset.form.broker }}</td>           
+            <td {% if fieldset.form.qc.errors %} class="errors"{% endif %}>{{ fieldset.form.qc.errors }}{{ fieldset.form.qc.label_tag }}</td>
+            <td {% if fieldset.form.qc.errors %} class="errors"{% endif %}>{{ fieldset.form.qc }}</td>
+        </tr>
+        {% else %}
+        <input name="broker" value="{{ fieldset.form.broker.value }}" type="hidden">
+        {% endif %}
         <tr>
             <td colspan="4" class="change-header">Industry Data Points</td>
         </tr>
@@ -200,35 +202,43 @@
             <td colspan="4" class="change-header">Demographics</td>           
         </tr>
         <tr>
-            <td>Address Line 1</td>
-            <td>Need to Add Field</td> 
-            <td>Employer URL</td>
-            <td>Need to Add Field</td>           
+            <td {% if fieldset.form.address_line_1.errors %} class="errors"{% endif %}>{{ fieldset.form.address_line_1.errors }}{{ fieldset.form.address_line_1.label_tag }}</td>
+            <td colspan="3" {% if fieldset.form.address_line_1.errors %} class="errors"{% endif %}>{{ fieldset.form.address_line_1 }}</td>  
         </tr>
         <tr>
-            <td>Address Line 2</td>
-            <td>Need to Add Field</td> 
-            <td>Benefits URL</td>
-            <td>Need to Add Field</td>            
+            <td {% if fieldset.form.address_line_2.errors %} class="errors"{% endif %}>{{ fieldset.form.address_line_2.errors }}{{ fieldset.form.address_line_2.label_tag }}</td>
+            <td colspan="3" {% if fieldset.form.address_line_2.errors %} class="errors"{% endif %}>{{ fieldset.form.address_line_2 }}</td>  
+        </tr>
+        <tr>   
+            <td {% if fieldset.form.employerurl.errors %} class="errors"{% endif %}>{{ fieldset.form.employerurl.errors }}{{ fieldset.form.employerurl.label_tag }}</td>
+            <td colspan="3"{% if fieldset.form.employerurl.errors %} class="errors"{% endif %}>{{ fieldset.form.employerurl }}</td>     
+        </tr>
+        <tr>   
+            <td {% if fieldset.form.employerbenefitsurl.errors %} class="errors"{% endif %}>{{ fieldset.form.employerbenefitsurl.errors }}{{ fieldset.form.employerbenefitsurl.label_tag }}</td>
+            <td colspan="3" {% if fieldset.form.employerbenefitsurl.errors %} class="errors"{% endif %}>{{ fieldset.form.employerbenefitsurl }}</td>     
+        </tr>
+        <tr>         
+            <td {% if fieldset.form.stock_symbol.errors %} class="errors"{% endif %}>{{ fieldset.form.stock_symbol.errors }}{{ fieldset.form.stock_symbol.label_tag }}</td>
+            <td colspan="3" {% if fieldset.form.stock_symbol.errors %} class="errors"{% endif %}>{{ fieldset.form.stock_symbol }}</td>  
         </tr>
         <tr>
             <td {% if fieldset.form.state.errors %} class="errors"{% endif %}>{{ fieldset.form.state.errors }}{{ fieldset.form.state.label_tag }}</td>
-            <td {% if fieldset.form.state.errors %} class="errors"{% endif %}>{{ fieldset.form.state }}</td>  
-            <td>Stock Symbol</td>
-            <td>Need to Add Field</td>        
+            <td {% if fieldset.form.state.errors %} class="errors"{% endif %}>{{ fieldset.form.state }}</td>
+            <td {% if fieldset.form.naics_2012_code.errors %} class="errors"{% endif %}>{{ fieldset.form.naics_2012_code.errors }}{{ fieldset.form.naics_2012_code.label_tag }}</td>
+            <td {% if fieldset.form.naics_2012_code.errors %} class="errors"{% endif %}>{{ fieldset.form.naics_2012_code }}</td>
         </tr>
         <tr>
-            <td>Zipcode</td>
-            <td>Need to Add Field</td> 
-            <td>AVID</td>
-            <td>Need to Add Field</td>           
+            <td {% if fieldset.form.zip_code.errors %} class="errors"{% endif %}>{{ fieldset.form.zip_code.errors }}{{ fieldset.form.zip_code.label_tag }}</td>
+            <td colspan="3" {% if fieldset.form.zip_code.errors %} class="errors"{% endif %}>{{ fieldset.form.zip_code }}</td>  
         </tr>
         <tr>
-            <td>Phone</td>
-            <td>Need to Add Field</td>
-            <td>NAICS</td>
-            <td>Need to Add Field</td>  
+            <td {% if fieldset.form.phone.errors %} class="errors"{% endif %}>{{ fieldset.form.phone.errors }}{{ fieldset.form.phone.label_tag }}</td>
+            <td colspan="3" {% if fieldset.form.phone.errors %} class="errors"{% endif %}>{{ fieldset.form.phone }}</td>
         </tr>    
+        <tr>
+            <td {% if fieldset.form.avid.errors %} class="errors"{% endif %}>{{ fieldset.form.avid.errors }}{{ fieldset.form.avid.label_tag }}</td>
+            <td {% if fieldset.form.avid.errors %} class="errors"{% endif %}>{{ fieldset.form.avid }}</td>       
+        </tr>
       </tbody>
     </table>
 </fieldset>
@@ -251,18 +261,68 @@
             <table>
                 <tbody>
                     <tr>
-                        <th>Title</th>
-                        <th>Type</th>
+                        <td>
+                            <h4>Medical</h4>
+                            <a href="/admin/general/medical/add/?employer={{id}}">Create Medical Plan</a><br>
+                            {% for item in plans.Medical %}
+                            <a href="{{item.1}}">{{ item.0 }}</a><br>
+                            {% endfor %}
+                        </td>
+                        <td>
+                            <h4>Dental</h4>
+                            <a href="/admin/general/dental/add/?employer={{id}}">Create Dental Plan</a><br>
+                            {% for item in plans.Dental %}
+                            <a href="{{item.1}}">{{ item.0 }}</a><br>
+                            {% endfor %}
+                        </td>
                     </tr>
-                    {% for item in plans %}
-                        <tr>
-                        <td><a href="{{item.1}}">{{ item.0 }}</a></td>
-                        <td>{{item.2}}</td>
-                        </tr>
-                    {% endfor %}                    
+                    <tr>
+                        <td>
+                            <h4>Vision</h4>
+                            <a href="/admin/general/vision/add/?employer={{id}}">Create Vision Plan</a><br>
+                            {% for item in plans.Vision %}
+                            <a href="{{item.1}}">{{ item.0 }}</a><br>
+                            {% endfor %}
+
+                        </td>
+                        <td>
+                            <h4>Life</h4>
+                            <a href="/admin/general/life/add/?employer={{id}}">Create Life Plan</a><br>
+                            {% for item in plans.Life %}
+                            <a href="{{item.1}}">{{ item.0 }}</a><br>
+                            {% endfor %}
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h4>LTD</h4>
+                            <a href="/admin/general/ltd/add/?employer={{id}}">Create LTD Plan</a><br>
+                            {% for item in plans.LTD %}
+                            <a href="{{item.1}}">{{ item.0 }}</a><br>
+                            {% endfor %}
+
+                        </td>
+                        <td>
+                            <h4>STD</h4>
+                            <a href="/admin/general/std/add/?employer={{id}}">Create STD Plan</a><br>
+                            {% for item in plans.STD %}
+                            <a href="{{item.1}}">{{ item.0 }}</a><br>
+                            {% endfor %}
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <h4>Strategy</h4>
+                            <a href="/admin/general/strategy/add/?employer={{id}}">Create Strategy Plan</a><br>
+                            {% for item in plans.Strategy %}
+                            <a href="{{item.1}}">{{ item.0 }}</a><br>
+                            {% endfor %}
+                        </td>
+                    </tr>
                 </tbody>
             </table>
-
             </div>
             <!-- Submit-Row -->
             {% block submit_buttons_bottom %}
@@ -270,6 +330,7 @@
                 {% if delete %}
                 <p class="deletelink-box"><a href="/admin/general/life/3084/delete/" class="deletelink">Delete</a></p>
                 {% endif %}
+                {% url opts|admin_urlname:'history' original.pk|admin_urlquote as history_url %}
                 <a href="{{ history_url }}">{% trans "History" %}</a>
                 <input value="Cancel" class="warning" name="_cancel" onclick="history.go(-1);" type="button">
                 <input value="Save" class="default" name="_save" type="submit">

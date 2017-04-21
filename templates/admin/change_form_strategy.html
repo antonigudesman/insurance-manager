@@ -210,6 +210,7 @@
             {% block submit_buttons_bottom %}
             <div class="submit-row">
                 <p class="deletelink-box"><a href="/admin/general/life/3084/delete/" class="deletelink">Delete</a></p>
+                {% url opts|admin_urlname:'history' original.pk|admin_urlquote as history_url %}
                 <a href="{{ history_url }}">{% trans "History" %}</a>
                 <input value="Cancel" class="warning" name="_cancel" onclick="history.go(-1);" type="button">
                 <input value="Save" class="default" name="_save" type="submit">

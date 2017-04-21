@@ -47,17 +47,13 @@
 @media (min-width: 1200px) {
 
     body {
-        margin-top: 156px;
+        margin-top: 121px;
     }
 
     /* Top Navigation */
 
-    .enterprise-menu {
-        top: 40px;
-    }
-
     .enterprise-control-wrapper {
-        top: 75px;
+        top: 41px;
     }
 
     .enterprise-nav > li > a {
@@ -103,17 +99,24 @@
     }
 
     .plan-selector {
-        width: 79%;
+        width: 37%;
+        margin-bottom: 9px;
+    }
+
+    .benefit-selector {
+        width: 35%;
         margin-bottom: 9px;
     }
 
     .filter-control,
-    .plan-control {
+    .plan-control,
+    .benefit-control {
         padding-bottom: 3px;
     }
 
     .filter-control > option,
-    .plan-control > option {
+    .plan-control > option,
+    .benefit-control > option {
         padding-top: 4px;
     }
 
@@ -252,6 +255,7 @@
     .filter-control,
     .enterprise-nav > li > a,
     .plan-control,
+    .benefit-control,
     .control-buttons h6,
     .section-score h5 {
         font-size: 16px;
@@ -281,6 +285,7 @@
 .control-wrapper,
 .filter-control,
 .plan-control,
+.benefit-control,
 .benefit-header,
 .benefit-details,
 .benefit-error {
@@ -317,7 +322,9 @@
 .zoom-icon,
 .filter-control,
 .plan-selector,
+.benefit-selector,
 .plan-control,
+.benefit-control,
 img.dropdown-icon,
 .header-filter h6,
 .employer-filter-count h6 {
@@ -369,6 +376,7 @@ img.dropdown-icon,
 .employer-filter-count h6,
 .filter-control,
 .plan-control,
+.benefit-control,
 img.dropdown-icon,
 .control-buttons,
 .print-cover-logo > img {
@@ -420,7 +428,8 @@ img.dropdown-icon,
 li.active,
 .section,
 .filter-control,
-.plan-control {
+.plan-control,
+.benefit-control {
     background-color: #ffffff;
 }
 
@@ -443,6 +452,7 @@ li.active,
 
 .filter-control,
 .plan-control,
+.benefit-control,
 .print-cover-content {
     border: 1px solid #e0e0e0;
 }
@@ -495,6 +505,7 @@ li.active,
 
 .filter-control,
 .plan-control,
+.benefit-control,
 .pie-title {
     color: #5e5e5e;
 }

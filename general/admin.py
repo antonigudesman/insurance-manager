@@ -44,10 +44,12 @@ class EmployerAdmin(admin.ModelAdmin):
     search_fields = ('name','broker')
     list_filter = ('broker',)
     change_form_template = 'admin/change_form_employer.html'
-    fields = ('name', 'broker', 'industry1', 'state', 'industry2', 'size', 'industry3',
+    fields = ('name', 'broker', 'qc', 'industry1', 'state', 'industry2', 'size', 'industry3',
         'nonprofit', 'govt_contractor', 'new_england', 'med_count', 'mid_atlantic',
         'den_count', 'south_atlantic', 'vis_count', 'south_cental', 'life_count', 
-        'east_central', 'std_count', 'west_central', 'ltd_count', 'mountain', 'pacific')
+        'east_central', 'std_count', 'west_central', 'ltd_count', 'mountain', 'pacific', 
+        'renewal_date', 'address_line_1', 'address_line_2', 'zip_code', 'phone', 'employerurl',
+        'employerbenefitsurl', 'stock_symbol', 'avid', 'naics_2012_code')
     form = EmployerForm
 
     def get_queryset(self, request):
@@ -70,20 +72,26 @@ class EmployerAdmin(admin.ModelAdmin):
 
     def change_view(self, request, object_id, form_url='', extra_context=None):
         extra_context = extra_context or {}
-        plans = []
+        plans = {}
         for model in [Medical, Dental, Vision, Life, STD, LTD, Strategy]:
+            plans[model.__name__] = []
             for item in model.objects.filter(employer_id=object_id):
                 url = '/admin/general/{}/{}/change/'.format(model.__name__.lower(), item.pk)
                 if model == Strategy:
-                    plans.append([item.employer.name, url, model.__name__])
+                    plans[model.__name__].append([item.employer.name, url, model.__name__])
                 else:
-                    plans.append([item.title, url, model.__name__])
+                    plans[model.__name__].append([item.title, url, model.__name__])
 
         extra_context['plans'] = plans
-
+        extra_context['broker'] = request.user.groups.first().name
+        extra_context['id'] = object_id
+        
         return super(EmployerAdmin, self).change_view(
             request, object_id, form_url, extra_context=extra_context,
         )
+
+    def get_changeform_initial_data(self, request):
+        return {'broker': request.user.groups.first().name}
 
     def formatted_size(self, obj):
         try:
@@ -114,7 +122,7 @@ class MedicalForm(forms.ModelForm):
 
 
 class MedicalAdmin(admin.ModelAdmin):
-    list_display = ['title','employer','type','formatted_ded_single',
+    list_display = ['title','formatted_employer','type','formatted_ded_single',
                     'formatted_max_single','formatted_coin']
     search_fields = ('employer__name', 'title',)
     list_filter = ('type',)
@@ -140,9 +148,6 @@ class MedicalAdmin(admin.ModelAdmin):
             
         return qs
 
-    def get_ordering(self, request):
-        return ['employer__name']  # sort case insensitive
-
     def get_actions(self, request):
         actions = super(MedicalAdmin, self).get_actions(request)
         group = request.user.groups.first().name
@@ -160,6 +165,15 @@ class MedicalAdmin(admin.ModelAdmin):
     formatted_ded_single.short_description = 'IN Deductible (Ind)'
     formatted_ded_single.admin_order_field = 'in_ded_single' 
 
+    def get_ordering(self, request):
+        return ['employer__name']
+
+    def formatted_employer(self, obj):
+        return obj.employer.name
+
+    formatted_employer.short_description = 'Employer'
+    formatted_employer.admin_order_field = 'employer__name' 
+
     def formatted_max_single(self, obj):
         try:
             return '${:,.0f}'.format(obj.in_max_single)
@@ -176,7 +190,7 @@ class MedicalAdmin(admin.ModelAdmin):
 
 
 class DentalAdmin(admin.ModelAdmin):
-    list_display = ['title','employer','type','formatted_ded_single',
+    list_display = ['title','formatted_employer','type','formatted_ded_single',
                     'formatted_in_max','formatted_in_max_ortho']
     search_fields = ('employer__name', 'title',)
     list_filter = ('type',)
@@ -189,6 +203,15 @@ class DentalAdmin(admin.ModelAdmin):
         'in_basic_coin', 'out_prev_coin', 'out_basic_coin', 'in_ortho_coin', 
         'major_ded_apply', 'out_ortho_coin', 'in_major_coin', 'ortho_ded_apply', 
         'out_major_coin', 'ortho_age_limit')
+
+    def get_ordering(self, request):
+        return ['employer__name']
+
+    def formatted_employer(self, obj):
+        return obj.employer.name
+
+    formatted_employer.short_description = 'Employer'
+    formatted_employer.admin_order_field = 'employer__name' 
 
     def get_queryset(self, request):
         qs = super(DentalAdmin, self).get_queryset(request)
@@ -234,7 +257,7 @@ class DentalAdmin(admin.ModelAdmin):
 
 
 class VisionAdmin(admin.ModelAdmin):
-    list_display = ['title','employer','formatted_exam_copay','formatted_lenses_copay',
+    list_display = ['title','formatted_employer','formatted_exam_copay','formatted_lenses_copay',
                     'formatted_frames_allowance','formatted_contacts_allowance']
     search_fields = ('employer__name', 'title',)
     change_form_template = 'admin/change_form_vision.html'
@@ -245,6 +268,15 @@ class VisionAdmin(admin.ModelAdmin):
         'contacts_coinsurance', 'frames_frequency', 'contacts_frequency', 'frames_out_allowance', 
         'contacts_out_allowance', 't1_ee', 't1_gross', 't2_ee', 't2_gross', 't3_ee', 
         't3_gross', 't4_ee', 't4_gross')
+
+    def get_ordering(self, request):
+        return ['employer__name']
+
+    def formatted_employer(self, obj):
+        return obj.employer.name
+
+    formatted_employer.short_description = 'Employer'
+    formatted_employer.admin_order_field = 'employer__name' 
     
     def get_queryset(self, request):
         qs = super(VisionAdmin, self).get_queryset(request)
@@ -298,13 +330,22 @@ class VisionAdmin(admin.ModelAdmin):
 
 
 class LifeAdmin(admin.ModelAdmin):
-    list_display = ['title', 'employer', 'type', 'multiple', 
+    list_display = ['title', 'formatted_employer', 'type', 'multiple', 
                     'formatted_multiple_max', 'formatted_flat_amount', 'add', 'cost_share']
     search_fields = ('employer__name',)
     list_filter = ('type',)
     fields = ('title', 'employer', 'type', 'multiple', 'flat_amount', 
               'multiple_max', 'add', 'cost_share')
     change_form_template = 'admin/change_form_life.html'
+
+    def get_ordering(self, request):
+        return ['employer__name']
+
+    def formatted_employer(self, obj):
+        return obj.employer.name
+
+    formatted_employer.short_description = 'Employer'
+    formatted_employer.admin_order_field = 'employer__name' 
     
     def get_queryset(self, request):
         qs = super(LifeAdmin, self).get_queryset(request)
@@ -342,13 +383,22 @@ class LifeAdmin(admin.ModelAdmin):
 
 
 class STDAdmin(admin.ModelAdmin):
-    list_display = ['title', 'employer', 'waiting_days', 'duration_weeks', 
+    list_display = ['title', 'formatted_employer', 'waiting_days', 'duration_weeks', 
                     'formatted_percentage', 'formatted_weekly_max', 'cost_share']
     search_fields = ('employer__name', 'title',)
     fields = ('title', 'employer', 'waiting_days', 'duration_weeks', 'waiting_days_sick', 
               'percentage', 'weekly_max', 'cost_share', 'salary_cont')
     change_form_template = 'admin/change_form_std.html'
     
+    def get_ordering(self, request):
+        return ['employer__name']
+
+    def formatted_employer(self, obj):
+        return obj.employer.name
+
+    formatted_employer.short_description = 'Employer'
+    formatted_employer.admin_order_field = 'employer__name' 
+
     def get_queryset(self, request):
         qs = super(STDAdmin, self).get_queryset(request)
         group = request.user.groups.first().name
@@ -385,12 +435,21 @@ class STDAdmin(admin.ModelAdmin):
 
 
 class LTDAdmin(admin.ModelAdmin):
-    list_display = ['title', 'employer', 'waiting_weeks', 
+    list_display = ['title', 'formatted_employer', 'waiting_weeks', 
                     'formatted_percentage', 'formatted_monthly_max', 'cost_share']
     search_fields = ('employer__name', 'title',)
     fields = ('title', 'employer', 'waiting_weeks', 'percentage', 'monthly_max', 'cost_share')
     change_form_template = 'admin/change_form_ltd.html'
     
+    def get_ordering(self, request):
+        return ['employer__name']
+
+    def formatted_employer(self, obj):
+        return obj.employer.name
+
+    formatted_employer.short_description = 'Employer'
+    formatted_employer.admin_order_field = 'employer__name' 
+
     def get_queryset(self, request):
         qs = super(LTDAdmin, self).get_queryset(request)
         group = request.user.groups.first().name
@@ -427,7 +486,7 @@ class LTDAdmin(admin.ModelAdmin):
 
 
 class StrategyAdmin(admin.ModelAdmin):
-    list_display = ['employer', 'spousal_surcharge', 'tobacco_surcharge', 'offer_fsa', 'salary_banding']
+    list_display = ['formatted_employer', 'spousal_surcharge', 'tobacco_surcharge', 'offer_fsa', 'salary_banding']
     search_fields = ('employer__name', 'title',)
     change_form_template = 'admin/change_form_strategy.html'
 
@@ -436,6 +495,15 @@ class StrategyAdmin(admin.ModelAdmin):
         'tobacco_surcharge', 'mvp', 'tobacco_surcharge_amount', 'contribution_bundle', 
         'pt_medical', 'defined_contribution', 'pt_dental', 'salary_banding', 'pt_vision', 
         'wellness_banding', 'pt_life', 'pt_std', 'pt_ltd')
+
+    def get_ordering(self, request):
+        return ['employer__name']
+
+    def formatted_employer(self, obj):
+        return obj.employer.name
+
+    formatted_employer.short_description = 'Employer'
+    formatted_employer.admin_order_field = 'employer__name' 
     
     def get_queryset(self, request):
         qs = super(StrategyAdmin, self).get_queryset(request)

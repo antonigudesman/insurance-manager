@@ -99,7 +99,7 @@ def get_pdf(request, benefits, plans):
     driver.set_window_size(1360, 1000)
 
     cc = { 
-        'domain': request.META.get('HTTP_HOST'), 
+        'domain': request.META.get('HTTP_HOST').split(':')[0], 
         'name': 'sessionid', 
         'value': request.COOKIES.get('sessionid'), 
         'path': '/'
@@ -221,5 +221,5 @@ def get_download_response(path):
 
     response = HttpResponse(wrapper, content_type = content_type)
     response['Content-Length'] = os.path.getsize( path ) # not FileField instance
-    response['Content-Disposition'] = 'attachment; filename=%s/' % smart_str( os.path.basename( path ) )
+    response['Content-Disposition'] = 'attachment; filename=%s' % smart_str( os.path.basename( path ) )
     return response
