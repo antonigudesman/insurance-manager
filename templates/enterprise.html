@@ -11,86 +11,73 @@
 
 <div class="enterprise-control-wrapper">
     <div class="container">
-        <div class="control-wrapper">
-            <div class="header-filter top-header-filter">
-                <h6>Filters:</h6>
-            </div>
-            <div class="industry-filter">
-                <select name="industry" multiple="" id="industries" class="filter-control" size="1">
-                    <option value="*">All Industries</option>
-                    {% for item in industries %}
-                    <option value="{{ item }}">{{ item }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="region-filter">
-                <select name="" multiple="" id="regions" class="filter-control" size="1">
-                    <option value="*">All Regions</option>
-                    <option value="new_england">New England</option>
-                    <option value="mid_atlantic">Tri-State Area</option>
-                    <option value="south_atlantic">South Atlantic</option>
-                    <option value="south_cental">South Central</option>
-                    <option value="east_central">East North Central</option>
-                    <option value="west_central">West North Central</option>
-                    <option value="mountain">Mountain</option>
-                    <option value="pacific">Pacific</option>
-                </select>
-            </div>
-            <div class="headcount-filter">
-                <select name="head-count" multiple="" id="head-counts" class="filter-control" size="1">
-                    <option value="0-2000000">All Sizes</option>
-                    <option value="0-249">Up to 250</option>
-                    <option value="250-499">250 to 499</option>
-                    <option value="500-999">500 to 999</option>
-                    <option value="1000-4999">1,000 to 4,999</option>
-                    <option value="5000-2000000">5,000 and Up</option>
-                </select>
-            </div>
-            <div class="other-filter">
-                <select name="" multiple="" id="other_filter" class="filter-control" size="1">
-                    <option value="*">Other</option>
-                    <option value="nonprofit">Non-Profit</option>
-                    <option value="govt_contractor">Gov't Contractor</option>
-                </select>
-            </div>
-            <div class="zoom-icon">
-                <img src="{% static 'img/icons/menu.png' %}" class="dropdown-icon" alt="">
-            </div>
-            <div class="control-buttons">
-                <a class="btn btn-primary" href="javascript:void(0);" onclick="get_body();">Run Filters</a>
-            </div>
+        <div class="industry-filter">
+            <select name="industry" multiple="" id="industries" class="filter-control" size="1">
+                <option value="*">All Industries</option>
+                {% for item in industries %}
+                <option value="{{ item }}">{{ item }}</option>
+                {% endfor %}
+            </select>
         </div>
-        <div class="control-wrapper">
-            <div class="header-filter">
-                <h6>Benefits:</h6>
-            </div>
-            <div class="benefit-selector">
-                <select name="" id="benefits" class="benefit-control" size="1">
-                    <option value="PPO">PPO</option>
-                    <option value="HMO">HMO</option>
-                    <option value="HDHP">HDHP</option>
-                    <option value="DPPO">DPPO</option>
-                    <option value="DMO">DMO</option>
-                    <option value="VISION">VISION</option>
-                    <option value="LIFE">LIFE</option>
-                    <option value="STD">STD</option>
-                    <option value="LTD">LTD</option>
-                    <option value="STRATEGY">STRATEGY</option>
-                    <option value="EMPLOYERS">EMPLOYERS</option>
-                </select>
-            </div>
-            <div class="header-filter">
-                <h6>Plans:</h6>
-            </div>
-            <div class="plan-selector">
-                <select name="" id="plans" class="plan-control" size="1">
-                    <option value="0">No Comparison</option>
-                </select>
-            </div>
-            <div class="control-buttons">
-                <a class="btn btn-print-report" style="display: none;" disabled="true" onclick="show_print_pending_dialog('print_report_dialog');">Print Report</a>
-                <a class="btn btn-print-page" href="/print_page" onclick="show_print_pending_dialog('print_page_dialog');">Print Page</a>
-            </div>
+        <div class="region-filter">
+            <select name="" multiple="" id="regions" class="filter-control" size="1">
+                <option value="*">All Regions</option>
+                <option value="new_england">New England</option>
+                <option value="mid_atlantic">Tri-State Area</option>
+                <option value="south_atlantic">South Atlantic</option>
+                <option value="south_cental">South Central</option>
+                <option value="east_central">East North Central</option>
+                <option value="west_central">West North Central</option>
+                <option value="mountain">Mountain</option>
+                <option value="pacific">Pacific</option>
+            </select>
+        </div>
+        <div class="headcount-filter">
+            <select name="head-count" multiple="" id="head-counts" class="filter-control" size="1">
+                <option value="0-2000000">All Sizes</option>
+                <option value="0-249">Up to 250</option>
+                <option value="250-499">250 to 499</option>
+                <option value="500-999">500 to 999</option>
+                <option value="1000-4999">1,000 to 4,999</option>
+                <option value="5000-2000000">5,000 and Up</option>
+            </select>
+        </div>
+        <div class="other-filter">
+            <select name="" multiple="" id="other_filter" class="filter-control" size="1">
+                <option value="*">Other</option>
+                <option value="nonprofit">Non-Profit</option>
+                <option value="govt_contractor">Gov't Contractor</option>
+            </select>
+        </div>
+        <div class="zoom-icon">
+            <img src="{% static 'img/icons/menu.png' %}" class="dropdown-icon" alt="">
+        </div>
+        <div class="control-buttons">
+            <a class="btn btn-primary" href="javascript:void(0);" onclick="get_body();">Run Filters</a>
+        </div>
+        <div class="benefit-selector">
+            <select name="" id="benefits" class="benefit-control" size="1">
+                <option value="PPO">PPO</option>
+                <option value="HMO">HMO</option>
+                <option value="HDHP">HDHP</option>
+                <option value="DPPO">DPPO</option>
+                <option value="DMO">DMO</option>
+                <option value="VISION">VISION</option>
+                <option value="LIFE">LIFE</option>
+                <option value="STD">STD</option>
+                <option value="LTD">LTD</option>
+                <option value="STRATEGY">STRATEGY</option>
+                <option value="EMPLOYERS">EMPLOYERS</option>
+            </select>
+        </div>
+        <div class="plan-selector">
+            <select name="" id="plans" class="plan-control" size="1">
+                <option value="0">No Comparison</option>
+            </select>
+        </div>
+        <div class="control-buttons">
+            <a class="btn btn-print-report" style="display: none;" disabled="true" onclick="show_print_pending_dialog('print_report_dialog');">Print Report</a>
+            <a class="btn btn-print-page" href="/print_page" onclick="show_print_pending_dialog('print_page_dialog');">Print Page</a>
         </div>
     </div>
 </div>
