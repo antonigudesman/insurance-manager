@@ -47,89 +47,69 @@
 @media (min-width: 1200px) {
 
     body {
-        margin-top: 121px;
+        margin-top: 61px;
     }
 
     /* Top Navigation */
 
     .enterprise-control-wrapper {
+        position: fixed;
         top: 41px;
-    }
-
-    .enterprise-nav > li > a {
-        padding: 5px;
-    }
-
-    .control-wrapper {
-        padding: 9px 9px 0 9px;
-    }
-
-    .header-filter {
-        width: 7%;
-        padding: 5px 0 0 25px;
+        right: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1030;
     }
 
     .industry-filter {
-        width: 37%;
-        padding-right: 7px;
+        width: 25%;
     }
 
-    .region-filter {
-        width: 15%;
-        padding-right: 7px;
+    .region-filter{
+        width: 9%;
     }
 
-    .headcount-filter {
-        width: 13%;
-        padding-right: 7px;
+    .headcount-filter{
+        width: 9%;
     }
 
     .other-filter {
-        width: 14%;
+        width: 9%;
     }
 
     .zoom-icon {
-        width: 7%;
-        padding: 4px 0 0 5px;
-    }
-
-    .control-buttons {
-        width: 7%;
-        padding-right: 25px;
-    }
-
-    .plan-selector {
-        width: 37%;
-        margin-bottom: 9px;
+        width: 2%;
+        padding: 4px 0 0 6px;
     }
 
     .benefit-selector {
-        width: 35%;
-        margin-bottom: 9px;
+        width: 7%;
     }
 
-    .filter-control,
-    .plan-control,
-    .benefit-control {
-        padding-bottom: 3px;
+    .plan-selector {
+        width: 28%;
     }
 
-    .filter-control > option,
-    .plan-control > option,
-    .benefit-control > option {
-        padding-top: 4px;
+    .control-buttons {
+        width: 5%;
     }
 
-    .btn-primary {
-        padding: 1px 17px;
+    .industry-filter, 
+    .region-filter, 
+    .headcount-filter, 
+    .other-filter, 
+    .zoom-icon, 
+    .benefit-selector, 
+    .plan-selector, 
+    .control-buttons {
+        float: left;
+        font-size: 14px;
     }
 
-    .btn-print-page {
-        padding: 1px 19px;
-    }
-
+    .btn-primary,
+    .btn-print-page,
     .btn-print-report {
-        padding: 1px 13px;
+        padding: 1px 4px;
     }
     
     
@@ -252,21 +232,8 @@
         font-size: 14px;
     }
 
-    .filter-control,
-    .enterprise-nav > li > a,
-    .plan-control,
-    .benefit-control,
-    .control-buttons h6,
     .section-score h5 {
         font-size: 16px;
-    }
-
-    .header-filter h6,
-    .employer-filter-count h6,
-    .btn-primary,
-    .btn-print-report,
-    .btn-print-page {
-        font-size: 18px;
     }
 
     .benefit-header h4,
@@ -280,9 +247,7 @@
 
 }
 
-.enterprise-menu,
-.enterprise-control-wrapper,
-.control-wrapper,
+
 .filter-control,
 .plan-control,
 .benefit-control,
@@ -292,56 +257,10 @@
     width: 100%;
 }
 
-.header-filter h6,
-.control-buttons h6,
-.employer-filter-count h6,
 .benefit-details > p,
 .benefit-details > h6 {
     padding: 0;
-}
-
-.header-filter h6,
-.control-buttons h6,
-.employer-filter-count h6,
-.benefit-details > p,
-.benefit-details > h6 {
     margin: 0;
-}
-
-.enterprise-menu,
-.enterprise-control-wrapper {
-    right: 0;
-    left: 0;
-}
-
-.header-filter,
-.industry-filter,
-.headcount-filter,
-.region-filter,
-.other-filter,
-.zoom-icon,
-.filter-control,
-.plan-selector,
-.benefit-selector,
-.plan-control,
-.benefit-control,
-img.dropdown-icon,
-.header-filter h6,
-.employer-filter-count h6 {
-    float: left;
-}
-
-.btn-primary,
-.btn-print-report,
-.btn-print-page,
-.control-buttons,
-.benefit-details {
-    float: right;
-}
-
-.enterprise-control-wrapper,
-.enterprise-menu {
-    position: fixed;
 }
 
 .section-header,
@@ -356,11 +275,7 @@ img.dropdown-icon,
 }
 
 .enterprise-navbar,
-.control-wrapper,
-.benefit-header {
-    overflow: auto;
-}
-
+.benefit-header,
 .section {
     overflow: hidden;
 }
@@ -373,7 +288,6 @@ img.dropdown-icon,
 }
 
 .header-filter h6,
-.employer-filter-count h6,
 .filter-control,
 .plan-control,
 .benefit-control,
@@ -392,28 +306,12 @@ img.dropdown-icon,
     display: inline-block;
 }
 
-.enterprise-control-wrapper,
-.enterprise-menu {
-    z-index: 1030;
-}
-
-
 
 /*  Background Colors  */
 
-.enterprise-menu,
 .enterprise-control-wrapper,
-.other-filter,
 .bottom-menu {
     background-color: #333333;
-}
-
-.nav-tabs {
-    background-color: #444444;
-}
-
-.control-wrapper {
-    background-color: #222222;
 }
 
 .btn-primary {
@@ -425,16 +323,11 @@ img.dropdown-icon,
     background-color: #51b351;
 }
 
-li.active,
 .section,
 .filter-control,
 .plan-control,
 .benefit-control {
     background-color: #ffffff;
-}
-
-.nav-tabs > li > a:hover {
-    background-color: #33cc33;
 }
 
 .section-header {
@@ -445,8 +338,7 @@ li.active,
 /*  Borders  */
 
 .section-score p,
-.benefit-header,
-.nav-tabs > li > a {
+.benefit-header {
     border: 1px solid #c0c0c0;
 }
 
@@ -457,7 +349,6 @@ li.active,
     border: 1px solid #e0e0e0;
 }
 
-.control-wrapper,
 .bootgrid-footer,
 .table-responsive {
     border-left: 1px solid #c0c0c0;
@@ -493,13 +384,7 @@ p.threshold-error {
 .btn-primary,
 .btn-print-report,
 .btn-print-page,
-li.active,
-.nav-tabs,
-.nav-tabs > li > a,
-.nav-tabs > li > a:hover > li > a,
-.control-buttons h6,
-.header-filter h6,
-.employer-filter-count h6 {
+.header-filter h6 {
     color: #ffffff;
 }
 
@@ -538,9 +423,7 @@ div.easy-pie div.percent,
     text-transform: capitalize;
 }
 
-.table-content > tbody > tr.quintile-subject > td,
-li.active,
-.control-buttons h6,
+.table-content > tbody > tr.quintile-subject > td
 .pie-title,
 .section-score p,
 .section-score h5,
