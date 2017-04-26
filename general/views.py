@@ -348,3 +348,21 @@ def contact_us(request):
 
 def company(request):
     return render(request, 'company.html')    
+
+
+## ----------------------------------------------------------------  ##
+
+def accounts(request):
+    # get valid distinct industries 
+    industries1 = Employer.objects.order_by('industry1').values_list('industry1').distinct()
+    industries1 = [item[0] for item in industries1 if item[0]]
+    industries2 = Employer.objects.order_by('industry2').values_list('industry2').distinct()
+    industries2 = [item[0] for item in industries2 if item[0]]
+    industries3 = Employer.objects.order_by('industry3').values_list('industry3').distinct()
+    industries3 = [item[0] for item in industries3 if item[0]]
+    industries = set(industries1 + industries2 + industries3)
+
+    return render(request, 'accounts.html', {
+            'industries': sorted(industries),
+            'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE
+        })    

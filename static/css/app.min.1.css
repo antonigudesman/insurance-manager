@@ -1402,11 +1402,11 @@ html {
 }
 
 body {
-  font-family: Arial;
+  font-family: roboto;
   font-size: 13px;
   line-height: 1.42857143;
   color: #5e5e5e;
-  background-color: #ffffff;
+  background-color: #edecec;
 }
 
 input,
@@ -1419,7 +1419,7 @@ textarea {
 }
 
 a {
-  color: #ee7123;
+  color: #2196f3;
   text-decoration: none;
 }
 
@@ -2010,7 +2010,7 @@ pre code {
 
 @media (min-width: 1200px) {
   .container {
-    width: 1425px;
+    width: 1170px;
   }
 }
 
@@ -10273,6 +10273,9 @@ h6 small,
   text-align: center;
   z-index: 1;
   position: relative;
+  font-size: 16px;
+  padding-top: 4px;
+  margin-left: 5px;  
 }
 
 .top-menu > li > a > .tm-icon {
@@ -10705,10 +10708,8 @@ h6 small,
 
 .profile-menu > a {
   display: block;
-  height: 129px;
   margin-bottom: 5px;
   width: 100%;
-  background: url(../img/profile-menu.png) no-repeat left top;
   background-size: 100%;
 }
 
@@ -10728,8 +10729,9 @@ h6 small,
   background: rgba(0, 0, 0, 0.37);
   padding: 7px 14px;
   color: #fff;
-  margin-top: 20px;
+  margin-top: 5px;
   position: relative;
+  font-size: 15px;
 }
 
 .profile-menu > a .profile-info > i {

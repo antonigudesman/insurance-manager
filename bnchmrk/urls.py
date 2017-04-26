@@ -32,25 +32,18 @@ if settings.USE_MODELTRANSLATION:
 
 urlpatterns += [
     url("^$", direct_to_template, {"template": "index.html"}, name="home"),
+    url(r"^accounts", accounts, name="accounts"),
+
     url("^", include("mezzanine.urls")),
     # authentication
     url(r"^login", user_login, name="login"),
     url(r"^logout", user_logout, name="logout"),
     # main logic
-    url(r"^enterprise", enterprise, name="enterprise"),
+    url(r"^enterprise", enterprise, name="enterprise"), # benchmarking
     url(r"^_enterprise", ajax_enterprise, name="_enterprise"),
     url(r"^get_num_employers", get_num_employers, name="get_num_employers"),
     url(r"^get_plans", get_plans, name="get_plans"),
-    url(r"^update_properties", update_properties, name="update_properties"),
-    # imports data
-    url(r"^import_employer", import_employer, name="import_employer"),
-    url(r"^import_life", import_life, name="import_life"),
-    url(r"^import_std", import_std, name="import_std"),
-    url(r"^import_ltd", import_ltd, name="import_ltd"),
-    url(r"^import_strategy", import_strategy, name="import_strategy"),
-    url(r"^import_vision", import_vision, name="import_vision"),    
-    url(r"^import_dental", import_dental, name="import_dental"),
-    url(r"^import_medical", import_medical, name="import_medical"),            
+    url(r"^update_properties", update_properties, name="update_properties"),  
     # print page
     url(r"^98Wf37r2-3h4X2_jh9$", print_template, name="print_template"),
     url(r"^25Wfr7r2-3h4X25t$", print_template_header, name="print_template_header"),
