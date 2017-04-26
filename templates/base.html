@@ -13,6 +13,7 @@
         <link href="{% static 'vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.css' %}" rel="stylesheet">
         <link href="{% static 'vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css' %}" rel="stylesheet">
         <link href="{% static 'vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css' %}" rel="stylesheet">        
+        <link href="{% static 'vendors/bootgrid/jquery.bootgrid.min.css' %}" rel="stylesheet">
             
         <!-- CSS -->
         <link href="{% static 'css/app.min.1.css' %}" rel="stylesheet">
@@ -73,7 +74,7 @@
                 <div class="profile-menu">
                     <a href="">
                         <div class="profile-info">
-                            Malinda Hollaway
+                            Andrew Kimmel
 
                             <i class="zmdi zmdi-caret-down"></i>
                         </div>
@@ -98,7 +99,7 @@
                     </li>
                     <li><a href="/accounts"><i class="zmdi zmdi-account-box"></i> Accounts</a></li>
                     <li class="sub-menu">
-                        <a href=""><i class="zmdi zmdi-sort-amount-asc"></i> Benchmarking</a>
+                        <a href=""><i class="zmdi zmdi-equalizer"></i> Benchmarking</a>
 
                         <ul>
                             <li><a href="textual-menu.html">Medical/Rx</a></li>
@@ -110,106 +111,8 @@
                             <li><a href="top-mainmenu.html">Strategic Planning</a></li>
                         </ul>
                     </li>
-                    <li><a href="typography.html"><i class="zmdi zmdi-pin-help"></i> Help</a></li>
+                    <li><a href="typography.html"><i class="zmdi zmdi-pin-help"></i> Support</a></li>
                 </ul>
-            </aside>
-            
-            <aside id="chat" class="sidebar c-overflow">
-            
-                <div class="chat-search">
-                    <div class="fg-line">
-                        <input type="text" class="form-control" placeholder="Search People">
-                    </div>
-                </div>
-
-                <div class="listview">
-                    <a class="lv-item" href="">
-                        <div class="media">
-                            <div class="pull-left p-relative">
-                                <img class="lv-img-sm" src="img/profile-pics/2.jpg" alt="">
-                                <i class="chat-status-busy"></i>
-                            </div>
-                            <div class="media-body">
-                                <div class="lv-title">Jonathan Morris</div>
-                                <small class="lv-small">Available</small>
-                            </div>
-                        </div>
-                    </a>
-
-                    <a class="lv-item" href="">
-                        <div class="media">
-                            <div class="pull-left">
-                                <img class="lv-img-sm" src="img/profile-pics/1.jpg" alt="">
-                            </div>
-                            <div class="media-body">
-                                <div class="lv-title">David Belle</div>
-                                <small class="lv-small">Last seen 3 hours ago</small>
-                            </div>
-                        </div>
-                    </a>
-
-                    <a class="lv-item" href="">
-                        <div class="media">
-                            <div class="pull-left p-relative">
-                                <img class="lv-img-sm" src="img/profile-pics/3.jpg" alt="">
-                                <i class="chat-status-online"></i>
-                            </div>
-                            <div class="media-body">
-                                <div class="lv-title">Fredric Mitchell Jr.</div>
-                                <small class="lv-small">Availble</small>
-                            </div>
-                        </div>
-                    </a>
-
-                    <a class="lv-item" href="">
-                        <div class="media">
-                            <div class="pull-left p-relative">
-                                <img class="lv-img-sm" src="img/profile-pics/4.jpg" alt="">
-                                <i class="chat-status-online"></i>
-                            </div>
-                            <div class="media-body">
-                                <div class="lv-title">Glenn Jecobs</div>
-                                <small class="lv-small">Availble</small>
-                            </div>
-                        </div>
-                    </a>
-
-                    <a class="lv-item" href="">
-                        <div class="media">
-                            <div class="pull-left">
-                                <img class="lv-img-sm" src="img/profile-pics/5.jpg" alt="">
-                            </div>
-                            <div class="media-body">
-                                <div class="lv-title">Bill Phillips</div>
-                                <small class="lv-small">Last seen 3 days ago</small>
-                            </div>
-                        </div>
-                    </a>
-
-                    <a class="lv-item" href="">
-                        <div class="media">
-                            <div class="pull-left">
-                                <img class="lv-img-sm" src="img/profile-pics/6.jpg" alt="">
-                            </div>
-                            <div class="media-body">
-                                <div class="lv-title">Wendy Mitchell</div>
-                                <small class="lv-small">Last seen 2 minutes ago</small>
-                            </div>
-                        </div>
-                    </a>
-                    <a class="lv-item" href="">
-                        <div class="media">
-                            <div class="pull-left p-relative">
-                                <img class="lv-img-sm" src="img/profile-pics/7.jpg" alt="">
-                                <i class="chat-status-busy"></i>
-                            </div>
-                            <div class="media-body">
-                                <div class="lv-title">Teena Bell Ann</div>
-                                <small class="lv-small">Busy</small>
-                            </div>
-                        </div>
-                    </a>
-                </div>
             </aside>
             
             {% block page_body %}
@@ -299,6 +202,7 @@
         <script src="{% static 'vendors/bootstrap-growl/bootstrap-growl.min.js' %}"></script>
         <script src="{% static 'vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js' %}"></script>
         <script src="{% static 'vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+        <script src="{% static 'vendors/bootgrid/jquery.bootgrid.updated.min.js' %}"></script>
         
         {% block extra_js %}
         {% endblock %}        

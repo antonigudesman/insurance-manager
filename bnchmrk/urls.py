@@ -31,8 +31,10 @@ if settings.USE_MODELTRANSLATION:
     ]
 
 urlpatterns += [
-    url("^$", direct_to_template, {"template": "index.html"}, name="home"),
-    url(r"^accounts", accounts, name="accounts"),
+    url(r"^$", home, name="home"),
+    url(r"^accounts$", accounts, name="accounts"),
+    url(r"^accounts/(?P<id>.*)", account_detail, name="account_detail"),
+    url(r"^account_detail_benefit$", account_detail_benefit, name="account_detail_benefit"),
 
     url("^", include("mezzanine.urls")),
     # authentication

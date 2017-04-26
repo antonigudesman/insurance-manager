@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block page_body %}
+<section id="content">
+    <div class="container">
+        <div class="block-header">
+            <h2>{{ employer.name }} <small>{{ employer.broker }}</small></h2>
+            
+            <ul class="actions m-t-20 hidden-xs">
+                <li class="dropdown">
+                    <a href="" data-toggle="dropdown">
+                        <i class="zmdi zmdi-more-vert"></i>
+                    </a>
+        
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li>
+                            <a href="">Privacy Settings</a>
+                        </li>
+                        <li>
+                            <a href="">Account Settings</a>
+                        </li>
+                        <li>
+                            <a href="">Other Settings</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card" id="profile-main">
+            <ul class="tab-nav tn-justified">
+                <li class="active waves-effect"><a href="javascript::void();">EMPLOYER</a></li>
+                <li class="waves-effect"><a href="javascript::void();">MEDICAL</a></li>
+                <li class="waves-effect"><a href="javascript::void();">DENTAL</a></li>
+                <li class="waves-effect"><a href="javascript::void();">VISION</a></li>
+                <li class="waves-effect"><a href="javascript::void();">LIFE</a></li>
+                <li class="waves-effect"><a href="javascript::void();">STD</a></li>
+                <li class="waves-effect"><a href="javascript::void();">LTD</a></li>
+                <li class="waves-effect"><a href="javascript::void();">STRATEGY</a></li>
+            </ul>
+            <div id="card_body">
+            </div>                       
+        </div>
+        
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+    <script type="text/javascript">
+        var EMPLOYER_THRESHOLD_MESSAGE = "{{ EMPLOYER_THRESHOLD_MESSAGE }}";       
+        var employer_id = '{{ employer.id }}';
+    </script>
+    <script src="{% static 'js/account_detail.js' %}"></script>
+{% endblock %}

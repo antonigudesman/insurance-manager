@@ -29,7 +29,8 @@ MODEL_MAP = {
     'VISION': Vision,
     'DENTAL': Dental,
     'MEDICAL': Medical,
-    'EMPLOYERS': Employer
+    'EMPLOYERS': Employer,
+    'EMPLOYER': Employer
 }
 
 PLAN_ALLOWED_BENEFITS = ['LIFE', 'STD', 'LTD', 'STRATEGY', 'VISION', 'DENTAL', 'MEDICAL']
@@ -50,6 +51,8 @@ def enterprise(request):
         ft_head_counts = form_param.get('head_counts') or ['0-2000000']
         ft_other = form_param.get('others')
         ft_regions = form_param.get('regions')
+        q = form_param.get('q', '')
+        threshold = form_param.get('threshold', 1)
 
         lstart = (page - 1) * limit
         lend = lstart + limit
@@ -62,7 +65,9 @@ def enterprise(request):
                                                           ft_regions, 
                                                           lstart, 
                                                           lend,
-                                                          group)
+                                                          group,
+                                                          q,
+                                                          threshold)
 
         # convert head-count into groups
         employers_ = []
@@ -113,7 +118,7 @@ def enterprise(request):
                     break
             employers_.append(item_)
 
-        if num_companies < settings.EMPLOYER_THRESHOLD:
+        if num_companies < settings.EMPLOYER_THRESHOLD and threshold:
             num_companies = 0
 
         return JsonResponse({
@@ -352,7 +357,7 @@ def company(request):
 
 ## ----------------------------------------------------------------  ##
 
-def accounts(request):
+def home(request):
     # get valid distinct industries 
     industries1 = Employer.objects.order_by('industry1').values_list('industry1').distinct()
     industries1 = [item[0] for item in industries1 if item[0]]
@@ -362,7 +367,28 @@ def accounts(request):
     industries3 = [item[0] for item in industries3 if item[0]]
     industries = set(industries1 + industries2 + industries3)
 
-    return render(request, 'accounts.html', {
+    return render(request, 'index.html', {
             'industries': sorted(industries),
             'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE
         })    
+
+def accounts(request):            
+    return render(request, 'accounts.html', { 'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE_ACCOUNT })
+
+def account_detail(request, id):
+    employer = Employer.objects.get(id=id)
+    return render(request, 'account_detail.html', locals())
+
+@csrf_exempt
+def account_detail_benefit(request):
+    benefit = request.POST['benefit'];
+    employer_id = request.POST['employer_id'];
+    model = MODEL_MAP[benefit]
+
+    if benefit == 'EMPLOYER':
+        instance = model.objects.get(id=employer_id)
+    else:
+        qs = model.objects.filter(employer_id=employer_id)
+
+    template = 'account_detail/{}.html'.format(benefit.lower())
+    return render(request, template, locals())

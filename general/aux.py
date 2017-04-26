@@ -5,9 +5,17 @@ from django.shortcuts import render
 from .models import *
 
 
-def get_filtered_employers(ft_industries, ft_head_counts, ft_other, ft_regions, lstart=0, lend=0, group='bnchmrk'):
+def get_filtered_employers(ft_industries, 
+                           ft_head_counts, 
+                           ft_other, 
+                           ft_regions, 
+                           lstart=0, 
+                           lend=0, 
+                           group='bnchmrk', 
+                           q='',
+                           threshold=1):
     # filter with factors from UI (industry, head-count, other)
-    q = Q()
+    q = Q(name__icontains=q)
     if not '*' in ft_industries:
         q = Q(industry1__in=ft_industries) | Q(industry2__in=ft_industries) | Q(industry3__in=ft_industries)
 
@@ -35,12 +43,12 @@ def get_filtered_employers(ft_industries, ft_head_counts, ft_other, ft_regions, 
         employers_ = Employer.objects.filter(q & q_).extra(select=select).order_by('new_name')
         
     employers = employers_
-    if lend:
+    if lend > 0:
         employers = employers_[lstart:lend]
 
     num_companies = Employer.objects.filter(q & q_).count()    
     # filter with number of companies
-    if num_companies < settings.EMPLOYER_THRESHOLD:
+    if num_companies < settings.EMPLOYER_THRESHOLD and threshold:
         employers = []
         # num_companies = 0
 
