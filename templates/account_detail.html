@@ -51,6 +51,7 @@
 {% endblock %}
 
 {% block extra_js %}
+    <script src="{% static 'vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js' %}"></script>
     <script type="text/javascript">
         var EMPLOYER_THRESHOLD_MESSAGE = "{{ EMPLOYER_THRESHOLD_MESSAGE }}";       
         var employer_id = '{{ employer.id }}';

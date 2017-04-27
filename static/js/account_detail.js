@@ -22,3 +22,19 @@ function get_body() {
             $('#card_body').html(data);
         });     
 }
+
+function toggle_edit(obj) {
+    $(obj).closest("div.row").find('div.fg-line').removeClass('disabled');
+    $(obj).closest("div.row").find('div.fg-line').addClass('fg-toggled');    
+    $(obj).closest("div.row").find('input').removeAttr('disabled');
+
+    $(obj).closest("div.row").find('div.action').removeClass('hidden');
+}
+
+function cancel_edit(obj) {
+    $(obj).closest("div.row").find('div.fg-line').addClass('disabled');
+    $(obj).closest("div.row").find('div.fg-line').removeClass('fg-toggled');    
+    $(obj).closest("div.row").find('input').attr('disabled', true);
+
+    $(obj).closest("div.row").find('div.action').addClass('hidden');
+}

@@ -1,0 +1,182 @@
+<div class="pmb-block">
+{% for instance in qs %}
+<div class="row">
+    <div class="pmbb-header">
+        <h2><i class="zmdi zmdi-account m-r-5"></i> {{ instance.title }}</h2>        
+	    <ul class="actions">
+	        <li class="dropdown">
+	            <a href="" data-toggle="dropdown">
+	                <i class="zmdi zmdi-more-vert"></i>
+	            </a>
+	            
+	            <ul class="dropdown-menu dropdown-menu-right">
+	                <li>
+	                    <a data-pmb-action="edit" href="javascript:void(0);" onclick="toggle_edit(this);">Edit</a>
+	                </li>
+	            </ul>
+	        </li>
+	    </ul>        
+    </div>
+    <div class="col-md-4 p-b-25">
+        <div class="pmbb-body p-l-30">
+            <div class="pmbb-view">
+                <dl class="dl-horizontal">
+                    <div class="col-sm-8 f-700">Type</div>
+                    <div class="col-sm-4">{{ instance.type }}</div>
+                </dl>
+                <dl class="dl-horizontal">
+                    <div class="col-sm-8 f-700">Individual Deductible</div>
+                    <div class="col-sm-4">                    
+                        <div class="form-group">
+                            <div class="fg-line disabled">
+                                <input type="text" class="form-control" value="{{ instance.in_ded_single }}" disabled="">
+                            </div>
+                        </div>
+                    </div>
+                </dl>
+                <dl class="dl-horizontal">
+                    <div class="col-sm-8 f-700">Family Deductible</div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <div class="fg-line disabled">
+                                <input type="text" class="form-control" value="{{ instance.in_max_single }}" disabled="">
+                            </div>
+                        </div>
+                    </div>
+                </dl>
+                <dl class="dl-horizontal">
+                    <div class="col-sm-8 f-700">Family Out-of-Pocket Maximum</div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <div class="fg-line disabled">
+                                <input type="text" class="form-control" value="{{ instance.in_ded_family }}" disabled="">
+                            </div>
+                        </div>
+                    </div>
+                </dl>
+                <dl class="dl-horizontal">
+                    <div class="col-sm-8 f-700">Individual Out-of-Pocket Maximum</div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <div class="fg-line disabled">
+                                <input type="text" class="form-control" value="{{ instance.out_max_single }}" disabled="">
+                            </div>
+                        </div>
+                    </div>
+                </dl>
+            </div>         
+        </div>
+    </div>
+    <div class="col-md-4 p-b-25">
+        <div class="pmbb-body p-l-30">
+            <div class="pmbb-view">
+                <dl class="dl-horizontal">
+                    <div class="col-sm-8 f-700">Type</div>
+                    <div class="col-sm-4">{{ instance.type }}</div>
+                </dl>
+                <dl class="dl-horizontal">
+                    <div class="col-sm-8 f-700">Individual Deductible</div>
+                    <div class="col-sm-4">                    
+                        <div class="form-group">
+                            <div class="fg-line disabled">
+                                <input type="text" class="form-control" value="{{ instance.in_ded_single }}" disabled="">
+                            </div>
+                        </div>
+                    </div>
+                </dl>
+                <dl class="dl-horizontal">
+                    <div class="col-sm-8 f-700">Family Deductible</div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <div class="fg-line disabled">
+                                <input type="text" class="form-control" value="{{ instance.in_max_single }}" disabled="">
+                            </div>
+                        </div>
+                    </div>
+                </dl>
+                <dl class="dl-horizontal">
+                    <div class="col-sm-8 f-700">Family Out-of-Pocket Maximum</div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <div class="fg-line disabled">
+                                <input type="text" class="form-control" value="{{ instance.in_ded_family }}" disabled="">
+                            </div>
+                        </div>
+                    </div>
+                </dl>
+                <dl class="dl-horizontal">
+                    <div class="col-sm-8 f-700">Individual Out-of-Pocket Maximum</div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <div class="fg-line disabled">
+                                <input type="text" class="form-control" value="{{ instance.out_max_single }}" disabled="">
+                            </div>
+                        </div>
+                    </div>
+                </dl>
+            </div>         
+        </div>
+    </div>
+    <div class="col-md-4 p-b-25">
+        <div class="pmbb-body p-l-30">
+            <div class="pmbb-view">
+                <dl class="dl-horizontal">
+                    <div class="col-sm-8 f-700">Type</div>
+                    <div class="col-sm-4">{{ instance.type }}</div>
+                </dl>
+                <dl class="dl-horizontal">
+                    <div class="col-sm-8 f-700">Individual Deductible</div>
+                    <div class="col-sm-4">                    
+                        <div class="form-group">
+                            <div class="fg-line disabled">
+                                <input type="text" class="form-control" value="{{ instance.in_ded_single }}" disabled="">
+                            </div>
+                        </div>
+                    </div>
+                </dl>
+                <dl class="dl-horizontal">
+                    <div class="col-sm-8 f-700">Family Deductible</div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <div class="fg-line disabled">
+                                <input type="text" class="form-control" value="{{ instance.in_max_single }}" disabled="">
+                            </div>
+                        </div>
+                    </div>
+                </dl>
+                <dl class="dl-horizontal">
+                    <div class="col-sm-8 f-700">Family Out-of-Pocket Maximum</div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <div class="fg-line disabled">
+                                <input type="text" class="form-control" value="{{ instance.in_ded_family }}" disabled="">
+                            </div>
+                        </div>
+                    </div>
+                </dl>
+                <dl class="dl-horizontal">
+                    <div class="col-sm-8 f-700">Individual Out-of-Pocket Maximum</div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <div class="fg-line disabled">
+                                <input type="text" class="form-control" value="{{ instance.out_max_single }}" disabled="">
+                            </div>
+                        </div>
+                    </div>
+                </dl>
+            </div>         
+        </div>
+    </div>
+    <div class="col-md-12 action hidden">
+        <div class="m-t-10 pull-right">
+            <button class="btn btn-primary btn-sm">Save</button>
+            <button class="btn btn-link btn-sm" onclick="cancel_edit(this);">Cancel</button>
+        </div>    
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12"><hr></div>
+</div>
+
+{% endfor %}
+</div>
