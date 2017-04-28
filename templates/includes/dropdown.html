@@ -1,0 +1,8 @@
+<select name="{{ name }}" id="{{ id }}" class="selectpicker" {{ extra }}>
+    {% for item in data %}
+        <option {% if item.0 == select %}selected{% endif %} value="{{ item.0 }}">
+            {{ item.1 }}
+        </option>
+    {% endfor %}
+</select>
+

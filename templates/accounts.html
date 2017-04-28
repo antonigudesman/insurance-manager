@@ -7,6 +7,11 @@
 {% block page_body %}
 <section id="content">
     <div class="container">
+        <ol class="breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li class="active">Accounts</li>
+        </ol>
+
         <div class="card">
             <div class="card-header">
                 <h2>Selection Example <small>Ensure that the data attribute [data-identifier="true"] is set on one column header.</small></h2>
@@ -32,6 +37,11 @@
 {% block extra_js %}
     <script type="text/javascript">
         var EMPLOYER_THRESHOLD_MESSAGE = "{{ EMPLOYER_THRESHOLD_MESSAGE }}";       
+        // make active menuitem for this page
+        jQuery(function($) {
+            $('ul.stem-menu li').eq(1).addClass('active');
+        });
+
     </script>
     <script src="{% static 'js/accounts.js' %}"></script>
 {% endblock %}

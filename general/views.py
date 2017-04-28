@@ -3,7 +3,8 @@ import HTMLParser
 from datetime import datetime
 
 from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.forms.models import model_to_dict
@@ -12,6 +13,7 @@ from django.conf import settings
 
 from .models import *
 from .benefits import *
+from .forms import *
 
 HEAD_COUNT = {
     'Up to 250': [0, 249],
@@ -30,8 +32,9 @@ MODEL_MAP = {
     'DENTAL': Dental,
     'MEDICAL': Medical,
     'EMPLOYERS': Employer,
-    'EMPLOYER': Employer
 }
+
+get_class = lambda x: globals()[x]
 
 PLAN_ALLOWED_BENEFITS = ['LIFE', 'STD', 'LTD', 'STRATEGY', 'VISION', 'DENTAL', 'MEDICAL']
 
@@ -377,6 +380,40 @@ def accounts(request):
 
 def account_detail(request, id):
     employer = Employer.objects.get(id=id)
+    request.session['benefit'] = request.session.get('benefit', 'MEDICAL')
+
+    regions = []
+    if employer.new_england:
+        regions.append('New England Region')
+    if employer.mid_atlantic:
+        regions.append('Mid Atlantic Region')
+    if employer.south_atlantic:
+        regions.append('South Atlantic Region')
+    if employer.south_cental:
+        regions.append('South Central Region')
+    if employer.east_central:
+        regions.append('East Central Region')
+    if employer.west_central:
+        regions.append('West Central Region')
+    if employer.mountain:
+        regions.append('Mountain Region')
+    if employer.pacific:
+        regions.append('Pacific Region')
+    region = ', '.join(regions)
+
+    industries = []
+    if employer.industry1:
+        industries.append(employer.industry1)
+    if employer.industry2:
+        industries.append(employer.industry2)
+    if employer.industry3:
+        industries.append(employer.industry3)
+    industry = '<br>'.join(industries)
+
+    plans = []
+    for model in [Medical, Dental, Vision, Life, STD, LTD]:
+        plans.append((model.__name__, model.objects.filter(employer=employer).count()))
+
     return render(request, 'account_detail.html', locals())
 
 @csrf_exempt
@@ -385,10 +422,30 @@ def account_detail_benefit(request):
     employer_id = request.POST['employer_id'];
     model = MODEL_MAP[benefit]
 
-    if benefit == 'EMPLOYER':
-        instance = model.objects.get(id=employer_id)
-    else:
-        qs = model.objects.filter(employer_id=employer_id)
+    request.session['benefit'] = benefit
+    qs = model.objects.filter(employer_id=employer_id)
 
+    form = get_class(model.__name__+'Form') 
+    forms = {item.id:form(instance=item) for item in qs}
+
+    bc = BOOLEAN_CHOICES
+    dtc = DEN_TYPE_CHOICES
     template = 'account_detail/{}.html'.format(benefit.lower())
     return render(request, template, locals())
+
+def update_benefit(request, instance_id):
+    employer_id = request.POST['employer']
+
+    instance = get_object_or_404(Dental, id=instance_id)
+    form = DentalForm(request.POST or None, instance=instance)
+
+    if form.is_valid():
+        form.save()
+    print form.errors, '@@@@@@@@@@@@@@'
+    benefit = request.session['benefit'];
+    template = 'account_detail/form/{}.html'.format(benefit.lower())
+    return render(request, template, { 
+                                        'form': form, 
+                                        'id': instance.id,
+                                        'bc': BOOLEAN_CHOICES,
+                                        'dtc': DEN_TYPE_CHOICES})    

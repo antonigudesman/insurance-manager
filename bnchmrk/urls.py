@@ -35,6 +35,7 @@ urlpatterns += [
     url(r"^accounts$", accounts, name="accounts"),
     url(r"^accounts/(?P<id>.*)", account_detail, name="account_detail"),
     url(r"^account_detail_benefit$", account_detail_benefit, name="account_detail_benefit"),
+    url(r"^update_benefit/(?P<instance_id>.*)$", update_benefit, name="update_benefit"),    
 
     url("^", include("mezzanine.urls")),
     # authentication

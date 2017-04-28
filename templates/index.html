@@ -2,47 +2,14 @@
 {% load staticfiles %}
 
 {% block extra_css %}
-<link href="{% static 'vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block page_body %}
 <section id="content">
     <div class="container">
-        <div class="block-header">
-            <h2>Dashboard</h2>
-            
-            <ul class="actions">
-                <li>
-                    <a href="">
-                        <i class="zmdi zmdi-trending-up"></i>
-                    </a>
-                </li>
-                <li>
-                    <a href="">
-                        <i class="zmdi zmdi-check-all"></i>
-                    </a>
-                </li>
-                <li class="dropdown">
-                    <a href="" data-toggle="dropdown">
-                        <i class="zmdi zmdi-more-vert"></i>
-                    </a>
-                    
-                    <ul class="dropdown-menu dropdown-menu-right">
-                        <li>
-                            <a href="">Refresh</a>
-                        </li>
-                        <li>
-                            <a href="">Manage Widgets</a>
-                        </li>
-                        <li>
-                            <a href="">Widgets Settings</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-            
-        </div>
-        
+        <ol class="breadcrumb">
+            <li class="active">Home</li>
+        </ol>
         <div class="card">
             <div class="card-header">
                 <h2>Sales Statistics <small>Vestibulum purus quam scelerisque, mollis nonummy metus</small></h2>
@@ -101,7 +68,7 @@
                     </div>
                     <div class="col-sm-3 m-b-15">
                         <p class="f-500 c-black m-b-15">Region</p>
-                        <select name="" multiple="" id="regions" class="selectpicker" size="1">
+                        <select name="" multiple="false" id="regions" class="selectpicker" size="1">
                             <option value="*">All Regions</option>
                             <option value="new_england">New England</option>
                             <option value="mid_atlantic">Tri-State Area</option>
@@ -162,8 +129,11 @@
 {% block extra_js %}
     <script type="text/javascript">
         var EMPLOYER_THRESHOLD_MESSAGE = "{{ EMPLOYER_THRESHOLD_MESSAGE }}";
+        // make active menuitem for this page
+        jQuery(function($) {
+            $('ul.stem-menu li').eq(0).addClass('active');
+        });
     </script>
 
     <script src="{% static 'js/bnchmrk.js' %}"></script>
-    <script src="{% static 'vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js' %}"></script>
 {% endblock %}
