@@ -299,16 +299,24 @@ def account_detail_benefit(request):
 
     bc = BOOLEAN_CHOICES
     dtc = DEN_TYPE_CHOICES
+    mtc = MED_TYPE_CHOICES
+    mbc = MED_BOOL_CHOICES
+    ltc = LIFE_TYPE_CHOICES
+    ccc = COSTSHARE_CHOICES
     include_path = "account_detail/form/{}.html".format(benefit.lower())
     template = 'account_detail/benefit.html'
     return render(request, template, locals())
 
-
+@csrf_exempt
 def update_benefit(request, instance_id):
     employer_id = request.POST['employer']
 
-    instance = get_object_or_404(Dental, id=instance_id)
-    form = DentalForm(request.POST or None, instance=instance)
+    benefit = request.session['benefit'];
+    model = MODEL_MAP[benefit]
+    form = get_class(model.__name__+'Form') 
+
+    instance = get_object_or_404(model, id=instance_id)
+    form = form(request.POST or None, instance=instance)
 
     if form.is_valid():
         form.save()
@@ -319,7 +327,12 @@ def update_benefit(request, instance_id):
                                         'form': form, 
                                         'id': instance.id,
                                         'bc': BOOLEAN_CHOICES,
-                                        'dtc': DEN_TYPE_CHOICES})    
+                                        'dtc': DEN_TYPE_CHOICES,
+                                        'mtc': MED_TYPE_CHOICES,
+                                        'mbc': MED_BOOL_CHOICES,
+                                        'ltc': LIFE_TYPE_CHOICES,
+                                        'ccc': COSTSHARE_CHOICES
+                                    })    
 
 
 def benchmarking(request, benefit):

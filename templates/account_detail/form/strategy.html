@@ -25,47 +25,6 @@
         </ul>        
     </div>
 
-    <!-- Title, Type and Carrier -->
-    <div class="pmbb-header p-l-15"><h2><i class="zmdi zmdi-account m-r-5"></i> Basic Information</h2></div>
-    <div class="col-sm-6 p-b-25">
-        <div class="pmbb-body p-l-30">
-            <div class="pmbb-view">
-                <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700{% if form.title.errors %} c-red{% endif %}">Plan Name</div>
-                    <div class="col-sm-5">                    
-                        <div class="form-group">
-                            <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{{ form.title.value }}" name="title" disabled="">
-                            </div>
-                        </div>
-                    </div>
-                </dl>
-                <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Plan Type</div>
-                    <div class="col-sm-5">
-                        {% include "includes/dropdown.html" with name="type" data=dtc id="type" select=form.type.value extra="disabled" only %}
-                    </div>
-                </dl>
-            </div>         
-        </div>
-    </div>
-    <div class="col-sm-6 p-b-25">
-        <div class="pmbb-body p-l-30">
-            <div class="pmbb-view"> 
-                <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Carrier</div>
-                    <div class="col-sm-5">
-                        <div class="form-group">
-                            <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.carrier.value %}{{ form.carrier.value }}{% endif %}" name="carrier" disabled="">
-                            </div>
-                        </div>
-                    </div>
-                </dl>
-            </div>         
-        </div>
-    </div>
-
     <!-- In-network deductibles, maximums, ded applies, and coinsurances -->
     <div class="clearfix"></div>
     <div class="pmbb-header p-l-15"><h2><i class="zmdi zmdi-account m-r-5"></i> In-Network Benefits</h2></div>
@@ -73,322 +32,154 @@
         <div class="pmbb-body p-l-30">
             <div class="pmbb-view"> 
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Individual Deductible</div>
+                    <div class="col-sm-5 f-700">Offer Voluntary Life</div>
+                    <div class="col-sm-5">
+                        {% include "includes/dropdown.html" with name="offer_vol_life" data=bc id="offer_vol_life" select=form.offer_vol_life.value|parse_boolean extra="disabled" only %}
+                    </div>
+                </dl>
+                <dl class="dl-horizontal">
+                    <div class="col-sm-5 f-700">Offer Voluntary STD</div>
+                    <div class="col-sm-5">
+                        {% include "includes/dropdown.html" with name="offer_vol_std" data=bc id="offer_vol_std" select=form.offer_vol_std.value|parse_boolean extra="disabled" only %}
+                    </div>
+                </dl>
+                <dl class="dl-horizontal">
+                    <div class="col-sm-5 f-700">Offer Voluntary LTD</div>
+                    <div class="col-sm-5">
+                        {% include "includes/dropdown.html" with name="offer_vol_ltd" data=bc id="offer_vol_ltd" select=form.offer_vol_ltd.value|parse_boolean extra="disabled" only %}
+                    </div>
+                </dl>
+                <dl class="dl-horizontal">
+                    <div class="col-sm-5 f-700">Require Spousal Surcharge</div>
+                    <div class="col-sm-5">
+                        {% include "includes/dropdown.html" with name="spousal_surcharge" data=bc id="spousal_surcharge" select=form.spousal_surcharge.value|parse_boolean extra="disabled" only %}
+                    </div>
+                </dl>
+                <dl class="dl-horizontal">
+                    <div class="col-sm-5 f-700">Spousal Surcharge Amount</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.in_ded_single.value != None %}{{ form.in_ded_single.value }}{% endif %}" name="in_ded_single" disabled="">
+                                <input type="text" class="form-control" value="{% if form.spousal_surcharge_amount.value != None %}{{ form.spousal_surcharge_amount.value }}{% endif %}" name="spousal_surcharge_amount" disabled="">
                             </div>
                         </div>
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Family Deductible</div>
+                    <div class="col-sm-5 f-700">Require Tobacco Surcharge</div>
                     <div class="col-sm-5">
-                        <div class="form-group">
-                            <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.in_ded_family.value != None %}{{ form.in_ded_family.value }}{% endif %}" name="in_ded_family" disabled="">
-                            </div>
-                        </div>
+                        {% include "includes/dropdown.html" with name="tobacco_surcharge" data=bc id="tobacco_surcharge" select=form.tobacco_surcharge.value|parse_boolean extra="disabled" only %}
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Annual Benefit Maximum</div>
+                    <div class="col-sm-5 f-700">Tobacco Surcharge Amount</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.in_max.value != None %}{{ form.in_max.value }}{% endif %}" name="in_max" disabled="">
+                                <input type="text" class="form-control" value="{% if form.tobacco_surcharge_amount.value != None %}{{ form.tobacco_surcharge_amount.value }}{% endif %}" name="tobacco_surcharge_amount" disabled="">
                             </div>
                         </div>
                     </div>
                 </dl>          
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Annual Orthodontal Maximum</div>
+                    <div class="col-sm-5 f-700">Defined Contribution</div>
                     <div class="col-sm-5">
-                        <div class="form-group">
-                            <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.in_max_ortho.value != None %}{{ form.in_max_ortho.value }}{% endif %}" name="in_max_ortho" disabled="">
-                            </div>
-                        </div>
-                    </div>
-                </dl><dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Orthodontal Age Limit</div>
-                    <div class="col-sm-5">
-                        <div class="form-group">
-                            <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.ortho_age_limit.value != None %}{{ form.ortho_age_limit.value }}{% endif %}" name="ortho_age_limit" disabled="">
-                            </div>
-                        </div>
-                    </div>
-                </dl>
-            </div>         
-        </div>
-    </div>
-    <div class="col-sm-6 p-b-25">
-        <div class="pmbb-body p-l-30">
-            <div class="pmbb-view">
-                <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Deductible Applies to Preventive</div>
-                    <div class="col-sm-5">
-                        {% include "includes/dropdown.html" with name="prev_ded_apply" data=bc id="prev_ded_apply" select=form.prev_ded_apply.value|parse_boolean extra="disabled" only %}
+                        {% include "includes/dropdown.html" with name="defined_contribution" data=bc id="defined_contribution" select=form.defined_contribution.value|parse_boolean extra="disabled" only %}
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Preventive Coinsurance</div>
+                    <div class="col-sm-5 f-700">Offer FSA</div>
                     <div class="col-sm-5">
-                        <div class="form-group">
-                            <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.in_prev_coin.value != None %}{{ form.in_prev_coin.value }}{% endif %}" name="in_prev_coin" disabled="">
-                            </div>
-                        </div>
-                    </div>
-                </dl>
-                <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Deductible Applies to Basic</div>
-                    <div class="col-sm-5">
-                        {% include "includes/dropdown.html" with name="basic_ded_apply" data=bc id="basic_ded_apply" select=form.basic_ded_apply.value|parse_boolean extra="disabled" only %}
-                    </div>
-                </dl>
-                <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Basic Coinsurance</div>
-                    <div class="col-sm-5">
-                        <div class="form-group">
-                            <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.in_basic_coin.value != None %}{{ form.in_basic_coin.value }}{% endif %}" name="in_basic_coin" disabled="">
-                            </div>
-                        </div>
-                    </div>
-                </dl>
-                <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Deductible Applies to Major</div>
-                    <div class="col-sm-5">
-                        {% include "includes/dropdown.html" with name="major_ded_apply" data=bc id="major_ded_apply" select=form.major_ded_apply.value|parse_boolean extra="disabled" only %}
-                    </div>
-                </dl>
-                <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Major Coinsurance</div>
-                    <div class="col-sm-5">
-                        <div class="form-group">
-                            <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.in_major_coin.value != None %}{{ form.in_major_coin.value }}{% endif %}" name="in_major_coin" disabled="">
-                            </div>
-                        </div>
-                    </div>
-                </dl>      
-                <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Deductible Applies to Orthodontal</div>
-                    <div class="col-sm-5">
-                        {% include "includes/dropdown.html" with name="ortho_ded_apply" data=bc id="ortho_ded_apply" select=form.ortho_ded_apply.value|parse_boolean extra="disabled" only %}
-                    </div>
-                </dl>     
-                <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Orthodontal Coinsurance</div>
-                    <div class="col-sm-5">
-                        <div class="form-group">
-                            <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.in_ortho_coin.value != None %}{{ form.in_ortho_coin.value }}{% endif %}" name="in_ortho_coin" disabled="">
-                            </div>
-                        </div>
-                    </div>
-                </dl>  
-            </div>         
-        </div>
-    </div>
-
-    <!-- Out-of-network deductibles, maximums, ded applies, and coinsurances -->
-    <div class="clearfix"></div>
-    <div class="pmbb-header p-l-15"><h2><i class="zmdi zmdi-account m-r-5"></i> Out-of-Network Benefits</h2></div>
-    <div class="col-sm-6 p-b-25">
-        <div class="pmbb-body p-l-30">
-            <div class="pmbb-view"> 
-                <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Individual Deductible</div>
-                    <div class="col-sm-5">
-                        <div class="form-group">
-                            <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.out_ded_single.value != None %}{{ form.out_ded_single.value }}{% endif %}" name="out_ded_single" disabled="">
-                            </div>
-                        </div>
-                    </div>
-                </dl>
-                <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Family Deductible</div>
-                    <div class="col-sm-5">
-                        <div class="form-group">
-                            <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.out_ded_family.value != None %}{{ form.out_ded_family.value }}{% endif %}" name="out_ded_family" disabled="">
-                            </div>
-                        </div>
-                    </div>
-                </dl>
-                <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Annual Benefit Maximum</div>
-                    <div class="col-sm-5">
-                        <div class="form-group">
-                            <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.out_max.value != None %}{{ form.out_max.value }}{% endif %}" name="out_max" disabled="">
-                            </div>
-                        </div>
-                    </div>
-                </dl>
-                <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Annual Orthodontal Maximum</div>
-                    <div class="col-sm-5">
-                        <div class="form-group">
-                            <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.out_max_ortho.value != None %}{{ form.out_max_ortho.value }}{% endif %}" name="out_max_ortho" disabled="">
-                            </div>
-                        </div>
-                    </div>
-                </dl>
-            </div>         
-        </div>
-    </div>
-    <div class="col-sm-6 p-b-25">
-        <div class="pmbb-body p-l-30">
-            <div class="pmbb-view">
-                <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Preventive Coinsurance</div>
-                    <div class="col-sm-5">
-                        <div class="form-group">
-                            <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.out_prev_coin.value != None %}{{ form.out_prev_coin.value }}{% endif %}" name="out_prev_coin" disabled="">
-                            </div>
-                        </div>
-                    </div>
-                </dl>
-                <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Basic Coinsurance</div>
-                    <div class="col-sm-5">
-                        <div class="form-group">
-                            <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.out_basic_coin.value != None %}{{ form.out_basic_coin.value }}{% endif %}" name="out_basic_coin" disabled="">
-                            </div>
-                        </div>
-                    </div>
-                </dl>
-                <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Major Coinsurance</div>
-                    <div class="col-sm-5">                    
-                        <div class="form-group">
-                            <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.out_major_coin.value != None %}{{ form.out_major_coin.value }}{% endif %}" name="out_major_coin" disabled="">
-                            </div>
-                        </div>
-                    </div>
-                </dl>
-                <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Orthodontal Coinsurance</div>
-                    <div class="col-sm-5">
-                        <div class="form-group">
-                            <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.out_ortho_coin.value != None %}{{ form.out_ortho_coin.value }}{% endif %}" name="out_ortho_coin" disabled="">
-                            </div>
-                        </div>
-                    </div>
-                </dl> 
-            </div>         
-        </div>
-    </div>
-
-
-    <!-- Costs: Gross and Employee Rates  -->
-    <div class="col-sm-6 p-b-25">
-        <div class="pmbb-header"><h2><i class="zmdi zmdi-account m-r-5"></i> Total Annual Gross Costs</h2></div>
-        <div class="pmbb-body p-l-30">
-            <div class="pmbb-view">
-                <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Employee Only</div>
-                    <div class="col-sm-5">
-                        <div class="form-group">
-                            <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.t1_gross.value != None %}{{ form.t1_gross.value }}{% endif %}" name="t1_gross" disabled="">
-                            </div>
-                        </div>
-                    </div>
-                </dl>
-                <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Employee & Spouse</div>
-                    <div class="col-sm-5">
-                        <div class="form-group">
-                            <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.t2_gross.value != None %}{{ form.t2_gross.value }}{% endif %}" name="t2_gross" disabled="">
-                            </div>
-                        </div>
-                    </div>
-                </dl>
-                <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Employee & Child(ren)</div>
-                    <div class="col-sm-5">
-                        <div class="form-group">
-                            <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.t3_gross.value != None %}{{ form.t3_gross.value }}{% endif %}" name="t3_gross" disabled="">
-                            </div>
-                        </div>
-                    </div>
-                </dl>
-                <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Family</div>
-                    <div class="col-sm-5">
-                        <div class="form-group">
-                            <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.t4_gross.value != None %}{{ form.t4_gross.value }}{% endif %}" name="t4_gross" disabled="">
-                            </div>
-                        </div>
-                    </div>
-                </dl>
-            </div>         
-        </div>
-    </div> 
-
-    <div class="col-sm-6 p-b-25">
-        <div class="pmbb-header"><h2><i class="zmdi zmdi-account m-r-5"></i> Employee Annual Contributions</h2></div>
-        <div class="pmbb-body p-l-30">
-            <div class="pmbb-view">                             
-                <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Employee Only</div>
-                    <div class="col-sm-5">
-                        <div class="form-group">
-                            <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.t1_ee.value != None %}{{ form.t1_ee.value }}{% endif %}" name="t1_ee" disabled="">
-                            </div>
-                        </div>
+                        {% include "includes/dropdown.html" with name="offer_fsa" data=bc id="offer_fsa" select=form.offer_fsa.value|parse_boolean extra="disabled" only %}
                     </div>
                 </dl>                
+
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Employee & Spouse</div>
+                    <div class="col-sm-5 f-700">Offer Part-Time Medical</div>
                     <div class="col-sm-5">
-                        <div class="form-group">
-                            <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.t2_ee.value != None %}{{ form.t2_ee.value }}{% endif %}" name="t2_ee" disabled="">
-                            </div>
-                        </div>
+                        {% include "includes/dropdown.html" with name="pt_medical" data=bc id="pt_medical" select=form.pt_medical.value|parse_boolean extra="disabled" only %}
                     </div>
                 </dl>
-                <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Employee & Child(ren)</div>
-                    <div class="col-sm-5">
-                        <div class="form-group">
-                            <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.t3_ee.value != None %}{{ form.t3_ee.value }}{% endif %}" name="t3_ee" disabled="">
-                            </div>
-                        </div>
-                    </div>
-                </dl>
-                <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Family</div>
-                    <div class="col-sm-5">
-                        <div class="form-group">
-                            <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.t4_ee.value != None %}{{ form.t4_ee.value }}{% endif %}" name="t4_ee" disabled="">
-                            </div>
-                        </div>
-                    </div>
-                </dl>
-            </div>
+            </div>         
         </div>
     </div>
+    <div class="col-sm-6 p-b-25">
+        <div class="pmbb-body p-l-30">
+            <div class="pmbb-view">
+                <dl class="dl-horizontal">
+                    <div class="col-sm-5 f-700">Offer Part-Time Dental</div>
+                    <div class="col-sm-5">
+                        {% include "includes/dropdown.html" with name="pt_dental" data=bc id="pt_dental" select=form.pt_dental.value|parse_boolean extra="disabled" only %}
+                    </div>
+                </dl>
+                <dl class="dl-horizontal">
+                    <div class="col-sm-5 f-700">Offer Part-Time Vision</div>
+                    <div class="col-sm-5">
+                        {% include "includes/dropdown.html" with name="pt_vision" data=bc id="pt_vision" select=form.pt_vision.value|parse_boolean extra="disabled" only %}
+                    </div>
+                </dl>
+                <dl class="dl-horizontal">
+                    <div class="col-sm-5 f-700">Offer Part-Time Life</div>
+                    <div class="col-sm-5">
+                        {% include "includes/dropdown.html" with name="pt_life" data=bc id="pt_life" select=form.pt_life.value|parse_boolean extra="disabled" only %}
+                    </div>
+                </dl>
+                <dl class="dl-horizontal">
+                    <div class="col-sm-5 f-700">Offer Part-Time STD</div>
+                    <div class="col-sm-5">
+                        {% include "includes/dropdown.html" with name="pt_std" data=bc id="pt_std" select=form.pt_std.value|parse_boolean extra="disabled" only %}
+                    </div>
+                </dl>
+                <dl class="dl-horizontal">
+                    <div class="col-sm-5 f-700">Offer Part-Time LTD</div>
+                    <div class="col-sm-5">
+                        {% include "includes/dropdown.html" with name="pt_ltd" data=bc id="pt_ltd" select=form.pt_ltd.value|parse_boolean extra="disabled" only %}
+                    </div>
+                </dl>
+                <dl class="dl-horizontal">
+                    <div class="col-sm-5 f-700">Salary Banding</div>
+                    <div class="col-sm-5">
+                        {% include "includes/dropdown.html" with name="salary_banding" data=bc id="salary_banding" select=form.salary_banding.value|parse_boolean extra="disabled" only %}
+                    </div>
+                </dl>
+                <dl class="dl-horizontal">
+                    <div class="col-sm-5 f-700">Wellness Banding</div>
+                    <div class="col-sm-5">
+                        {% include "includes/dropdown.html" with name="wellness_banding" data=bc id="wellness_banding" select=form.wellness_banding.value|parse_boolean extra="disabled" only %}
+                    </div>
+                </dl>
+                <dl class="dl-horizontal">
+                    <div class="col-sm-5 f-700">Narrow Network</div>
+                    <div class="col-sm-5">
+                        {% include "includes/dropdown.html" with name="narrow_network" data=bc id="narrow_network" select=form.narrow_network.value|parse_boolean extra="disabled" only %}
+                    </div>
+                </dl>
+                <dl class="dl-horizontal">
+                    <div class="col-sm-5 f-700">Offer MEC Plan</div>
+                    <div class="col-sm-5">
+                        {% include "includes/dropdown.html" with name="mec" data=bc id="mec" select=form.mec.value|parse_boolean extra="disabled" only %}
+                    </div>
+                </dl>
+                <dl class="dl-horizontal">
+                    <div class="col-sm-5 f-700">Offer MVP Plan</div>
+                    <div class="col-sm-5">
+                        {% include "includes/dropdown.html" with name="mvp" data=bc id="mvp" select=form.mvp.value|parse_boolean extra="disabled" only %}
+                    </div>
+                </dl>
+                <dl class="dl-horizontal">
+                    <div class="col-sm-5 f-700">Contribution Bundling</div>
+                    <div class="col-sm-5">
+                        <div class="form-group">
+                            <div class="fg-line disabled">
+                                <input type="text" class="form-control" value="{% if form.contribution_bundle.value != None %}{{ form.contribution_bundle.value }}{% endif %}" name="contribution_bundle" disabled="">
+                            </div>
+                        </div>
+                    </div>
+                </dl>
 
+            </div>         
+        </div>
+    </div>
 
     <div class="col-md-12 action hidden">
         <div class="m-t-10 pull-right">

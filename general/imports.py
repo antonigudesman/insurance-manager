@@ -242,8 +242,8 @@ def import_vision(request):
 
 
 def import_life(request):
-    path = '/home/akimmel/work/table extracts/life.csv'
-    # path = '/root/work/Enterprise/data/life.csv'
+    # path = '/home/akimmel/work/table extracts/life.csv'
+    path = '/root/work/Enterprise/data/life.csv'
 
     with open(path) as csvfile:
         reader = csv.DictReader(csvfile)

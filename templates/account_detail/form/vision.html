@@ -4,7 +4,7 @@
 {{ form.errors }}
 </div>
 
-<form name="dental" method="post" action="/update_benefit/{{ id }}" onsubmit="save_benefit(event, this, 'id_{{ id }}');">
+<form name="vision" method="post" action="/update_benefit/{{ id }}" onsubmit="save_benefit(event, this, 'id_{{ id }}');">
     {% csrf_token %}
     <input type="hidden" name="employer" value="{{ form.employer.value }}">
     <input type="hidden" name="form_id" value="{{ id }}">
@@ -40,12 +40,6 @@
                         </div>
                     </div>
                 </dl>
-                <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Plan Type</div>
-                    <div class="col-sm-5">
-                        {% include "includes/dropdown.html" with name="type" data=dtc id="type" select=form.type.value extra="disabled" only %}
-                    </div>
-                </dl>
             </div>         
         </div>
     </div>
@@ -73,50 +67,50 @@
         <div class="pmbb-body p-l-30">
             <div class="pmbb-view"> 
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Individual Deductible</div>
+                    <div class="col-sm-5 f-700">Exam Copay</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.in_ded_single.value != None %}{{ form.in_ded_single.value }}{% endif %}" name="in_ded_single" disabled="">
+                                <input type="text" class="form-control" value="{% if form.exam_copay.value != None %}{{ form.exam_copay.value }}{% endif %}" name="exam_copay" disabled="">
                             </div>
                         </div>
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Family Deductible</div>
+                    <div class="col-sm-5 f-700">Exam Frequency</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.in_ded_family.value != None %}{{ form.in_ded_family.value }}{% endif %}" name="in_ded_family" disabled="">
+                                <input type="text" class="form-control" value="{% if form.exam_frequency.value != None %}{{ form.exam_frequency.value }}{% endif %}" name="exam_frequency" disabled="">
                             </div>
                         </div>
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Annual Benefit Maximum</div>
+                    <div class="col-sm-5 f-700">Exam Allowance</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.in_max.value != None %}{{ form.in_max.value }}{% endif %}" name="in_max" disabled="">
+                                <input type="text" class="form-control" value="{% if form.exam_out_allowance.value != None %}{{ form.exam_out_allowance.value }}{% endif %}" name="exam_out_allowance" disabled="">
                             </div>
                         </div>
                     </div>
                 </dl>          
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Annual Orthodontal Maximum</div>
+                    <div class="col-sm-5 f-700">Lenses Copay</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.in_max_ortho.value != None %}{{ form.in_max_ortho.value }}{% endif %}" name="in_max_ortho" disabled="">
+                                <input type="text" class="form-control" value="{% if form.lenses_copay.value != None %}{{ form.lenses_copay.value }}{% endif %}" name="lenses_copay" disabled="">
                             </div>
                         </div>
                     </div>
                 </dl><dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Orthodontal Age Limit</div>
+                    <div class="col-sm-5 f-700">Lenses Frequency</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.ortho_age_limit.value != None %}{{ form.ortho_age_limit.value }}{% endif %}" name="ortho_age_limit" disabled="">
+                                <input type="text" class="form-control" value="{% if form.lenses_frequency.value != None %}{{ form.lenses_frequency.value }}{% endif %}" name="lenses_frequency" disabled="">
                             </div>
                         </div>
                     </div>
@@ -128,65 +122,41 @@
         <div class="pmbb-body p-l-30">
             <div class="pmbb-view">
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Deductible Applies to Preventive</div>
-                    <div class="col-sm-5">
-                        {% include "includes/dropdown.html" with name="prev_ded_apply" data=bc id="prev_ded_apply" select=form.prev_ded_apply.value|parse_boolean extra="disabled" only %}
-                    </div>
-                </dl>
-                <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Preventive Coinsurance</div>
+                    <div class="col-sm-5 f-700">Lenses Allowance</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.in_prev_coin.value != None %}{{ form.in_prev_coin.value }}{% endif %}" name="in_prev_coin" disabled="">
+                                <input type="text" class="form-control" value="{% if form.lenses_out_allowance.value != None %}{{ form.lenses_out_allowance.value }}{% endif %}" name="lenses_out_allowance" disabled="">
                             </div>
                         </div>
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Deductible Applies to Basic</div>
-                    <div class="col-sm-5">
-                        {% include "includes/dropdown.html" with name="basic_ded_apply" data=bc id="basic_ded_apply" select=form.basic_ded_apply.value|parse_boolean extra="disabled" only %}
-                    </div>
-                </dl>
-                <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Basic Coinsurance</div>
+                    <div class="col-sm-5 f-700">Frames Copay</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.in_basic_coin.value != None %}{{ form.in_basic_coin.value }}{% endif %}" name="in_basic_coin" disabled="">
+                                <input type="text" class="form-control" value="{% if form.frames_copay.value != None %}{{ form.frames_copay.value }}{% endif %}" name="frames_copay" disabled="">
                             </div>
                         </div>
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Deductible Applies to Major</div>
-                    <div class="col-sm-5">
-                        {% include "includes/dropdown.html" with name="major_ded_apply" data=bc id="major_ded_apply" select=form.major_ded_apply.value|parse_boolean extra="disabled" only %}
-                    </div>
-                </dl>
-                <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Major Coinsurance</div>
+                    <div class="col-sm-5 f-700">Frames Allowance</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.in_major_coin.value != None %}{{ form.in_major_coin.value }}{% endif %}" name="in_major_coin" disabled="">
+                                <input type="text" class="form-control" value="{% if form.frames_allowance.value != None %}{{ form.frames_allowance.value }}{% endif %}" name="frames_allowance" disabled="">
                             </div>
                         </div>
                     </div>
                 </dl>      
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Deductible Applies to Orthodontal</div>
-                    <div class="col-sm-5">
-                        {% include "includes/dropdown.html" with name="ortho_ded_apply" data=bc id="ortho_ded_apply" select=form.ortho_ded_apply.value|parse_boolean extra="disabled" only %}
-                    </div>
-                </dl>     
-                <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Orthodontal Coinsurance</div>
+                    <div class="col-sm-5 f-700">Frames Coinsurance</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.in_ortho_coin.value != None %}{{ form.in_ortho_coin.value }}{% endif %}" name="in_ortho_coin" disabled="">
+                                <input type="text" class="form-control" value="{% if form.frames_coinsurance.value != None %}{{ form.frames_coinsurance.value }}{% endif %}" name="frames_coinsurance" disabled="">
                             </div>
                         </div>
                     </div>
@@ -202,45 +172,55 @@
         <div class="pmbb-body p-l-30">
             <div class="pmbb-view"> 
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Individual Deductible</div>
+                    <div class="col-sm-5 f-700">Frames Frequency</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.out_ded_single.value != None %}{{ form.out_ded_single.value }}{% endif %}" name="out_ded_single" disabled="">
+                                <input type="text" class="form-control" value="{% if form.frames_frequency.value != None %}{{ form.frames_frequency.value }}{% endif %}" name="frames_frequency" disabled="">
                             </div>
                         </div>
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Family Deductible</div>
+                    <div class="col-sm-5 f-700">Frames Allowance</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.out_ded_family.value != None %}{{ form.out_ded_family.value }}{% endif %}" name="out_ded_family" disabled="">
+                                <input type="text" class="form-control" value="{% if form.frames_out_allowance.value != None %}{{ form.frames_out_allowance.value }}{% endif %}" name="frames_out_allowance" disabled="">
                             </div>
                         </div>
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Annual Benefit Maximum</div>
+                    <div class="col-sm-5 f-700">Contacts Copay</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.out_max.value != None %}{{ form.out_max.value }}{% endif %}" name="out_max" disabled="">
+                                <input type="text" class="form-control" value="{% if form.contacts_copay.value != None %}{{ form.contacts_copay.value }}{% endif %}" name="contacts_copay" disabled="">
                             </div>
                         </div>
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Annual Orthodontal Maximum</div>
+                    <div class="col-sm-5 f-700">Contacts Allowance</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.out_max_ortho.value != None %}{{ form.out_max_ortho.value }}{% endif %}" name="out_max_ortho" disabled="">
+                                <input type="text" class="form-control" value="{% if form.contacts_allowance.value != None %}{{ form.contacts_allowance.value }}{% endif %}" name="contacts_allowance" disabled="">
                             </div>
                         </div>
                     </div>
                 </dl>
+                <dl class="dl-horizontal">
+                    <div class="col-sm-5 f-700">Contacts Coinsurance</div>
+                    <div class="col-sm-5">
+                        <div class="form-group">
+                            <div class="fg-line disabled">
+                                <input type="text" class="form-control" value="{% if form.contacts_coinsurance.value != None %}{{ form.contacts_coinsurance.value }}{% endif %}" name="contacts_coinsurance" disabled="">
+                            </div>
+                        </div>
+                    </div>
+                </dl>                
             </div>         
         </div>
     </div>
@@ -248,41 +228,61 @@
         <div class="pmbb-body p-l-30">
             <div class="pmbb-view">
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Preventive Coinsurance</div>
+                    <div class="col-sm-5 f-700">Contacts Frequency</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.out_prev_coin.value != None %}{{ form.out_prev_coin.value }}{% endif %}" name="out_prev_coin" disabled="">
+                                <input type="text" class="form-control" value="{% if form.contacts_frequency.value != None %}{{ form.contacts_frequency.value }}{% endif %}" name="contacts_frequency" disabled="">
                             </div>
                         </div>
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Basic Coinsurance</div>
-                    <div class="col-sm-5">
-                        <div class="form-group">
-                            <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.out_basic_coin.value != None %}{{ form.out_basic_coin.value }}{% endif %}" name="out_basic_coin" disabled="">
-                            </div>
-                        </div>
-                    </div>
-                </dl>
-                <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Major Coinsurance</div>
+                    <div class="col-sm-5 f-700">Contacts Allowance</div>
                     <div class="col-sm-5">                    
                         <div class="form-group">
                             <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.out_major_coin.value != None %}{{ form.out_major_coin.value }}{% endif %}" name="out_major_coin" disabled="">
+                                <input type="text" class="form-control" value="{% if form.contacts_out_allowance.value != None %}{{ form.contacts_out_allowance.value }}{% endif %}" name="contacts_out_allowance" disabled="">
                             </div>
                         </div>
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Orthodontal Coinsurance</div>
+                    <div class="col-sm-5 f-700">Exam Allowance</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">
-                                <input type="text" class="form-control" value="{% if form.out_ortho_coin.value != None %}{{ form.out_ortho_coin.value }}{% endif %}" name="out_ortho_coin" disabled="">
+                                <input type="text" class="form-control" value="{% if form.exam_allowance.value != None %}{{ form.exam_allowance.value }}{% endif %}" name="exam_allowance" disabled="">
+                            </div>
+                        </div>
+                    </div>
+                </dl> 
+                <dl class="dl-horizontal">
+                    <div class="col-sm-5 f-700">Exam Coinsurance</div>
+                    <div class="col-sm-5">
+                        <div class="form-group">
+                            <div class="fg-line disabled">
+                                <input type="text" class="form-control" value="{% if form.exam_balance_coinsurance.value != None %}{{ form.exam_balance_coinsurance.value }}{% endif %}" name="exam_balance_coinsurance" disabled="">
+                            </div>
+                        </div>
+                    </div>
+                </dl> 
+                <dl class="dl-horizontal">
+                    <div class="col-sm-5 f-700">Lenses Allowance</div>
+                    <div class="col-sm-5">
+                        <div class="form-group">
+                            <div class="fg-line disabled">
+                                <input type="text" class="form-control" value="{% if form.lenses_allowance.value != None %}{{ form.lenses_allowance.value }}{% endif %}" name="lenses_allowance" disabled="">
+                            </div>
+                        </div>
+                    </div>
+                </dl> 
+                <dl class="dl-horizontal">
+                    <div class="col-sm-5 f-700">Lenses Coinsurance</div>
+                    <div class="col-sm-5">
+                        <div class="form-group">
+                            <div class="fg-line disabled">
+                                <input type="text" class="form-control" value="{% if form.lenses_balance_coinsurance.value != None %}{{ form.lenses_balance_coinsurance.value }}{% endif %}" name="lenses_balance_coinsurance" disabled="">
                             </div>
                         </div>
                     </div>
