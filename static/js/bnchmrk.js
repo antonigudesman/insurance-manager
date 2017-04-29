@@ -14,50 +14,11 @@ var others_label = [];
 
 $(document).ready(function(){
     load_employers();
-
-    $('#industries').change(function() {
-        get_filters();
-        $("#data-table-employer").bootgrid('reload');
-    });
-
-    $('#regions').change(function() {
-        get_filters();
-        $("#data-table-employer").bootgrid('reload');
-    });
-
-    $('#head-counts').change(function() {
-        get_filters();
-        $("#data-table-employer").bootgrid('reload');
-    });
-
-    $('#other_filter').change(function() {
-        get_filters();
-        $("#data-table-employer").bootgrid('reload');
-    });
-
 });
 
-function get_filters() {
-    industries = [];
-    regions = [];
-    head_counts = [];
-    others = [];
-
-    $('#industries :selected').each(function() {
-        industries.push($(this).val());
-    });
-
-    $('#regions :selected').each(function() {
-        regions.push($(this).val());
-    }); 
-
-    $('#head-counts :selected').each(function() {
-        head_counts.push($(this).val());
-    });   
-
-    $('#other_filter :selected').each(function() {
-        others.push($(this).val());
-    });     
+function refresh_content() {
+    get_filters();
+    $("#data-table-employer").bootgrid('reload');    
 }
 
 function load_employers() {

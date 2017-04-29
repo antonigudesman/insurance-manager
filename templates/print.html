@@ -1,9 +1,8 @@
-{% extends 'index.html' %}
+{% extends 'base.html' %}
 {% load pages_tags mezzanine_tags i18n staticfiles %}
 
 {% block extra_css %}
 <link href="{% static 'vendors/bootgrid/jquery.bootgrid.min.css' %}" rel="stylesheet">
-<link href="{% static 'css/enterprise.css' %}" rel="stylesheet">
 
 <style type="text/css">
     body {margin-top: 0;}
@@ -17,7 +16,7 @@
 <div class="container">
     <div class="bnchmrk_table">
         <div class="card" id="bnchmrk_card">
-        {% block page_content %}
+        {% block page_body %}
         {% endblock %}
         </div>
     </div>

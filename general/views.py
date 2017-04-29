@@ -131,127 +131,20 @@ def enterprise(request):
             "total": num_companies
             }, safe=False)
     else:
-        # get valid distinct industries 
-        industries1 = Employer.objects.order_by('industry1').values_list('industry1').distinct()
-        industries1 = [item[0] for item in industries1 if item[0]]
-        industries2 = Employer.objects.order_by('industry2').values_list('industry2').distinct()
-        industries2 = [item[0] for item in industries2 if item[0]]
-        industries3 = Employer.objects.order_by('industry3').values_list('industry3').distinct()
-        industries3 = [item[0] for item in industries3 if item[0]]
-        industries = set(industries1 + industries2 + industries3)
-
         request.session['benefit'] = request.session.get('benefit', 'HOME')
 
         return render(request, 'enterprise.html', {
-                'industries': sorted(industries),
+                'industries': get_industries(),
                 'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE
             })
         
 
 @csrf_exempt
-def ajax_enterprise(request):
-    """
-    get body of page
-    supposed to be called for only real template not print
-    """
-    form_param = request.POST
-    ft_industries = form_param.getlist('industry[]', ['*'])
-    ft_head_counts = form_param.getlist('head_counts[]') or ['0-2000000']
-    ft_other = form_param.getlist('others[]')
-    ft_regions = form_param.getlist('regions[]')
-
-    ft_industries_label = form_param.getlist('industry_label[]')
-    ft_head_counts_label = form_param.getlist('head_counts_label[]')
-    ft_other_label = form_param.getlist('others_label[]')
-    ft_regions_label = form_param.getlist('regions_label[]')
-
-    benefit = form_param.get('benefit')
-
-    # store for print
-    request.session['benefit'] = benefit
-    request.session['ft_industries'] = ft_industries
-    request.session['ft_head_counts'] = ft_head_counts
-    request.session['ft_other'] = ft_other
-    request.session['ft_regions'] = ft_regions
-
-    request.session['ft_industries_label'] = ft_industries_label
-    request.session['ft_head_counts_label'] = ft_head_counts_label
-    request.session['ft_other_label'] = ft_other_label
-    request.session['ft_regions_label'] = ft_regions_label
-
-    return get_response_template(request, benefit, ft_industries, ft_head_counts, ft_other, ft_regions)
-
-
-def get_response_template(request, 
-                          benefit, 
-                          ft_industries, 
-                          ft_head_counts, 
-                          ft_other, 
-                          ft_regions, 
-                          is_print=False, 
-                          ft_industries_label='', 
-                          ft_head_counts_label='', 
-                          ft_other_label='', 
-                          ft_regions_label='',
-                          is_print_header=False):
-
-    today = datetime.strftime(datetime.now(), '%B %d, %Y')
-
-    if benefit == 'HOME':
-        full_name = '{} {}'.format(request.user.first_name, request.user.last_name)
-        return render(request, 'benefit/home.html', locals())
-    elif benefit in ['LIFE', 'STD', 'LTD', 'STRATEGY', 'VISION', 'DPPO', 'DMO', 'PPO', 'HMO', 'HDHP']:
-        employers, num_companies = get_filtered_employers(ft_industries, 
-                                                          ft_head_counts, 
-                                                          ft_other,
-                                                          ft_regions)
-        
-        benefit_= None
-        if benefit in ['DPPO', 'DMO']:
-            benefit_ = benefit      # store original benefit
-            benefit = 'DENTAL'
-        elif benefit in ['PPO', 'HMO', 'HDHP']:
-            benefit_ = benefit      # store original benefit
-            benefit = 'MEDICAL'
-
-        if num_companies < settings.EMPLOYER_THRESHOLD:
-            context =  {
-                'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE,
-                'num_employers': num_companies,
-                'EMPLOYER_THRESHOLD': settings.EMPLOYER_THRESHOLD
-            }
-        else:
-            func_name = 'get_{}_plan'.format(benefit.lower())
-            context = globals()[func_name](employers, num_companies, benefit_)
-
-        context['base_template'] = 'print.html' if is_print else 'empty.html'
-        context['today'] = today
-
-        if is_print:
-            # unescape html characters
-            h = HTMLParser.HTMLParser()
-            context['ft_industries_label'] = h.unescape(ft_industries_label)
-            context['ft_head_counts_label'] = h.unescape(ft_head_counts_label)
-            context['ft_other_label'] = h.unescape(ft_other_label)
-            context['ft_regions_label'] = h.unescape(ft_regions_label)
-
-        template = 'benefit/{}_plan.html'.format(benefit.lower())
-        if is_print_header:
-            group = request.user.groups.first().name
-            context['group'] = group.lower()
-            template = 'includes/print_header.html'
-
-        return render(request, template, context)
-    elif benefit == 'EMPLOYERS':
-        return render(request, 'benefit/employers.html', { 'today': today })
-    return HttpResponse('Nice')
-
-
-@csrf_exempt
 def update_properties(request):
     form_param = request.POST
     benefit = form_param.get('benefit')
-    plan = int(form_param.get('plan', 0))
+    plan_type = form_param.get('plan_type')
+    plan = int(form_param.get('plan') or '0')
 
     # save for print
     if plan != -1:
@@ -259,19 +152,11 @@ def update_properties(request):
     else:
         plan = request.session['plan']
 
-    benefit_= None
-    if benefit in ['DPPO', 'DMO']:
-        benefit_ = benefit      # store original benefit
-        benefit = 'DENTAL'
-    elif benefit in ['PPO', 'HMO', 'HDHP']:
-        benefit_ = benefit      # store original benefit
+    if benefit == 'MEDICALRX':
         benefit = 'MEDICAL'
 
-    if benefit in PLAN_ALLOWED_BENEFITS:
-        func_name = 'get_{}_properties'.format(benefit.lower())
-        return globals()[func_name](request, plan, benefit_)
-    else:
-        return HttpResponse('{}')
+    func_name = 'get_{}_properties'.format(benefit.lower())
+    return globals()[func_name](request, plan, plan_type)
 
 
 @csrf_exempt
@@ -293,47 +178,38 @@ def get_num_employers(request):
 @csrf_exempt
 def get_plans(request):
     benefit = request.POST.get('benefit')
-    group = request.user.groups.first().name
-    plans = []
+    plan_type = request.POST.get('plan_type')
 
-    benefit_= None
-    if benefit in ['DPPO', 'DMO']:
-        benefit_ = benefit      # store original benefit
-        benefit = 'DENTAL'
-    elif benefit in ['PPO', 'HMO', 'HDHP']:
-        benefit_ = benefit      # store original benefit
+    group = request.user.groups.first().name
+
+    if benefit == 'MEDICALRX':
         benefit = 'MEDICAL'
 
-    if benefit in PLAN_ALLOWED_BENEFITS + ['EMPLOYERS']:
-        plans = get_plans_(benefit, group, benefit_)
-
+    plans = get_plans_(benefit, group, plan_type)
     return render(request, 'includes/plans.html', { 'plans': plans })
 
 
-def get_plans_(benefit, group, benefit_):
+def get_plans_(benefit, group, plan_type):
     model = MODEL_MAP[benefit]
     if group == 'bnchmrk':
         objects = model.objects.all()
     else:
-        if benefit == 'EMPLOYERS':
-            objects = model.objects.filter(broker=group)
-        else:
-            objects = model.objects.filter(employer__broker=group)
+        objects = model.objects.filter(employer__broker=group)
 
-    if benefit_ in ['DPPO', 'DMO']:     # for DPPO, DMO pages
-        objects = objects.filter(type=benefit_)
-    elif benefit_ == 'PPO':
+    if plan_type in ['DPPO', 'DMO']:     # for DPPO, DMO pages
+        objects = objects.filter(type=plan_type)
+    elif plan_type == 'PPO':
         objects = objects.filter(type__in=['PPO', 'POS'])
-    elif benefit_ == 'HDHP':
+    elif plan_type == 'HDHP':
         objects = objects.filter(type='HDHP')
-    elif benefit_ == 'HMO':
+    elif plan_type == 'HMO':
         objects = objects.filter(type__in=['HMO', 'EPO'])
 
     if benefit in ['LIFE', 'DENTAL', 'MEDICAL']:
         return [
                    [item.id, '{} - {} - {}'.format(item.employer.name, item.type, item.title)]
                    for item in objects.order_by('employer__name', 'title')
-               ]
+               ][:10]   # TEST
     elif benefit in ['STD', 'LTD', 'VISION']:
         return [
                    [item.id, '{} - {}'.format(item.employer.name, item.title)]
@@ -361,22 +237,14 @@ def company(request):
 ## ----------------------------------------------------------------  ##
 
 def home(request):
-    # get valid distinct industries 
-    industries1 = Employer.objects.order_by('industry1').values_list('industry1').distinct()
-    industries1 = [item[0] for item in industries1 if item[0]]
-    industries2 = Employer.objects.order_by('industry2').values_list('industry2').distinct()
-    industries2 = [item[0] for item in industries2 if item[0]]
-    industries3 = Employer.objects.order_by('industry3').values_list('industry3').distinct()
-    industries3 = [item[0] for item in industries3 if item[0]]
-    industries = set(industries1 + industries2 + industries3)
-
     return render(request, 'index.html', {
-            'industries': sorted(industries),
+            'industries': get_industries(),
             'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE
         })    
 
 def accounts(request):            
     return render(request, 'accounts.html', { 'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE_ACCOUNT })
+
 
 def account_detail(request, id):
     employer = Employer.objects.get(id=id)
@@ -416,6 +284,7 @@ def account_detail(request, id):
 
     return render(request, 'account_detail.html', locals())
 
+
 @csrf_exempt
 def account_detail_benefit(request):
     benefit = request.POST['benefit'];
@@ -430,8 +299,10 @@ def account_detail_benefit(request):
 
     bc = BOOLEAN_CHOICES
     dtc = DEN_TYPE_CHOICES
-    template = 'account_detail/{}.html'.format(benefit.lower())
+    include_path = "account_detail/form/{}.html".format(benefit.lower())
+    template = 'account_detail/benefit.html'
     return render(request, template, locals())
+
 
 def update_benefit(request, instance_id):
     employer_id = request.POST['employer']
@@ -441,7 +312,7 @@ def update_benefit(request, instance_id):
 
     if form.is_valid():
         form.save()
-    print form.errors, '@@@@@@@@@@@@@@'
+
     benefit = request.session['benefit'];
     template = 'account_detail/form/{}.html'.format(benefit.lower())
     return render(request, template, { 
@@ -449,3 +320,107 @@ def update_benefit(request, instance_id):
                                         'id': instance.id,
                                         'bc': BOOLEAN_CHOICES,
                                         'dtc': DEN_TYPE_CHOICES})    
+
+
+def benchmarking(request, benefit):
+    request.session['bnchmrk_benefit'] = request.session.get('bnchmrk_benefit', 'MEDICALRX')
+    template = 'benchmarking/benefit.html'.format(benefit)
+
+    return render(request, template, {
+        'industries': get_industries(),
+        'num_employers': 100,
+        'EMPLOYER_THRESHOLD': settings.EMPLOYER_THRESHOLD
+    })
+
+
+@csrf_exempt
+def ajax_benchmarking(request):
+    form_param = request.POST
+    bnchmrk_benefit = form_param.get('bnchmrk_benefit')
+
+    ft_industries = form_param.getlist('industry[]', ['*'])
+    ft_head_counts = form_param.getlist('head_counts[]') or ['0-2000000']
+    ft_other = form_param.getlist('others[]')
+    ft_regions = form_param.getlist('regions[]')
+
+    ft_industries_label = form_param.getlist('industry_label[]')
+    ft_head_counts_label = form_param.getlist('head_counts_label[]')
+    ft_other_label = form_param.getlist('others_label[]')
+    ft_regions_label = form_param.getlist('regions_label[]')
+
+    request.session['bnchmrk_benefit'] = bnchmrk_benefit
+
+    # store for print
+    request.session['ft_industries'] = ft_industries
+    request.session['ft_head_counts'] = ft_head_counts
+    request.session['ft_other'] = ft_other
+    request.session['ft_regions'] = ft_regions
+
+    request.session['ft_industries_label'] = ft_industries_label
+    request.session['ft_head_counts_label'] = ft_head_counts_label
+    request.session['ft_other_label'] = ft_other_label
+    request.session['ft_regions_label'] = ft_regions_label
+
+    return get_response_template(request, bnchmrk_benefit, ft_industries, ft_head_counts, ft_other, ft_regions)
+
+
+def get_response_template(request, 
+                          benefit, 
+                          ft_industries, 
+                          ft_head_counts, 
+                          ft_other, 
+                          ft_regions, 
+                          is_print=False, 
+                          ft_industries_label='', 
+                          ft_head_counts_label='', 
+                          ft_other_label='', 
+                          ft_regions_label='',
+                          is_print_header=False):
+
+    today = datetime.strftime(datetime.now(), '%B %d, %Y')
+
+    employers, num_companies = get_filtered_employers(ft_industries, 
+                                                      ft_head_counts, 
+                                                      ft_other,
+                                                      ft_regions)
+    
+    if num_companies < settings.EMPLOYER_THRESHOLD:
+        context =  {
+            'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE,
+            'num_employers': num_companies,
+            'EMPLOYER_THRESHOLD': settings.EMPLOYER_THRESHOLD
+        }
+    else:
+        plan_type = request.POST.get('plan_type')
+        func_name = 'get_{}_plan'.format(benefit.lower())
+        context = globals()[func_name](employers, num_companies, plan_type)
+
+    context['base_template'] = 'print.html' if is_print else 'empty.html'
+    context['today'] = today
+
+    if is_print:
+        # unescape html characters
+        h = HTMLParser.HTMLParser()
+        context['ft_industries_label'] = h.unescape(ft_industries_label)
+        context['ft_head_counts_label'] = h.unescape(ft_head_counts_label)
+        context['ft_other_label'] = h.unescape(ft_other_label)
+        context['ft_regions_label'] = h.unescape(ft_regions_label)
+
+    if is_print_header:
+        group = request.user.groups.first().name
+        context['group'] = group.lower()
+        template = 'includes/print_header.html'
+    template = 'benchmarking/{}.html'.format(benefit.lower())
+    return render(request, template, context)
+
+
+def get_plan_type(request):
+    bnchmrk_benefit = request.GET['bnchmrk_benefit'];
+    if bnchmrk_benefit == 'MEDICALRX':
+        return JsonResponse(['PPO', 'HDHP', 'HMO'], safe=False)
+    elif bnchmrk_benefit == 'DENTAL':
+        return JsonResponse(['DPPO', 'DMO'], safe=False)
+    elif bnchmrk_benefit == 'LIFE':
+        return JsonResponse(['Multiple of Salary', 'Flat Amount'], safe=False)
+    else:
+        return JsonResponse(['All'], safe=False)

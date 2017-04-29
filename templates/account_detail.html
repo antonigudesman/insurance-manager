@@ -13,7 +13,7 @@
             <li class="active">{{ employer.name }}</li>
         </ol>
 
-        <div class="block-header">
+        <!-- <div class="block-header">
             <h2>{{ employer.name }} <small>{{ employer.broker }}</small></h2>
             
             <ul class="actions m-t-20 hidden-xs">
@@ -35,25 +35,24 @@
                     </ul>
                 </li>
             </ul>
-        </div>
+        </div> -->
 
         <div class="card" id="profile-main">
             <div class="pm-overview c-overflow">
                 <div class="pmo-block pmo-contact hidden-xs">
-                    <h2>Employer Info</h2>
+                    <h2 style="text-transform: uppercase;">{{ employer.name }}<!-- <br><small>{{ employer.broker }}</small> --></h2>
                     
                     <ul>
-                        <li><i class="zmdi zmdi-phone"></i> {{ employer.name }}</li>
-                        <li><i class="zmdi zmdi-email"></i> {{ employer.broker }}</li>
-                        <li><i class="zmdi zmdi-facebook-box"></i> {{ employer.size }}</li>
-                        <li><i class="zmdi zmdi-twitter"></i> {{ region }}</li>
-                        <li>
-                            <i class="zmdi zmdi-pin"></i>
-                            <address class="m-b-0 ng-binding">{{ industry }}</address>
-                        </li>
+                        <li><i class="zmdi zmdi-calendar-check"></i> Renewed on {{ employer.renewal_date }}</li>
+                        <li><i class="zmdi zmdi-collection-text"></i> Benefit Offering:</li>
                         {% for benefit in plans %}
-                            <li><i class="zmdi zmdi-email"></i> {{ benefit.0 }}: {{ benefit.1 }}</li>
+                            <li>&nbsp;{{ benefit.1 }} {{ benefit.0 }} Plans</li>
                         {% endfor %}
+                        <li><i class="zmdi zmdi-store"></i> Industries:</li>
+                        <li><address class="m-b-0 ng-binding">{{ industry }}</address></li>
+                        <li><i class="zmdi zmdi-pin"></i> Headquartered in {{ employer.state }}, with active locations in:
+                        <li>{{ region }}</li>
+                        <li><i class="zmdi zmdi-nature-people"></i> {{ employer.size }} Employees</li>
                     </ul>
                 </div>            
             </div>

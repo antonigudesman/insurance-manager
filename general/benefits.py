@@ -99,8 +99,8 @@ medical_attrs_boolean_5_states = [
     'rx4_ded_apply',
 ]
 
-def get_medical_plan(employers, num_companies, benefit_=None):
-    medians, var_local, qs = get_medical_plan_(employers, num_companies, benefit_)
+def get_medicalrx_plan(employers, num_companies, plan_type=None):
+    medians, var_local, qs = get_medical_plan_(employers, num_companies, plan_type)
     prcnt_plan_count = get_plan_percentages(employers, num_companies, 'med')
 
     num_t = Medical.objects.filter(employer__in=employers, type__in=['PPO', 'POS']).values('employer_id').distinct()
@@ -125,8 +125,15 @@ def get_medical_plan(employers, num_companies, benefit_=None):
               + prcnt_plan_count.items()
               + medians.items())
 
-def get_medical_plan_(employers, num_companies, benefit_=None):
-    qs = Medical.objects.filter(employer__in=employers, type=benefit_)
+def get_medical_plan_(employers, num_companies, plan_type=None):    
+    if plan_type == 'PPO':
+        plan_type = ['PPO', 'POS']
+    elif plan_type == 'HMO':
+        plan_type = ['HMO', 'EPO']
+    else:
+        plan_type = ['HDHP']
+
+    qs = Medical.objects.filter(employer__in=employers, type__in=plan_type) 
     medians, sub_qs = get_medians(qs, medical_attrs_dollar, num_companies, medical_attrs_percent, medical_attrs_int)
 
     var_local = {}
@@ -135,7 +142,7 @@ def get_medical_plan_(employers, num_companies, benefit_=None):
 
     return medians, var_local, qs
 
-def get_medical_properties(request, plan, benefit_=None):
+def get_medical_properties(request, plan, plan_type=None):
     attrs = [item.name 
              for item in Medical._meta.fields 
              if item.name not in ['id', 'employer', 'title', 'type']]
@@ -146,7 +153,7 @@ def get_medical_properties(request, plan, benefit_=None):
 
     if plan:
         employers, num_companies = get_filtered_employers_session(request)
-        medians, var_local, qs = get_medical_plan_(employers, num_companies, benefit_)
+        medians, var_local, qs = get_medical_plan_(employers, num_companies, plan_type)
         instance = Medical.objects.get(id=plan)
         context['plan_info'] = ': {}, {}'.format(instance.employer.name, instance.title)
         context['client_name'] = instance.employer.name

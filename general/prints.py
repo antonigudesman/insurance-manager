@@ -24,7 +24,7 @@ def print_template(request):
     benefit = request.GET.get('benefit')
     plan = request.GET.get('plan')
     #Retrieve data or whatever you need
-    request.session['benefit'] = benefit
+    request.session['bnchmrk_benefit'] = benefit
     request.session['plan'] = plan
     # Retrieve data or whatever you need
     ft_industries = request.session['ft_industries']
@@ -84,14 +84,14 @@ def print_template_header(request):
 @login_required(login_url='/admin/login')
 def print_page(request):
     # for universal format
-    benefit = request.session['benefit']
+    benefit = request.session['bnchmrk_benefit']
     plan = request.session['plan']
     return get_pdf(request, [benefit], [plan])
 
 
 def get_pdf(request, benefits, plans):
     # store original benefit and plan for front end
-    benefit_o = request.session['benefit']
+    benefit_o = request.session['bnchmrk_benefit']
     plan_o = request.session['plan']    
 
     # get screenshot for current page with same session using selenium    
@@ -127,6 +127,7 @@ def get_pdf(request, benefits, plans):
 
             # for body
             url = 'http://{}/98Wf37r2-3h4X2_jh9?benefit={}&plan={}'.format(request.META.get('HTTP_HOST'), benefits[uidx], plans[uidx])
+            print url, '#############3'
             driver.get(url)        
             time.sleep(0.6)
             if benefits[uidx] in ['PPO', 'HDHP', 'HMO']:
@@ -177,7 +178,7 @@ def get_pdf(request, benefits, plans):
         pass
        
     # restore benefit and plan
-    request.session['benefit'] = benefit_o
+    request.session['bnchmrk_benefit'] = benefit_o
     request.session['plan'] = plan_o                 
 
     return get_download_response(pdf_path)    

@@ -58,8 +58,7 @@
                     <div class="col-sm-3 m-b-15">
                         <p class="f-500 c-black m-b-15">Industry</p>
 
-                        <select name="industry" multiple="" id="industries" class="selectpicker">
-                            <option value="*">All Industries</option>
+                        <select name="industry" multiple="" id="industries" class="selectpicker" data-none-selected-text="All Industries">
                             {% for item in industries %}
                             <option value="{{ item }}">{{ item }}</option>
                             {% endfor %}
@@ -68,8 +67,7 @@
                     </div>
                     <div class="col-sm-3 m-b-15">
                         <p class="f-500 c-black m-b-15">Region</p>
-                        <select name="" multiple="false" id="regions" class="selectpicker" size="1">
-                            <option value="*">All Regions</option>
+                        <select name="" multiple="false" id="regions" class="selectpicker" size="1" data-none-selected-text="All Regions">
                             <option value="new_england">New England</option>
                             <option value="mid_atlantic">Tri-State Area</option>
                             <option value="south_atlantic">South Atlantic</option>
@@ -82,8 +80,7 @@
                     </div>
                     <div class="col-sm-3 m-b-15">
                         <p class="f-500 c-black m-b-15">Headcount</p>
-                        <select name="head-count" multiple="" id="head-counts" class="selectpicker">
-                            <option value="0-2000000">All Sizes</option>
+                        <select name="head-count" multiple="" id="head-counts" class="selectpicker" data-none-selected-text="All Sizes">
                             <option value="0-249">Up to 250</option>
                             <option value="250-499">250 to 499</option>
                             <option value="500-999">500 to 999</option>
@@ -93,12 +90,11 @@
                     </div>
                     <div class="col-sm-3 m-b-15">
                         <p class="f-500 c-black m-b-15">Other</p>
-                        <select name="" multiple="" id="other_filter" class="selectpicker">
-                            <option value="*">All</option>
+                        <select name="" multiple="" id="other_filter" class="selectpicker" data-none-selected-text="All">
                             <option value="nonprofit">Non-Profit</option>
                             <option value="govt_contractor">Gov't Contractor</option>
                         </select>
-                    </div>
+                    </div>                    
                 </div>
             </div>
         </div>
@@ -136,4 +132,5 @@
     </script>
 
     <script src="{% static 'js/bnchmrk.js' %}"></script>
+    <script src="{% static 'js/common.js' %}"></script>
 {% endblock %}

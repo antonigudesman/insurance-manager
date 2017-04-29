@@ -37,13 +37,17 @@ urlpatterns += [
     url(r"^account_detail_benefit$", account_detail_benefit, name="account_detail_benefit"),
     url(r"^update_benefit/(?P<instance_id>.*)$", update_benefit, name="update_benefit"),    
 
+    url(r"^benchmarking/(?P<benefit>.*)$", benchmarking, name="benchmarking"),
+    url(r"^_benchmarking", ajax_benchmarking, name="_benchmarking"),
+    url(r"^get_plan_type", get_plan_type, name="get_plan_type"),
+
     url("^", include("mezzanine.urls")),
     # authentication
     url(r"^login", user_login, name="login"),
     url(r"^logout", user_logout, name="logout"),
     # main logic
     url(r"^enterprise", enterprise, name="enterprise"), # benchmarking
-    url(r"^_enterprise", ajax_enterprise, name="_enterprise"),
+    # url(r"^_enterprise", ajax_enterprise, name="_enterprise"),
     url(r"^get_num_employers", get_num_employers, name="get_num_employers"),
     url(r"^get_plans", get_plans, name="get_plans"),
     url(r"^update_properties", update_properties, name="update_properties"),  

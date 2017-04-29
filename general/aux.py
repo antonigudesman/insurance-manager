@@ -321,3 +321,13 @@ def get_quintile_properties(var_qs, instance, attrs, attrs_inv, context):
         rank = get_rank(var_qs['quintile_'+attr], getattr(instance, attr))
         context['rank_'+attr] = rank if rank == 'N/A' else 6 - rank
 
+
+def get_industries():
+    # get valid distinct industries 
+    industries1 = Employer.objects.order_by('industry1').values_list('industry1').distinct()
+    industries1 = [item[0] for item in industries1 if item[0]]
+    industries2 = Employer.objects.order_by('industry2').values_list('industry2').distinct()
+    industries2 = [item[0] for item in industries2 if item[0]]
+    industries3 = Employer.objects.order_by('industry3').values_list('industry3').distinct()
+    industries3 = [item[0] for item in industries3 if item[0]]
+    return sorted(set(industries1 + industries2 + industries3))
