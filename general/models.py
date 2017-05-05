@@ -218,17 +218,17 @@ MED_TYPE_CHOICES = (
 
 MED_BOOL_CHOICES = (
     (None, '-'),
-    ('FALSE', 'False'),
-    ('False/Coin', 'False/Coin'),
-    ('TRUE', 'True'),
-    ('True/Coin', 'True/Coin')
+    ('FALSE', 'Copay Only'),
+    ('False/Coin', 'Coinsurance Applies'),
+    ('TRUE', 'Deductible Applies'),
+    ('True/Coin', 'Ded. & Coin. Applies')
 )
 
 
 BOOLEAN_CHOICES =  (
     (None, '-'),
-    (True, 'True'),
-    (False, 'False')
+    (False, 'No Deductible'),
+    (True, 'Deductible Applies')
 )
 
 class Medical(models.Model):
@@ -466,6 +466,12 @@ CB_CHOICES = (
     ('Med + Vision', 'Med + Vision'),
     ('Med + Den + Vision', 'Med + Den + Vision'),
     ('Den + Vision', 'Den + Vision')
+)
+
+STRATEGY_BOOLEAN_CHOICES =  (
+    (None, '-'),
+    (False, 'No'),
+    (True, 'Yes')
 )
 
 class Strategy(models.Model):

@@ -149,7 +149,7 @@ def get_medical_properties(request, plan, plan_type=None):
     context = get_init_properties(attrs, medical_quintile_attrs + medical_quintile_attrs_inv)
 
     for attr in medical_attrs_boolean_5_states:
-        context['coin_'+attr] = 'N/A'
+        context['coin_'+attr] = ''
 
     if plan:
         employers, num_companies = get_filtered_employers_session(request)
@@ -228,8 +228,8 @@ dental_attrs_boolean = [
     'ortho_ded_apply'
 ]
 
-def get_dental_plan(employers, num_companies, benefit_=None):
-    medians, var_local, qs = get_dental_plan_(employers, num_companies, benefit_)
+def get_dental_plan(employers, num_companies, plan_type=None):
+    medians, var_local, qs = get_dental_plan_(employers, num_companies, plan_type)
     prcnt_plan_count = get_plan_percentages(employers, num_companies, 'den')
 
     num_t = Dental.objects.filter(employer__in=employers, type__in=['DPPO']).values('employer_id').distinct()
@@ -244,8 +244,8 @@ def get_dental_plan(employers, num_companies, benefit_=None):
               + prcnt_plan_count.items()
               + medians.items())
 
-def get_dental_plan_(employers, num_companies, benefit_=None):
-    qs = Dental.objects.filter(employer__in=employers, type=benefit_)
+def get_dental_plan_(employers, num_companies, plan_type=None):
+    qs = Dental.objects.filter(employer__in=employers, type=plan_type)
     medians, sub_qs = get_medians(qs, dental_attrs_dollar, num_companies, dental_attrs_percent, dental_attrs_int)
 
     var_local = {}
@@ -254,7 +254,7 @@ def get_dental_plan_(employers, num_companies, benefit_=None):
 
     return medians, var_local, qs
 
-def get_dental_properties(request, plan, benefit_=None):
+def get_dental_properties(request, plan, plan_type=None):
     attrs = [item.name 
              for item in Dental._meta.fields 
              if item.name not in ['id', 'employer', 'title', 'type']]
@@ -262,7 +262,7 @@ def get_dental_properties(request, plan, benefit_=None):
 
     if plan:
         employers, num_companies = get_filtered_employers_session(request)
-        medians, var_local, qs = get_dental_plan_(employers, num_companies, benefit_)
+        medians, var_local, qs = get_dental_plan_(employers, num_companies, plan_type)
         instance = Dental.objects.get(id=plan)
         context['plan_info'] = ': {}, {}'.format(instance.employer.name, instance.title)
         context['client_name'] = instance.employer.name
@@ -326,7 +326,7 @@ vision_attrs_int = [
     'contacts_frequency'
 ]
 
-def get_vision_plan(employers, num_companies, benefit_=None):
+def get_vision_plan(employers, num_companies, plan_type=None):
     medians, var_local = get_vision_plan_(employers, num_companies)
     prcnt_plan_count = get_plan_percentages(employers, num_companies, 'vis')
 
@@ -343,7 +343,7 @@ def get_vision_plan_(employers, num_companies):
         var_local['quintile_'+attr] = get_incremental_array(sub_qs['qs_'+attr], attr)
     return medians, var_local
 
-def get_vision_properties(request, plan, benefit_=None):
+def get_vision_properties(request, plan, plan_type=None):
     attrs = [item.name for item in Vision._meta.fields if item.name not in ['id', 'employer', 'title']]
     context = get_init_properties(attrs, vision_quintile_attrs + vision_quintile_attrs_inv)
 
@@ -373,8 +373,8 @@ life_attrs_dollar = ['multiple_max', 'flat_amount']
 life_attrs_percent = []
 life_attrs_int = ['multiple']
 
-def get_life_plan(employers, num_companies, benefit_=None):
-    medians, var_local, qs = get_life_plan_(employers, num_companies)
+def get_life_plan(employers, num_companies, plan_type=None):
+    medians, var_local, qs = get_life_plan_(employers, num_companies, plan_type)
 
     var_local['prcnt_add_flat'] = get_percent_count_( qs.filter(add=True, type='Flat Amount'), qs.filter(type='Flat Amount'))
     var_local['prcnt_add_multiple'] = get_percent_count_( qs.filter(add=True, type='Multiple of Salary'), qs.filter(type='Multiple of Salary'))
@@ -390,7 +390,7 @@ def get_life_plan(employers, num_companies, benefit_=None):
               + prcnt_plan_count.items()
               + medians.items())
 
-def get_life_plan_(employers, num_companies):
+def get_life_plan_(employers, num_companies, plan_type):
     qs = Life.objects.filter(employer__in=employers)
     medians, sub_qs = get_medians(qs, life_attrs_dollar, num_companies, life_attrs_percent, life_attrs_int)
 
@@ -400,13 +400,13 @@ def get_life_plan_(employers, num_companies):
 
     return medians, var_local, qs
 
-def get_life_properties(request, plan, benefit_=None):
+def get_life_properties(request, plan, plan_type=None):
     attrs = ['multiple_max', 'flat_amount', 'multiple', 'add_flat', 'add_multiple']
     context = get_init_properties(attrs, life_quintile_attrs + life_quintile_attrs_inv)
 
     if plan:
         employers, num_companies = get_filtered_employers_session(request)
-        medians, var_local, _ = get_life_plan_(employers, num_companies)
+        medians, var_local, _ = get_life_plan_(employers, num_companies, plan_type)
         instance = Life.objects.get(id=plan)
         context['plan_info'] = ': {}, {}'.format(instance.employer.name, instance.title)
         context['client_name'] = instance.employer.name
@@ -437,7 +437,7 @@ std_attrs_percent = ['percentage']
 std_attrs_int = ['waiting_days', 'waiting_days_sick', 'duration_weeks']
 std_attrs_boolean = ['salary_cont']
 
-def get_std_plan(employers, num_companies, benefit_=None):
+def get_std_plan(employers, num_companies, plan_type=None):
     medians, var_local, qs = get_std_plan_(employers, num_companies)
     var_local['prcnt_salary_cont'] = get_percent_count_(qs.filter(salary_cont=True), qs)
 
@@ -460,7 +460,7 @@ def get_std_plan_(employers, num_companies):
 
     return medians, var_local, qs
 
-def get_std_properties(request, plan, benefit_=None):
+def get_std_properties(request, plan, plan_type=None):
     attrs = std_attrs_dollar + std_attrs_percent + std_attrs_int + std_attrs_boolean
     context = get_init_properties(attrs, std_quintile_attrs + std_quintile_attrs_inv)
 
@@ -491,7 +491,7 @@ ltd_attrs_dollar = ['monthly_max']
 ltd_attrs_percent = ['percentage']
 ltd_attrs_int = ['waiting_weeks']
 
-def get_ltd_plan(employers, num_companies, benefit_=None):
+def get_ltd_plan(employers, num_companies, plan_type=None):
     medians, var_local, qs = get_ltd_plan_(employers, num_companies)
     # percentages for plans and cost share
     prcnt_plan_count = get_plan_percentages(employers, num_companies, 'ltd')
@@ -512,7 +512,7 @@ def get_ltd_plan_(employers, num_companies):
 
     return medians, var_local, qs
 
-def get_ltd_properties(request, plan, benefit_=None):
+def get_ltd_properties(request, plan, plan_type=None):
     attrs = ltd_attrs_dollar + ltd_attrs_percent + ltd_attrs_int
     context = get_init_properties(attrs, ltd_quintile_attrs + ltd_quintile_attrs_inv)
 
@@ -541,7 +541,7 @@ strategy_quintile_attrs_inv = ['tobacco_surcharge_amount', 'spousal_surcharge_am
 strategy_attrs_dollar = ['spousal_surcharge_amount', 'tobacco_surcharge_amount']
 strategy_attrs_boolean = ['tobacco_surcharge', 'spousal_surcharge']
 
-def get_strategy_plan(employers, num_companies, benefit_=None):
+def get_strategy_plan(employers, num_companies, plan_type=None):
     medians, var_local, qs = get_strategy_plan_(employers, num_companies)
 
     attrs = ['spousal_surcharge',
@@ -578,7 +578,7 @@ def get_strategy_plan_(employers, num_companies):
         var_local['quintile_'+attr] = get_incremental_array(sub_qs['qs_'+attr], attr)
     return medians, var_local, qs
 
-def get_strategy_properties(request, plan, benefit_=None):
+def get_strategy_properties(request, plan, plan_type=None):
     attrs = strategy_attrs_dollar + strategy_attrs_boolean
     context = get_init_properties(attrs, strategy_quintile_attrs + strategy_quintile_attrs_inv)
 

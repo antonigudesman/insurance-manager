@@ -27,32 +27,32 @@
 
     <!-- In-network deductibles, maximums, ded applies, and coinsurances -->
     <div class="clearfix"></div>
-    <div class="pmbb-header p-l-15"><h2><i class="zmdi zmdi-account m-r-5"></i> In-Network Benefits</h2></div>
+    <div class="pmbb-header p-l-15"><h2><i class="zmdi zmdi-account m-r-5"></i> Strategic Planning</h2></div>
     <div class="col-sm-6 p-b-25">
         <div class="pmbb-body p-l-30">
             <div class="pmbb-view"> 
                 <dl class="dl-horizontal">
                     <div class="col-sm-5 f-700">Offer Voluntary Life</div>
                     <div class="col-sm-5">
-                        {% include "includes/dropdown.html" with name="offer_vol_life" data=bc id="offer_vol_life" select=form.offer_vol_life.value|parse_boolean extra="disabled" only %}
+                        {% include "includes/dropdown.html" with name="offer_vol_life" data=sbc id="offer_vol_life" select=form.offer_vol_life.value|parse_boolean extra="disabled" only %}
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
                     <div class="col-sm-5 f-700">Offer Voluntary STD</div>
                     <div class="col-sm-5">
-                        {% include "includes/dropdown.html" with name="offer_vol_std" data=bc id="offer_vol_std" select=form.offer_vol_std.value|parse_boolean extra="disabled" only %}
+                        {% include "includes/dropdown.html" with name="offer_vol_std" data=sbc id="offer_vol_std" select=form.offer_vol_std.value|parse_boolean extra="disabled" only %}
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
                     <div class="col-sm-5 f-700">Offer Voluntary LTD</div>
                     <div class="col-sm-5">
-                        {% include "includes/dropdown.html" with name="offer_vol_ltd" data=bc id="offer_vol_ltd" select=form.offer_vol_ltd.value|parse_boolean extra="disabled" only %}
+                        {% include "includes/dropdown.html" with name="offer_vol_ltd" data=sbc id="offer_vol_ltd" select=form.offer_vol_ltd.value|parse_boolean extra="disabled" only %}
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
                     <div class="col-sm-5 f-700">Require Spousal Surcharge</div>
                     <div class="col-sm-5">
-                        {% include "includes/dropdown.html" with name="spousal_surcharge" data=bc id="spousal_surcharge" select=form.spousal_surcharge.value|parse_boolean extra="disabled" only %}
+                        {% include "includes/dropdown.html" with name="spousal_surcharge" data=sbc id="spousal_surcharge" select=form.spousal_surcharge.value|parse_boolean extra="disabled" only %}
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
@@ -68,7 +68,7 @@
                 <dl class="dl-horizontal">
                     <div class="col-sm-5 f-700">Require Tobacco Surcharge</div>
                     <div class="col-sm-5">
-                        {% include "includes/dropdown.html" with name="tobacco_surcharge" data=bc id="tobacco_surcharge" select=form.tobacco_surcharge.value|parse_boolean extra="disabled" only %}
+                        {% include "includes/dropdown.html" with name="tobacco_surcharge" data=sbc id="tobacco_surcharge" select=form.tobacco_surcharge.value|parse_boolean extra="disabled" only %}
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
@@ -84,20 +84,20 @@
                 <dl class="dl-horizontal">
                     <div class="col-sm-5 f-700">Defined Contribution</div>
                     <div class="col-sm-5">
-                        {% include "includes/dropdown.html" with name="defined_contribution" data=bc id="defined_contribution" select=form.defined_contribution.value|parse_boolean extra="disabled" only %}
+                        {% include "includes/dropdown.html" with name="defined_contribution" data=sbc id="defined_contribution" select=form.defined_contribution.value|parse_boolean extra="disabled" only %}
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
                     <div class="col-sm-5 f-700">Offer FSA</div>
                     <div class="col-sm-5">
-                        {% include "includes/dropdown.html" with name="offer_fsa" data=bc id="offer_fsa" select=form.offer_fsa.value|parse_boolean extra="disabled" only %}
+                        {% include "includes/dropdown.html" with name="offer_fsa" data=sbc id="offer_fsa" select=form.offer_fsa.value|parse_boolean extra="disabled" only %}
                     </div>
                 </dl>                
 
                 <dl class="dl-horizontal">
                     <div class="col-sm-5 f-700">Offer Part-Time Medical</div>
                     <div class="col-sm-5">
-                        {% include "includes/dropdown.html" with name="pt_medical" data=bc id="pt_medical" select=form.pt_medical.value|parse_boolean extra="disabled" only %}
+                        {% include "includes/dropdown.html" with name="pt_medical" data=sbc id="pt_medical" select=form.pt_medical.value|parse_boolean extra="disabled" only %}
                     </div>
                 </dl>
             </div>         
@@ -109,61 +109,61 @@
                 <dl class="dl-horizontal">
                     <div class="col-sm-5 f-700">Offer Part-Time Dental</div>
                     <div class="col-sm-5">
-                        {% include "includes/dropdown.html" with name="pt_dental" data=bc id="pt_dental" select=form.pt_dental.value|parse_boolean extra="disabled" only %}
+                        {% include "includes/dropdown.html" with name="pt_dental" data=sbc id="pt_dental" select=form.pt_dental.value|parse_boolean extra="disabled" only %}
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
                     <div class="col-sm-5 f-700">Offer Part-Time Vision</div>
                     <div class="col-sm-5">
-                        {% include "includes/dropdown.html" with name="pt_vision" data=bc id="pt_vision" select=form.pt_vision.value|parse_boolean extra="disabled" only %}
+                        {% include "includes/dropdown.html" with name="pt_vision" data=sbc id="pt_vision" select=form.pt_vision.value|parse_boolean extra="disabled" only %}
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
                     <div class="col-sm-5 f-700">Offer Part-Time Life</div>
                     <div class="col-sm-5">
-                        {% include "includes/dropdown.html" with name="pt_life" data=bc id="pt_life" select=form.pt_life.value|parse_boolean extra="disabled" only %}
+                        {% include "includes/dropdown.html" with name="pt_life" data=sbc id="pt_life" select=form.pt_life.value|parse_boolean extra="disabled" only %}
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
                     <div class="col-sm-5 f-700">Offer Part-Time STD</div>
                     <div class="col-sm-5">
-                        {% include "includes/dropdown.html" with name="pt_std" data=bc id="pt_std" select=form.pt_std.value|parse_boolean extra="disabled" only %}
+                        {% include "includes/dropdown.html" with name="pt_std" data=sbc id="pt_std" select=form.pt_std.value|parse_boolean extra="disabled" only %}
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
                     <div class="col-sm-5 f-700">Offer Part-Time LTD</div>
                     <div class="col-sm-5">
-                        {% include "includes/dropdown.html" with name="pt_ltd" data=bc id="pt_ltd" select=form.pt_ltd.value|parse_boolean extra="disabled" only %}
+                        {% include "includes/dropdown.html" with name="pt_ltd" data=sbc id="pt_ltd" select=form.pt_ltd.value|parse_boolean extra="disabled" only %}
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
                     <div class="col-sm-5 f-700">Salary Banding</div>
                     <div class="col-sm-5">
-                        {% include "includes/dropdown.html" with name="salary_banding" data=bc id="salary_banding" select=form.salary_banding.value|parse_boolean extra="disabled" only %}
+                        {% include "includes/dropdown.html" with name="salary_banding" data=sbc id="salary_banding" select=form.salary_banding.value|parse_boolean extra="disabled" only %}
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
                     <div class="col-sm-5 f-700">Wellness Banding</div>
                     <div class="col-sm-5">
-                        {% include "includes/dropdown.html" with name="wellness_banding" data=bc id="wellness_banding" select=form.wellness_banding.value|parse_boolean extra="disabled" only %}
+                        {% include "includes/dropdown.html" with name="wellness_banding" data=sbc id="wellness_banding" select=form.wellness_banding.value|parse_boolean extra="disabled" only %}
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
                     <div class="col-sm-5 f-700">Narrow Network</div>
                     <div class="col-sm-5">
-                        {% include "includes/dropdown.html" with name="narrow_network" data=bc id="narrow_network" select=form.narrow_network.value|parse_boolean extra="disabled" only %}
+                        {% include "includes/dropdown.html" with name="narrow_network" data=sbc id="narrow_network" select=form.narrow_network.value|parse_boolean extra="disabled" only %}
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
                     <div class="col-sm-5 f-700">Offer MEC Plan</div>
                     <div class="col-sm-5">
-                        {% include "includes/dropdown.html" with name="mec" data=bc id="mec" select=form.mec.value|parse_boolean extra="disabled" only %}
+                        {% include "includes/dropdown.html" with name="mec" data=sbc id="mec" select=form.mec.value|parse_boolean extra="disabled" only %}
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
                     <div class="col-sm-5 f-700">Offer MVP Plan</div>
                     <div class="col-sm-5">
-                        {% include "includes/dropdown.html" with name="mvp" data=bc id="mvp" select=form.mvp.value|parse_boolean extra="disabled" only %}
+                        {% include "includes/dropdown.html" with name="mvp" data=sbc id="mvp" select=form.mvp.value|parse_boolean extra="disabled" only %}
                     </div>
                 </dl>
                 <dl class="dl-horizontal">

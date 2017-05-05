@@ -77,8 +77,8 @@ def enterprise(request):
         for item in employers:
             item_ = model_to_dict(item)
 
-            if group != 'bnchmrk':
-                item_['name'] = item.new_name
+            # if group != 'bnchmrk':
+            #     item_['name'] = item.new_name
 
             item__ = []
             if item.nonprofit:
@@ -204,6 +204,8 @@ def get_plans_(benefit, group, plan_type):
         objects = objects.filter(type='HDHP')
     elif plan_type == 'HMO':
         objects = objects.filter(type__in=['HMO', 'EPO'])
+    elif benefit == 'LIFE':
+        objects = objects.filter(type=plan_type)
 
     if benefit in ['LIFE', 'DENTAL', 'MEDICAL']:
         return [
@@ -236,6 +238,7 @@ def company(request):
 
 ## ----------------------------------------------------------------  ##
 
+@login_required(login_url='/login')
 def home(request):
     return render(request, 'index.html', {
             'industries': get_industries(),
@@ -276,7 +279,7 @@ def account_detail(request, id):
         industries.append(employer.industry2)
     if employer.industry3:
         industries.append(employer.industry3)
-    industry = '<br>'.join(industries)
+    industry = ', '.join(industries)
 
     plans = []
     for model in [Medical, Dental, Vision, Life, STD, LTD]:
@@ -303,6 +306,8 @@ def account_detail_benefit(request):
     mbc = MED_BOOL_CHOICES
     ltc = LIFE_TYPE_CHOICES
     ccc = COSTSHARE_CHOICES
+    sbc = STRATEGY_BOOLEAN_CHOICES
+
     include_path = "account_detail/form/{}.html".format(benefit.lower())
     template = 'account_detail/benefit.html'
     return render(request, template, locals())
@@ -331,12 +336,14 @@ def update_benefit(request, instance_id):
                                         'mtc': MED_TYPE_CHOICES,
                                         'mbc': MED_BOOL_CHOICES,
                                         'ltc': LIFE_TYPE_CHOICES,
-                                        'ccc': COSTSHARE_CHOICES
+                                        'ccc': COSTSHARE_CHOICES,
+                                        'sbc': STRATEGY_BOOLEAN_CHOICES
                                     })    
 
 
 def benchmarking(request, benefit):
-    request.session['bnchmrk_benefit'] = request.session.get('bnchmrk_benefit', 'MEDICALRX')
+    # request.session['bnchmrk_benefit'] = request.session.get('bnchmrk_benefit', 'MEDICALRX')
+    request.session['bnchmrk_benefit'] = benefit.upper()
     template = 'benchmarking/benefit.html'.format(benefit)
 
     return render(request, template, {

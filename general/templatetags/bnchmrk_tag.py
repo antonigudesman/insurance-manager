@@ -18,3 +18,10 @@ def parse_none(value): # Only one argument.
         return None
     else:
         return value        
+
+@register.filter
+def replace_slash(value): # Only one argument.
+    if value == 'MEDICALRX':
+        return 'MEDICAL & RX'
+    else:
+        return value

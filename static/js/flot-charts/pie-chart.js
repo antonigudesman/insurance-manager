@@ -34,10 +34,10 @@ function draw_donut_chart(id, data) {
                 backgroundColor: "white",
                 lineWidth: 0
             },
-            grid: {
-                hoverable: true,
-                clickable: true
-            },
+            // grid: {
+            //     hoverable: true,
+            //     clickable: true
+            // },
             tooltip: true,
             tooltipOpts: {
                 content: "%p.0%, %s", // show percentages, rounding to 2 decimal places

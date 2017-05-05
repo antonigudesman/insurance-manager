@@ -11773,7 +11773,7 @@ a.lv-footer:hover {
 .easy-pie {
   display: inline-block;
   position: relative;
-  padding: 0 5px 10px;
+  padding: 10px 5px 10px;
 }
 
 .easy-pie .percent {
@@ -11809,6 +11809,7 @@ a.lv-footer:hover {
 .easy-pie:not(.main-pie) .percent {
   font-size: 20px;
   margin-top: 37px;
+  padding-left: 39px;
 }
 
 .easy-pie:not(.main-pie) .percent:after {
@@ -11819,7 +11820,7 @@ a.lv-footer:hover {
   position: absolute;
   width: 100%;
   text-align: center;
-  bottom: -3px;
+  bottom: -20px;
   left: 0;
 }
 

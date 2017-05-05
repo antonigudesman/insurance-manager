@@ -35,18 +35,20 @@ def get_filtered_employers(ft_industries,
         q_ |= Q(size__gte=int(ft_vals[0])) & Q(size__lte=int(ft_vals[1]))
 
 
-    if group == "bnchmrk":
-        employers_ = Employer.objects.filter(q & q_).order_by('name')
-    else:
-        select = {'new_name':
-            'CASE WHEN broker=\'Core\' THEN name WHEN broker=\'{}\' THEN name ELSE \'De-identified Employer\' END'.format(group)}
-        employers_ = Employer.objects.filter(q & q_).extra(select=select).order_by('new_name')
+    employers_ = Employer.objects.filter(q & q_).order_by('name')
+    if group != "bnchmrk" and lend:
+        employers_ = employers_.filter(broker=group)
+    # else:
+        # select = {'new_name':
+        #     'CASE WHEN broker=\'Core\' THEN name WHEN broker=\'{}\' THEN name ELSE \'De-identified Employer\' END'.format(group)}
+        # employers_ = Employer.objects.filter(q & q_).extra(select=select).order_by('new_name')
         
     employers = employers_
+    num_companies = employers_.count()    
+    
     if lend > 0:
         employers = employers_[lstart:lend]
 
-    num_companies = Employer.objects.filter(q & q_).count()    
     # filter with number of companies
     if num_companies < settings.EMPLOYER_THRESHOLD and threshold:
         employers = []
@@ -80,7 +82,7 @@ def get_medians(qs, attrs, num_companies, attrs_percent=[], attrs_int=[]):
         var_local['qs_'+attr] = qs.exclude(**kwargs)
         mdn_attr, _ = get_median_count(var_local['qs_'+attr], attr)
         var_return['mdn_'+attr] = mdn_attr
-        if mdn_attr != 'N/A':
+        if mdn_attr != '-':
             var_return['mdn_'+attr] = '${:,.0f}'.format(mdn_attr)
 
     for attr in attrs_percent:
@@ -88,7 +90,7 @@ def get_medians(qs, attrs, num_companies, attrs_percent=[], attrs_int=[]):
         var_local['qs_'+attr] = qs.exclude(**kwargs)
         mdn_attr, _ = get_median_count(var_local['qs_'+attr], attr)
         var_return['mdn_'+attr] = mdn_attr
-        if mdn_attr != 'N/A':
+        if mdn_attr != '-':
             var_return['mdn_'+attr] = '{:,.0f}%'.format(mdn_attr)
 
     for attr in attrs_int:
@@ -114,7 +116,7 @@ def get_percent_count_(qs1, qs2):
     cnt = qs2.count()
     if cnt:
         return '{:,.0f}%'.format(qs1.count() * 100 / cnt)
-    return 'N/A'
+    return '-'
 
 
 def get_median_count(queryset, term):
@@ -126,7 +128,7 @@ def get_median_count(queryset, term):
         else:
             return sum(values[count/2-1:count/2+1])/2, count
     except Exception as e:
-        return 'N/A', 0
+        return '-', 0
 
 def get_incremental_array(queryset, term):
     num_points = settings.MAX_POINTS
@@ -218,8 +220,8 @@ def get_plan_type(qs):
 
 
 def get_rank(quintile_array, value):
-    if value == None or value == 'N/A' or quintile_array == []:
-        return 'N/A'
+    if value == None or value == '-' or quintile_array == []:
+        return '-'
 
     # for specific filtering cases
     if quintile_array[0][1] > value:
@@ -245,17 +247,17 @@ def get_rank(quintile_array, value):
         if x_mean <= idx * 20:
             return idx
 
-    return 'N/A'
+    return '-'
 
 
 def get_init_properties(attrs, rank_attrs):
     context = {}
 
     for attr in attrs:
-        context[attr] = 'N/A'
+        context[attr] = ''
 
     for attr in rank_attrs:
-        context['rank_'+attr] = 'N/A'
+        context['rank_'+attr] = ''
 
     return context
 
@@ -263,7 +265,7 @@ def get_init_properties(attrs, rank_attrs):
 def get_dollar_properties(instance, attrs, context):
     for attr in attrs:
         val = getattr(instance, attr)
-        context[attr] = 'N/A'
+        context[attr] = '-'
         if val != None:
             context[attr] = '${:,.0f}'.format(val)
 
@@ -271,19 +273,19 @@ def get_dollar_properties(instance, attrs, context):
 def get_percent_properties(instance, attrs, context):
     for attr in attrs:
         val = getattr(instance, attr)
-        context[attr] = '{:,.0f}%'.format(val) if val != None else 'N/A'
+        context[attr] = '{:,.0f}%'.format(val) if val != None else '-'
 
 
 def get_int_properties(instance, attrs, context):
     for attr in attrs:
         val = getattr(instance, attr)
-        context[attr] = val if val != None else 'N/A'
+        context[attr] = val if val != None else '-'
 
 
 def get_float_properties(instance, attrs, context):
     for attr in attrs:
         val = getattr(instance, attr)
-        context[attr] = '{:03.1f}'.format(val) if val != None else 'N/A'
+        context[attr] = '{:03.1f}'.format(val) if val != None else '-'
 
 
 def get_boolean_properties(instance, attrs, context):
@@ -292,7 +294,7 @@ def get_boolean_properties(instance, attrs, context):
         if val != None:
             context[attr] = 'Yes' if val else 'No'
         else:
-            context[attr] = 'N/A'
+            context[attr] = 'session.bnchmrk_benefit'
 
 
 def get_boolean_properties_5_states(instance, attrs, context):
@@ -301,7 +303,7 @@ def get_boolean_properties_5_states(instance, attrs, context):
         if val != None:
             context[attr] = 'Yes' if val in ['TRUE', 'True/Coin'] else 'No'
         else:
-            context[attr] = 'N/A'
+            context[attr] = '-'
 
 
 def get_boolean_properties_5_states_coin(instance, attrs, context):
@@ -310,7 +312,7 @@ def get_boolean_properties_5_states_coin(instance, attrs, context):
         if val != None:
             context['coin_'+attr] = 'Yes' if val in ['False/Coin', 'True/Coin'] else 'No'
         else:
-            context['coin_'+attr] = 'N/A'
+            context['coin_'+attr] = '-'
 
 
 def get_quintile_properties(var_qs, instance, attrs, attrs_inv, context):
@@ -319,7 +321,7 @@ def get_quintile_properties(var_qs, instance, attrs, attrs_inv, context):
 
     for attr in attrs_inv: 
         rank = get_rank(var_qs['quintile_'+attr], getattr(instance, attr))
-        context['rank_'+attr] = rank if rank == 'N/A' else 6 - rank
+        context['rank_'+attr] = rank if rank == '-' else 6 - rank
 
 
 def get_industries():

@@ -100,3 +100,50 @@ function draw_bar_chart(id, data, unit, label_xpos_factor) {
         });                    
     }    
 }
+
+function draw_hbar_chart(id, barData, unit) {
+    if ($('#'+id)[0]) {
+        var p = $.plot($("#"+id), barData, {
+            grid : {
+                    borderWidth: 1,
+                    borderColor: '#eee',
+                    show : true,
+                    hoverable : true,
+                    clickable : true
+            },
+            
+            yaxis: {
+                tickColor: '#eee',
+                tickDecimals: 0,
+                font :{
+                    lineHeight: 13,
+                    style: "normal",
+                    color: "#9f9f9f",
+                },
+                shadowSize: 0,
+                tickFormatter: yaxis_formatter[unit]
+            },
+            
+            xaxis: {
+                tickColor: '#fff',
+                tickDecimals: 0,
+                font :{
+                    lineHeight: 13,
+                    style: "normal",
+                    color: "#9f9f9f"
+                },
+                shadowSize: 0,
+                mode: 'categories'
+            },
+    
+            legend:{
+                container: '.flc-bar',
+                backgroundOpacity: 0.5,
+                noColumns: 0,
+                backgroundColor: "white",
+                lineWidth: 0
+            }
+        });         
+    }
+
+}

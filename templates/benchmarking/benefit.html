@@ -1,13 +1,17 @@
 {% extends "base.html" %}
-{% load humanize %}
+{% load humanize bnchmrk_tag %}
 {% load pages_tags mezzanine_tags i18n staticfiles %}
+
+{% block extra_css %}
+    <link href="{% static 'css/bnchmrk.css' %}" rel="stylesheet">
+{% endblock %}
 
 {% block page_body %}
 <section id="content">
     <div class="container">
         <ol class="breadcrumb">
             <li><a href="/">Home</a></li>
-            <li>Medical & Rx Benchmarking</li>
+            <li>{{ request.session.bnchmrk_benefit|replace_slash }} Benchmarking</li>
         </ol>
 
         <div class="card">
@@ -86,7 +90,7 @@
 
     <script src="{% static 'js/benefit.js' %}"></script>
     <script src="{% static 'js/common.js' %}"></script>
-
+    <script src="{% static 'vendors/bower_components/flot/jquery.flot.pie.js' %}"></script>
     <script src="{% static 'js/flot-charts/pie-chart.js' %}"></script>
     <script src="{% static 'js/flot-charts/bar-chart.js' %}"></script>  
 

@@ -41,12 +41,11 @@
             <div class="pm-overview c-overflow">
                 <div class="pmo-block pmo-contact hidden-xs">
                     <h2 style="text-transform: uppercase;">{{ employer.name }}<!-- <br><small>{{ employer.broker }}</small> --></h2>
-                    
                     <ul>
                         <li><i class="zmdi zmdi-calendar-check"></i> Renewed on {{ employer.renewal_date }}</li>
                         <li><i class="zmdi zmdi-collection-text"></i> Benefit Offering:</li>
                         {% for benefit in plans %}
-                            <li>&nbsp;{{ benefit.1 }} {{ benefit.0 }} Plans</li>
+                            <li>&nbsp;{{ benefit.1 }} {{ benefit.0 }} Plan(s)</li>
                         {% endfor %}
                         <li><i class="zmdi zmdi-store"></i> Industries:</li>
                         <li><address class="m-b-0 ng-binding">{{ industry }}</address></li>
