@@ -36,6 +36,7 @@ def get_filtered_employers(ft_industries,
 
 
     employers_ = Employer.objects.filter(q & q_).order_by('name')
+    # for only accounts
     if group != "bnchmrk" and lend:
         employers_ = employers_.filter(broker=group)
     # else:

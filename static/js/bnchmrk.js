@@ -61,7 +61,8 @@ function load_employers() {
                 industry_: industries,
                 head_counts: head_counts,
                 others: others,
-                regions: regions
+                regions: regions,
+                threshold: 0
             };
 
             return JSON.stringify(model);

@@ -1,4 +1,4 @@
-{% load staticfiles %}
+{% load staticfiles bnchmrk_tag %}
 <!DOCTYPE html>
 <!--[if IE 9 ]><html class="ie9"><![endif]-->
     <head>
@@ -41,19 +41,19 @@
                 <li class="pull-right">
                     <ul class="top-menu">
                         <li>
-                            <a href="">HOME</a>
+                            <a href="//www.bnchmrk.com">HOME</a>
                         </li>
                         <li>
-                            <a href="">APP</a>
+                            <a href="/">APP</a>
                         </li>
                         <li>
-                            <a href="">INSIGHTS</a>
+                            <a href="/blog">INSIGHTS</a>
                         </li>
                         <li>
-                            <a href="">COMPANY</a>
+                            <a href="/company">COMPANY</a>
                         </li>
                         <li>
-                            <a href="">CONTACT</a>
+                            <a href="/contact_us">CONTACT</a>
                         </li>
 
                     </ul>
@@ -75,8 +75,7 @@
                 <div class="profile-menu">
                     <a href="">
                         <div class="profile-info">
-                            Andrew Kimmel
-
+                            {{ user.first_name }} {{ user.last_name }}
                             <i class="zmdi zmdi-caret-down"></i>
                         </div>
                     </a>
@@ -85,9 +84,11 @@
                         <li>
                             <a href="profile-about.html"><i class="zmdi zmdi-account"></i> View Profile</a>
                         </li>
+                        {% if request.user|has_group:"bnchmrk" %} 
                         <li>
-                            <a href=""><i class="zmdi zmdi-settings"></i> Settings</a>
+                            <a href="/admin"><i class="zmdi zmdi-settings"></i> Admin</a>
                         </li>
+                        {% endif %}
                         <li>
                             <a href="/logout"><i class="zmdi zmdi-time-restore"></i> Logout</a>
                         </li>

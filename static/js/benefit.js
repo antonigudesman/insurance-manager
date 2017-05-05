@@ -248,7 +248,7 @@ function update_properties() {
 
     if (plan == null)
     	return;
-
+    
     $.post(
         '/update_properties',
         {

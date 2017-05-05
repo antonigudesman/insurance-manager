@@ -40,7 +40,7 @@ PLAN_ALLOWED_BENEFITS = ['LIFE', 'STD', 'LTD', 'STRATEGY', 'VISION', 'DENTAL', '
 
 
 @csrf_exempt
-@login_required(login_url='/admin/login')
+@login_required(login_url='/login')
 def enterprise(request):
     """
     GET: render general enterprise page
@@ -130,13 +130,6 @@ def enterprise(request):
             "rows": employers_,
             "total": num_companies
             }, safe=False)
-    else:
-        request.session['benefit'] = request.session.get('benefit', 'HOME')
-
-        return render(request, 'enterprise.html', {
-                'industries': get_industries(),
-                'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE
-            })
         
 
 @csrf_exempt
@@ -245,12 +238,23 @@ def home(request):
             'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE
         })    
 
+
+@login_required(login_url='/login')
 def accounts(request):            
     return render(request, 'accounts.html', { 'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE_ACCOUNT })
 
 
+@login_required(login_url='/login')
 def account_detail(request, id):
-    employer = Employer.objects.get(id=id)
+    group = request.user.groups.first().name
+
+    employer = Employer.objects.filter(id=id).first()
+    if not employer:
+        return render(request, 'error/404.html')
+
+    if group != 'bnchmrk' and group != employer.broker:
+        return render(request, 'error/403.html')
+
     request.session['benefit'] = request.session.get('benefit', 'MEDICAL')
 
     regions = []
@@ -341,6 +345,8 @@ def update_benefit(request, instance_id):
                                     })    
 
 
+
+@login_required(login_url='/login')
 def benchmarking(request, benefit):
     # request.session['bnchmrk_benefit'] = request.session.get('bnchmrk_benefit', 'MEDICALRX')
     request.session['bnchmrk_benefit'] = benefit.upper()

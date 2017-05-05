@@ -14,7 +14,7 @@ def user_login(request):
 
         if user is not None:
             login(request, user)
-            return HttpResponseRedirect(reverse('enterprise'))
+            return HttpResponseRedirect(reverse('home'))
         else:
             message = 'Your login credential is incorrect! Please try again.'
             return render(request, 'login.html', {
