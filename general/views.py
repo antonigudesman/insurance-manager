@@ -43,7 +43,6 @@ PLAN_ALLOWED_BENEFITS = ['LIFE', 'STD', 'LTD', 'STRATEGY', 'VISION', 'DENTAL', '
 @login_required(login_url='/login')
 def enterprise(request):
     """
-    GET: render general enterprise page
     POST: for enterprise bootgrid table
     """
     if request.method == 'POST':
@@ -132,6 +131,43 @@ def enterprise(request):
             }, safe=False)
         
 
+@csrf_exempt
+def faq(request):
+    """
+    POST: for faq bootgrid table
+    """
+    form_param = json.loads(request.body or "{}")
+    limit = int(form_param.get('rowCount'))
+    page = int(form_param.get('current'))
+    q = form_param.get('q', '')
+
+    lstart = (page - 1) * limit
+    lend = lstart + limit
+
+    faqs = []
+    faq_qs = FAQ.objects.filter(Q(title__icontains=q) | Q(content__icontains=q))
+    for faq in faq_qs[lstart:lend]:
+        faqs.append({ 'title': faq.title, 
+                      'content': faq.content[:50], 
+                      'created_at': datetime.strftime(faq.created_at, '%d/%m/%Y %H:%M'),
+                      'id': faq.id})
+
+    return JsonResponse({
+        "current": page,
+        "rowCount": limit,
+        "rows": faqs,
+        "total": faq_qs.count()
+        }, safe=False)
+
+
+def faq_detail(request, id):
+    faq = FAQ.objects.filter(id=id).first()
+    if not faq:
+        return render(request, 'error/404.html')
+
+    return render( request, 'faq_detail.html', locals())
+
+    
 @csrf_exempt
 def update_properties(request):
     form_param = request.POST
@@ -228,6 +264,9 @@ def contact_us(request):
 def company(request):
     return render(request, 'company.html')    
 
+
+def support(request):
+    return render(request, 'support.html')    
 
 ## ----------------------------------------------------------------  ##
 

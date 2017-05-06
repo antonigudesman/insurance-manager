@@ -40,6 +40,8 @@ urlpatterns += [
     url(r"^benchmarking/(?P<benefit>.*)$", benchmarking, name="benchmarking"),
     url(r"^_benchmarking", ajax_benchmarking, name="_benchmarking"),
     url(r"^get_plan_type", get_plan_type, name="get_plan_type"),
+    url(r"^faq$", faq, name="faq"),
+    url(r"^faqs/(?P<id>\d+)", faq_detail, name="faq_detail"),
 
     url("^", include("mezzanine.urls")),
     # authentication
@@ -69,6 +71,7 @@ urlpatterns += [
     # other pages
     url(r"^company", company, name="company"),
     url(r"^contact_us", contact_us, name="contact_us"),
+    url(r"^support", support, name="support"),
 ]
 
 # Adds ``STATIC_URL`` to the context of error pages, so that error

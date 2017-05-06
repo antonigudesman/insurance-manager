@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block page_body %}
+<section id="content">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li class="active">Support</li>
+        </ol>
+        
+        <div class="card">
+            <div class="card-body card-padding">                
+                <div class="table-responsive">
+                    <table id="data-table-faq" class="table table-striped" data-ajax="true" data-url="/faq">
+                        <thead>
+                            <tr>
+                                <th data-column-id="id" data-visible="false">No</th>
+                                <th data-column-id="title" data-formatter="link">Title</th>
+                                <th data-column-id="content">Content</th>
+                                <th data-column-id="created_at">Created At</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>            
+            </div>
+        </div>
+            
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+    <script type="text/javascript">
+        jQuery(function($) {
+            $('ul.stem-menu li').eq(3).addClass('active');
+        });
+    </script>
+
+    <script src="{% static 'js/faq.js' %}"></script>
+    <script src="{% static 'js/common.js' %}"></script>
+{% endblock %}

@@ -547,6 +547,14 @@ class StrategyAdmin(admin.ModelAdmin):
         return actions
         
 
+class FAQAdmin(admin.ModelAdmin):
+    list_display = ['title', 'partial_content', 'created_at']
+    search_fields = ('content', 'title',)
+
+    def partial_content(self, obj):
+        return obj.content[:50]
+
+
 admin.site.register(Employer, EmployerAdmin)
 admin.site.register(Life, LifeAdmin)
 admin.site.register(STD, STDAdmin)
@@ -555,3 +563,4 @@ admin.site.register(Strategy, StrategyAdmin)
 admin.site.register(Vision, VisionAdmin)
 admin.site.register(Dental, DentalAdmin)
 admin.site.register(Medical, MedicalAdmin)
+admin.site.register(FAQ, FAQAdmin)

@@ -4,6 +4,8 @@ import uuid
 
 from django.db import models
 from django.core.validators import MinValueValidator
+from django.contrib.auth.models import User
+
 
 INDUSTRY_CHOICES = (
     (None, '-'),
@@ -505,3 +507,17 @@ class Strategy(models.Model):
         verbose_name = 'Employer Strategy'
         verbose_name_plural = 'Employer Strategies'
 
+
+class FAQ(models.Model):
+    title = models.CharField(max_length=255)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    editor = models.ForeignKey(User, blank=True, null=True)
+    slug = models.CharField(max_length=255, blank=True, null=True)
+
+    def __unicode__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'FAQ'
+        verbose_name_plural = 'FAQs'
