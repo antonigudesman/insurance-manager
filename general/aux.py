@@ -131,8 +131,17 @@ def get_median_count(queryset, term):
     except Exception as e:
         return '-', 0
 
-def get_incremental_array(queryset, term):
+def get_incremental_array(queryset, term, benefit=''):
     num_points = settings.MAX_POINTS
+    threshold_key = benefit + '__' + term
+
+    if threshold_key in settings.QUINTILE_THRESHOLD:
+        threshold = settings.QUINTILE_THRESHOLD[threshold_key]
+        kwargs = { '{0}__gte'.format(term): threshold[0] }
+        queryset = queryset.filter(**kwargs)
+        kwargs = { '{0}__lte'.format(term): threshold[1] }
+        queryset = queryset.filter(**kwargs)
+
     num_elements = queryset.count()
 
     interval = num_elements / num_points + 1 #if num_elements > num_points else 1

@@ -1,7 +1,12 @@
 {% load bnchmrk_tag %}
 
 <div class="c-red">
-{{ form.errors }}
+    {% if form.errors %}
+    <p class="errornote">
+        Please correct the error below(s).
+    </p>
+    <ul class="errorlist">{% for error in form.non_field_errors %}<li>{{ error }}</li>{% endfor %}</ul>
+    {% endif %}
 </div>
 
 <form name="dental" method="post" action="/update_benefit/{{ id }}" onsubmit="save_benefit(event, this, 'id_{{ id }}');">
@@ -202,7 +207,7 @@
         <div class="pmbb-body p-l-30">
             <div class="pmbb-view"> 
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Individual Deductible</div>
+                    <div class="col-sm-5 f-700 {% if form.out_ded_single.errors %} c-red{% endif %}">Individual Deductible</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">
@@ -212,7 +217,7 @@
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Family Deductible</div>
+                    <div class="col-sm-5 f-700 {% if form.out_ded_family.errors %} c-red{% endif %}">Family Deductible</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">
@@ -222,7 +227,7 @@
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Annual Benefit Maximum</div>
+                    <div class="col-sm-5 f-700 {% if form.out_max.errors %} c-red{% endif %}">Annual Benefit Maximum</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">
@@ -232,7 +237,7 @@
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Annual Orthodontal Maximum</div>
+                    <div class="col-sm-5 f-700" {% if form.out_max_ortho.errors %} c-red{% endif %}>Annual Orthodontal Maximum</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">
@@ -248,7 +253,7 @@
         <div class="pmbb-body p-l-30">
             <div class="pmbb-view">
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Preventive Coinsurance</div>
+                    <div class="col-sm-5 f-700 {% if form.out_prev_coin.errors %} c-red{% endif %}">Preventive Coinsurance</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">
@@ -258,7 +263,7 @@
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Basic Coinsurance</div>
+                    <div class="col-sm-5 f-700 {% if form.out_basic_coin.errors %} c-red{% endif %}">Basic Coinsurance</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">
@@ -268,7 +273,7 @@
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Major Coinsurance</div>
+                    <div class="col-sm-5 f-700 {% if form.out_major_coin.errors %} c-red{% endif %}">Major Coinsurance</div>
                     <div class="col-sm-5">                    
                         <div class="form-group">
                             <div class="fg-line disabled">
@@ -278,7 +283,7 @@
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Orthodontal Coinsurance</div>
+                    <div class="col-sm-5 f-700 {% if form.out_ortho_coin.errors %} c-red{% endif %}">Orthodontal Coinsurance</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">
@@ -298,7 +303,7 @@
         <div class="pmbb-body p-l-30">
             <div class="pmbb-view">
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Employee Only</div>
+                    <div class="col-sm-5 f-700 {% if form.t1_gross.errors %} c-red{% endif %}">Employee Only</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">
@@ -308,7 +313,7 @@
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Employee & Spouse</div>
+                    <div class="col-sm-5 f-700 {% if form.t2_gross.errors %} c-red{% endif %}">Employee & Spouse</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">
@@ -318,7 +323,7 @@
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Employee & Child(ren)</div>
+                    <div class="col-sm-5 f-700 {% if form.t3_gross.errors %} c-red{% endif %}">Employee & Child(ren)</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">
@@ -328,7 +333,7 @@
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Family</div>
+                    <div class="col-sm-5 f-700 {% if form.t4_gross.errors %} c-red{% endif %}">Family</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">
@@ -346,7 +351,7 @@
         <div class="pmbb-body p-l-30">
             <div class="pmbb-view">                             
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Employee Only</div>
+                    <div class="col-sm-5 f-700 {% if form.t1_ee.errors %} c-red{% endif %}">Employee Only</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">
@@ -356,7 +361,7 @@
                     </div>
                 </dl>                
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Employee & Spouse</div>
+                    <div class="col-sm-5 f-700 {% if form.t2_ee.errors %} c-red{% endif %}">Employee & Spouse</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">
@@ -366,7 +371,7 @@
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Employee & Child(ren)</div>
+                    <div class="col-sm-5 f-700 {% if form.t3_ee.errors %} c-red{% endif %}">Employee & Child(ren)</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">
@@ -376,7 +381,7 @@
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Family</div>
+                    <div class="col-sm-5 f-700 {% if form.t4_ee.errors %} c-red{% endif %}">Family</div>
                     <div class="col-sm-5">
                         <div class="form-group">
                             <div class="fg-line disabled">

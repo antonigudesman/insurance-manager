@@ -1,7 +1,12 @@
 {% load bnchmrk_tag %}
 
 <div class="c-red">
-{{ form.errors }}
+    {% if form.errors %}
+    <p class="errornote">
+        Please correct the error below(s).
+    </p>
+    <ul class="errorlist">{% for error in form.non_field_errors %}<li>{{ error }}</li>{% endfor %}</ul>
+    {% endif %}
 </div>
 
 <form name="dental" method="post" action="/update_benefit/{{ id }}" onsubmit="save_benefit(event, this, 'id_{{ id }}');">
@@ -50,7 +55,7 @@
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Require Spousal Surcharge</div>
+                    <div class="col-sm-5 f-700 {% if form.spousal_surcharge.errors %} c-red{% endif %}">Require Spousal Surcharge</div>
                     <div class="col-sm-5">
                         {% include "includes/dropdown.html" with name="spousal_surcharge" data=sbc id="spousal_surcharge" select=form.spousal_surcharge.value|parse_boolean extra="disabled" only %}
                     </div>
@@ -66,7 +71,7 @@
                     </div>
                 </dl>
                 <dl class="dl-horizontal">
-                    <div class="col-sm-5 f-700">Require Tobacco Surcharge</div>
+                    <div class="col-sm-5 f-700 {% if form.tobacco_surcharge.errors %} c-red{% endif %}">Require Tobacco Surcharge</div>
                     <div class="col-sm-5">
                         {% include "includes/dropdown.html" with name="tobacco_surcharge" data=sbc id="tobacco_surcharge" select=form.tobacco_surcharge.value|parse_boolean extra="disabled" only %}
                     </div>

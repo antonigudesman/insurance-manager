@@ -389,9 +389,8 @@ def update_benefit(request, instance_id):
 def benchmarking(request, benefit):
     # request.session['bnchmrk_benefit'] = request.session.get('bnchmrk_benefit', 'MEDICALRX')
     request.session['bnchmrk_benefit'] = benefit.upper()
-    template = 'benchmarking/benefit.html'.format(benefit)
 
-    return render(request, template, {
+    return render(request, 'benchmarking/benefit.html', {
         'industries': get_industries(),
         'num_employers': 100,
         'EMPLOYER_THRESHOLD': settings.EMPLOYER_THRESHOLD

@@ -13,7 +13,6 @@ medical_quintile_attrs = [
 
 medical_quintile_attrs_inv = [
     'in_ded_single',
-    'in_max_single',
     'out_ded_single',
     'out_max_single',
     'in_coin',
@@ -138,7 +137,7 @@ def get_medical_plan_(employers, num_companies, plan_type=None):
 
     var_local = {}
     for attr in medical_quintile_attrs + medical_quintile_attrs_inv:
-        var_local['quintile_'+attr] = get_incremental_array(sub_qs['qs_'+attr], attr)
+        var_local['quintile_'+attr] = get_incremental_array(sub_qs['qs_'+attr], attr, 'medicalrx')
 
     return medians, var_local, qs
 

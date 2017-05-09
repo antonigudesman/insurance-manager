@@ -347,6 +347,11 @@ EMPLOYER_THRESHOLD_MESSAGE = 'Current search criteria resulted in less 10 employ
 EMPLOYER_THRESHOLD_MESSAGE_ACCOUNT = 'Could not find employer name in account database'
 MAX_POINTS = 30
 
+QUINTILE_THRESHOLD = {
+    'medicalrx__in_ded_single': [0, 7150],
+    'medicalrx__in_max_single': [0, 7150],
+}
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,

@@ -4,7 +4,7 @@ from django.forms.utils import ErrorList
 from django.db.models.functions import Lower
 
 from .models import *
-
+from .forms import *
 
 class EmployerForm(forms.ModelForm):
     class Meta:
@@ -102,25 +102,6 @@ class EmployerAdmin(admin.ModelAdmin):
     formatted_size.admin_order_field = 'size' 
 
 
-class MedicalForm(forms.ModelForm):
-    class Meta:
-        model = Medical
-        fields = '__all__'
-
-    def clean(self):
-        t1_ee = self.cleaned_data.get('t1_ee')
-        t1_gross = self.cleaned_data.get('t1_gross')
-
-        # add custom validation rules 
-
-        if t1_ee > t1_gross and t1_gross:
-            self._errors['t1_ee'] = ErrorList([''])
-            self._errors['t1_gross'] = ErrorList([''])
-            raise forms.ValidationError("Single Employee Cost should be less than Single Gross Cost!")
-
-        return self.cleaned_data
-
-
 class MedicalAdmin(admin.ModelAdmin):
     list_display = ['title','formatted_employer','type','formatted_ded_single',
                     'formatted_max_single','formatted_coin']
@@ -206,6 +187,7 @@ class DentalAdmin(admin.ModelAdmin):
                     'formatted_in_max','formatted_in_max_ortho']
     search_fields = ('employer__name', 'title',)
     list_filter = ('type',)
+    form = DentalForm
     change_form_template = 'admin/change_form_dental.html'
 
     fields = ('title', 'employer', 'type', 'in_ded_single', 'out_ded_single', 
@@ -284,7 +266,7 @@ class VisionAdmin(admin.ModelAdmin):
                     'formatted_frames_allowance','formatted_contacts_allowance']
     search_fields = ('employer__name', 'title',)
     change_form_template = 'admin/change_form_vision.html'
-
+    form = VisionForm
     fields = ('title', 'employer', 'exam_copay', 'lenses_copay', 'exam_frequency', 
         'lenses_frequency', 'exam_out_allowance', 'lenses_out_allowance', 'frames_copay', 
         'contacts_copay', 'frames_allowance', 'contacts_allowance', 'frames_coinsurance', 
@@ -359,6 +341,7 @@ class LifeAdmin(admin.ModelAdmin):
     list_filter = ('type',)
     fields = ('title', 'employer', 'type', 'multiple', 'flat_amount', 
               'multiple_max', 'add', 'cost_share')
+    form = LifeForm
     change_form_template = 'admin/change_form_life.html'
 
     def get_ordering(self, request):
@@ -512,7 +495,7 @@ class StrategyAdmin(admin.ModelAdmin):
     list_display = ['formatted_employer', 'spousal_surcharge', 'tobacco_surcharge', 'offer_fsa', 'salary_banding']
     search_fields = ('employer__name', 'title',)
     change_form_template = 'admin/change_form_strategy.html'
-
+    form = StrategyForm
     fields = ('employer', 'offer_vol_life', 'offer_vol_std', 'offer_vol_ltd', 'offer_fsa', 
         'spousal_surcharge', 'narrow_network', 'spousal_surcharge_amount', 'mec', 
         'tobacco_surcharge', 'mvp', 'tobacco_surcharge_amount', 'contribution_bundle', 

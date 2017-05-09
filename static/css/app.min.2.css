@@ -1843,7 +1843,7 @@ hr.fc-divider {
 
 @media (min-width: 480px) {
   .bootgrid-header .search {
-    width: 300px;
+    width: 85%;
   }
 }
 
