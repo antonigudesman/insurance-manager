@@ -43,7 +43,7 @@ PLAN_ALLOWED_BENEFITS = ['LIFE', 'STD', 'LTD', 'STRATEGY', 'VISION', 'DENTAL', '
 @login_required(login_url='/login')
 def enterprise(request):
     """
-    POST: for enterprise bootgrid table
+    POST: for Home bootgrid table
     """
     if request.method == 'POST':
         form_param = json.loads(request.body or "{}")
@@ -65,6 +65,7 @@ def enterprise(request):
                                                           ft_head_counts, 
                                                           ft_other, 
                                                           ft_regions, 
+                                                          [],
                                                           lstart, 
                                                           lend,
                                                           group,
@@ -190,18 +191,19 @@ def update_properties(request):
 
 @csrf_exempt
 def get_num_employers(request):
-    form_param = request.POST
-    ft_industries = form_param.getlist('industry[]', ['*'])
-    ft_head_counts = form_param.getlist('head_counts[]') or ['0-2000000']
-    ft_other = form_param.getlist('others[]')
-    ft_regions = form_param.getlist('regions[]')
-    benefit = form_param.get('benefit')
+    # form_param = request.POST
+    # ft_industries = form_param.getlist('industry[]', ['*'])
+    # ft_head_counts = form_param.getlist('head_counts[]') or ['0-2000000']
+    # ft_other = form_param.getlist('others[]')
+    # ft_regions = form_param.getlist('regions[]')
+    # benefit = form_param.get('benefit')
 
-    employers, num_companies = get_filtered_employers(ft_industries, 
-                                                      ft_head_counts, 
-                                                      ft_other,
-                                                      ft_regions)
-    return HttpResponse('{:,.0f}'.format(num_companies))
+    # employers, num_companies = get_filtered_employers(ft_industries, 
+    #                                                   ft_head_counts, 
+    #                                                   ft_other,
+    #                                                   ft_regions)    
+    # return HttpResponse('{:,.0f}'.format(num_companies))
+    return 
 
 
 @csrf_exempt
@@ -393,7 +395,8 @@ def benchmarking(request, benefit):
     return render(request, 'benchmarking/benefit.html', {
         'industries': get_industries(),
         'num_employers': 100,
-        'EMPLOYER_THRESHOLD': settings.EMPLOYER_THRESHOLD
+        'EMPLOYER_THRESHOLD': settings.EMPLOYER_THRESHOLD,
+        'STATES': STATE_CHOICES
     })
 
 
@@ -406,6 +409,7 @@ def ajax_benchmarking(request):
     ft_head_counts = form_param.getlist('head_counts[]') or ['0-2000000']
     ft_other = form_param.getlist('others[]')
     ft_regions = form_param.getlist('regions[]')
+    ft_states = form_param.getlist('states[]')
 
     ft_industries_label = form_param.getlist('industry_label[]')
     ft_head_counts_label = form_param.getlist('head_counts_label[]')
@@ -419,13 +423,13 @@ def ajax_benchmarking(request):
     request.session['ft_head_counts'] = ft_head_counts
     request.session['ft_other'] = ft_other
     request.session['ft_regions'] = ft_regions
-
+    request.session['ft_states'] = ft_states
     request.session['ft_industries_label'] = ft_industries_label
     request.session['ft_head_counts_label'] = ft_head_counts_label
     request.session['ft_other_label'] = ft_other_label
     request.session['ft_regions_label'] = ft_regions_label
 
-    return get_response_template(request, bnchmrk_benefit, ft_industries, ft_head_counts, ft_other, ft_regions)
+    return get_response_template(request, bnchmrk_benefit, ft_industries, ft_head_counts, ft_other, ft_regions, ft_states)
 
 
 def get_response_template(request, 
@@ -434,6 +438,7 @@ def get_response_template(request,
                           ft_head_counts, 
                           ft_other, 
                           ft_regions, 
+                          ft_states=[],
                           is_print=False, 
                           ft_industries_label='', 
                           ft_head_counts_label='', 
@@ -446,7 +451,8 @@ def get_response_template(request,
     employers, num_companies = get_filtered_employers(ft_industries, 
                                                       ft_head_counts, 
                                                       ft_other,
-                                                      ft_regions)
+                                                      ft_regions,
+                                                      ft_states)
     
     if num_companies < settings.EMPLOYER_THRESHOLD:
         context =  {

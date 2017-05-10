@@ -9,31 +9,39 @@ def get_filtered_employers(ft_industries,
                            ft_head_counts, 
                            ft_other, 
                            ft_regions, 
+                           ft_states,
                            lstart=0, 
                            lend=0, 
                            group='bnchmrk', 
                            q='',
                            threshold=1):
     # filter with factors from UI (industry, head-count, other)
+    # filter for keyword
     q = Q(name__icontains=q)
     if not '*' in ft_industries:
         q = Q(industry1__in=ft_industries) | Q(industry2__in=ft_industries) | Q(industry3__in=ft_industries)
 
+    # filter for others
     for item in ft_other:
         if item != '*':
             q &= Q(**{item: True})
 
+    # filter for region
     q_region = Q()
     if not '*' in ft_regions:
         for item in ft_regions:
             q_region |= Q(**{item: True})
-
     q &= q_region
+
+    # filter for head count
     q_ = Q(size=0)
     for ft_head_count in ft_head_counts:
         ft_vals = ft_head_count.split('-')        
         q_ |= Q(size__gte=int(ft_vals[0])) & Q(size__lte=int(ft_vals[1]))
 
+    # filter for state
+    if ft_states and not '*' in ft_states:
+        q &= Q(state__in=ft_states)
 
     employers_ = Employer.objects.filter(q & q_).order_by('name')
     # for only accounts
@@ -63,11 +71,13 @@ def get_filtered_employers_session(request):
     ft_head_counts = request.session['ft_head_counts']
     ft_other = request.session['ft_other']
     ft_regions = request.session['ft_regions']
+    ft_states = request.session['ft_states']
 
     return get_filtered_employers(ft_industries, 
                                   ft_head_counts, 
                                   ft_other,
-                                  ft_regions)
+                                  ft_regions,
+                                  ft_states)
 
 
 def get_medians(qs, attrs, num_companies, attrs_percent=[], attrs_int=[]):

@@ -23,7 +23,15 @@ def parse_none(value): # Only one argument.
 @register.filter
 def replace_slash(value): # Only one argument.
     if value == 'MEDICALRX':
-        return 'MEDICAL & RX'
+        return 'Medical & Rx'
+    elif value == 'DENTAL':
+        return 'Dental'
+    elif value == 'LIFE':
+        return 'Life'
+    elif value == 'VISION':
+        return 'Vision'
+    elif value == 'STRATEGY':
+        return 'Strategy'
     else:
         return value
 

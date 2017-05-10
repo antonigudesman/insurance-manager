@@ -2,6 +2,7 @@ var industries = [];
 var regions = [];
 var head_counts = [];
 var others = [];
+var states = [];
 var plan_type = '';
 var plan = 0;
 
@@ -51,7 +52,6 @@ function get_body() {
 
     get_filters();
     // get_filters_label();
-
     $.post(
         '/_benchmarking',
         {
@@ -60,6 +60,7 @@ function get_body() {
             others: others,
             regions: regions,
             plan_type: plan_type,
+            states: states,
             // industry_label: industries_label,
             // head_counts_label: head_counts_label,
             // others_label: others_label,
@@ -185,7 +186,6 @@ update_content = function(benefit, plan_type) {
         gh4_data = generate_quintile_data(gh4_data, true);
         gh5_data = generate_quintile_data(gh5_data, true);
         gh6_data = generate_quintile_data(gh6_data, true);
-        gh7_data = generate_quintile_data(gh7_data, true); 
         gh8_data = generate_quintile_data(gh8_data, true);
         gh9_data = generate_quintile_data(gh9_data, true);
         
@@ -195,7 +195,6 @@ update_content = function(benefit, plan_type) {
         draw_bar_chart('MEDICAL-4', gh4_data, 'dollar', 6.8);                
         draw_bar_chart('MEDICAL-5', gh5_data, 'dollar', 7);        
         draw_bar_chart('MEDICAL-6', gh6_data, 'dollar', 7);        
-        draw_bar_chart('MEDICAL-7', gh7_data, 'dollar', 7);        
         draw_bar_chart('MEDICAL-8', gh8_data, 'dollar', 7);        
         draw_bar_chart('MEDICAL-9', gh9_data, 'dollar', 7);        
 

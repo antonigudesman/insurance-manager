@@ -10,7 +10,7 @@
                         <col width="40%">
                         <thead>
                             <tr>
-                                <th class="row-label">{{ request.session.bnchmrk_benefit }} Plan Type Offering</th>
+                                <th class="row-label">Plan Type Offering</th>
                                 <th>Employers</th>
                             </tr>
                         </thead>
@@ -41,7 +41,7 @@
                         <col width="40%">
                         <thead>
                             <tr>
-                                <th class="row-label">{{ request.session.bnchmrk_benefit }} Number of Plans Offered</th>
+                                <th class="row-label">Number of Plans Offered</th>
                                 <th>Employers</th>
                             </tr>
                         </thead>
@@ -82,14 +82,14 @@
                     <col width="25%">
                     <thead>
                         <tr>
-                            <th class="row-label">{{ request.session.bnchmrk_benefit }} In-Network Cost Share</th>
+                            <th class="row-label">In-Network Cost Share</th>
                             <th>Benchmark</th>
                             <th class="toggle_plan">Current</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="quintile-subject">
-                            <td class="row-label">Single Deductible *</td>
+                            <td class="row-label">Individual Deductible *</td>
                             <td>{{ mdn_in_ded_single }}</td>
                             <td><span id="prop_in_ded_single"></span></td>
                         </tr>
@@ -98,8 +98,8 @@
                             <td>{{ mdn_in_ded_family }}</td>
                             <td><span id="prop_in_ded_family"></span></td>
                         </tr>
-                        <tr class="quintile-subject">
-                            <td class="row-label">Single Maximum</td>
+                        <tr>
+                            <td class="row-label">Individual Maximum</td>
                             <td>{{ mdn_in_max_single }}</td>
                             <td><span id="prop_in_max_single"></span></td>
                         </tr>
@@ -108,7 +108,7 @@
                             <td>{{ mdn_in_max_family }}</td>
                             <td><span id="prop_in_max_family"></span></td>
                         </tr>
-                        <tr class="quintile-subject">
+                        <tr>
                             <td class="row-label">Coinsurance</td>
                             <td>{{ mdn_in_coin }}</td>
                             <td><span id="prop_in_coin"></span></td>
@@ -135,14 +135,14 @@
                     <col width="25%">
                     <thead>
                         <tr>
-                            <th class="row-label">{{ request.session.bnchmrk_benefit }} Out-of-Network Cost Share</th>
+                            <th class="row-label">Out-of-Network Cost Share</th>
                             <th>Benchmark</th>
                             <th class="toggle_plan">Current</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="quintile-subject">
-                            <td class="row-label">Single Deductible *</td>
+                            <td class="row-label">Individual Deductible *</td>
                             <td>{{ mdn_out_ded_single }}</td>
                             <td><span id="prop_out_ded_single"></span></td>
                         </tr>
@@ -151,8 +151,8 @@
                             <td>{{ mdn_out_ded_family }}</td>
                             <td><span id="prop_out_ded_family"></span></td>
                         </tr>
-                        <tr class="quintile-subject">
-                            <td class="row-label">Single Maximum</td>
+                        <tr>
+                            <td class="row-label">Individual Maximum</td>
                             <td>{{ mdn_out_max_single }}</td>
                             <td><span id="prop_out_max_single"></span></td>
                         </tr>
@@ -161,18 +161,18 @@
                             <td>{{ mdn_out_max_family }}</td>
                             <td><span id="prop_out_max_family"></span></td>
                         </tr>
-                        <tr class="out-benefit">
+                        <tr>
                             <td class="row-label">Coinsurance</td>
                             <td>{{ mdn_out_coin }}</td>
                             <td><span id="prop_out_coin"></span></td>
                         </tr>
                         <tr>
-                            <td class="row-label">Deductible Cross Accumulation</td>
+                            <td class="row-label">Deductibles Accumulate Across Networks</td>
                             <td>{{ prcnt_ded_cross }}</td>
                             <td><span id="prop_ded_cross"></span></td>
                         </tr>
                         <tr>
-                            <td class="row-label">Maximum Cross Accumulation</td>
+                            <td class="row-label">Maximums Accumulate Across Networks</td>
                             <td>{{ prcnt_max_cross }}</td>
                             <td><span id="prop_max_cross"></span></td>
                         </tr>
@@ -198,7 +198,7 @@
                     <col width="25%">
                     <thead>
                         <tr>
-                            <th class="row-label">{{ request.session.bnchmrk_benefit }} Annual Employee Contributions</th>
+                            <th class="row-label">Employee Annual Contributions</th>
                             <th>Benchmark</th>
                             <th class="toggle_plan">Current</th>
                         </tr>
@@ -246,7 +246,7 @@
                     <col width="25%">
                     <thead>
                         <tr>
-                            <th class="row-label">{{ request.session.bnchmrk_benefit }} Annual Gross/Premium Cost</th>
+                            <th class="row-label">Gross Annual Cost</th>
                             <th>Benchmark</th>
                             <th class="toggle_plan">Current</th>
                         </tr>
@@ -292,14 +292,14 @@
 
     <div class="card section">
         <div class="row">
-            <div class="col-md-6 section-content-left">
+            <div class="col-md-5 section-content">
                 <table class="table table-striped table-content">
                     <col width="50%">
                     <col width="25%">
                     <col width="25%">
                     <thead>
                         <tr>
-                            <th class="row-label">{{ request.session.bnchmrk_benefit }} {% if request.session.bnchmrk_benefit == 'HDHP ' %} HDHP {% else %} HRA {% endif %} Funding</th>
+                            <th class="row-label">{% if request.session.bnchmrk_benefit == 'HDHP ' %} HDHP {% else %} HRA {% endif %} Funding</th>
                             <th>Benchmark</th>
                             <th class="toggle_plan">Current</th>
                         </tr>
@@ -347,6 +347,28 @@
                     <div class="percent">{{ prcnt_hra|cut:'%' }}</div>
                     <div class="pie-title">Offer HRA</div>
                 </div>
+                <div class="col-sm-2">
+                    <div class="mini-charts-item bgm-lightgreen m-t-25">
+                        <div class="clearfix">
+                            <!-- <div class="chart stats-bar-2"></div> -->
+                            <div class="count">
+                                <small>Employee Only</small>
+                                <h2>{{ mdn_t1_ercdhp }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+                <div class="col-sm-2">
+                    <div class="mini-charts-item bgm-lightgreen m-t-25">
+                        <div class="clearfix">
+                            <!-- <div class="chart stats-bar-2"></div> -->
+                            <div class="count">
+                                <small>Family</small>
+                                <h2>{{ mdn_t4_ercdhp }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
             </div>
             <div class="col-md-1 section-score text-center">         
             </div> 
@@ -362,26 +384,16 @@
                     <col width="25%">
                     <thead>
                         <tr>
-                            <th class="row-label">{{ request.session.bnchmrk_benefit }} Physician Visits</th>
+                            <th class="row-label">Physician Visit Coverage</th>
                             <th>Benchmark</th>
                             <th class="toggle_plan">Current</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="quintile-subject">
-                            <td class="row-label">PCP Copay *</td>
+                            <td class="row-label">Primary Care Copay *</td>
                             <td>{{ mdn_pcp_copay }}</td>
                             <td><span id="prop_pcp_copay"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">PCP Ded Applies</td>
-                            <td>{{ prcnt_pcp_ded_apply }}</td>
-                            <td><span id="prop_pcp_ded_apply"></span></td>
-                        </tr> 
-                        <tr>
-                            <td class="row-label">PCP Coinsurance Applies</td>
-                            <td>{{ prcnt_coin_pcp_ded_apply }}</td>
-                            <td><span id="prop_coin_pcp_ded_apply"></span></td>
                         </tr>
                         <tr>
                             <td class="row-label">Specialist Copay</td>
@@ -389,15 +401,25 @@
                             <td><span id="prop_sp_copay"></span></td>
                         </tr>
                         <tr>
-                            <td class="row-label">Specialist Ded Applies</td>
-                            <td>{{ prcnt_sp_ded_apply }}</td>
-                            <td><span id="prop_sp_ded_apply"></span></td>
-                        </tr> 
+                            <td class="row-label">Coinsurance Applies to Primary Care Visits</td>
+                            <td>{{ prcnt_coin_pcp_ded_apply }}</td>
+                            <td><span id="prop_coin_pcp_ded_apply"></span></td>
+                        </tr>
                         <tr>
-                            <td class="row-label">Specialist Coinsurance Applies</td>
+                            <td class="row-label">Coinsurance Applies to Specialist Visits</td>
                             <td>{{ prcnt_coin_sp_ded_apply }}</td>
                             <td><span id="prop_coin_sp_ded_apply"></span></td>
                         </tr>                
+                        <tr>
+                            <td class="row-label">Deductible Applies to Primary Care Visits</td>
+                            <td>{{ prcnt_pcp_ded_apply }}</td>
+                            <td><span id="prop_pcp_ded_apply"></span></td>
+                        </tr> 
+                        <tr>
+                            <td class="row-label">Deductible Applies to Specialist Visits</td>
+                            <td>{{ prcnt_sp_ded_apply }}</td>
+                            <td><span id="prop_sp_ded_apply"></span></td>
+                        </tr> 
                     </tbody>
                 </table>
             </div>
@@ -420,100 +442,42 @@
                     <col width="25%">
                     <thead>
                         <tr>
-                            <th class="row-label">{{ request.session.bnchmrk_benefit }} Emergency & Urgent Care</th>
+                            <th class="row-label">Hospital Visit Coverage</th>
                             <th>Benchmark</th>
                             <th class="toggle_plan">Current</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="quintile-subject">
-                            <td class="row-label">ER Copay *</td>
-                            <td>{{ mdn_er_copay }}</td>
-                            <td><span id="prop_er_copay"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">ER Deductible Applies</td>
-                            <td>{{ prcnt_er_ded_apply }}</td>
-                            <td><span id="prop_er_ded_apply"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">ER Coinsurance Applies</td>
-                            <td>{{ prcnt_coin_er_ded_apply }}</td>
-                            <td><span id="prop_coin_er_ded_apply"></span></td>
-                        </tr> 
-                        <tr>
-                            <td class="row-label">UC Copay</td>
-                            <td>{{ mdn_uc_copay }}</td>
-                            <td><span id="prop_uc_copay"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">UC Deductible Applies</td>
-                            <td>{{ prcnt_uc_ded_apply }}</td>
-                            <td><span id="prop_uc_ded_apply"></span></td>
-                        </tr>  
-                        <tr>
-                            <td class="row-label">UC Coinsurance Applies</td>
-                            <td>{{ prcnt_coin_uc_ded_apply }}</td>
-                            <td><span id="prop_coin_uc_ded_apply"></span></td>
-                        </tr>                                              
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-6 section-graph">
-                <div id="MEDICAL-4" class="flot-chart"></div>
-            </div>
-            <div class="col-md-1 section-score text-center">
-                <h5 class="toggle_plan">Q-SCORE</h5>
-                <p><span id="prop_rank_er_copay"></span></p>           
-            </div> 
-        </div>
-    </div>
-
-    <div class="card section hdhp-benefit">
-        <div class="row">
-            <div class="col-md-5 section-content">
-                <table class="table table-striped table-content">
-                    <col width="50%">
-                    <col width="25%">
-                    <col width="25%">
-                    <thead>
-                        <tr>
-                            <th class="row-label">{{ request.session.bnchmrk_benefit }} Inpatient & Outpatient Facilities</th>
-                            <th>Benchmark</th>
-                            <th class="toggle_plan">Current</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="quintile-subject">
-                            <td class="row-label">Inpatient Copay *</td>
+                            <td class="row-label">Inpatient Copay/Visit Deductible *</td>
                             <td>{{ mdn_ip_copay }}</td>
                             <td><span id="prop_ip_copay"></span></td>
                         </tr>
                         <tr>
-                            <td class="row-label">Inpatient Deductible Applies</td>
-                            <td>{{ prcnt_ip_ded_apply }}</td>
-                            <td><span id="prop_ip_ded_apply"></span></td>
-                        </tr>  
-                        <tr>
-                            <td class="row-label">Inpatient Coinsurance Applies</td>
-                            <td>{{ prcnt_coin_ip_ded_apply }}</td>
-                            <td><span id="prop_coin_ip_ded_apply"></span></td>
-                        </tr> 
-                        <tr>
-                            <td class="row-label">Outpatient Copay</td>
+                            <td class="row-label">Outpatient Copay/Visit Deductible</td>
                             <td>{{ mdn_op_copay }}</td>
                             <td><span id="prop_op_copay"></span></td>
                         </tr>
                         <tr>
-                            <td class="row-label">Outpatient Deductbile Applies</td>
-                            <td>{{ prcnt_op_ded_apply }}</td>
-                            <td><span id="prop_op_ded_apply"></span></td>
-                        </tr>     
+                            <td class="row-label">Coinsurance Applies to Inpatient Visits</td>
+                            <td>{{ prcnt_coin_ip_ded_apply }}</td>
+                            <td><span id="prop_coin_ip_ded_apply"></span></td>
+                        </tr> 
                         <tr>
-                            <td class="row-label">Outpatient Coinsurance Applies</td>
+                            <td class="row-label">Coinsurance Applies to Outpatient Visits</td>
                             <td>{{ prcnt_coin_op_ded_apply }}</td>
                             <td><span id="prop_coin_op_ded_apply"></span></td>
                         </tr>                   
+                        <tr>
+                            <td class="row-label">Deductible Applies to Inpatient Visits</td>
+                            <td>{{ prcnt_ip_ded_apply }}</td>
+                            <td><span id="prop_ip_ded_apply"></span></td>
+                        </tr>  
+                        <tr>
+                            <td class="row-label">Deductible Applies to Outpatient Visits</td>
+                            <td>{{ prcnt_op_ded_apply }}</td>
+                            <td><span id="prop_op_ded_apply"></span></td>
+                        </tr>     
                     </tbody>
                 </table>
             </div>
@@ -536,87 +500,66 @@
                     <col width="25%">
                     <thead>
                         <tr>
-                            <th class="row-label">{{ request.session.bnchmrk_benefit }} Labs & Xray</th>
-                            <th>Benchmark</th>
-                            <th class="toggle_plan">Current</th>
-                        </tr>
-                    </thead>
-                    <tbody>                           
-                        <tr class="quintile-subject">
-                            <td class="row-label">Labs & X-Ray Copay *</td>
-                            <td>{{ mdn_lx_copay }}</td>
-                            <td><span id="prop_lx_copay"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Deductible Applies</td>
-                            <td>{{ prcnt_lx_ded_apply }}</td>
-                            <td><span id="prop_lx_ded_apply"></span></td>
-                        </tr>  
-                        <tr>
-                            <td class="row-label">Coinsurance Applies</td>
-                            <td>{{ prcnt_coin_lx_ded_apply }}</td>
-                            <td><span id="prop_coin_lx_ded_apply"></span></td>
-                        </tr>                  
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-6 section-graph">
-            </div>
-            <div class="col-md-1 section-score text-center">
-                <h5 class="toggle_plan">Q-SCORE</h5>
-                <p><span id="prop_rank_lx_copay"></span></p>           
-            </div> 
-        </div>
-    </div>
-
-    <div class="card section">
-        <div class="row">
-            <div class="col-md-5 section-content">
-                <table class="table table-striped table-content">
-                    <col width="50%">
-                    <col width="25%">
-                    <col width="25%">
-                    <thead>
-                        <tr>
-                            <th class="row-label">{{ request.session.bnchmrk_benefit }} Rx Cost Share</th>
+                            <th class="row-label">Other Facility Coverage</th>
                             <th>Benchmark</th>
                             <th class="toggle_plan">Current</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="row-label">Rx Single Deductible</td>
-                            <td>{{ mdn_rx_ded_single }}</td>
-                            <td><span id="prop_rx_ded_single"></span></td>
+                        <tr class="quintile-subject">
+                            <td class="row-label">Emergency Room Copay/Visit Deductible *</td>
+                            <td>{{ mdn_er_copay }}</td>
+                            <td><span id="prop_er_copay"></span></td>
                         </tr>
                         <tr>
-                            <td class="row-label">Rx Family Deductible</td>
-                            <td>{{ mdn_rx_ded_family }}</td>
-                            <td><span id="prop_rx_ded_family"></span></td>
+                            <td class="row-label">Urgent Care Copay/Visit Deductible</td>
+                            <td>{{ mdn_uc_copay }}</td>
+                            <td><span id="prop_uc_copay"></span></td>
                         </tr>
                         <tr>
-                            <td class="row-label">Rx Single Maximum</td>
-                            <td>{{ mdn_rx_max_single }}</td>
-                            <td><span id="prop_rx_max_single"></span></td>
+                            <td class="row-label">Labs & X-Ray Copay</td>
+                            <td>{{ mdn_lx_copay }}</td>
+                            <td><span id="prop_lx_copay"></span></td>
                         </tr>
                         <tr>
-                            <td class="row-label">Rx Family Maximum</td>
-                            <td>{{ mdn_rx_max_family }}</td>
-                            <td><span id="prop_rx_max_family"></span></td>
+                            <td class="row-label">Coinsurance Applies to Emergency Room Visits</td>
+                            <td>{{ prcnt_coin_er_ded_apply }}</td>
+                            <td><span id="prop_coin_er_ded_apply"></span></td>
+                        </tr> 
+                        <tr>
+                            <td class="row-label">Coinsurance Applies to Urgent Care Visits</td>
+                            <td>{{ prcnt_coin_uc_ded_apply }}</td>
+                            <td><span id="prop_coin_uc_ded_apply"></span></td>
+                        </tr>     
+                        <tr>
+                            <td class="row-label">Coinsurance Applies to Labs & X-Ray Visits</td>
+                            <td>{{ prcnt_coin_lx_ded_apply }}</td>
+                            <td><span id="prop_coin_lx_ded_apply"></span></td>
+                        </tr>                                          
+                        <tr>
+                            <td class="row-label">Deductible Applies to Emergency Room Visits</td>
+                            <td>{{ prcnt_er_ded_apply }}</td>
+                            <td><span id="prop_er_ded_apply"></span></td>
                         </tr>
                         <tr>
-                            <td class="row-label">Rx Coinsurance</td>
-                            <td>{{ mdn_rx_coin }}</td>
-                            <td><span id="prop_rx_coin"></span></td>
-                        </tr>
+                            <td class="row-label">Deductible Applies to Urgent Care Visits</td>
+                            <td>{{ prcnt_uc_ded_apply }}</td>
+                            <td><span id="prop_uc_ded_apply"></span></td>
+                        </tr>  
+                        <tr>
+                            <td class="row-label">Deductible Applies to Labs & X-Ray Visits</td>
+                            <td>{{ prcnt_lx_ded_apply }}</td>
+                            <td><span id="prop_lx_ded_apply"></span></td>
+                        </tr>  
                     </tbody>
                 </table>
             </div>
             <div class="col-md-6 section-graph">
+                <div id="MEDICAL-4" class="flot-chart"></div>
             </div>
             <div class="col-md-1 section-score text-center">
                 <h5 class="toggle_plan">Q-SCORE</h5>
-                <p><span id="prop_rank_in_max_single"></span></p>           
+                <p><span id="prop_rank_er_copay"></span></p>           
             </div> 
         </div>
     </div>
@@ -630,42 +573,57 @@
                     <col width="25%">
                     <thead>
                         <tr>
-                            <th class="row-label">{{ request.session.bnchmrk_benefit }} Rx Tier 1 & Tier 2</th>
+                            <th class="row-label">Prescription Coverage</th>
                             <th>Benchmark</th>
                             <th class="toggle_plan">Current</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="quintile-subject">
-                            <td class="row-label">Tier 1 Retail Copay *</td>
+                            <td class="row-label">Generic Retail Copay *</td>
                             <td>{{ mdn_rx1_copay }}</td>
                             <td><span id="prop_rx1_copay"></span></td>
                         </tr>
                         <tr>
-                            <td class="row-label">Tier 1 Mail Copay</td>
-                            <td>{{ mdn_rx1_mail_copay }}</td>
-                            <td><span id="prop_rx1_mail_copay"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Tier 1 Deductible Applies</td>
-                            <td>{{ prcnt_rx1_ded_apply }}</td>
-                            <td><span id="prop_rx1_ded_apply"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Tier 2 Retail Copay</td>
+                            <td class="row-label">Preferred Retail Copay</td>
                             <td>{{ mdn_rx2_copay }}</td>
                             <td><span id="prop_rx2_copay"></span></td>
                         </tr>
                         <tr>
-                            <td class="row-label">Tier 2 Mail Copay</td>
+                            <td class="row-label">Non-Preferred Retail Copay</td>
+                            <td>{{ mdn_rx3_copay }}</td>
+                            <td><span id="prop_rx3_copay"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Generic Mail Copay</td>
+                            <td>{{ mdn_rx1_mail_copay }}</td>
+                            <td><span id="prop_rx1_mail_copay"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Preferred Mail Copay</td>
                             <td>{{ mdn_rx2_mail_copay }}</td>
                             <td><span id="prop_rx2_mail_copay"></span></td>
                         </tr>
                         <tr>
-                            <td class="row-label">Tier 2 Deductible Applies</td>
+                            <td class="row-label">Non-Preferred Mail Copay</td>
+                            <td>{{ mdn_rx3_mail_copay }}</td>
+                            <td><span id="prop_rx3_mail_copay"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Deductible Applies to Generic Drugs</td>
+                            <td>{{ prcnt_rx1_ded_apply }}</td>
+                            <td><span id="prop_rx1_ded_apply"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Deductible Applies to Preferred Drugs</td>
                             <td>{{ prcnt_rx2_ded_apply }}</td>
                             <td><span id="prop_rx2_ded_apply"></span></td>
-                        </tr>                
+                        </tr>   
+                        <tr>
+                            <td class="row-label">Deductible Applies to Non-Preferred Drugs</td>
+                            <td>{{ prcnt_rx3_ded_apply }}</td>
+                            <td><span id="prop_rx3_ded_apply"></span></td>
+                        </tr>             
                     </tbody>
                 </table>
             </div>
@@ -688,56 +646,86 @@
                     <col width="25%">
                     <thead>
                         <tr>
-                            <th class="row-label">{{ request.session.bnchmrk_benefit }} Rx Tier 3 & Tier 4</th>
+                            <th class="row-label">Prescription Cost Share</th>
                             <th>Benchmark</th>
                             <th class="toggle_plan">Current</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="quintile-subject">
-                            <td class="row-label">Tier 3 Retail Copay *</td>
-                            <td>{{ mdn_rx3_copay }}</td>
-                            <td><span id="prop_rx3_copay"></span></td>
+                        <tr>
+                            <td class="row-label">Require Seperate Rx-Only Deductible *</td>
+                            <td>{{ prcnt_rx_ded_single }}</td>
+                            <td><span id=""></span></td>
                         </tr>
                         <tr>
-                            <td class="row-label">Tier 3 Mail Copay</td>
-                            <td>{{ mdn_rx3_mail_copay }}</td>
-                            <td><span id="prop_rx3_mail_copay"></span></td>
+                            <td class="row-label">Individual Deductible</td>
+                            <td>{{ mdn_rx_ded_single }}</td>
+                            <td><span id="prop_rx_ded_single"></span></td>
                         </tr>
                         <tr>
-                            <td class="row-label">Tier 3 Deductible Applies</td>
-                            <td>{{ prcnt_rx3_ded_apply }}</td>
-                            <td><span id="prop_rx3_ded_apply"></span></td>
+                            <td class="row-label">Family Deductible</td>
+                            <td>{{ mdn_rx_ded_family }}</td>
+                            <td><span id="prop_rx_ded_family"></span></td>
                         </tr>
                         <tr>
-                            <td class="row-label">Tier 4 Retail Copay</td>
+                            <td class="row-label">Require Seperate Rx-Only Maximum</td>
+                            <td>{{ prcnt_rx_max_single }}</td>
+                            <td><span id=""></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Individual Maximum</td>
+                            <td>{{ mdn_rx_max_single }}</td>
+                            <td><span id="prop_rx_max_single"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Family Maximum</td>
+                            <td>{{ mdn_rx_max_family }}</td>
+                            <td><span id="prop_rx_max_family"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Rx Coinsurance</td>
+                            <td>{{ mdn_rx_coin }}</td>
+                            <td><span id="prop_rx_coin"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Specialty Drug Retail Copay</td>
                             <td>{{ mdn_rx4_copay }}</td>
                             <td><span id="prop_rx4_copay"></span></td>
                         </tr>
                         <tr>
-                            <td class="row-label">Tier 4 Mail Copay</td>
+                            <td class="row-label">Specialty Drug Mail Copay</td>
                             <td>{{ mdn_rx4_mail_copay }}</td>
                             <td><span id="prop_rx4_mail_copay"></span></td>
                         </tr>
                         <tr>
-                            <td class="row-label">Tier 4 Deductible Applies</td>
+                            <td class="row-label">Deductible Applies to Specialty Drugs</td>
                             <td>{{ prcnt_rx4_ded_apply }}</td>
                             <td><span id="prop_rx4_ded_apply"></span></td>
-                        </tr>                 
+                        </tr>  
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-6 section-graph">
-                <div id="MEDICAL-7" class="flot-chart"></div>
+            <div class="col-md-3 section-graph">
+                <div id="pie-charts" class="dash-widget-item">
+                    <div class="bgm-pink">
+                        <div class="dash-widget-header">
+                            <div class="dash-widget-title">Email Statistics</div>
+                        </div>
+                        
+                        <div class="clearfix"></div>
+                        
+                        <div class="text-center p-20 m-t-25">
+                            <div class="easy-pie main-pie" data-percent="75">
+                                <div class="percent">45</div>
+                                <div class="pie-title">Total Emails Sent</div>
+                            </div>
+                        </div>
+                    </div>            
+                </div>
             </div>
-            <div class="col-md-1 section-score text-center">
-                <h5 class="toggle_plan">Q-SCORE</h5>
-                <p><span id="prop_rank_rx3_copay"></span></p>           
-            </div> 
         </div>
     </div>
 
-    
 
 {% else %}
     {% include 'includes/too-few-employers.html' %}
@@ -745,7 +733,7 @@
 
 <script type="text/javascript">
 
-    var gh1_data, gh2_data, gh3_data, gh4_data, gh5_data, gh6_data, gh7_data, gh8_data, gh9_data, gh10_data, gh11_data;
+    var gh1_data, gh2_data, gh3_data, gh4_data, gh5_data, gh6_data, gh8_data, gh9_data, gh10_data, gh11_data;
 
     {% if num_employers >= EMPLOYER_THRESHOLD %}
         gh1_data = {{ quintile_in_ded_single }};
@@ -754,7 +742,6 @@
         gh4_data = {{ quintile_er_copay }};
         gh5_data = {{ quintile_ip_copay }};
         gh6_data = {{ quintile_rx1_copay }};
-        gh7_data = {{ quintile_rx3_copay }};
         gh8_data = {{ quintile_t1_ee }};
         gh9_data = {{ quintile_t1_gross }};
 

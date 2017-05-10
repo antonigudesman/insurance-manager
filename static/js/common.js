@@ -20,6 +20,12 @@ if ($('#industries').length > 0) {
             refresh_content();
         });                    
     }
+
+    if ($('#states').length > 0) {
+        $('#states').change(function() {
+            refresh_content();
+        });                    
+    }
 }
 
 function get_filters() {
@@ -27,9 +33,16 @@ function get_filters() {
     regions = [];
     head_counts = [];
     others = [];
+    states = [];
 
     if ($('#plan_types').length > 0) {
         plan_type = $('#plan_types').val();
+    }
+
+    if ($('#states').length > 0) {
+        $('#states :selected').each(function() {
+            states.push($(this).val());
+        });
     }
 
     $('#industries :selected').each(function() {

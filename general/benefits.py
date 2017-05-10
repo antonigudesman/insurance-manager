@@ -14,14 +14,10 @@ medical_quintile_attrs = [
 medical_quintile_attrs_inv = [
     'in_ded_single',
     'out_ded_single',
-    'out_max_single',
-    'in_coin',
     'pcp_copay',
     'er_copay',
-    'lx_copay',
     'ip_copay',
     'rx1_copay',
-    'rx3_copay',
     't1_ee',
     't1_gross'
 ]
@@ -71,7 +67,7 @@ medical_attrs_dollar = [
 medical_attrs_percent = [
     'in_coin',
     'out_coin',
-    'rx_coin'
+    'rx_coin',
 ]
 
 medical_attrs_int = []
@@ -109,6 +105,13 @@ def get_medicalrx_plan(employers, num_companies, plan_type=None):
     num_t = Medical.objects.filter(employer__in=employers, type__in=['HDHP']).values('employer_id').distinct()
     var_local['prcnt_hdhp'] = '{:,.0f}%'.format(len(num_t) * 100 / num_companies)
 
+    plan_types = get_real_medical_type(plan_type)
+    num_tt = Medical.objects.filter(employer__in=employers, type__in=plan_types).count() 
+    num_t = Medical.objects.filter(employer__in=employers, type__in=plan_types, rx_ded_single__isnull=False).count()
+    var_local['prcnt_rx_ded_single'] = '{:,.0f}%'.format(num_t * 100 / num_tt)
+    num_t = Medical.objects.filter(employer__in=employers, type__in=plan_types, rx_max_single__isnull=False).count()
+    var_local['prcnt_rx_max_single'] = '{:,.0f}%'.format(num_t * 100 / num_tt)
+
     for attr in medical_attrs_boolean:
         var_local['prcnt_'+attr] = get_percent_count(qs, attr)
 
@@ -125,13 +128,7 @@ def get_medicalrx_plan(employers, num_companies, plan_type=None):
               + medians.items())
 
 def get_medical_plan_(employers, num_companies, plan_type=None):    
-    if plan_type == 'PPO':
-        plan_type = ['PPO', 'POS']
-    elif plan_type == 'HMO':
-        plan_type = ['HMO', 'EPO']
-    else:
-        plan_type = ['HDHP']
-
+    plan_type = get_real_medical_type(plan_type)
     qs = Medical.objects.filter(employer__in=employers, type__in=plan_type) 
     medians, sub_qs = get_medians(qs, medical_attrs_dollar, num_companies, medical_attrs_percent, medical_attrs_int)
 
@@ -167,6 +164,16 @@ def get_medical_properties(request, plan, plan_type=None):
         get_quintile_properties(var_local, instance, medical_quintile_attrs, medical_quintile_attrs_inv, context)
 
     return JsonResponse(context, safe=False)
+
+def get_real_medical_type(plan_type):
+    if plan_type == 'PPO':
+        plan_type = ['PPO', 'POS']
+    elif plan_type == 'HMO':
+        plan_type = ['HMO', 'EPO']
+    else:
+        plan_type = ['HDHP']
+
+    return plan_type
 
 
 """

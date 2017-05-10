@@ -31,12 +31,14 @@ def print_template(request):
     ft_head_counts = request.session['ft_head_counts']
     ft_other = request.session['ft_other']
     ft_regions = request.session['ft_regions']
+    ft_states = request.session['ft_states']
 
     ft_industries_label = 'All'
     ft_head_counts_label = 'All'
     ft_other_label = 'All'
     ft_regions_label = 'All'
 
+    # need to add ft_states
     return get_response_template(request, 
                                  benefit, 
                                  ft_industries, 
@@ -61,12 +63,14 @@ def print_template_header(request):
     ft_head_counts = request.session['ft_head_counts']
     ft_other = request.session['ft_other']
     ft_regions = request.session['ft_regions']
+    ft_states = request.session['ft_states']
 
     ft_industries_label = ', '.join(request.session['ft_industries_label'])
     ft_head_counts_label = ', '.join(request.session['ft_head_counts_label'])
     ft_other_label = ', '.join(request.session['ft_other_label'])
     ft_regions_label = ', '.join(request.session['ft_regions_label'])
 
+    # need to add ft_states
     return get_response_template(request, 
                                  benefit, 
                                  ft_industries, 
