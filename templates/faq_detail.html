@@ -8,12 +8,15 @@
 <section id="content">
     <div class="container">
         <ol class="breadcrumb">
-            <li class="active">Support</li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/support">Support</a></li>
+            <li class="active">{{ faq.title }}</li>
         </ol>
         
         <div class="card">
             <div class="card-body card-padding">    
-                <h2>{{ faq.title }} <small>created at {{ faq.created_at }} </small></h2>
+                <h2>{{ faq.title }}</h2>
+                <h4>Category: {{ faq.category }}</h4>
                 <div> {{ faq.content }} </div>        
             </div>
         </div>

@@ -1,6 +1,17 @@
+var industries = [];
+var regions = [];
+var head_counts = [];
+var others = [];
+var states = [];
+
 $(document).ready(function(){
     load_employers();
 });
+
+function refresh_content() {
+    get_filters();
+    $("#data-table-employer").bootgrid('reload');    
+}
 
 function load_employers() {
     $("#data-table-employer").bootgrid({
@@ -33,11 +44,12 @@ function load_employers() {
             var model = {
                 current: request.current,
                 rowCount: request.rowCount,
+                industry_: industries,
                 q: request.searchPhrase,
-                industry_: ['*'],
-                head_counts: [],
-                others: [],
-                regions: ['*'],
+                head_counts: head_counts,
+                others: others,
+                regions: regions,
+                states: states,
                 threshold: 0
             };
 

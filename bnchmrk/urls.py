@@ -40,10 +40,12 @@ urlpatterns += [
     url(r"^benchmarking/(?P<benefit>.*)$", benchmarking, name="benchmarking"),
     url(r"^_benchmarking", ajax_benchmarking, name="_benchmarking"),
     url(r"^get_plan_type", get_plan_type, name="get_plan_type"),
+    
+    url(r"^support", support, name="support"),
     url(r"^faq$", faq, name="faq"),
     url(r"^faqs/(?P<id>\d+)", faq_detail, name="faq_detail"),
 
-    url("^", include("mezzanine.urls")),
+    # url("^", include("mezzanine.urls")),
     # authentication
     url(r"^login", user_login, name="login"),
     url(r"^logout", user_logout, name="logout"),
@@ -54,24 +56,20 @@ urlpatterns += [
     url(r"^get_plans", get_plans, name="get_plans"),
     url(r"^update_properties", update_properties, name="update_properties"),  
 
-    url(r"^import_employer", import_employer, name="import_employer"),
-    url(r"^import_life", import_life, name="import_life"),
-    url(r"^import_std", import_std, name="import_std"),
-    url(r"^import_ltd", import_ltd, name="import_ltd"),
-    url(r"^import_strategy", import_strategy, name="import_strategy"),
-    url(r"^import_vision", import_vision, name="import_vision"),    
-    url(r"^import_dental", import_dental, name="import_dental"),
-    url(r"^import_medical", import_medical, name="import_medical"),            
+    # url(r"^import_employer", import_employer, name="import_employer"),
+    # url(r"^import_life", import_life, name="import_life"),
+    # url(r"^import_std", import_std, name="import_std"),
+    # url(r"^import_ltd", import_ltd, name="import_ltd"),
+    # url(r"^import_strategy", import_strategy, name="import_strategy"),
+    # url(r"^import_vision", import_vision, name="import_vision"),    
+    # url(r"^import_dental", import_dental, name="import_dental"),
+    # url(r"^import_medical", import_medical, name="import_medical"),            
     
     # print page
     url(r"^98Wf37r2-3h4X2_jh9$", print_template, name="print_template"),
     url(r"^25Wfr7r2-3h4X25t$", print_template_header, name="print_template_header"),
     url(r"^print_page", print_page, name="print_page"),
     url(r"^print_report", print_report, name="print_report"),
-    # other pages
-    url(r"^company", company, name="company"),
-    url(r"^contact_us", contact_us, name="contact_us"),
-    url(r"^support", support, name="support"),
 ]
 
 # Adds ``STATIC_URL`` to the context of error pages, so that error

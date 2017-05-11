@@ -8,10 +8,33 @@
 <section id="content">
     <div class="container">
         <ol class="breadcrumb">
+            <li><a href="/">Home</a></li>
             <li class="active">Support</li>
         </ol>
         
         <div class="card">
+            <div class="card-header">
+                <h2>Client Accounts <small>Use the search bar or the five dropdowns below to find and view the client account of your choice.</small></h2>
+            </div>
+
+            <div class="card-body card-padding">
+                <div class="row">               
+                    <div class="col-sm-3 m-b-15">
+                        <p class="f-500 c-black m-b-15">Categories:</p>
+                        <select name="category" id="categories" class="selectpicker" data-none-selected-text="All">
+                            <option value="">ALL</option>
+                            {% for item in categories %}
+                            <option value="{{ item.id }}">{{ item.title }}</option>
+                            {% endfor %}
+                        </select>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-header">
+                <h2>Customer Support FAQs <small>Answers to commonly asked questions about using bnchmrk products, including account-related issues and trouble logging in.</small></h2>
+            </div>
             <div class="card-body card-padding">                
                 <div class="table-responsive">
                     <table id="data-table-faq" class="table table-striped" data-ajax="true" data-url="/faq">
@@ -19,12 +42,19 @@
                             <tr>
                                 <th data-column-id="id" data-visible="false">No</th>
                                 <th data-column-id="title" data-formatter="link">Title</th>
+                                <th data-column-id="category">Category</th>
                                 <th data-column-id="content">Content</th>
-                                <th data-column-id="created_at">Created At</th>
+                                <!-- <th data-column-id="created_at">Created At</th> -->
                             </tr>
                         </thead>
                     </table>
                 </div>            
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Customer Support – Email <small>Our internal customer service team address your questions quickly and completely.</small></h2>
             </div>
         </div>
             

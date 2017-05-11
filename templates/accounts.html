@@ -14,18 +14,74 @@
 
         <div class="card">
             <div class="card-header">
-                <h2>Employer Account Listings <small>Use the search bar or filters above to find and view the client account of your ch.</small></h2>
+                <h2>Client Accounts <small>Use the search bar or the five dropdowns below to find and view the client account of your choice.</small></h2>
             </div>
+
+            <div class="card-body card-padding">
+                <div class="row">               
+                    <div class="col-sm-3 m-b-15">
+                        <p class="f-500 c-black m-b-15">Industries:</p>
+                        <select name="industry" multiple="" id="industries" class="selectpicker" data-none-selected-text="All">
+                            {% for item in industries %}
+                            <option value="{{ item }}">{{ item }}</option>
+                            {% endfor %}
+                        </select>
+
+                    </div>
+                    <div class="col-sm-2 m-b-15">
+                        <p class="f-500 c-black m-b-15">Regions:</p>
+                        <select name="" multiple="false" id="regions" class="selectpicker" size="1" data-none-selected-text="All">
+                            <option value="new_england">New England</option>
+                            <option value="mid_atlantic">Tri-State Area</option>
+                            <option value="south_atlantic">South Atlantic</option>
+                            <option value="south_cental">South Central</option>
+                            <option value="east_central">East North Central</option>
+                            <option value="west_central">West North Central</option>
+                            <option value="mountain">Mountain</option>
+                            <option value="pacific">Pacific</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-2 m-b-15">
+                        <p class="f-500 c-black m-b-15">States:</p>
+                        <select name="" id="states" multiple class="selectpicker" data-none-selected-text="All">
+                            <option value="*">All</option>
+                            {% for item in STATES %}
+                            {% if item.0 %}
+                                <option value="{{ item.0 }}">{{ item.1 }}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>                        
+                    </div>
+                    <div class="col-sm-2 m-b-15">
+                        <p class="f-500 c-black m-b-15">Headcounts:</p>
+                        <select name="head-count" multiple="" id="head-counts" class="selectpicker" data-none-selected-text="All">
+                            <option value="0-249">Up to 250</option>
+                            <option value="250-499">250 to 499</option>
+                            <option value="500-999">500 to 999</option>
+                            <option value="1000-4999">1,000 to 4,999</option>
+                            <option value="5000-2000000">5,000 and Up</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-2 m-b-15">
+                        <p class="f-500 c-black m-b-15">Other:</p>
+                        <select name="" multiple="" id="other_filter" class="selectpicker" data-none-selected-text="All">
+                            <option value="nonprofit">Non-Profit</option>
+                            <option value="govt_contractor">Gov't Contractor</option>
+                        </select>
+                    </div>
+                </div>
+            </div>        
 
             <table id="data-table-employer" class="table table-striped table-vmiddle" data-ajax="true" data-url="/enterprise">
                 <thead>
                     <tr>
                         <th data-column-id="id" data-visible="false">ID</th>
                         <th data-column-id="name" data-formatter="link">Name</th>
-                        <th data-column-id="size">Headcount</th>
-                        <th data-column-id="other">Other</th>
+                        <th data-column-id="industry">Main Industry</th>
+                        <th data-column-id="r_size">Headcount</th>
+<!--                         <th data-column-id="other">Other</th>
                         <th data-column-id="action" data-formatter="commands" data-sortable="false">Action</th>
-                    </tr>
+ -->                    </tr>
                 </thead>
             </table>
         </div>
@@ -44,4 +100,5 @@
 
     </script>
     <script src="{% static 'js/accounts.js' %}"></script>
+    <script src="{% static 'js/common.js' %}"></script>
 {% endblock %}

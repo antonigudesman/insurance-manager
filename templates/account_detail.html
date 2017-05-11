@@ -49,6 +49,8 @@
                         {% endfor %}
                         <li><i class="zmdi zmdi-store"></i> Industries:</li>
                         <li><address class="m-b-0 ng-binding">{{ industry }}</address></li>
+                        {% if employer.nonprofit %}<li>Non-Profit</li>{% endif %}
+                        {% if employer.govt_contractor %}<li>Government Contractor</li>{% endif %}
                         <li><i class="zmdi zmdi-pin"></i> Headquartered in {{ employer.state }}, with active locations in:
                         <li>{{ region }}</li>
                         <li><i class="zmdi zmdi-nature-people"></i> {{ employer.size }} Employees</li>

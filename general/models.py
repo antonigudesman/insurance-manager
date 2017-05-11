@@ -132,7 +132,7 @@ BROKER_CHOICES = (
     ('Aon', 'Aon'),
     ('Ascension', 'Ascension'),
     ('Assurance', 'Assurance'),
-    ('BSG', 'BSG'),
+    ('Benefit Service Company', 'Benefit Service Company'),
     ('Core', 'Core'),
     ('Cook Maran', 'Cook Maran'),
     ('Corporate Synergies', 'Corporate Synergies'),
@@ -514,6 +514,7 @@ class FAQ(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     editor = models.ForeignKey(User, blank=True, null=True)
     slug = models.CharField(max_length=255, blank=True, null=True)
+    category = models.ForeignKey('FAQCategory')
 
     def __unicode__(self):
         return self.title
@@ -521,3 +522,14 @@ class FAQ(models.Model):
     class Meta:
         verbose_name = 'FAQ'
         verbose_name_plural = 'FAQs'
+
+
+class FAQCategory(models.Model):
+    title  = models.CharField(max_length=255, unique=True)
+
+    def __unicode__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'FAQ Category'
+        verbose_name_plural = 'FAQ Categories'

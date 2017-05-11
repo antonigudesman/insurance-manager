@@ -531,11 +531,16 @@ class StrategyAdmin(admin.ModelAdmin):
         
 
 class FAQAdmin(admin.ModelAdmin):
-    list_display = ['title', 'partial_content', 'created_at']
+    list_display = ['title', 'partial_content', 'category', 'created_at']
     search_fields = ('content', 'title',)
 
     def partial_content(self, obj):
         return obj.content[:50]
+
+
+class FAQCategoryAdmin(admin.ModelAdmin):
+    list_display = ['title']
+    search_fields = ('title',)
 
 
 admin.site.register(Employer, EmployerAdmin)
@@ -547,3 +552,4 @@ admin.site.register(Vision, VisionAdmin)
 admin.site.register(Dental, DentalAdmin)
 admin.site.register(Medical, MedicalAdmin)
 admin.site.register(FAQ, FAQAdmin)
+admin.site.register(FAQCategory, FAQCategoryAdmin)

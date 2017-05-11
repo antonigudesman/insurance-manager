@@ -53,6 +53,7 @@ def enterprise(request):
         ft_head_counts = form_param.get('head_counts') or ['0-2000000']
         ft_other = form_param.get('others')
         ft_regions = form_param.get('regions')
+        ft_states = form_param.get('states')
         q = form_param.get('q', '')
         threshold = form_param.get('threshold', 1)
 
@@ -65,7 +66,7 @@ def enterprise(request):
                                                           ft_head_counts, 
                                                           ft_other, 
                                                           ft_regions, 
-                                                          [],
+                                                          ft_states,
                                                           lstart, 
                                                           lend,
                                                           group,
@@ -115,10 +116,13 @@ def enterprise(request):
                 item__.append('Pacific')
             item_['region'] = '@'.join(item__)
 
+            item_['r_size'] = item.size
             for key, val in HEAD_COUNT.items():
                 if item.size in range(val[0], val[1]):
                     item_['size'] = key
                     break
+
+            item_['industry'] = item.industry1
             employers_.append(item_)
 
         if num_companies < settings.EMPLOYER_THRESHOLD and threshold:
@@ -141,15 +145,21 @@ def faq(request):
     limit = int(form_param.get('rowCount'))
     page = int(form_param.get('current'))
     q = form_param.get('q', '')
+    category = form_param.get('category', '')
 
     lstart = (page - 1) * limit
     lend = lstart + limit
 
     faqs = []
     faq_qs = FAQ.objects.filter(Q(title__icontains=q) | Q(content__icontains=q))
+    
+    if category:
+        faq_qs = faq_qs.filter(category=category)
+
     for faq in faq_qs[lstart:lend]:
         faqs.append({ 'title': faq.title, 
                       'content': faq.content[:50], 
+                      'category': faq.category.title,
                       'created_at': datetime.strftime(faq.created_at, '%d/%m/%Y %H:%M'),
                       'id': faq.id})
 
@@ -268,7 +278,8 @@ def company(request):
 
 
 def support(request):
-    return render(request, 'support.html')    
+    categories = FAQCategory.objects.all()
+    return render(request, 'support.html', locals())    
 
 ## ----------------------------------------------------------------  ##
 
@@ -282,7 +293,11 @@ def home(request):
 
 @login_required(login_url='/login')
 def accounts(request):            
-    return render(request, 'accounts.html', { 'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE_ACCOUNT })
+    return render(request, 'accounts.html', { 
+        'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE_ACCOUNT,
+        'industries': get_industries(),
+        'STATES': STATE_CHOICES
+    })
 
 
 @login_required(login_url='/login')

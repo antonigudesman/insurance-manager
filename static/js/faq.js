@@ -1,5 +1,12 @@
+var category;
+
 $(document).ready(function(){
     load_faq();
+
+    $('#categories').change(function() {
+        category = $('#categories').val();
+        $("#data-table-faq").bootgrid('reload');    
+    });
 });
 
 function load_faq() {
@@ -34,6 +41,7 @@ function load_faq() {
                 current: request.current,
                 rowCount: request.rowCount,
                 q: request.searchPhrase,
+                category: category
             };
 
             return JSON.stringify(model);

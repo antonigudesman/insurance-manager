@@ -15,12 +15,35 @@
         </ol>
 
         <div class="card">
+            <div class="card-header">
+                <h2>Select Plan Type and Client Account Plan <small>The plan type filter only applies to medical, dental and life. If you want to produce a general benchmarking report, without selecting a target client account, leave "No Comparison" selected.</small></h2>
+            </div>
+            <div class="card-body card-padding">
+                <div class="row">   
+                    <div class="col-sm-3 m-b-15">
+                        <p class="f-500 c-black m-b-15">Plan Type:</p>
+                        <select name="" id="plan_types" class="selectpicker" data-none-selected-text="All">
+                            <option value="*">All</option>
+                            {% for item in plan_types %}
+                            <option value="{{ item }}">{{ item }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-sm-8 m-b-15">
+                        <p class="f-500 c-black m-b-15">Client Account Plan:</p>
+                        <select name="" id="plans" class="selectpicker" data-none-selected-text="No Comparison">
+                        </select>
+                    </div>            
+                </div>
+            </div>
+            <div class="card-header">
+                <h2>Select Employer Filters <small>Use the five dropdowns below to filter the employer database. Any combination of industries, regions, states, headcounts, and other (non-profit, government contractor, or custom filters) are possible by using multi-select options.</small></h2>
+            </div>
             <div class="card-body card-padding">
                 <div class="row">               
                     <div class="col-sm-3 m-b-15">
-                        <p class="f-500 c-black m-b-15">Select Industries:</p>
-
-                        <select name="industry" multiple="" id="industries" class="selectpicker" data-none-selected-text="All Industries">
+                        <p class="f-500 c-black m-b-15">Industries:</p>
+                        <select name="industry" multiple="" id="industries" class="selectpicker" data-none-selected-text="All">
                             {% for item in industries %}
                             <option value="{{ item }}">{{ item }}</option>
                             {% endfor %}
@@ -28,8 +51,8 @@
 
                     </div>
                     <div class="col-sm-2 m-b-15">
-                        <p class="f-500 c-black m-b-15">Select Regions:</p>
-                        <select name="" multiple="false" id="regions" class="selectpicker" size="1" data-none-selected-text="All Regions">
+                        <p class="f-500 c-black m-b-15">Regions:</p>
+                        <select name="" multiple="false" id="regions" class="selectpicker" size="1" data-none-selected-text="All">
                             <option value="new_england">New England</option>
                             <option value="mid_atlantic">Tri-State Area</option>
                             <option value="south_atlantic">South Atlantic</option>
@@ -41,7 +64,7 @@
                         </select>
                     </div>
                     <div class="col-sm-2 m-b-15">
-                        <p class="f-500 c-black m-b-15">Select States:</p>
+                        <p class="f-500 c-black m-b-15">States:</p>
                         <select name="" id="states" multiple class="selectpicker" data-none-selected-text="All">
                             <option value="*">All</option>
                             {% for item in STATES %}
@@ -52,8 +75,8 @@
                         </select>                        
                     </div>
                     <div class="col-sm-2 m-b-15">
-                        <p class="f-500 c-black m-b-15">Select Headcounts:</p>
-                        <select name="head-count" multiple="" id="head-counts" class="selectpicker" data-none-selected-text="All Sizes">
+                        <p class="f-500 c-black m-b-15">Headcounts:</p>
+                        <select name="head-count" multiple="" id="head-counts" class="selectpicker" data-none-selected-text="All">
                             <option value="0-249">Up to 250</option>
                             <option value="250-499">250 to 499</option>
                             <option value="500-999">500 to 999</option>
@@ -62,28 +85,21 @@
                         </select>
                     </div>
                     <div class="col-sm-2 m-b-15">
-                        <p class="f-500 c-black m-b-15">Select Other:</p>
+                        <p class="f-500 c-black m-b-15">Other:</p>
                         <select name="" multiple="" id="other_filter" class="selectpicker" data-none-selected-text="All">
                             <option value="nonprofit">Non-Profit</option>
                             <option value="govt_contractor">Gov't Contractor</option>
                         </select>
                     </div>
-                    <div class="col-sm-3 m-b-15">
-                        <p class="f-500 c-black m-b-15">Select Plan Type:</p>
-                        <select name="" id="plan_types" class="selectpicker" data-none-selected-text="All">
-                            <option value="*">All</option>
-                            {% for item in plan_types %}
-                            <option value="{{ item }}">{{ item }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
+                </div>
+            </div>
+            <div class="card-body card-padding">
+                <div class="row">            
                     <div class="col-sm-6 m-b-15">
-                        <p class="f-500 c-black m-b-15">Select Account Plan:</p>
-                        <select name="" id="plans" class="selectpicker" data-none-selected-text="No Comparison">
-                        </select>
-                    </div>            
+                        <h5>Employers in the Comparison Set: </h5>
+                    </div>
                     <div class="col-sm-2 m-t-25 pull-right">
-                        <a class="btn btn-default btn-icon-text" href="/print_page"><i class="zmdi zmdi-print"></i> Print</a>            
+                        <a class="btn btn-default btn-icon-text bgm-green" href="/print_page"><i class="zmdi zmdi-print"></i> Print Report</a>
                     </div>
                 </div>
             </div>
