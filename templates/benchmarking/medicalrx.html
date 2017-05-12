@@ -117,7 +117,18 @@
                 </table>
             </div>
             <div class="col-md-6 section-graph">
-                <div id="MEDICAL-1" class="flot-chart"></div>
+                <div class="col-sm-12 m-b-15 m-r-25">
+                    <select class="selectpicker property" onchange="update_quintile(this, 'MEDICAL-1', 'prop_rank_in_ded_single');">
+                        <option value="D_in_ded_single">Individual Deductible</option>
+                        <option value="D_in_ded_family">Family Deductible</option>
+                        <option value="D_in_max_single">Individual Maximum</option>
+                        <option value="D_in_max_family">Family Maximum</option>
+                        <option value="P_in_coin">Coinsurance</option>
+                    </select>
+                </div>                
+                <div class="col-md-12">
+                    <div id="MEDICAL-1" class="flot-chart"></div>
+                </div>
             </div>
             <div class="col-md-1 section-score text-center">
                 <h5 class="toggle_plan">Q-SCORE</h5>

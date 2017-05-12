@@ -6,6 +6,11 @@ var states = [];
 var plan_type = '';
 var plan = 0;
 
+var TYPE = {
+    'D_': 'dollar',
+    'P_': 'percent'
+}
+
 var colors = ['#f8696b', '#FCAA78', '#bfbfbf', '#B1D480', '#63be7b'];
 
 jQuery(function($) {
@@ -24,6 +29,46 @@ jQuery(function($) {
     	update_properties();
     });
 });
+
+function update_quintile(obj, graph_holder, qscore_holder) {
+    property = $(obj).val();
+    type = property.substring(0, 2);
+    type = TYPE[type];
+    property = property.substring(2);
+
+    $.post(
+        '/update_quintile',
+        {
+            benefit: bnchmrk_benefit,
+            plan_type: plan_type,
+            plan: plan,
+            property: property,
+            type: type
+        },
+        function(data) {
+            if (plan == 0)
+                $('.toggle_plan').hide();
+            else
+                $('.toggle_plan').show();
+            
+
+            gh_data = generate_quintile_data(data['graph'], true);        
+            draw_bar_chart(graph_holder, gh_data, data['type'], 6.8);        
+
+            // $('#'+qscore_holder);
+            // $.each(data, function( key, value ) {
+            //     if (key.match("^rank_")) {
+            //         $('#prop_'+key).html(value);
+            //         $('#prop_'+key).removeAttr('style');
+            //         if ( value != 'N/A' ) {
+            //             $('#prop_'+key).css('color', colors[value-1]);
+            //         }
+            //     } else {
+            //         $('#prop_'+key).html(value);
+            //     }
+            // });         
+        });
+}
 
 function refresh_content() {
     get_body();
@@ -72,9 +117,24 @@ function get_body() {
         function(data) {
             $('.benefit-content').html(data);
             update_properties();
+            $('.selectpicker').selectpicker();   
 
             update_content(bnchmrk_benefit, plan_type);
         });
+
+    $.post(
+        '/get_num_employers',
+        {
+            industry: industries,
+            head_counts: head_counts,
+            benefit: bnchmrk_benefit,
+            others: others,
+            regions: regions,
+            states: states
+        },
+        function(data) {
+            $('#num_employers').html(data);
+        })
 
     $.post(
         '/get_plans',
@@ -271,6 +331,6 @@ function update_properties() {
                 } else {
                     $('#prop_'+key).html(value);
                 }
-            });            
+            });         
         });
 }

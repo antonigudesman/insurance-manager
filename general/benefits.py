@@ -176,6 +176,22 @@ def get_real_medical_type(plan_type):
     return plan_type
 
 
+def get_attr_quintile(benefit, employers, num_companies, plan_type, attr, MODEL_MAP):
+    if benefit == 'MEDICALRX':
+        plan_type = get_real_medical_type(plan_type)
+        model = MODEL_MAP['MEDICAL']
+    else:
+        model = MODEL_MAP[benefit]
+
+    qs = model.objects.filter(employer__in=employers)
+    if plan_type:
+        qs = qs.filter(type__in=plan_type) 
+
+    kwargs = { '{0}__isnull'.format(attr): True }
+    sub_qs = qs.exclude(**kwargs)
+    return get_incremental_array(sub_qs, attr, benefit.lower())
+
+
 """
 Dental ( DPPO, DMO ) page
 """

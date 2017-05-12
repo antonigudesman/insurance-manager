@@ -152,7 +152,7 @@ def faq(request):
 
     faqs = []
     faq_qs = FAQ.objects.filter(Q(title__icontains=q) | Q(content__icontains=q))
-    
+
     if category:
         faq_qs = faq_qs.filter(category=category)
 
@@ -200,20 +200,47 @@ def update_properties(request):
 
 
 @csrf_exempt
-def get_num_employers(request):
-    # form_param = request.POST
-    # ft_industries = form_param.getlist('industry[]', ['*'])
-    # ft_head_counts = form_param.getlist('head_counts[]') or ['0-2000000']
-    # ft_other = form_param.getlist('others[]')
-    # ft_regions = form_param.getlist('regions[]')
-    # benefit = form_param.get('benefit')
+def update_quintile(request):
+    form_param = request.POST
+    benefit = form_param.get('benefit')
+    plan_type = form_param.get('plan_type')
+    plan = int(form_param.get('plan') or '0')
+    attr = form_param.get('property')
+    type_ = form_param.get('type')
 
-    # employers, num_companies = get_filtered_employers(ft_industries, 
-    #                                                   ft_head_counts, 
-    #                                                   ft_other,
-    #                                                   ft_regions)    
-    # return HttpResponse('{:,.0f}'.format(num_companies))
-    return 
+    ft_industries = request.session['ft_industries']
+    ft_head_counts = request.session['ft_head_counts']
+    ft_other = request.session['ft_other']
+    ft_regions = request.session['ft_regions']
+    ft_states = request.session['ft_states']
+
+    employers, num_companies = get_filtered_employers(ft_industries, 
+                                                      ft_head_counts, 
+                                                      ft_other,
+                                                      ft_regions,
+                                                      ft_states)
+
+    quintile = get_attr_quintile(benefit, employers, num_companies, plan_type, attr, MODEL_MAP)
+    return JsonResponse({
+        'graph': quintile,
+        'type': type_}, safe=False)
+
+@csrf_exempt
+def get_num_employers(request):
+    form_param = request.POST
+    ft_industries = form_param.getlist('industry[]', ['*'])
+    ft_head_counts = form_param.getlist('head_counts[]') or ['0-2000000']
+    ft_other = form_param.getlist('others[]')
+    ft_regions = form_param.getlist('regions[]')
+    ft_states = form_param.getlist('states[]')
+    benefit = form_param.get('benefit')
+
+    employers, num_companies = get_filtered_employers(ft_industries, 
+                                                      ft_head_counts, 
+                                                      ft_other,
+                                                      ft_regions,
+                                                      ft_states)    
+    return HttpResponse('{:,.0f}'.format(num_companies))
 
 
 @csrf_exempt
