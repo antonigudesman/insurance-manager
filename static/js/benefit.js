@@ -5,13 +5,15 @@ var others = [];
 var states = [];
 var plan_type = '';
 var plan = 0;
+var quintile_properties = [];
+var quintile_properties_inv = [];
 
 var TYPE = {
     'D_': 'dollar',
     'P_': 'percent'
 }
 
-var colors = ['#f8696b', '#FCAA78', '#bfbfbf', '#B1D480', '#63be7b'];
+var colors = ['#f8696b', '#f8696b', '#FCAA78', '#FCAA78', '#bfbfbf', '#bfbfbf', '#B1D480', '#B1D480', '#63be7b', '#63be7b'];
 
 jQuery(function($) {
 	// mark left menu selected
@@ -30,11 +32,14 @@ jQuery(function($) {
     });
 });
 
-function update_quintile(obj, graph_holder, qscore_holder) {
+function update_quintile(obj, graph_holder, qscore_holder, inverse) {
     property = $(obj).val();
     type = property.substring(0, 2);
     type = TYPE[type];
     property = property.substring(2);
+
+    // change the id of q-score placeholder
+    $('.'+qscore_holder).attr('id', 'prop_rank_'+property);
 
     $.post(
         '/update_quintile',
@@ -43,7 +48,8 @@ function update_quintile(obj, graph_holder, qscore_holder) {
             plan_type: plan_type,
             plan: plan,
             property: property,
-            type: type
+            type: type,
+            inverse: inverse
         },
         function(data) {
             if (plan == 0)
@@ -53,20 +59,14 @@ function update_quintile(obj, graph_holder, qscore_holder) {
             
 
             gh_data = generate_quintile_data(data['graph'], true);        
-            draw_bar_chart(graph_holder, gh_data, data['type'], 6.8);        
+            draw_bar_chart(graph_holder, gh_data, data['type'], 6.4);        
 
-            // $('#'+qscore_holder);
-            // $.each(data, function( key, value ) {
-            //     if (key.match("^rank_")) {
-            //         $('#prop_'+key).html(value);
-            //         $('#prop_'+key).removeAttr('style');
-            //         if ( value != 'N/A' ) {
-            //             $('#prop_'+key).css('color', colors[value-1]);
-            //         }
-            //     } else {
-            //         $('#prop_'+key).html(value);
-            //     }
-            // });         
+            var value = data['qscore'];
+            $('.'+qscore_holder).html(value);
+            $('.'+qscore_holder).removeAttr('style');
+            if ( value != 'N/A' ) {
+                $('.'+qscore_holder).css('color', colors[value-1]);
+            }
         });
 }
 
@@ -240,6 +240,7 @@ update_content = function(benefit, plan_type) {
         else
             $('.ppo-benefit').remove();
 
+        // console.log(gh1_data);
         gh1_data = generate_quintile_data(gh1_data, true);
         gh2_data = generate_quintile_data(gh2_data, true);
         gh3_data = generate_quintile_data(gh3_data, true);
@@ -249,7 +250,8 @@ update_content = function(benefit, plan_type) {
         gh8_data = generate_quintile_data(gh8_data, true);
         gh9_data = generate_quintile_data(gh9_data, true);
         
-        draw_bar_chart('MEDICAL-1', gh1_data, 'dollar', 6.8);        
+        // console.log(gh1_data);
+        draw_bar_chart('MEDICAL-1', gh1_data, 'dollar', 6.4);        
         draw_bar_chart('MEDICAL-2', gh2_data, 'dollar', 6.8);        
         draw_bar_chart('MEDICAL-3', gh3_data, 'dollar', 6.8);        
         draw_bar_chart('MEDICAL-4', gh4_data, 'dollar', 6.8);                
@@ -267,7 +269,17 @@ update_content = function(benefit, plan_type) {
 }
 
 generate_quintile_data = function(raw_data, inverse){
-    var qa_points = $.map(raw_data, function(i){if (i[0]%20==0) return [i];});
+    var qa_points = $.map(raw_data, function(i){
+        if (i[0] % 20 == 0) {
+            if (inverse) {                
+                return [[100-i[0], i[1]]];
+            } else {
+                return [[i[0], i[1]]];                            
+            }
+        }
+    });
+
+    // draw cirlces
     var data = [
         {
             data: qa_points,
@@ -278,17 +290,26 @@ generate_quintile_data = function(raw_data, inverse){
     ];
 
     var section = [];
-    for( var i = 0; i < raw_data.length; i++ ) {
-        var color_index = inverse ? 5 - raw_data[i][0] / 20 : raw_data[i][0] / 20 - 1;
-        section.push(raw_data[i]);
-        if ( i > 0 && raw_data[i][0] % 20 == 0) {
+    var N = raw_data.length;
+
+    for( var i = 0; i < N; i++ ) {
+        var color_index = inverse ? 10 - raw_data[i][0] / 10 : raw_data[i][0] / 10 - 1;
+        if (inverse)
+            section.push([100-raw_data[i][0], raw_data[i][1]]);
+        else
+            section.push([raw_data[i][0], raw_data[i][1]]);
+
+        if ( i >= 0 && raw_data[i][0] % 20 == 0) {
             data.push({
                 data : section,
                 points: { show: false },
                 lines: { show: true, fill: 0.98 },
                 color: colors[color_index]
             });
-            section = [raw_data[i]];
+            if (inverse)
+                section = [[100-raw_data[i][0], raw_data[i][1]]];
+            else
+                section = [[raw_data[i][0], raw_data[i][1]]];
         }
     }       
     return data;
@@ -296,6 +317,17 @@ generate_quintile_data = function(raw_data, inverse){
 
 function update_properties() {
 	var print_template = false;
+
+    // get current quintile properties
+    quintile_properties = [];
+    $('select.property').each(function() {
+        quintile_properties.push($(this).val().substring(2));
+    });   
+
+    quintile_properties_inv = [];
+    $('select.property_inv').each(function() {
+        quintile_properties_inv.push($(this).val().substring(2));
+    });   
 
     if (!print_template) 
         if (plan != -2) // not changed benefit
@@ -313,7 +345,9 @@ function update_properties() {
         {
             benefit: bnchmrk_benefit,
             plan_type: plan_type,
-            plan: plan
+            plan: plan,
+            quintile_properties: quintile_properties,
+            quintile_properties_inv: quintile_properties_inv
         },
         function(data) {
             if (plan == 0)

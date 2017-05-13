@@ -185,6 +185,8 @@ def update_properties(request):
     benefit = form_param.get('benefit')
     plan_type = form_param.get('plan_type')
     plan = int(form_param.get('plan') or '0')
+    quintile_properties = form_param.getlist('quintile_properties[]')
+    quintile_properties_inv = form_param.getlist('quintile_properties_inv[]')
 
     # save for print
     if plan != -1:
@@ -196,7 +198,7 @@ def update_properties(request):
         benefit = 'MEDICAL'
 
     func_name = 'get_{}_properties'.format(benefit.lower())
-    return globals()[func_name](request, plan, plan_type)
+    return globals()[func_name](request, plan, plan_type, quintile_properties, quintile_properties_inv)
 
 
 @csrf_exempt
@@ -207,6 +209,7 @@ def update_quintile(request):
     plan = int(form_param.get('plan') or '0')
     attr = form_param.get('property')
     type_ = form_param.get('type')
+    inverse = form_param.get('inverse')
 
     ft_industries = request.session['ft_industries']
     ft_head_counts = request.session['ft_head_counts']
@@ -220,10 +223,13 @@ def update_quintile(request):
                                                       ft_regions,
                                                       ft_states)
 
-    quintile = get_attr_quintile(benefit, employers, num_companies, plan_type, attr, MODEL_MAP)
+    quintile, qscore = get_attr_quintile(benefit, employers, num_companies, plan_type, attr, MODEL_MAP, plan, inverse)
+
     return JsonResponse({
         'graph': quintile,
+        'qscore': qscore,
         'type': type_}, safe=False)
+
 
 @csrf_exempt
 def get_num_employers(request):

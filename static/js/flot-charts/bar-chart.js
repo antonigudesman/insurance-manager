@@ -24,7 +24,7 @@ function draw_bar_chart(id, data, unit, label_xpos_factor) {
     if (typeof label_xpos_factor === 'undefined')
         label_xpos_factor = 6.5;
 
-    var ticks = [[0, "0%"], [20, "20%"], [40, "40%"], [60, "60%"], [80, "80%"]];
+    var ticks = [[0, "0%"], [10, "10%"], [20, "20%"], [30, "30%"], [40, "40%"], [50, "50%"], [60, "60%"], [70, "70%"], [80, "80%"], [90, "90%"], [100, "100%"],];
 
     if ($('#'+id)[0]) {
         var p = $.plot($('#'+id), data, {

@@ -247,7 +247,7 @@ def get_rank(quintile_array, value):
     if quintile_array[0][1] > value:
         return 1;
     elif quintile_array[-1][1] < value:
-        return 5;
+        return 10;
 
     x_vals = []
     for idx in range(len(quintile_array)-1):
@@ -263,8 +263,8 @@ def get_rank(quintile_array, value):
     except Exception as e:
         print quintile_array, value, '@@@@@@@'
 
-    for idx in range(1, 6):
-        if x_mean <= idx * 20:
+    for idx in range(1, 11):
+        if x_mean <= idx * 10:
             return idx
 
     return '-'
@@ -341,7 +341,7 @@ def get_quintile_properties(var_qs, instance, attrs, attrs_inv, context):
 
     for attr in attrs_inv: 
         rank = get_rank(var_qs['quintile_'+attr], getattr(instance, attr))
-        context['rank_'+attr] = rank if rank == '-' else 6 - rank
+        context['rank_'+attr] = rank if rank == '-' else 11 - rank
 
 
 def get_industries():

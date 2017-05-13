@@ -95,7 +95,7 @@ medical_attrs_boolean_5_states = [
 ]
 
 def get_medicalrx_plan(employers, num_companies, plan_type=None):
-    medians, var_local, qs = get_medical_plan_(employers, num_companies, plan_type)
+    medians, var_local, qs = get_medical_plan_(employers, num_companies, plan_type, medical_quintile_attrs, medical_quintile_attrs_inv)
     prcnt_plan_count = get_plan_percentages(employers, num_companies, 'med')
 
     num_t = Medical.objects.filter(employer__in=employers, type__in=['PPO', 'POS']).values('employer_id').distinct()
@@ -127,29 +127,30 @@ def get_medicalrx_plan(employers, num_companies, plan_type=None):
               + prcnt_plan_count.items()
               + medians.items())
 
-def get_medical_plan_(employers, num_companies, plan_type=None):    
+def get_medical_plan_(employers, num_companies, plan_type, quintile_properties, quintile_properties_inv):    
     plan_type = get_real_medical_type(plan_type)
     qs = Medical.objects.filter(employer__in=employers, type__in=plan_type) 
     medians, sub_qs = get_medians(qs, medical_attrs_dollar, num_companies, medical_attrs_percent, medical_attrs_int)
 
     var_local = {}
-    for attr in medical_quintile_attrs + medical_quintile_attrs_inv:
+    for attr in quintile_properties + quintile_properties_inv:
         var_local['quintile_'+attr] = get_incremental_array(sub_qs['qs_'+attr], attr, 'medicalrx')
 
     return medians, var_local, qs
 
-def get_medical_properties(request, plan, plan_type=None):
+def get_medical_properties(request, plan, plan_type, quintile_properties, quintile_properties_inv):
+    print quintile_properties, quintile_properties_inv, '@@@@@22'
     attrs = [item.name 
              for item in Medical._meta.fields 
              if item.name not in ['id', 'employer', 'title', 'type']]
-    context = get_init_properties(attrs, medical_quintile_attrs + medical_quintile_attrs_inv)
+    context = get_init_properties(attrs, quintile_properties + quintile_properties_inv)
 
     for attr in medical_attrs_boolean_5_states:
         context['coin_'+attr] = ''
 
     if plan:
         employers, num_companies = get_filtered_employers_session(request)
-        medians, var_local, qs = get_medical_plan_(employers, num_companies, plan_type)
+        medians, var_local, qs = get_medical_plan_(employers, num_companies, plan_type, quintile_properties, quintile_properties_inv)
         instance = Medical.objects.get(id=plan)
         context['plan_info'] = ': {}, {}'.format(instance.employer.name, instance.title)
         context['client_name'] = instance.employer.name
@@ -161,7 +162,7 @@ def get_medical_properties(request, plan, plan_type=None):
         get_boolean_properties(instance, medical_attrs_boolean, context)
         get_boolean_properties_5_states(instance, medical_attrs_boolean_5_states, context)
         get_boolean_properties_5_states_coin(instance, medical_attrs_boolean_5_states, context)
-        get_quintile_properties(var_local, instance, medical_quintile_attrs, medical_quintile_attrs_inv, context)
+        get_quintile_properties(var_local, instance, quintile_properties, quintile_properties_inv, context)
 
     return JsonResponse(context, safe=False)
 
@@ -176,7 +177,7 @@ def get_real_medical_type(plan_type):
     return plan_type
 
 
-def get_attr_quintile(benefit, employers, num_companies, plan_type, attr, MODEL_MAP):
+def get_attr_quintile(benefit, employers, num_companies, plan_type, attr, MODEL_MAP, plan, inverse):
     if benefit == 'MEDICALRX':
         plan_type = get_real_medical_type(plan_type)
         model = MODEL_MAP['MEDICAL']
@@ -189,8 +190,13 @@ def get_attr_quintile(benefit, employers, num_companies, plan_type, attr, MODEL_
 
     kwargs = { '{0}__isnull'.format(attr): True }
     sub_qs = qs.exclude(**kwargs)
-    return get_incremental_array(sub_qs, attr, benefit.lower())
+    quintile = get_incremental_array(sub_qs, attr, benefit.lower())
 
+    instance = model.objects.get(id=plan)
+    qscore = get_rank(quintile, getattr(instance, attr))
+    qscore = qscore if not inverse else 11 - qscore
+    
+    return quintile, qscore
 
 """
 Dental ( DPPO, DMO ) page

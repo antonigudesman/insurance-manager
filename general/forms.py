@@ -49,46 +49,103 @@ class MedicalForm(ModelForm):
         return data
 
     def clean(self):
+        type_ = self.cleaned_data.get('type')
         t1_ee = self.cleaned_data.get('t1_ee')
-        t1_gross = self.cleaned_data.get('t1_gross')
         t2_ee = self.cleaned_data.get('t2_ee')
-        t2_gross = self.cleaned_data.get('t2_gross')
         t3_ee = self.cleaned_data.get('t3_ee')
-        t3_gross = self.cleaned_data.get('t3_gross')
         t4_ee = self.cleaned_data.get('t4_ee')
+        t1_gross = self.cleaned_data.get('t1_gross')
+        t2_gross = self.cleaned_data.get('t2_gross')
+        t3_gross = self.cleaned_data.get('t3_gross')
         t4_gross = self.cleaned_data.get('t4_gross')
-
+        t1_ercdhp = self.cleaned_data.get('t1_ercdhp')
+        t2_ercdhp = self.cleaned_data.get('t2_ercdhp')
+        t3_ercdhp = self.cleaned_data.get('t3_ercdhp')
+        t4_ercdhp = self.cleaned_data.get('t4_ercdhp')
         in_ded_single = self.cleaned_data.get('in_ded_single')
         in_max_single = self.cleaned_data.get('in_max_single')
+        in_ded_family = self.cleaned_data.get('in_ded_family')
+        in_max_family = self.cleaned_data.get('in_max_family')
+        out_ded_single = self.cleaned_data.get('out_ded_single')
+        out_max_single = self.cleaned_data.get('out_max_single')
+        out_ded_family = self.cleaned_data.get('out_ded_family')
+        out_max_family = self.cleaned_data.get('out_max_family')
+        out_coin = self.cleaned_data.get('out_coin')
+        hsa = self.cleaned_data.get('hsa')
+        hra = self.cleaned_data.get('hra')
 
         # add custom validation rules 
         if t1_ee > t1_gross and t1_gross:
             self._errors['t1_ee'] = ErrorList([''])
             self._errors['t1_gross'] = ErrorList([''])
-            raise forms.ValidationError("Single Employee Cost should be less than Single Gross Cost.")
+            raise forms.ValidationError("Employee Only tier: Gross cost must be higher than employee cost.")
 
         if t2_ee > t2_gross and t2_gross:
             self._errors['t2_ee'] = ErrorList([''])
             self._errors['t2_gross'] = ErrorList([''])
-            raise forms.ValidationError("Employee & Spouse Cost should be less than Employee & Spouse Gross Cost.")
+            raise forms.ValidationError("Employee & Spouse tier: Gross cost must be higher than employee cost.")
 
         if t3_ee > t3_gross and t3_gross:
             self._errors['t3_ee'] = ErrorList([''])
             self._errors['t3_gross'] = ErrorList([''])
-            raise forms.ValidationError("Employee & Child(ren) Cost should be less than Employee & Child(ren) Gross Cost.")
+            raise forms.ValidationError("Employee & Child(ren) tier: Gross cost must be higher than employee cost.")
 
         if t4_ee > t4_gross and t4_gross:
             self._errors['t4_ee'] = ErrorList([''])
             self._errors['t4_gross'] = ErrorList([''])
-            raise forms.ValidationError("Family Cost should be less than Family Gross Cost.")
+            raise forms.ValidationError("Family tier: Gross cost must be higher than employee cost.")
 
         if in_ded_single > 7150 and in_ded_single:
             self._errors['in_ded_single'] = ErrorList([''])
-            raise forms.ValidationError("Maximum deductible for singles must be less than $7,150.")
+            raise forms.ValidationError("The deductible and out-of-pocket limit for an individual is $7,150.")
 
         if in_max_single > 7150 and in_max_single:
             self._errors['in_max_single'] = ErrorList([''])
-            raise forms.ValidationError("Maximum annual out-of-pocket for singles must be less than $7,150.")
+            raise forms.ValidationError("The deductible and out-of-pocket limit for an individual is $7,150.")
+
+        if in_ded_family > 14300 and in_ded_family:
+            self._errors['in_ded_family'] = ErrorList([''])
+            raise forms.ValidationError("The deductible and out-of-pocket limit for a family is $14,300.")
+
+        if in_max_family > 14300 and in_max_family:
+            self._errors['in_max_family'] = ErrorList([''])
+            raise forms.ValidationError("The deductible and out-of-pocket limit for a family is $14,300.")
+
+        if (type_ == 'HMO' or type_ == 'EPO') and (out_ded_single or out_ded_family or out_max_single or out_max_family or \
+            out_coin):
+            self._errors['out_ded_single'] = ErrorList([''])
+            self._errors['out_ded_family'] = ErrorList([''])
+            self._errors['out_max_single'] = ErrorList([''])
+            self._errors['out_max_family'] = ErrorList([''])
+            self._errors['out_coin'] = ErrorList([''])            
+            raise forms.ValidationError("HMO or EPO plans should not have out-of-network benefits.")
+
+        if not (hsa or hra) and (t1_ercdhp or t2_ercdhp or t3_ercdhp or t4_ercdhp):
+            self._errors['t1_ercdhp'] = ErrorList([''])
+            self._errors['t2_ercdhp'] = ErrorList([''])
+            self._errors['t3_ercdhp'] = ErrorList([''])
+            self._errors['t4_ercdhp'] = ErrorList([''])        
+            raise forms.ValidationError("Only plans paired with a HRA or HSA can have employer-funding.")
+
+        if in_ded_single > out_ded_single and out_ded_single:
+            self._errors['in_ded_single'] = ErrorList([''])
+            self._errors['out_ded_single'] = ErrorList([''])
+            raise forms.ValidationError("Out-of-network single deductible should be greater than the in-network single deductible.")
+
+        if in_ded_family > out_ded_family and out_ded_family:
+            self._errors['in_ded_family'] = ErrorList([''])
+            self._errors['out_ded_family'] = ErrorList([''])
+            raise forms.ValidationError("Out-of-network family deductible should be greater than the in-network family deductible.")
+
+        if in_max_single > out_max_single and out_max_single:
+            self._errors['in_max_single'] = ErrorList([''])
+            self._errors['out_max_single'] = ErrorList([''])
+            raise forms.ValidationError("Out-of-network single maximum should be greater than the in-network single maximum.")
+
+        if in_max_family > out_max_family and out_max_family:
+            self._errors['in_max_family'] = ErrorList([''])
+            self._errors['out_max_family'] = ErrorList([''])
+            raise forms.ValidationError("Out-of-network family maximum should be greater than the in-network family maximum.")
 
         return self.cleaned_data
 

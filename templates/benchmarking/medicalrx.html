@@ -89,7 +89,7 @@
                     </thead>
                     <tbody>
                         <tr class="quintile-subject">
-                            <td class="row-label">Individual Deductible *</td>
+                            <td class="row-label">Individual Deductible</td>
                             <td>{{ mdn_in_ded_single }}</td>
                             <td><span id="prop_in_ded_single"></span></td>
                         </tr>
@@ -116,9 +116,9 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-6 section-graph">
+            <div class="col-md-7 section-graph">
                 <div class="col-sm-12 m-b-15 m-r-25">
-                    <select class="selectpicker property" onchange="update_quintile(this, 'MEDICAL-1', 'prop_rank_in_ded_single');">
+                    <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-1', 'prop_rank_in_ded_single', true);">
                         <option value="D_in_ded_single">Individual Deductible</option>
                         <option value="D_in_ded_family">Family Deductible</option>
                         <option value="D_in_max_single">Individual Maximum</option>
@@ -126,14 +126,14 @@
                         <option value="P_in_coin">Coinsurance</option>
                     </select>
                 </div>                
-                <div class="col-md-12">
+                <div class="col-md-10">
                     <div id="MEDICAL-1" class="flot-chart"></div>
                 </div>
+                <div class="col-md-2 section-score text-center">
+                    <h5 class="toggle_plan">Q-SCORE</h5>
+                    <p><span id="prop_rank_in_ded_single" class="prop_rank_in_ded_single"></span></p>           
+                </div> 
             </div>
-            <div class="col-md-1 section-score text-center">
-                <h5 class="toggle_plan">Q-SCORE</h5>
-                <p><span id="prop_rank_in_ded_single"></span></p>           
-            </div> 
         </div>
     </div>
 
@@ -153,7 +153,7 @@
                     </thead>
                     <tbody>
                         <tr class="quintile-subject">
-                            <td class="row-label">Individual Deductible *</td>
+                            <td class="row-label">Individual Deductible</td>
                             <td>{{ mdn_out_ded_single }}</td>
                             <td><span id="prop_out_ded_single"></span></td>
                         </tr>
@@ -190,13 +190,24 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-6 section-graph">
-                <div id="MEDICAL-2" class="flot-chart"></div>
+            <div class="col-md-7 section-graph">
+                <div class="col-sm-12 m-b-15 m-r-25">
+                    <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-2', 'prop_rank_out_ded_single', true);">
+                        <option value="D_out_ded_single">Individual Deductible</option>
+                        <option value="D_out_ded_family">Family Deductible</option>
+                        <option value="D_out_max_single">Individual Maximum</option>
+                        <option value="D_out_max_family">Family Maximum</option>
+                        <option value="P_out_coin">Coinsurance</option>
+                    </select>
+                </div>                
+                <div class="col-md-10">
+                    <div id="MEDICAL-2" class="flot-chart"></div>
+                </div>
+                <div class="col-md-2 section-score text-center">
+                    <h5 class="toggle_plan">Q-SCORE</h5>
+                    <p><span id="prop_rank_out_ded_single" class="prop_rank_out_ded_single"></span></p>           
+                </div> 
             </div>
-            <div class="col-md-1 section-score text-center">
-                <h5 class="toggle_plan">Q-SCORE</h5>
-                <p><span id="prop_rank_out_ded_single"></span></p>           
-            </div> 
         </div>
     </div>
 
@@ -216,7 +227,7 @@
                     </thead>
                     <tbody>
                         <tr class="quintile-subject">
-                            <td class="row-label">Employee Only *</td>
+                            <td class="row-label">Employee Only</td>
                             <td>{{ mdn_t1_ee }}</td>
                             <td><span id="prop_t1_ee"></span></td>
                         </tr>
@@ -238,13 +249,23 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-6 section-graph">
-                <div id="MEDICAL-8" class="flot-chart"></div>
+            <div class="col-md-7 section-graph">
+                <div class="col-sm-12 m-b-15 m-r-25">
+                    <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-8', 'prop_rank_t1_ee', true);">
+                        <option value="D_t1_ee">Employee Only</option>
+                        <option value="D_t2_ee">Employee + Spouse</option>
+                        <option value="D_t3_ee">Employee + Child(ren)</option>
+                        <option value="D_t4_ee">Family</option>
+                    </select>
+                </div>                            
+                <div class="col-md-10">
+                    <div id="MEDICAL-8" class="flot-chart"></div>
+                </div>
+                <div class="col-md-2 section-score text-center">
+                    <h5 class="toggle_plan">Q-SCORE</h5>
+                    <p><span id="prop_rank_t1_ee" class="prop_rank_t1_ee"></span></p>           
+                </div> 
             </div>
-            <div class="col-md-1 section-score text-center">
-                <h5 class="toggle_plan">Q-SCORE</h5>
-                <p><span id="prop_rank_t1_ee"></span></p>           
-            </div> 
         </div>
     </div> 
 
@@ -264,7 +285,7 @@
                     </thead>
                     <tbody>
                         <tr class="quintile-subject">
-                            <td class="row-label">Employee Only *</td>
+                            <td class="row-label">Employee Only</td>
                             <td>{{ mdn_t1_gross }}</td>
                             <td><span id="prop_t1_gross"></span></td>
                         </tr>
@@ -291,13 +312,23 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-6 section-graph">
-                <div id="MEDICAL-9" class="flot-chart"></div>
+            <div class="col-md-7 section-graph">
+                <div class="col-sm-12 m-b-15 m-r-25">
+                    <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-9', 'prop_rank_t1_gross', true);">
+                        <option value="D_t1_gross">Employee Only</option>
+                        <option value="D_t2_gross">Employee + Spouse</option>
+                        <option value="D_t3_gross">Employee + Child(ren)</option>
+                        <option value="D_t4_gross">Family</option>
+                    </select>
+                </div>                            
+                <div class="col-md-10">
+                    <div id="MEDICAL-9" class="flot-chart"></div>
+                </div>
+                <div class="col-md-2 section-score text-center">
+                    <h5 class="toggle_plan">Q-SCORE</h5>
+                    <p><span id="prop_rank_t1_gross" class="prop_rank_t1_gross"></span></p>           
+                </div> 
             </div>
-            <div class="col-md-1 section-score text-center">
-                <h5 class="toggle_plan">Q-SCORE</h5>
-                <p><span id="prop_rank_t1_gross"></span></p>           
-            </div> 
         </div>
     </div>  
 
@@ -388,7 +419,7 @@
                     </thead>
                     <tbody>
                         <tr class="quintile-subject">
-                            <td class="row-label">Primary Care Copay *</td>
+                            <td class="row-label">Primary Care Copay</td>
                             <td>{{ mdn_pcp_copay }}</td>
                             <td><span id="prop_pcp_copay"></span></td>
                         </tr>
@@ -420,13 +451,22 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-6 section-graph">
-                <div id="MEDICAL-3" class="flot-chart"></div>
+            <div class="col-md-7 section-graph">
+                <div class="col-sm-12 m-b-15 m-r-25">
+                    <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-3', 'prop_rank_pcp_copay', true);">
+                        <option value="D_pcp_copay">Primary Care Copay</option>
+                        <option value="D_sp_copay">Specialist Copay</option>
+                    </select>
+                </div>                
+                
+                <div class="col-md-10">
+                    <div id="MEDICAL-3" class="flot-chart"></div>
+                </div>
+                <div class="col-md-2 section-score text-center">
+                    <h5 class="toggle_plan">Q-SCORE</h5>
+                    <p><span id="prop_rank_pcp_copay" class="prop_rank_pcp_copay"></span></p>           
+                </div> 
             </div>
-            <div class="col-md-1 section-score text-center">
-                <h5 class="toggle_plan">Q-SCORE</h5>
-                <p><span id="prop_rank_pcp_copay"></span></p>           
-            </div> 
         </div>
     </div>
 
@@ -446,7 +486,7 @@
                     </thead>
                     <tbody>
                         <tr class="quintile-subject">
-                            <td class="row-label">Inpatient Copay/Visit Deductible *</td>
+                            <td class="row-label">Inpatient Copay/Visit Deductible</td>
                             <td>{{ mdn_ip_copay }}</td>
                             <td><span id="prop_ip_copay"></span></td>
                         </tr>
@@ -478,13 +518,22 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-6 section-graph">
-                <div id="MEDICAL-5" class="flot-chart"></div>
+            <div class="col-md-7 section-graph">
+                <div class="col-sm-12 m-b-15 m-r-25">
+                    <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-5', 'prop_rank_ip_copay', true);">
+                        <option value="D_ip_copay">Inpatient Copay/Visit Deductible</option>
+                        <option value="D_op_copay">Outpatient Copay/Visit Deductible</option>
+                    </select>
+                </div>                
+
+                <div class="col-md-10">
+                    <div id="MEDICAL-5" class="flot-chart"></div>
+                </div>
+                <div class="col-md-2 section-score text-center">
+                    <h5 class="toggle_plan">Q-SCORE</h5>
+                    <p><span id="prop_rank_ip_copay" class="prop_rank_ip_copay"></span></p>           
+                </div> 
             </div>
-            <div class="col-md-1 section-score text-center">
-                <h5 class="toggle_plan">Q-SCORE</h5>
-                <p><span id="prop_rank_ip_copay"></span></p>           
-            </div> 
         </div>
     </div>
 
@@ -504,7 +553,7 @@
                     </thead>
                     <tbody>
                         <tr class="quintile-subject">
-                            <td class="row-label">Emergency Room Copay/Visit Deductible *</td>
+                            <td class="row-label">Emergency Room Copay/Visit Deductible</td>
                             <td>{{ mdn_er_copay }}</td>
                             <td><span id="prop_er_copay"></span></td>
                         </tr>
@@ -551,13 +600,23 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-6 section-graph">
-                <div id="MEDICAL-4" class="flot-chart"></div>
+            <div class="col-md-7 section-graph">
+                <div class="col-sm-12 m-b-15 m-r-25">
+                    <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-4', 'prop_rank_er_copay', true);">
+                        <option value="D_er_copay">Emergency Room Copay/Visit Deductible</option>
+                        <option value="D_uc_copay">Urgent Care Copay/Visit Deductible</option>
+                        <option value="D_lx_copay">Labs & X-Ray Copay</option>
+                    </select>
+                </div>                
+                
+                <div class="col-md-10">
+                    <div id="MEDICAL-4" class="flot-chart"></div>
+                </div>
+                <div class="col-md-2 section-score text-center">
+                    <h5 class="toggle_plan">Q-SCORE</h5>
+                    <p><span id="prop_rank_er_copay" class="prop_rank_er_copay"></span></p>           
+                </div> 
             </div>
-            <div class="col-md-1 section-score text-center">
-                <h5 class="toggle_plan">Q-SCORE</h5>
-                <p><span id="prop_rank_er_copay"></span></p>           
-            </div> 
         </div>
     </div>
 
@@ -577,7 +636,7 @@
                     </thead>
                     <tbody>
                         <tr class="quintile-subject">
-                            <td class="row-label">Generic Retail Copay *</td>
+                            <td class="row-label">Generic Retail Copay</td>
                             <td>{{ mdn_rx1_copay }}</td>
                             <td><span id="prop_rx1_copay"></span></td>
                         </tr>
@@ -624,13 +683,26 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-6 section-graph">
-                <div id="MEDICAL-6" class="flot-chart"></div>
+            <div class="col-md-7 section-graph">
+                <div class="col-sm-12 m-b-15 m-r-25">
+                    <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-6', 'prop_rank_rx1_copay', true);">
+                        <option value="D_rx1_copay">Generic Retail Copay</option>
+                        <option value="D_rx2_copay">Preferred Retail Copay</option>
+                        <option value="D_rx3_copay">Non-Preferred Retail Copay</option>
+                        <option value="D_rx1_mail_copay">Generic Mail Copay</option>
+                        <option value="D_rx2_mail_copay">Preferred Mail Copay</option>
+                        <option value="D_rx3_mail_copay">Non-Preferred Mail Copay</option>
+                    </select>
+                </div>                
+                
+                <div class="col-md-10">
+                    <div id="MEDICAL-6" class="flot-chart"></div>
+                </div>
+                <div class="col-md-2 section-score text-center">
+                    <h5 class="toggle_plan">Q-SCORE</h5>
+                    <p><span id="prop_rank_rx1_copay" class="prop_rank_rx1_copay"></span></p>           
+                </div> 
             </div>
-            <div class="col-md-1 section-score text-center">
-                <h5 class="toggle_plan">Q-SCORE</h5>
-                <p><span id="prop_rank_rx1_copay"></span></p>           
-            </div> 
         </div>
     </div>
 
