@@ -81,23 +81,7 @@ function draw_bar_chart(id, data, unit, label_xpos_factor) {
             'dollar': '$',
             'percent': '%',
             'int': ''
-        };
-
-        $.each(p.getData()[0].data, function(i, el){
-            var o = p.pointOffset({x: i, y: el[1]});
-            var content = UNIT[unit] + digits(el[1].toString());
-            if (unit == 'percent')
-                content = digits(el[1].toString()) + UNIT[unit];
-
-            if (el[0] % 20 == 0) {
-                $('<div class="data-point-label"><b>' + content + '</b></div>').css( {
-                    position: 'absolute',
-                    left: 30 + el[0] * label_xpos_factor,
-                    top: o.top - 25,
-                    display: 'none'
-                }).appendTo(p.getPlaceholder()).fadeIn('slow');                
-            }
-        });                    
+        };            
     }    
 }
 

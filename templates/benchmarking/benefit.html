@@ -16,11 +16,16 @@
 
         <div class="card">
             <div class="card-header">
-                <h2>Select Plan Type and Client Account Plan <small>The plan type filter only applies to medical, dental and life. If you want to produce a general benchmarking report, without selecting a target client account, leave "No Comparison" selected.</small></h2>
+                <h2>Select Account Plan and Type <small>The plan type filter only applies to medical, dental and life. If you want to produce a general benchmarking report, without selecting a target client account, leave "No Comparison" selected.</small></h2>
             </div>
             <div class="card-body card-padding">
                 <div class="row">   
-                    <div class="col-sm-3 m-b-15">
+                    <div class="col-sm-9 m-b-15">
+                        <p class="f-500 c-black m-b-15">Account Plan:</p>
+                        <select name="" id="plans" class="selectpicker" data-none-selected-text="No Comparison">
+                        </select>
+                    </div>            
+                    <div class="col-sm-2 m-b-15">
                         <p class="f-500 c-black m-b-15">Plan Type:</p>
                         <select name="" id="plan_types" class="selectpicker" data-none-selected-text="All">
                             <option value="*">All</option>
@@ -29,11 +34,6 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div class="col-sm-8 m-b-15">
-                        <p class="f-500 c-black m-b-15">Client Account Plan:</p>
-                        <select name="" id="plans" class="selectpicker" data-none-selected-text="No Comparison">
-                        </select>
-                    </div>            
                 </div>
             </div>
             <div class="card-header">
@@ -64,7 +64,7 @@
                         </select>
                     </div>
                     <div class="col-sm-2 m-b-15">
-                        <p class="f-500 c-black m-b-15">States:</p>
+                        <p class="f-500 c-black m-b-15">HQ States:</p>
                         <select name="" id="states" multiple class="selectpicker" data-none-selected-text="All">
                             <option value="*">All</option>
                             {% for item in STATES %}

@@ -84,7 +84,7 @@
                         <tr>
                             <th class="row-label">In-Network Cost Share</th>
                             <th>Benchmark</th>
-                            <th class="toggle_plan">Current</th>
+                            <th class="toggle_plan">Your Plan</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -119,18 +119,18 @@
             <div class="col-md-7 section-graph">
                 <div class="col-sm-12 m-b-15 m-r-25">
                     <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-1', 'prop_rank_in_ded_single', true);">
-                        <option value="D_in_ded_single">Individual Deductible</option>
-                        <option value="D_in_ded_family">Family Deductible</option>
-                        <option value="D_in_max_single">Individual Maximum</option>
-                        <option value="D_in_max_family">Family Maximum</option>
-                        <option value="P_in_coin">Coinsurance</option>
+                        <option value="D_in_ded_single">In-Network Individual Deductible</option>
+                        <option value="D_in_ded_family">In-Network Family Deductible</option>
+                        <option value="D_in_max_single">In-Network Individual Maximum</option>
+                        <option value="D_in_max_family">In-Network Family Maximum</option>
+                        <option value="P_in_coin">In-Network Coinsurance</option>
                     </select>
                 </div>                
                 <div class="col-md-10">
                     <div id="MEDICAL-1" class="flot-chart"></div>
                 </div>
                 <div class="col-md-2 section-score text-center">
-                    <h5 class="toggle_plan">Q-SCORE</h5>
+                    <h5 class="toggle_plan">Percentile Rank</h5>
                     <p><span id="prop_rank_in_ded_single" class="prop_rank_in_ded_single"></span></p>           
                 </div> 
             </div>
@@ -148,7 +148,7 @@
                         <tr>
                             <th class="row-label">Out-of-Network Cost Share</th>
                             <th>Benchmark</th>
-                            <th class="toggle_plan">Current</th>
+                            <th class="toggle_plan">Your Plan</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -193,18 +193,18 @@
             <div class="col-md-7 section-graph">
                 <div class="col-sm-12 m-b-15 m-r-25">
                     <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-2', 'prop_rank_out_ded_single', true);">
-                        <option value="D_out_ded_single">Individual Deductible</option>
-                        <option value="D_out_ded_family">Family Deductible</option>
-                        <option value="D_out_max_single">Individual Maximum</option>
-                        <option value="D_out_max_family">Family Maximum</option>
-                        <option value="P_out_coin">Coinsurance</option>
+                        <option value="D_out_ded_single">Out-of-Network Individual Deductible</option>
+                        <option value="D_out_ded_family">Out-of-Network Family Deductible</option>
+                        <option value="D_out_max_single">Out-of-Network Individual Maximum</option>
+                        <option value="D_out_max_family">Out-of-Network Family Maximum</option>
+                        <option value="P_out_coin">Out-of-Network Coinsurance</option>
                     </select>
                 </div>                
                 <div class="col-md-10">
                     <div id="MEDICAL-2" class="flot-chart"></div>
                 </div>
                 <div class="col-md-2 section-score text-center">
-                    <h5 class="toggle_plan">Q-SCORE</h5>
+                    <h5 class="toggle_plan">Percentile Rank</h5>
                     <p><span id="prop_rank_out_ded_single" class="prop_rank_out_ded_single"></span></p>           
                 </div> 
             </div>
@@ -220,130 +220,9 @@
                     <col width="25%">
                     <thead>
                         <tr>
-                            <th class="row-label">Employee Annual Contributions</th>
-                            <th>Benchmark</th>
-                            <th class="toggle_plan">Current</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="quintile-subject">
-                            <td class="row-label">Employee Only</td>
-                            <td>{{ mdn_t1_ee }}</td>
-                            <td><span id="prop_t1_ee"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Employee + Spouse</td>
-                            <td>{{ mdn_t2_ee }}</td>
-                            <td><span id="prop_t2_ee"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Employee + Child(ren)</td>
-                            <td>{{ mdn_t3_ee }}</td>
-                            <td><span id="prop_t3_ee"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Family</td>
-                            <td>{{ mdn_t4_ee }}</td>
-                            <td><span id="prop_t4_ee"></span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-7 section-graph">
-                <div class="col-sm-12 m-b-15 m-r-25">
-                    <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-8', 'prop_rank_t1_ee', true);">
-                        <option value="D_t1_ee">Employee Only</option>
-                        <option value="D_t2_ee">Employee + Spouse</option>
-                        <option value="D_t3_ee">Employee + Child(ren)</option>
-                        <option value="D_t4_ee">Family</option>
-                    </select>
-                </div>                            
-                <div class="col-md-10">
-                    <div id="MEDICAL-8" class="flot-chart"></div>
-                </div>
-                <div class="col-md-2 section-score text-center">
-                    <h5 class="toggle_plan">Q-SCORE</h5>
-                    <p><span id="prop_rank_t1_ee" class="prop_rank_t1_ee"></span></p>           
-                </div> 
-            </div>
-        </div>
-    </div> 
-
-    <div class="card section">
-        <div class="row">
-            <div class="col-md-5 section-content">
-                <table class="table table-striped table-content">
-                    <col width="50%">
-                    <col width="25%">
-                    <col width="25%">
-                    <thead>
-                        <tr>
-                            <th class="row-label">Gross Annual Cost</th>
-                            <th>Benchmark</th>
-                            <th class="toggle_plan">Current</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="quintile-subject">
-                            <td class="row-label">Employee Only</td>
-                            <td>{{ mdn_t1_gross }}</td>
-                            <td><span id="prop_t1_gross"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Employee + Spouse</td>
-                            <td>{{ mdn_t2_gross }}</td>
-                            <td><span id="prop_t2_gross"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Employee + Child(ren)</td>
-                            <td>{{ mdn_t3_gross }}</td>
-                            <td><span id="prop_t3_gross"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Family</td>
-                            <td>{{ mdn_t4_gross }}</td>
-                            <td><span id="prop_t4_gross"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Age-Banded Rates</td>
-                            <td>{{ prcnt_age_rated }}</td>
-                            <td><span id="prop_age_rated"></span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-7 section-graph">
-                <div class="col-sm-12 m-b-15 m-r-25">
-                    <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-9', 'prop_rank_t1_gross', true);">
-                        <option value="D_t1_gross">Employee Only</option>
-                        <option value="D_t2_gross">Employee + Spouse</option>
-                        <option value="D_t3_gross">Employee + Child(ren)</option>
-                        <option value="D_t4_gross">Family</option>
-                    </select>
-                </div>                            
-                <div class="col-md-10">
-                    <div id="MEDICAL-9" class="flot-chart"></div>
-                </div>
-                <div class="col-md-2 section-score text-center">
-                    <h5 class="toggle_plan">Q-SCORE</h5>
-                    <p><span id="prop_rank_t1_gross" class="prop_rank_t1_gross"></span></p>           
-                </div> 
-            </div>
-        </div>
-    </div>  
-
-    <div class="card section">
-        <div class="row">
-            <div class="col-md-5 section-content">
-                <table class="table table-striped table-content">
-                    <col width="50%">
-                    <col width="25%">
-                    <col width="25%">
-                    <thead>
-                        <tr>
                             <th class="row-label">{% if request.session.bnchmrk_benefit == 'HDHP ' %} HDHP {% else %} HRA {% endif %} Funding</th>
                             <th>Benchmark</th>
-                            <th class="toggle_plan">Current</th>
+                            <th class="toggle_plan">Your Plan</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -403,7 +282,7 @@
         </div>
     </div>
 
-    <div class="card section hdhp-benefit">
+    <div class="card section">
         <div class="row">
             <div class="col-md-5 section-content">
                 <table class="table table-striped table-content">
@@ -412,23 +291,189 @@
                     <col width="25%">
                     <thead>
                         <tr>
-                            <th class="row-label">Physician Visit Coverage</th>
+                            <th class="row-label">Employee Annual Contribution</th>
                             <th>Benchmark</th>
-                            <th class="toggle_plan">Current</th>
+                            <th class="toggle_plan">Your Plan</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="quintile-subject">
-                            <td class="row-label">Primary Care Copay</td>
-                            <td>{{ mdn_pcp_copay }}</td>
-                            <td><span id="prop_pcp_copay"></span></td>
+                            <td class="row-label">Employee Only</td>
+                            <td>{{ mdn_t1_ee }}</td>
+                            <td><span id="prop_t1_ee"></span></td>
                         </tr>
                         <tr>
-                            <td class="row-label">Specialist Copay</td>
-                            <td>{{ mdn_sp_copay }}</td>
-                            <td><span id="prop_sp_copay"></span></td>
+                            <td class="row-label">Employee + Spouse</td>
+                            <td>{{ mdn_t2_ee }}</td>
+                            <td><span id="prop_t2_ee"></span></td>
                         </tr>
                         <tr>
+                            <td class="row-label">Employee + Child(ren)</td>
+                            <td>{{ mdn_t3_ee }}</td>
+                            <td><span id="prop_t3_ee"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Family</td>
+                            <td>{{ mdn_t4_ee }}</td>
+                            <td><span id="prop_t4_ee"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-7 section-graph">
+                <div class="col-sm-12 m-b-15 m-r-25">
+                    <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-8', 'prop_rank_t1_ee', true);">
+                        <option value="D_t1_ee">Employee Only Contribution</option>
+                        <option value="D_t2_ee">Employee + Spouse Contribution</option>
+                        <option value="D_t3_ee">Employee + Child(ren) Contribution</option>
+                        <option value="D_t4_ee">Family Contribution</option>
+                    </select>
+                </div>                            
+                <div class="col-md-10">
+                    <div id="MEDICAL-8" class="flot-chart"></div>
+                </div>
+                <div class="col-md-2 section-score text-center">
+                    <h5 class="toggle_plan">Percentile Rank</h5>
+                    <p><span id="prop_rank_t1_ee" class="prop_rank_t1_ee"></span></p>           
+                </div> 
+            </div>
+        </div>
+    </div> 
+
+    <div class="card section">
+        <div class="row">
+            <div class="col-md-5 section-content">
+                <table class="table table-striped table-content">
+                    <col width="50%">
+                    <col width="25%">
+                    <col width="25%">
+                    <thead>
+                        <tr>
+                            <th class="row-label">Gross Annual Cost</th>
+                            <th>Benchmark</th>
+                            <th class="toggle_plan">Your Plan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="quintile-subject">
+                            <td class="row-label">Employee Only</td>
+                            <td>{{ mdn_t1_gross }}</td>
+                            <td><span id="prop_t1_gross"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Employee + Spouse</td>
+                            <td>{{ mdn_t2_gross }}</td>
+                            <td><span id="prop_t2_gross"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Employee + Child(ren)</td>
+                            <td>{{ mdn_t3_gross }}</td>
+                            <td><span id="prop_t3_gross"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Family</td>
+                            <td>{{ mdn_t4_gross }}</td>
+                            <td><span id="prop_t4_gross"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Age-Banded Rates</td>
+                            <td>{{ prcnt_age_rated }}</td>
+                            <td><span id="prop_age_rated"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-7 section-graph">
+                <div class="col-sm-12 m-b-15 m-r-25">
+                    <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-9', 'prop_rank_t1_gross', true);">
+                        <option value="D_t1_gross">Employee Only Gross Cost</option>
+                        <option value="D_t2_gross">Employee + Spouse Gross Cost</option>
+                        <option value="D_t3_gross">Employee + Child(ren) Gross Cost</option>
+                        <option value="D_t4_gross">Family Gross Cost</option>
+                    </select>
+                </div>                            
+                <div class="col-md-10">
+                    <div id="MEDICAL-9" class="flot-chart"></div>
+                </div>
+                <div class="col-md-2 section-score text-center">
+                    <h5 class="toggle_plan">Percentile Rank</h5>
+                    <p><span id="prop_rank_t1_gross" class="prop_rank_t1_gross"></span></p>           
+                </div> 
+            </div>
+        </div>
+    </div>  
+
+     <div class="card section hdhp-benefit">
+        <div class="row">
+            <div class="col-md-5 section-content">
+                <table class="table table-striped table-content">
+                    <col width="50%">
+                    <col width="25%">
+                    <col width="25%">
+                    <thead>
+                        <tr>
+                            <th class="row-label">Does Deductible Apply?</th>
+                            <th>Benchmark</th>
+                            <th class="toggle_plan">Your Plan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="row-label">Primary Care Physician</td>
+                            <td>{{ prcnt_pcp_ded_apply }}</td>
+                            <td><span id="prop_pcp_ded_apply"></span></td>
+                        </tr> 
+                        <tr>
+                            <td class="row-label">Specialist Physician</td>
+                            <td>{{ prcnt_sp_ded_apply }}</td>
+                            <td><span id="prop_sp_ded_apply"></span></td>
+                        </tr>  
+                        <tr>
+                            <td class="row-label">Emergency Room</td>
+                            <td>{{ prcnt_er_ded_apply }}</td>
+                            <td><span id="prop_er_ded_apply"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Urgent Care</td>
+                            <td>{{ prcnt_uc_ded_apply }}</td>
+                            <td><span id="prop_uc_ded_apply"></span></td>
+                        </tr>  
+                        <tr>
+                            <td class="row-label">Labs & X-Ray</td>
+                            <td>{{ prcnt_lx_ded_apply }}</td>
+                            <td><span id="prop_lx_ded_apply"></span></td>
+                        </tr> 
+                        <tr>
+                            <td class="row-label">Inpatient Hospital</td>
+                            <td>{{ prcnt_ip_ded_apply }}</td>
+                            <td><span id="prop_ip_ded_apply"></span></td>
+                        </tr>  
+                        <tr>
+                            <td class="row-label">Outpatient Hospital</td>
+                            <td>{{ prcnt_op_ded_apply }}</td>
+                            <td><span id="prop_op_ded_apply"></span></td>
+                        </tr>   
+                        <tr>
+                            <td class="row-label">Generic Rx</td>
+                            <td>{{ prcnt_rx1_ded_apply }}</td>
+                            <td><span id="prop_rx1_ded_apply"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Preferred Rx</td>
+                            <td>{{ prcnt_rx2_ded_apply }}</td>
+                            <td><span id="prop_rx2_ded_apply"></span></td>
+                        </tr>   
+                        <tr>
+                            <td class="row-label">Non-Preferred Rx</td>
+                            <td>{{ prcnt_rx3_ded_apply }}</td>
+                            <td><span id="prop_rx3_ded_apply"></span></td>
+                        </tr>  
+                        <tr>
+                            <td class="row-label">Specialty Rx</td>
+                            <td>{{ prcnt_rx4_ded_apply }}</td>
+                            <td><span id="prop_rx4_ded_apply"></span></td>
+                        </tr> 
+<!--                         <tr>
                             <td class="row-label">Coinsurance Applies to Primary Care Visits</td>
                             <td>{{ prcnt_coin_pcp_ded_apply }}</td>
                             <td><span id="prop_coin_pcp_ded_apply"></span></td>
@@ -438,135 +483,6 @@
                             <td>{{ prcnt_coin_sp_ded_apply }}</td>
                             <td><span id="prop_coin_sp_ded_apply"></span></td>
                         </tr>                
-                        <tr>
-                            <td class="row-label">Deductible Applies to Primary Care Visits</td>
-                            <td>{{ prcnt_pcp_ded_apply }}</td>
-                            <td><span id="prop_pcp_ded_apply"></span></td>
-                        </tr> 
-                        <tr>
-                            <td class="row-label">Deductible Applies to Specialist Visits</td>
-                            <td>{{ prcnt_sp_ded_apply }}</td>
-                            <td><span id="prop_sp_ded_apply"></span></td>
-                        </tr> 
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-7 section-graph">
-                <div class="col-sm-12 m-b-15 m-r-25">
-                    <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-3', 'prop_rank_pcp_copay', true);">
-                        <option value="D_pcp_copay">Primary Care Copay</option>
-                        <option value="D_sp_copay">Specialist Copay</option>
-                    </select>
-                </div>                
-                
-                <div class="col-md-10">
-                    <div id="MEDICAL-3" class="flot-chart"></div>
-                </div>
-                <div class="col-md-2 section-score text-center">
-                    <h5 class="toggle_plan">Q-SCORE</h5>
-                    <p><span id="prop_rank_pcp_copay" class="prop_rank_pcp_copay"></span></p>           
-                </div> 
-            </div>
-        </div>
-    </div>
-
-    <div class="card section hdhp-benefit">
-        <div class="row">
-            <div class="col-md-5 section-content">
-                <table class="table table-striped table-content">
-                    <col width="50%">
-                    <col width="25%">
-                    <col width="25%">
-                    <thead>
-                        <tr>
-                            <th class="row-label">Hospital Visit Coverage</th>
-                            <th>Benchmark</th>
-                            <th class="toggle_plan">Current</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="quintile-subject">
-                            <td class="row-label">Inpatient Copay/Visit Deductible</td>
-                            <td>{{ mdn_ip_copay }}</td>
-                            <td><span id="prop_ip_copay"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Outpatient Copay/Visit Deductible</td>
-                            <td>{{ mdn_op_copay }}</td>
-                            <td><span id="prop_op_copay"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Coinsurance Applies to Inpatient Visits</td>
-                            <td>{{ prcnt_coin_ip_ded_apply }}</td>
-                            <td><span id="prop_coin_ip_ded_apply"></span></td>
-                        </tr> 
-                        <tr>
-                            <td class="row-label">Coinsurance Applies to Outpatient Visits</td>
-                            <td>{{ prcnt_coin_op_ded_apply }}</td>
-                            <td><span id="prop_coin_op_ded_apply"></span></td>
-                        </tr>                   
-                        <tr>
-                            <td class="row-label">Deductible Applies to Inpatient Visits</td>
-                            <td>{{ prcnt_ip_ded_apply }}</td>
-                            <td><span id="prop_ip_ded_apply"></span></td>
-                        </tr>  
-                        <tr>
-                            <td class="row-label">Deductible Applies to Outpatient Visits</td>
-                            <td>{{ prcnt_op_ded_apply }}</td>
-                            <td><span id="prop_op_ded_apply"></span></td>
-                        </tr>     
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-7 section-graph">
-                <div class="col-sm-12 m-b-15 m-r-25">
-                    <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-5', 'prop_rank_ip_copay', true);">
-                        <option value="D_ip_copay">Inpatient Copay/Visit Deductible</option>
-                        <option value="D_op_copay">Outpatient Copay/Visit Deductible</option>
-                    </select>
-                </div>                
-
-                <div class="col-md-10">
-                    <div id="MEDICAL-5" class="flot-chart"></div>
-                </div>
-                <div class="col-md-2 section-score text-center">
-                    <h5 class="toggle_plan">Q-SCORE</h5>
-                    <p><span id="prop_rank_ip_copay" class="prop_rank_ip_copay"></span></p>           
-                </div> 
-            </div>
-        </div>
-    </div>
-
-    <div class="card section hdhp-benefit">
-        <div class="row">
-            <div class="col-md-5 section-content">
-                <table class="table table-striped table-content">
-                    <col width="50%">
-                    <col width="25%">
-                    <col width="25%">
-                    <thead>
-                        <tr>
-                            <th class="row-label">Other Facility Coverage</th>
-                            <th>Benchmark</th>
-                            <th class="toggle_plan">Current</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="quintile-subject">
-                            <td class="row-label">Emergency Room Copay/Visit Deductible</td>
-                            <td>{{ mdn_er_copay }}</td>
-                            <td><span id="prop_er_copay"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Urgent Care Copay/Visit Deductible</td>
-                            <td>{{ mdn_uc_copay }}</td>
-                            <td><span id="prop_uc_copay"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Labs & X-Ray Copay</td>
-                            <td>{{ mdn_lx_copay }}</td>
-                            <td><span id="prop_lx_copay"></span></td>
-                        </tr>
                         <tr>
                             <td class="row-label">Coinsurance Applies to Emergency Room Visits</td>
                             <td>{{ prcnt_coin_er_ded_apply }}</td>
@@ -583,38 +499,105 @@
                             <td><span id="prop_coin_lx_ded_apply"></span></td>
                         </tr>                                          
                         <tr>
-                            <td class="row-label">Deductible Applies to Emergency Room Visits</td>
-                            <td>{{ prcnt_er_ded_apply }}</td>
-                            <td><span id="prop_er_ded_apply"></span></td>
-                        </tr>
+                            <td class="row-label">Coinsurance Applies to Inpatient Visits</td>
+                            <td>{{ prcnt_coin_ip_ded_apply }}</td>
+                            <td><span id="prop_coin_ip_ded_apply"></span></td>
+                        </tr> 
                         <tr>
-                            <td class="row-label">Deductible Applies to Urgent Care Visits</td>
-                            <td>{{ prcnt_uc_ded_apply }}</td>
-                            <td><span id="prop_uc_ded_apply"></span></td>
-                        </tr>  
-                        <tr>
-                            <td class="row-label">Deductible Applies to Labs & X-Ray Visits</td>
-                            <td>{{ prcnt_lx_ded_apply }}</td>
-                            <td><span id="prop_lx_ded_apply"></span></td>
-                        </tr>  
+                            <td class="row-label">Coinsurance Applies to Outpatient Visits</td>
+                            <td>{{ prcnt_coin_op_ded_apply }}</td>
+                            <td><span id="prop_coin_op_ded_apply"></span></td>
+                        </tr>     -->               
                     </tbody>
                 </table>
             </div>
             <div class="col-md-7 section-graph">
                 <div class="col-sm-12 m-b-15 m-r-25">
-                    <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-4', 'prop_rank_er_copay', true);">
-                        <option value="D_er_copay">Emergency Room Copay/Visit Deductible</option>
-                        <option value="D_uc_copay">Urgent Care Copay/Visit Deductible</option>
-                        <option value="D_lx_copay">Labs & X-Ray Copay</option>
+
+                </div>                
+
+                <div class="col-md-10">
+
+                </div>
+                <div class="col-md-2 section-score text-center">
+        
+                </div> 
+            </div>
+        </div>
+    </div>
+
+   <div class="card section hdhp-benefit">
+        <div class="row">
+            <div class="col-md-5 section-content">
+                <table class="table table-striped table-content">
+                    <col width="50%">
+                    <col width="25%">
+                    <col width="25%">
+                    <thead>
+                        <tr>
+                            <th class="row-label">Copay/Per Occurance Deductible</th>
+                            <th>Benchmark</th>
+                            <th class="toggle_plan">Your Plan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="quintile-subject">
+                            <td class="row-label">Primary Care Physician</td>
+                            <td>{{ mdn_pcp_copay }}</td>
+                            <td><span id="prop_pcp_copay"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Specialist Physician</td>
+                            <td>{{ mdn_sp_copay }}</td>
+                            <td><span id="prop_sp_copay"></span></td>
+                        </tr>
+                        <tr class="quintile-subject">
+                            <td class="row-label">Emergency Room</td>
+                            <td>{{ mdn_er_copay }}</td>
+                            <td><span id="prop_er_copay"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Urgent Care</td>
+                            <td>{{ mdn_uc_copay }}</td>
+                            <td><span id="prop_uc_copay"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Labs & X-Ray</td>
+                            <td>{{ mdn_lx_copay }}</td>
+                            <td><span id="prop_lx_copay"></span></td>
+                        </tr>
+                        <tr class="quintile-subject">
+                            <td class="row-label">Inpatient Hospital</td>
+                            <td>{{ mdn_ip_copay }}</td>
+                            <td><span id="prop_ip_copay"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Outpatient Hospital</td>
+                            <td>{{ mdn_op_copay }}</td>
+                            <td><span id="prop_op_copay"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-7 section-graph">
+                <div class="col-sm-12 m-b-15 m-r-25">
+                    <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-3', 'prop_rank_pcp_copay', true);">
+                        <option value="D_pcp_copay">Primary Care Physician</option>
+                        <option value="D_sp_copay">Specialist Physician</option>
+                        <option value="D_er_copay">Emergency Room</option>
+                        <option value="D_uc_copay">Urgent Care</option>
+                        <option value="D_lx_copay">Labs & X-Ray</option>
+                        <option value="D_ip_copay">Inpatient Hospital</option>
+                        <option value="D_op_copay">Outpatient Hospital</option>
                     </select>
                 </div>                
                 
                 <div class="col-md-10">
-                    <div id="MEDICAL-4" class="flot-chart"></div>
+                    <div id="MEDICAL-3" class="flot-chart"></div>
                 </div>
                 <div class="col-md-2 section-score text-center">
-                    <h5 class="toggle_plan">Q-SCORE</h5>
-                    <p><span id="prop_rank_er_copay" class="prop_rank_er_copay"></span></p>           
+                    <h5 class="toggle_plan">Percentile Rank</h5>
+                    <p><span id="prop_rank_pcp_copay" class="prop_rank_pcp_copay"></span></p>           
                 </div> 
             </div>
         </div>
@@ -629,69 +612,66 @@
                     <col width="25%">
                     <thead>
                         <tr>
-                            <th class="row-label">Prescription Coverage</th>
+                            <th class="row-label">Prescription Copays</th>
                             <th>Benchmark</th>
-                            <th class="toggle_plan">Current</th>
+                            <th class="toggle_plan">Your Plan</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="quintile-subject">
-                            <td class="row-label">Generic Retail Copay</td>
+                            <td class="row-label">Generic Retail</td>
                             <td>{{ mdn_rx1_copay }}</td>
                             <td><span id="prop_rx1_copay"></span></td>
                         </tr>
                         <tr>
-                            <td class="row-label">Preferred Retail Copay</td>
+                            <td class="row-label">Preferred Retail</td>
                             <td>{{ mdn_rx2_copay }}</td>
                             <td><span id="prop_rx2_copay"></span></td>
                         </tr>
                         <tr>
-                            <td class="row-label">Non-Preferred Retail Copay</td>
+                            <td class="row-label">Non-Preferred Retail</td>
                             <td>{{ mdn_rx3_copay }}</td>
                             <td><span id="prop_rx3_copay"></span></td>
                         </tr>
                         <tr>
-                            <td class="row-label">Generic Mail Copay</td>
+                            <td class="row-label">Specialty Retail</td>
+                            <td>{{ mdn_rx4_copay }}</td>
+                            <td><span id="prop_rx4_copay"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Generic Mail</td>
                             <td>{{ mdn_rx1_mail_copay }}</td>
                             <td><span id="prop_rx1_mail_copay"></span></td>
                         </tr>
                         <tr>
-                            <td class="row-label">Preferred Mail Copay</td>
+                            <td class="row-label">Preferred Mail</td>
                             <td>{{ mdn_rx2_mail_copay }}</td>
                             <td><span id="prop_rx2_mail_copay"></span></td>
                         </tr>
                         <tr>
-                            <td class="row-label">Non-Preferred Mail Copay</td>
+                            <td class="row-label">Non-Preferred Mail</td>
                             <td>{{ mdn_rx3_mail_copay }}</td>
                             <td><span id="prop_rx3_mail_copay"></span></td>
                         </tr>
                         <tr>
-                            <td class="row-label">Deductible Applies to Generic Drugs</td>
-                            <td>{{ prcnt_rx1_ded_apply }}</td>
-                            <td><span id="prop_rx1_ded_apply"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Deductible Applies to Preferred Drugs</td>
-                            <td>{{ prcnt_rx2_ded_apply }}</td>
-                            <td><span id="prop_rx2_ded_apply"></span></td>
-                        </tr>   
-                        <tr>
-                            <td class="row-label">Deductible Applies to Non-Preferred Drugs</td>
-                            <td>{{ prcnt_rx3_ded_apply }}</td>
-                            <td><span id="prop_rx3_ded_apply"></span></td>
-                        </tr>             
+                            <td class="row-label">Specialty Mail</td>
+                            <td>{{ mdn_rx4_mail_copay }}</td>
+                            <td><span id="prop_rx4_mail_copay"></span></td>
+                        </tr>      
                     </tbody>
                 </table>
             </div>
             <div class="col-md-7 section-graph">
                 <div class="col-sm-12 m-b-15 m-r-25">
                     <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-6', 'prop_rank_rx1_copay', true);">
-                        <option value="D_rx1_copay">Generic Retail Copay</option>
-                        <option value="D_rx2_copay">Preferred Retail Copay</option>
-                        <option value="D_rx3_copay">Non-Preferred Retail Copay</option>
-                        <option value="D_rx1_mail_copay">Generic Mail Copay</option>
-                        <option value="D_rx2_mail_copay">Preferred Mail Copay</option>
-                        <option value="D_rx3_mail_copay">Non-Preferred Mail Copay</option>
+                        <option value="D_rx1_copay">Generic Retail</option>
+                        <option value="D_rx2_copay">Preferred Retail</option>
+                        <option value="D_rx3_copay">Non-Preferred Retail</option>
+                        <option value="D_rx4_copay">Specialty Retail</option>
+                        <option value="D_rx1_mail_copay">Generic Mail</option>
+                        <option value="D_rx2_mail_copay">Preferred Mail</option>
+                        <option value="D_rx3_mail_copay">Non-Preferred Mail</option>
+                        <option value="D_rx4_mail_copay">Specialty Mail</option>
                     </select>
                 </div>                
                 
@@ -699,7 +679,7 @@
                     <div id="MEDICAL-6" class="flot-chart"></div>
                 </div>
                 <div class="col-md-2 section-score text-center">
-                    <h5 class="toggle_plan">Q-SCORE</h5>
+                    <h5 class="toggle_plan">Percentile Rank</h5>
                     <p><span id="prop_rank_rx1_copay" class="prop_rank_rx1_copay"></span></p>           
                 </div> 
             </div>
@@ -717,7 +697,7 @@
                         <tr>
                             <th class="row-label">Prescription Cost Share</th>
                             <th>Benchmark</th>
-                            <th class="toggle_plan">Current</th>
+                            <th class="toggle_plan">Your Plan</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -755,22 +735,7 @@
                             <td class="row-label">Rx Coinsurance</td>
                             <td>{{ mdn_rx_coin }}</td>
                             <td><span id="prop_rx_coin"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Specialty Drug Retail Copay</td>
-                            <td>{{ mdn_rx4_copay }}</td>
-                            <td><span id="prop_rx4_copay"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Specialty Drug Mail Copay</td>
-                            <td>{{ mdn_rx4_mail_copay }}</td>
-                            <td><span id="prop_rx4_mail_copay"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Deductible Applies to Specialty Drugs</td>
-                            <td>{{ prcnt_rx4_ded_apply }}</td>
-                            <td><span id="prop_rx4_ded_apply"></span></td>
-                        </tr>  
+                        </tr> 
                     </tbody>
                 </table>
             </div>

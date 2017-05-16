@@ -58,14 +58,16 @@ function update_quintile(obj, graph_holder, qscore_holder, inverse) {
                 $('.toggle_plan').show();
             
 
-            gh_data = generate_quintile_data(data['graph'], true);        
+            gh_data = generate_quintile_data(data['graph'], inverse);        
             draw_bar_chart(graph_holder, gh_data, data['type'], 6.4);        
 
             var value = data['qscore'];
-            $('.'+qscore_holder).html(value);
-            $('.'+qscore_holder).removeAttr('style');
-            if ( value != 'N/A' ) {
-                $('.'+qscore_holder).css('color', colors[value-1]);
+            if (value != 'N/A') {
+                $('.'+qscore_holder).html(value);
+                $('.'+qscore_holder).removeAttr('style');
+                if ( value != 'N/A' ) {
+                    $('.'+qscore_holder).css('color', colors[value-1]);
+                }                
             }
         });
 }
@@ -269,24 +271,17 @@ update_content = function(benefit, plan_type) {
 }
 
 generate_quintile_data = function(raw_data, inverse){
-    var qa_points = $.map(raw_data, function(i){
-        if (i[0] % 20 == 0) {
-            if (inverse) {                
-                return [[100-i[0], i[1]]];
-            } else {
-                return [[i[0], i[1]]];                            
-            }
-        }
-    });
+    if (raw_data.length < 10)
+        return [];
 
     // draw cirlces
     var data = [
-        {
-            data: qa_points,
-            points: { show: true, radius: 5 },
-            lines: { show: false, fill: 0.98 },
-            color: '#f1dd2c'
-        }
+        // {
+        //     data: [[100-raw_data[3][0], raw_data[3][1]]],
+        //     points: { show: true, radius: 4 },
+        //     lines: { show: false, fill: 0.98 },
+        //     color: '#000000'
+        // }
     ];
 
     var section = [];

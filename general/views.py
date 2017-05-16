@@ -206,7 +206,7 @@ def update_quintile(request):
     form_param = request.POST
     benefit = form_param.get('benefit')
     plan_type = form_param.get('plan_type')
-    plan = int(form_param.get('plan') or '0')
+    plan = int(form_param.get('plan') or '-1')
     attr = form_param.get('property')
     type_ = form_param.get('type')
     inverse = form_param.get('inverse')

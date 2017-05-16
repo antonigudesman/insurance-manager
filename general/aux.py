@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.shortcuts import render
 
 from .models import *
-
+import pdb
 
 def get_filtered_employers(ft_industries, 
                            ft_head_counts, 
@@ -142,7 +142,6 @@ def get_median_count(queryset, term):
         return '-', 0
 
 def get_incremental_array(queryset, term, benefit=''):
-    num_points = settings.MAX_POINTS
     threshold_key = benefit + '__' + term
 
     if threshold_key in settings.QUINTILE_THRESHOLD:
@@ -153,45 +152,20 @@ def get_incremental_array(queryset, term, benefit=''):
         queryset = queryset.filter(**kwargs)
 
     num_elements = queryset.count()
-
-    interval = num_elements / num_points + 1 #if num_elements > num_points else 1
-
-    # limit number of points as MAX_POINTS
+    raw_ya = [getattr(item, term) for item in queryset.order_by(term)]
+    # pdb.set_trace()
     result = []
-    idx = 0
-    idx_ = 0
+    for xa in range(0, 110, 10):
+        y_idx = int(num_elements * xa * 1.0 / 100 + 0.5)
+        if xa == 0:
+            y_idx = int(num_elements * 2 * 1.0 / 100 + 0.5)
+        elif xa == 100:
+            y_idx = int(num_elements * 98 * 1.0 / 100 + 0.5)
 
-    for item in queryset.order_by(term):
-        if idx % interval == 0:
-            # result.append([idx_, getattr(item, term)])
-            result.append(getattr(item, term))            
-            idx_ += 1
-        idx += 1
-        # store last maximum value
-        if idx == num_elements:
-            last_value = getattr(item, term)
-
-    # format labels for 20%, 40% ..., 100%
-    idx = 0
-    factor = 20
-    num_points = len(result)
-    result_ = []
-    label_o = 0
-
-    for item in result:
-        label_ = int(idx * 100 / num_points)
-        if label_o < factor and factor <= label_:
-            label_ = factor
-            factor += 20 
-        label = '{}%'.format(label_)
-        # result_.append([label, item])
-        result_.append([label_, item])
-        label_o = label_
-        idx += 1
-
-    if result_:
-        result_[-1] = [100, last_value]
-    return result_
+        if y_idx == num_elements:
+            y_idx -= 1
+        result.append([xa, raw_ya[y_idx]])
+    return result
 
 
 def get_plan_percentages(employers, num_companies, attr):
@@ -242,32 +216,60 @@ def get_plan_type(qs):
 def get_rank(quintile_array, value):
     if value == None or value == '-' or quintile_array == []:
         return '-'
-
     # for specific filtering cases
     if quintile_array[0][1] > value:
-        return 1;
+        return 5;
     elif quintile_array[-1][1] < value:
-        return 10;
+        return 95;
 
-    x_vals = []
-    for idx in range(len(quintile_array)-1):
-        if quintile_array[idx][1] <= value and value <= quintile_array[idx+1][1]:
-            x_vals.append(quintile_array[idx+1][0])
+    # get low index
+    for idx in range(len(quintile_array)):
+        if quintile_array[idx][1] >=  value:
+            u_idx = idx
+            break
 
-    x_mean = 0
-    for item in x_vals:
-        x_mean += item
+    # get low index
+    for idx in range(len(quintile_array)-1, -1, -1):
+        if quintile_array[idx][1] <=  value:
+            l_idx = idx
+            break
 
     try:
-        x_mean = x_mean * 1.0 / len(x_vals)
+        if l_idx == u_idx:
+            return quintile_array[l_idx][0]
+        if l_idx > u_idx:
+            tt = u_idx
+            u_idx = l_idx
+            l_idx = tt
     except Exception as e:
-        print quintile_array, value, '@@@@@@@'
+        pdb.set_trace()
 
-    for idx in range(1, 11):
-        if x_mean <= idx * 10:
-            return idx
+    # pdb.set_trace()
+    xa = 0
+    for idx in range(l_idx, u_idx+1):
+        xa += quintile_array[idx][0]
+    # try:
+    xa = int(xa * 1.0 / (u_idx - l_idx + 1))
+    # except Exception as e:
+    # pdb.set_trace()
 
-    return '-'
+    ya = 0
+    for idx in range(l_idx, u_idx+1):
+        ya += quintile_array[idx][1]
+    ya = ya * 1.0 / (u_idx - l_idx + 1)
+
+    u_diff = quintile_array[u_idx][1] - value
+    l_diff = value - quintile_array[l_idx][1]
+    m_diff = abs(ya - value)
+
+    # if u_diff ==  l_diff:
+    #     return xa
+    if u_diff < l_diff and u_diff < m_diff:
+        return quintile_array[u_idx][0]
+    elif l_diff < u_diff and l_diff < m_diff:
+        return quintile_array[l_idx][0]
+    else:
+        return xa        
 
 
 def get_init_properties(attrs, rank_attrs):
@@ -341,7 +343,7 @@ def get_quintile_properties(var_qs, instance, attrs, attrs_inv, context):
 
     for attr in attrs_inv: 
         rank = get_rank(var_qs['quintile_'+attr], getattr(instance, attr))
-        context['rank_'+attr] = rank if rank == '-' else 11 - rank
+        context['rank_'+attr] = rank if rank == '-' else 100 - rank
 
 
 def get_industries():
