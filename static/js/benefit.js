@@ -59,16 +59,24 @@ function update_quintile(obj, graph_holder, qscore_holder, inverse) {
             
 
             gh_data = generate_quintile_data(data['graph'], inverse);        
-            draw_bar_chart(graph_holder, gh_data, data['type'], 6.4);        
 
             var value = data['qscore'];
             if (value != 'N/A') {
                 $('.'+qscore_holder).html(value);
                 $('.'+qscore_holder).removeAttr('style');
-                if ( value != 'N/A' ) {
-                    $('.'+qscore_holder).css('color', colors[value-1]);
-                }                
+                $('.'+qscore_holder).css('color', colors[value-1]);
+
+                // draw cirlces
+                gh_data.push(
+                    {
+                        data: [[value, data['val']]],
+                        points: { show: true, radius: 4 },
+                        lines: { show: false, fill: 0.98 },
+                        color: '#000000'
+                    }
+                );
             }
+            draw_bar_chart(graph_holder, gh_data, data['type'], 6.4);        
         });
 }
 
@@ -246,8 +254,6 @@ update_content = function(benefit, plan_type) {
         gh1_data = generate_quintile_data(gh1_data, true);
         gh2_data = generate_quintile_data(gh2_data, true);
         gh3_data = generate_quintile_data(gh3_data, true);
-        gh4_data = generate_quintile_data(gh4_data, true);
-        gh5_data = generate_quintile_data(gh5_data, true);
         gh6_data = generate_quintile_data(gh6_data, true);
         gh8_data = generate_quintile_data(gh8_data, true);
         gh9_data = generate_quintile_data(gh9_data, true);
@@ -256,8 +262,6 @@ update_content = function(benefit, plan_type) {
         draw_bar_chart('MEDICAL-1', gh1_data, 'dollar', 6.4);        
         draw_bar_chart('MEDICAL-2', gh2_data, 'dollar', 6.8);        
         draw_bar_chart('MEDICAL-3', gh3_data, 'dollar', 6.8);        
-        draw_bar_chart('MEDICAL-4', gh4_data, 'dollar', 6.8);                
-        draw_bar_chart('MEDICAL-5', gh5_data, 'dollar', 7);        
         draw_bar_chart('MEDICAL-6', gh6_data, 'dollar', 7);        
         draw_bar_chart('MEDICAL-8', gh8_data, 'dollar', 7);        
         draw_bar_chart('MEDICAL-9', gh9_data, 'dollar', 7);        
@@ -274,15 +278,7 @@ generate_quintile_data = function(raw_data, inverse){
     if (raw_data.length < 10)
         return [];
 
-    // draw cirlces
-    var data = [
-        // {
-        //     data: [[100-raw_data[3][0], raw_data[3][1]]],
-        //     points: { show: true, radius: 4 },
-        //     lines: { show: false, fill: 0.98 },
-        //     color: '#000000'
-        // }
-    ];
+    var data = [];
 
     var section = [];
     var N = raw_data.length;
@@ -307,6 +303,7 @@ generate_quintile_data = function(raw_data, inverse){
                 section = [[raw_data[i][0], raw_data[i][1]]];
         }
     }       
+
     return data;
 }
 
@@ -356,6 +353,26 @@ function update_properties() {
                     $('#prop_'+key).removeAttr('style');
                     if ( value != 'N/A' ) {
                         $('#prop_'+key).css('color', colors[value-1]);
+
+                        var attr = key.substring(5);
+                        var ya = data[attr].replace(',', '').replace('$', '').replace('%', '');
+                        var entry = {
+                            data: [[value, parseInt(ya)]],
+                            points: { show: true, radius: 4 },
+                            lines: { show: false, fill: 0.98 },
+                            color: '#000000'                                
+                        }
+
+                        // iterate attribute_map and find relevant info.
+                        // // get gh_data
+                        // // update it
+                        // if (gh_data.length > 6) {
+                        //     gh_data[6] = entry;
+                        // } else {
+                        //     gh_data.push(entry);
+                        // }
+                        // //redraw graph
+                        // draw_bar_chart(graph_holder, gh_data, data['type'], 6.4);        
                     }
                 } else {
                     $('#prop_'+key).html(value);

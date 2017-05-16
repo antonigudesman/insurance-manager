@@ -403,7 +403,7 @@
         </div>
     </div>  
 
-     <div class="card section hdhp-benefit">
+    <div class="card section hdhp-benefit">
         <div class="row">
             <div class="col-md-5 section-content">
                 <table class="table table-striped table-content">
@@ -767,14 +767,72 @@
 
 <script type="text/javascript">
 
-    var gh1_data, gh2_data, gh3_data, gh4_data, gh5_data, gh6_data, gh8_data, gh9_data, gh10_data, gh11_data;
+    var gh1_data, gh2_data, gh3_data, gh6_data, gh8_data, gh9_data, gh10_data, gh11_data;
+
+    var attribute_map = [
+        {
+            data: gh1_data,
+            placeholder: 'MEDICAL-1',
+            in_ded_single: 'dollar',
+            in_ded_family: 'dollar',
+            in_max_single: 'dollar',
+            in_max_family: 'dollar',
+            in_coin: 'percent'
+        },
+        {
+            data: gh2_data,
+            placeholder: 'MEDICAL-2',
+            out_ded_single: 'dollar',
+            out_ded_family: 'dollar',
+            out_max_single: 'dollar',
+            out_max_family: 'dollar',
+            out_coin: 'percent'
+        },
+        {
+            data: gh8_data,
+            placeholder: 'MEDICAL-8',
+            t1_ee: 'dollar',
+            t2_ee: 'dollar',
+            t3_ee: 'dollar',
+            t4_ee: 'dollar',
+        },
+        {
+            data: gh9_data,
+            placeholder: 'MEDICAL-9',
+            t1_gross: 'dollar',
+            t2_gross: 'dollar',
+            t3_gross: 'dollar',
+            t4_gross: 'dollar',
+        },
+        {
+            data: gh3_data,
+            placeholder: 'MEDICAL-3',
+            pcp_copay: 'dollar',
+            sp_copay: 'dollar',
+            er_copay: 'dollar',
+            uc_copay: 'dollar',
+            lx_copay: 'dollar',
+            ip_copay: 'dollar',
+            op_copay: 'dollar',            
+        },
+        {
+            data: gh6_data,
+            placeholder: 'MEDICAL-6',
+            rx1_copay: 'dollar',
+            rx2_copay: 'dollar',
+            rx3_copay: 'dollar',
+            rx4_copay: 'dollar',
+            rx1_mail_copay: 'dollar',
+            rx2_mail_copay: 'dollar',
+            rx3_mail_copay: 'dollar',
+            rx4_mail_copay: 'dollar',
+        }
+    ];
 
     {% if num_employers >= EMPLOYER_THRESHOLD %}
         gh1_data = {{ quintile_in_ded_single }};
         gh2_data = {{ quintile_out_ded_single }};
         gh3_data = {{ quintile_pcp_copay }};
-        gh4_data = {{ quintile_er_copay }};
-        gh5_data = {{ quintile_ip_copay }};
         gh6_data = {{ quintile_rx1_copay }};
         gh8_data = {{ quintile_t1_ee }};
         gh9_data = {{ quintile_t1_gross }};

@@ -223,11 +223,12 @@ def update_quintile(request):
                                                       ft_regions,
                                                       ft_states)
 
-    quintile, qscore = get_attr_quintile(benefit, employers, num_companies, plan_type, attr, MODEL_MAP, plan, inverse)
+    quintile, qscore, value = get_attr_quintile(benefit, employers, num_companies, plan_type, attr, MODEL_MAP, plan, inverse)
 
     return JsonResponse({
         'graph': quintile,
         'qscore': qscore,
+        'val': value,
         'type': type_}, safe=False)
 
 

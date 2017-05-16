@@ -15,8 +15,6 @@ medical_quintile_attrs_inv = [
     'in_ded_single',
     'out_ded_single',
     'pcp_copay',
-    'er_copay',
-    'ip_copay',
     'rx1_copay',
     't1_ee',
     't1_gross'
@@ -139,7 +137,6 @@ def get_medical_plan_(employers, num_companies, plan_type, quintile_properties, 
     return medians, var_local, qs
 
 def get_medical_properties(request, plan, plan_type, quintile_properties, quintile_properties_inv):
-    print quintile_properties, quintile_properties_inv, '@@@@@22'
     attrs = [item.name 
              for item in Medical._meta.fields 
              if item.name not in ['id', 'employer', 'title', 'type']]
@@ -192,14 +189,16 @@ def get_attr_quintile(benefit, employers, num_companies, plan_type, attr, MODEL_
     sub_qs = qs.exclude(**kwargs)
     quintile = get_incremental_array(sub_qs, attr, benefit.lower())
 
+    val = 0
     if plan > 0:
         instance = model.objects.get(id=plan)
         qscore = get_rank(quintile, getattr(instance, attr))
         qscore = qscore if not inverse else 100 - qscore
+        val = getattr(instance, attr)
     else:
         qscore = 'N/A'    
 
-    return quintile, qscore
+    return quintile, qscore, val
 
 """
 Dental ( DPPO, DMO ) page
