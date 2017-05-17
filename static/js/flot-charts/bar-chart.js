@@ -82,9 +82,42 @@ function draw_bar_chart(id, data, unit, label_xpos_factor) {
             'percent': '%',
             'int': ''
         };            
+
+        // $.each(p.getData()[0].data, function(i, el){
+        //     var o = p.pointOffset({x: i, y: el[1]});
+        //     console.log(o);
+        //     var content = UNIT[unit] + digits(el[1].toString());
+        //     if (unit == 'percent')
+        //         content = digits(el[1].toString()) + UNIT[unit];
+
+        //     if (el[0] % 20 == 0) {
+        //         $('<div class="data-point-label"><b>' + content + '</b></div>').css( {
+        //             position: 'absolute',
+        //             left: 30 + el.xaxis.p2c(el[0]),
+        //             top: o.top - 45,
+        //             display: 'none'
+        //         }).appendTo(p.getPlaceholder()).fadeIn('slow');                
+        //     }
+        // });        
     }    
 }
 
+function sparklineLine(id, values, width, height, lineColor, fillColor, lineWidth, maxSpotColor, minSpotColor, spotColor, spotRadius, hSpotColor, hLineColor) {
+    $('.'+id).sparkline(values, {
+        type: 'line',
+        width: width,
+        height: height,
+        lineColor: lineColor,
+        fillColor: fillColor,
+        lineWidth: lineWidth,
+        maxSpotColor: maxSpotColor,
+        minSpotColor: minSpotColor,
+        spotColor: spotColor,
+        spotRadius: spotRadius,
+        highlightSpotColor: hSpotColor,
+        highlightLineColor: hLineColor
+    });
+}
 function draw_hbar_chart(id, barData, unit) {
     if ($('#'+id)[0]) {
         var p = $.plot($("#"+id), barData, {

@@ -37,12 +37,12 @@
                 </div>
             </div>
             <div class="card-header">
-                <h2>Select Employer Filters <small>Use the five dropdowns below to filter the employer database. Any combination of industries, regions, states, headcounts, and other (non-profit, government contractor, or custom filters) are possible by using multi-select options.</small></h2>
+                <h2>Select Employer Filters <small>Use the five dropdowns below to filter the employer database. Any combination of industries, regions, states, sizes, and other (non-profit, government contractor, or custom filters) are possible by using multi-select options.</small></h2>
             </div>
             <div class="card-body card-padding">
                 <div class="row">               
                     <div class="col-sm-3 m-b-15">
-                        <p class="f-500 c-black m-b-15">Industries:</p>
+                        <p class="f-500 c-black m-b-15">Industry:</p>
                         <select name="industry" multiple="" id="industries" class="selectpicker" data-none-selected-text="All">
                             {% for item in industries %}
                             <option value="{{ item }}">{{ item }}</option>
@@ -51,7 +51,7 @@
 
                     </div>
                     <div class="col-sm-2 m-b-15">
-                        <p class="f-500 c-black m-b-15">Regions:</p>
+                        <p class="f-500 c-black m-b-15">Region:</p>
                         <select name="" multiple="false" id="regions" class="selectpicker" size="1" data-none-selected-text="All">
                             <option value="new_england">New England</option>
                             <option value="mid_atlantic">Tri-State Area</option>
@@ -64,7 +64,7 @@
                         </select>
                     </div>
                     <div class="col-sm-2 m-b-15">
-                        <p class="f-500 c-black m-b-15">HQ States:</p>
+                        <p class="f-500 c-black m-b-15">HQ State:</p>
                         <select name="" id="states" multiple class="selectpicker" data-none-selected-text="All">
                             <option value="*">All</option>
                             {% for item in STATES %}
@@ -75,7 +75,7 @@
                         </select>                        
                     </div>
                     <div class="col-sm-2 m-b-15">
-                        <p class="f-500 c-black m-b-15">Headcounts:</p>
+                        <p class="f-500 c-black m-b-15">Size:</p>
                         <select name="head-count" multiple="" id="head-counts" class="selectpicker" data-none-selected-text="All">
                             <option value="0-249">Up to 250</option>
                             <option value="250-499">250 to 499</option>
@@ -118,6 +118,8 @@
     <script src="{% static 'js/benefit.js' %}"></script>
     <script src="{% static 'js/common.js' %}"></script>
     <script src="{% static 'vendors/bower_components/flot/jquery.flot.pie.js' %}"></script>
+    <script src="{% static 'vendors/sparklines/jquery.sparkline.min.js' %}"></script>
+    
     <script src="{% static 'js/flot-charts/pie-chart.js' %}"></script>
     <script src="{% static 'js/flot-charts/bar-chart.js' %}"></script>  
 {% endblock %}

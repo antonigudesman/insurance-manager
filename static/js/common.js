@@ -17,6 +17,7 @@ if ($('#industries').length > 0) {
 
     if ($('#plan_types').length > 0) {
         $('#plan_types').change(function() {
+            reload_plans();
             refresh_content();
         });                    
     }

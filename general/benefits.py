@@ -190,13 +190,13 @@ def get_attr_quintile(benefit, employers, num_companies, plan_type, attr, MODEL_
     quintile = get_incremental_array(sub_qs, attr, benefit.lower())
 
     val = 0
+    qscore = 'N/A'    
     if plan > 0:
         instance = model.objects.get(id=plan)
-        qscore = get_rank(quintile, getattr(instance, attr))
-        qscore = qscore if not inverse else 100 - qscore
         val = getattr(instance, attr)
-    else:
-        qscore = 'N/A'    
+        qscore = get_rank(quintile, getattr(instance, attr))
+        if qscore != '-':
+            qscore = qscore if not inverse else 100 - qscore
 
     return quintile, qscore, val
 

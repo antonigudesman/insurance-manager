@@ -11789,8 +11789,8 @@ a.lv-footer:hover {
 }
 
 .easy-pie.main-pie .percent {
-  margin-top: 49px;
-  font-size: 50px;
+  margin-top: 33px;
+  font-size: 30px;
   text-align: center;
 }
 
@@ -11799,7 +11799,7 @@ a.lv-footer:hover {
 }
 
 .easy-pie.main-pie .percent:after {
-  font-size: 30px;
+  font-size: 20px;
 }
 
 .easy-pie.main-pie .pie-title {
@@ -11893,7 +11893,7 @@ a.lv-footer:hover {
 
 .dash-widget-item {
   position: relative;
-  min-height: 380px;
+  min-height: 180px;
   margin-bottom: 30px;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
 }

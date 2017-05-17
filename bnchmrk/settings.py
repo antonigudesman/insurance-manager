@@ -345,7 +345,8 @@ else:
 EMPLOYER_THRESHOLD = 1
 EMPLOYER_THRESHOLD_MESSAGE = 'Current search criteria resulted in less 10 employers. Please expand it by selecting additional filters before refreshing.'
 EMPLOYER_THRESHOLD_MESSAGE_ACCOUNT = 'Could not find employer name in account database'
-MAX_POINTS = 30
+MIN_PERCENTILE = 2
+MAX_PERCENTILE = 100 - MIN_PERCENTILE
 
 QUINTILE_THRESHOLD = {
     'medicalrx__in_ded_single': [0, 7150],

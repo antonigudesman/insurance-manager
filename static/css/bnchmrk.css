@@ -21,3 +21,8 @@
 /*.section-score {
 	
 }*/
+
+.dash-widget-item {
+	margin-bottom: 0px; 
+	padding-top: 10px;
+}

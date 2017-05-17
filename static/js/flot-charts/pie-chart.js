@@ -1,6 +1,11 @@
 function draw_easy_pie_chart() {    
-    if ($('.easy-pie')[0]) {
-        easyPieChart('easy-pie', '#eee', '#ccc', '#2196F3', 14, 'butt', 95);
+    if ($('.main-pie')[0]) {
+        easyPieChart('main-pie', 'rgba(255,255,255,0.2)', '#ccc', 'rgba(255,255,255,0.7)', 7, 'butt', 95);
+    }
+
+    if ($('.easy-pie-1')[0]) {
+        easyPieChart('easy-pie-1', 'rgba(255,255,255,0.2)', '#ccc', '#2196f3', 7, 'butt', 95);
+        // easyPieChart('main-pie', '#eee', '#ccc', 'rgba(255,255,255,0.7)', 7, 'butt', 148);
     }
 }
 

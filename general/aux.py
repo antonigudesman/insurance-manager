@@ -155,16 +155,17 @@ def get_incremental_array(queryset, term, benefit=''):
     raw_ya = [getattr(item, term) for item in queryset.order_by(term)]
     # pdb.set_trace()
     result = []
-    for xa in range(0, 110, 10):
-        y_idx = int(num_elements * xa * 1.0 / 100 + 0.5)
-        if xa == 0:
-            y_idx = int(num_elements * 2 * 1.0 / 100 + 0.5)
-        elif xa == 100:
-            y_idx = int(num_elements * 98 * 1.0 / 100 + 0.5)
+    if raw_ya:
+        for xa in range(0, 110, 10):
+            y_idx = int(num_elements * xa * 1.0 / 100 + 0.5)
+            if xa == 0:
+                y_idx = int(num_elements * settings.MIN_PERCENTILE * 1.0 / 100 + 0.5)
+            elif xa == 100:
+                y_idx = int(num_elements * settings.MAX_PERCENTILE * 1.0 / 100 + 0.5)
 
-        if y_idx == num_elements:
-            y_idx -= 1
-        result.append([xa, raw_ya[y_idx]])
+            if y_idx == num_elements:
+                y_idx -= 1
+            result.append([xa, raw_ya[y_idx]])
     return result
 
 
@@ -216,11 +217,12 @@ def get_plan_type(qs):
 def get_rank(quintile_array, value):
     if value == None or value == '-' or quintile_array == []:
         return '-'
+
     # for specific filtering cases
     if quintile_array[0][1] > value:
-        return 5;
+        return settings.MIN_PERCENTILE;
     elif quintile_array[-1][1] < value:
-        return 95;
+        return settings.MAX_PERCENTILE;
 
     # get low index
     for idx in range(len(quintile_array)):
@@ -236,7 +238,9 @@ def get_rank(quintile_array, value):
 
     try:
         if l_idx == u_idx:
-            return quintile_array[l_idx][0]
+            percentile = min(quintile_array[l_idx][0], settings.MAX_PERCENTILE)
+            percentile = max(quintile_array[l_idx][0], settings.MIN_PERCENTILE)            
+            return percentile
         if l_idx > u_idx:
             tt = u_idx
             u_idx = l_idx
@@ -262,14 +266,16 @@ def get_rank(quintile_array, value):
     l_diff = value - quintile_array[l_idx][1]
     m_diff = abs(ya - value)
 
-    # if u_diff ==  l_diff:
-    #     return xa
     if u_diff < l_diff and u_diff < m_diff:
-        return quintile_array[u_idx][0]
+        percentile = quintile_array[u_idx][0]
     elif l_diff < u_diff and l_diff < m_diff:
-        return quintile_array[l_idx][0]
+        percentile = quintile_array[l_idx][0]
     else:
-        return xa        
+        percentile = xa        
+
+    percentile = min(percentile, settings.MAX_PERCENTILE)
+    percentile = max(percentile, settings.MIN_PERCENTILE)            
+    return percentile
 
 
 def get_init_properties(attrs, rank_attrs):
@@ -343,7 +349,8 @@ def get_quintile_properties(var_qs, instance, attrs, attrs_inv, context):
 
     for attr in attrs_inv: 
         rank = get_rank(var_qs['quintile_'+attr], getattr(instance, attr))
-        context['rank_'+attr] = rank if rank == '-' else 100 - rank
+        rank = rank if rank == '-' else 100 - rank
+        context['rank_'+attr] = rank if rank != 100 else 98
 
 
 def get_industries():

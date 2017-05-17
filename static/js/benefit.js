@@ -30,6 +30,8 @@ jQuery(function($) {
     $('#plans').change(function() {
     	update_properties();
     });
+
+    reload_plans();   
 });
 
 function update_quintile(obj, graph_holder, qscore_holder, inverse) {
@@ -64,12 +66,19 @@ function update_quintile(obj, graph_holder, qscore_holder, inverse) {
             if (value != 'N/A') {
                 $('.'+qscore_holder).html(value);
                 $('.'+qscore_holder).removeAttr('style');
-                $('.'+qscore_holder).css('color', colors[value-1]);
+                $('.'+qscore_holder).css('color', colors[parseInt(value/10)]);
+
+                var ya = data['val'];
+                if (ya < data['graph'][0][1])
+                    ya = data['graph'][0][1];
+
+                if (ya > data['graph'][10][1])
+                    ya = data['graph'][10][1];
 
                 // draw cirlces
                 gh_data.push(
                     {
-                        data: [[value, data['val']]],
+                        data: [[value, ya]],
                         points: { show: true, radius: 4 },
                         lines: { show: false, fill: 0.98 },
                         color: '#000000'
@@ -145,7 +154,10 @@ function get_body() {
         function(data) {
             $('#num_employers').html(data);
         })
+}
 
+function reload_plans() {
+    plan = -2;    
     $.post(
         '/get_plans',
         {
@@ -269,6 +281,11 @@ update_content = function(benefit, plan_type) {
         draw_donut_chart('donut-chart', gh10_data);
         draw_hbar_chart('bar-chart', gh11_data, 'percent');
         draw_easy_pie_chart();
+
+
+        if ($('.stats-line')[0]) {
+            sparklineLine('stats-line', [9,4,6,5,6,4,5,7,9,3,6,5], 85, 45, '#fff', 'rgba(0,0,0,0)', 1.25, 'rgba(255,255,255,0.4)', 'rgba(255,255,255,0.4)', 'rgba(255,255,255,0.4)', 3, '#fff', 'rgba(255,255,255,0.4)');
+        }        
     }
 
     $('.page-loader').fadeOut();
@@ -342,41 +359,55 @@ function update_properties() {
             quintile_properties_inv: quintile_properties_inv
         },
         function(data) {
-            if (plan == 0)
+            if (plan == 0) {
                 $('.toggle_plan').hide();
-            else
+            } else {
                 $('.toggle_plan').show();
-            
-            $.each(data, function( key, value ) {
-                if (key.match("^rank_")) {
-                    $('#prop_'+key).html(value);
-                    $('#prop_'+key).removeAttr('style');
-                    if ( value != 'N/A' ) {
-                        $('#prop_'+key).css('color', colors[value-1]);
+                $.each(data, function( key, value ) {
+                    if (key.match("^rank_")) {
+                        $('#prop_'+key).html(value);
+                        $('#prop_'+key).removeAttr('style');
+                        if ( value != 'N/A' ) {
+                            $('#prop_'+key).css('color', colors[parseInt(value/10)]);
 
-                        var attr = key.substring(5);
-                        var ya = data[attr].replace(',', '').replace('$', '').replace('%', '');
-                        var entry = {
-                            data: [[value, parseInt(ya)]],
-                            points: { show: true, radius: 4 },
-                            lines: { show: false, fill: 0.98 },
-                            color: '#000000'                                
+                            var attr = key.substring(5);
+                            var ya = parseInt(data[attr].replace(',', '').replace('$', '').replace('%', ''));
+
+                            var gh_data, graph_holder, type, inverse;
+                            // iterate attribute_map and find relevant info.
+                            for (i=0; i < attribute_map.length; i++) {
+                                if (attribute_map[i][attr] != undefined ) {
+                                    gh_data = attribute_map[i].data;
+                                    graph_holder = attribute_map[i].placeholder;
+                                    type = attribute_map[i][attr];
+                                    inverse = attribute_map[i].inverse;                                
+                                    break;
+                                }
+                            }
+
+                            if (ya < gh_data[0][1])
+                                ya = gh_data[0][1];
+
+                            if (ya > gh_data[10][1])
+                                ya = gh_data[10][1];
+                            console.log(gh_data);
+                            var entry = {
+                                data: [[value, ya]],
+                                points: { show: true, radius: 4 },
+                                lines: { show: false, fill: 0.98 },
+                                color: '#000000'                                
+                            }
+                            // // get gh_data
+                            // // update it
+                            gh_data = generate_quintile_data(gh_data, inverse);
+                            gh_data.push(entry);
+                            // //redraw graph
+                            draw_bar_chart(graph_holder, gh_data, type, 6.4);        
                         }
-
-                        // iterate attribute_map and find relevant info.
-                        // // get gh_data
-                        // // update it
-                        // if (gh_data.length > 6) {
-                        //     gh_data[6] = entry;
-                        // } else {
-                        //     gh_data.push(entry);
-                        // }
-                        // //redraw graph
-                        // draw_bar_chart(graph_holder, gh_data, data['type'], 6.4);        
+                    } else {
+                        $('#prop_'+key).html(value);
                     }
-                } else {
-                    $('#prop_'+key).html(value);
-                }
-            });         
+                });         
+            }            
         });
 }
