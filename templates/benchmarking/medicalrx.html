@@ -1,688 +1,8 @@
+{% load humanize bnchmrk_tag %}
 
 {% if num_employers >= EMPLOYER_THRESHOLD %}
 
-    <!-- In-Network Cost Share -->
-    <div class="card section">
-        <div class="row">
-            <div class="col-md-5 section-content">
-                <table class="table table-striped table-content">
-                    <col width="50%">
-                    <col width="25%">
-                    <col width="25%">
-                    <thead>
-                        <tr>
-                            <th class="row-label">In-Network Cost Share</th>
-                            <th>Benchmark</th>
-                            <th class="toggle_plan">Your Plan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="quintile-subject">
-                            <td class="row-label">Medical/Rx Deductible - Individual</td>
-                            <td>{{ mdn_in_ded_single }}</td>
-                            <td><span id="prop_in_ded_single"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Medical/Rx Deductible - Family</td>
-                            <td>{{ mdn_in_ded_family }}</td>
-                            <td><span id="prop_in_ded_family"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Medical/Rx Maximum - Individual</td>
-                            <td>{{ mdn_in_max_single }}</td>
-                            <td><span id="prop_in_max_single"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Medical/Rx Maximum - Family</td>
-                            <td>{{ mdn_in_max_family }}</td>
-                            <td><span id="prop_in_max_family"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Medical Coinsurance</td>
-                            <td>{{ mdn_in_coin }}</td>
-                            <td><span id="prop_in_coin"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Rx Coinsurance</td>
-                            <td>{{ mdn_rx_coin }}</td>
-                            <td><span id="prop_rx_coin"></span></td>
-                        </tr> 
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-7 section-graph">
-                <div class="col-sm-12 m-b-15 m-r-25">
-                    <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-1', 'prop_rank_in_ded_single', true);">
-                        <option value="D_in_ded_single">In-Network Medical/Rx Deductible - Individual</option>
-                        <option value="D_in_ded_family">In-Network Medical/Rx Deductible - Family</option>
-                        <option value="D_in_max_single">In-Network Medical/Rx Maximum - Individual</option>
-                        <option value="D_in_max_family">In-Network Medical/Rx Maximum - Family</option>
-                        <option value="P_in_coin">In-Network Medical Coinsurance</option>
-                        <option value="P_rx_coin">In-Network Rx Coinsurance</option>
-                    </select>
-                </div>                
-                <div class="col-md-10">
-                    <div id="MEDICAL-1" class="flot-chart"></div>
-                </div>
-                <div class="col-md-2 section-score text-center">
-                    <h5 class="toggle_plan">Percentile Rank</h5>
-                    <p><span id="prop_rank_in_ded_single" class="prop_rank_in_ded_single"></span></p>           
-                </div> 
-            </div>
-        </div>
-    </div>
-
-    <!-- Rx-Only Cost Share -->
-    <div class="card section hdhp-benefit">
-        <div class="row">
-
-            <div class="col-md-3 section-graph">
-                <div id="pie-charts" class="dash-widget-item">
-                    <div class="bgm-green">
-                        <div class="dash-widget-header">
-                            <div class="dash-widget-title">Rx-Only</div>
-                        </div>
-                        
-                        <div class="clearfix"></div>
-                        
-                        <div class="text-center p-20 m-t-25">
-                            <div class="easy-pie main-pie" data-percent="{{ prcnt_rx_max_single }}">
-                                <div class="percent">{{ prcnt_rx_ded_single|cut:"%" }}</div>
-                                <div class="pie-title">Require Seperate Deductibles</div>
-                            </div>
-                        </div>
-                    </div>            
-                </div>
-            </div>
-
-            <div class="col-sm-2">
-                <div class="mini-charts-item bgm-lightgreen m-t-25">
-                    <div class="clearfix">
-                        <div class="chart stats-line"></div>
-                        <div class="count">
-                            <small>Individuals</small>
-                            <h2>{{ mdn_rx_ded_single }}</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="mini-charts-item bgm-lightgreen m-t-25">
-                    <div class="clearfix">
-                        <div class="chart stats-line"></div>
-                        <div class="count">
-                            <small>Family</small>
-                            <h2>{{ mdn_rx_ded_family }}</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>  
-
-            <div class="col-md-3 section-graph">
-                <div id="pie-charts" class="dash-widget-item">
-                    <div class="bgm-green">
-                        <div class="dash-widget-header">
-                            <div class="dash-widget-title">Rx-Only</div>
-                        </div>
-                        
-                        <div class="clearfix"></div>
-                        
-                        <div class="text-center p-20 m-t-25">
-                            <div class="easy-pie main-pie" data-percent="{{ prcnt_rx_max_single }}">
-                                <div class="percent">{{ prcnt_rx_max_single|cut:"%" }}</div>
-                                <div class="pie-title">Require Seperate Maximums</div>
-                            </div>
-                        </div>
-                    </div>            
-                </div>
-            </div>
-            <div class="col-sm-2">
-                <div class="mini-charts-item bgm-lightgreen m-t-25">
-                    <div class="clearfix">
-                        <div class="chart stats-line"></div>
-                        <div class="count">
-                            <small>Individuals</small>
-                            <h2>{{ mdn_rx_max_single }}</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="mini-charts-item bgm-lightgreen m-t-25">
-                    <div class="clearfix">
-                        <div class="chart stats-line"></div>
-                        <div class="count">
-                            <small>Family</small>
-                            <h2>{{ mdn_rx_max_family }}</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>  
-        </div>
-    </div>
-
-    <!-- Out-of-Network Cost Share -->
-    <div class="card section out-benefit">
-        <div class="row">
-            <div class="col-md-5 section-content">
-                <table class="table table-striped table-content">
-                    <col width="50%">
-                    <col width="25%">
-                    <col width="25%">
-                    <thead>
-                        <tr>
-                            <th class="row-label">Out-of-Network Cost Share</th>
-                            <th>Benchmark</th>
-                            <th class="toggle_plan">Your Plan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="quintile-subject">
-                            <td class="row-label">Deductible - Individual</td>
-                            <td>{{ mdn_out_ded_single }}</td>
-                            <td><span id="prop_out_ded_single"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Deductible - Family</td>
-                            <td>{{ mdn_out_ded_family }}</td>
-                            <td><span id="prop_out_ded_family"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Maximum - Individual</td>
-                            <td>{{ mdn_out_max_single }}</td>
-                            <td><span id="prop_out_max_single"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Maximum - Family</td>
-                            <td>{{ mdn_out_max_family }}</td>
-                            <td><span id="prop_out_max_family"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Coinsurance</td>
-                            <td>{{ mdn_out_coin }}</td>
-                            <td><span id="prop_out_coin"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Deductibles Accumulate Across Networks</td>
-                            <td>{{ prcnt_ded_cross }}</td>
-                            <td><span id="prop_ded_cross"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Maximums Accumulate Across Networks</td>
-                            <td>{{ prcnt_max_cross }}</td>
-                            <td><span id="prop_max_cross"></span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-7 section-graph">
-                <div class="col-sm-12 m-b-15 m-r-25">
-                    <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-2', 'prop_rank_out_ded_single', true);">
-                        <option value="D_out_ded_single">Out-of-Network Deductible - Individual</option>
-                        <option value="D_out_ded_family">Out-of-Network Deductible - Family</option>
-                        <option value="D_out_max_single">Out-of-Network Maximum - Individual</option>
-                        <option value="D_out_max_family">Out-of-Network Maximum - Family</option>
-                        <option value="P_out_coin">Out-of-Network Coinsurance</option>
-                    </select>
-                </div>                
-                <div class="col-md-10">
-                    <div id="MEDICAL-2" class="flot-chart"></div>
-                </div>
-                <div class="col-md-2 section-score text-center">
-                    <h5 class="toggle_plan">Percentile Rank</h5>
-                    <p><span id="prop_rank_out_ded_single" class="prop_rank_out_ded_single"></span></p>           
-                </div> 
-            </div>
-        </div>
-    </div>
-
-    <!-- Employee contributions -->
-    <div class="card section">
-        <div class="row">
-            <div class="col-md-5 section-content">
-                <table class="table table-striped table-content">
-                    <col width="50%">
-                    <col width="25%">
-                    <col width="25%">
-                    <thead>
-                        <tr>
-                            <th class="row-label">Employee Annual Contribution</th>
-                            <th>Benchmark</th>
-                            <th class="toggle_plan">Your Plan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="quintile-subject">
-                            <td class="row-label">Employee Only</td>
-                            <td>{{ mdn_t1_ee }}</td>
-                            <td><span id="prop_t1_ee"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Employee + Spouse</td>
-                            <td>{{ mdn_t2_ee }}</td>
-                            <td><span id="prop_t2_ee"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Employee + Child(ren)</td>
-                            <td>{{ mdn_t3_ee }}</td>
-                            <td><span id="prop_t3_ee"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Family</td>
-                            <td>{{ mdn_t4_ee }}</td>
-                            <td><span id="prop_t4_ee"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Salary Banded Rates</td>
-                            <td><!-- {{ prcnt_salary_banding }} --></td>
-                            <td><span id=""></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Wellness Banded Rates</td>
-                            <td><!-- {{ prcnt_wellness_banding } }--></td>
-                            <td><span id=""></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Defined Contribution Methodology</td>
-                            <td><!-- {{ prcnt_defined_contribution }} --></td>
-                            <td><span id=""></span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-7 section-graph">
-                <div class="col-sm-12 m-b-15 m-r-25">
-                    <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-8', 'prop_rank_t1_ee', true);">
-                        <option value="D_t1_ee">Employee Only Contribution</option>
-                        <option value="D_t2_ee">Employee + Spouse Contribution</option>
-                        <option value="D_t3_ee">Employee + Child(ren) Contribution</option>
-                        <option value="D_t4_ee">Family Contribution</option>
-                    </select>
-                </div>                            
-                <div class="col-md-10">
-                    <div id="MEDICAL-8" class="flot-chart"></div>
-                </div>
-                <div class="col-md-2 section-score text-center">
-                    <h5 class="toggle_plan">Percentile Rank</h5>
-                    <p><span id="prop_rank_t1_ee" class="prop_rank_t1_ee"></span></p>           
-                </div> 
-            </div>
-        </div>
-    </div>   
-
-    <!-- Employer-funded Spending Accounts -->
-    <div class="card section">
-        <div class="row">
-            <div class="col-md-3 section-graph ">
-                <div class="easy-pie MEDICAL-11 out-benefit ppo-benefit" data-percent="{{ prcnt_hsa|cut:'%' }}">
-                    <div class="percent">{{ prcnt_hsa|cut:'%' }}</div>
-                    <div class="pie-title">Offer HSA</div>
-                </div>
-                <div class="easy-pie easy-pie-1 MEDICAL-12" data-percent="{{ prcnt_hra|cut:'%' }}">
-                    <div class="percent">{{ prcnt_hra|cut:'%' }}</div>
-                    <div class="pie-title">Offer HRA</div>
-                </div>            
-            </div>
-
-            <div class="col-sm-3">
-                <div class="mini-charts-item bgm-lightgreen m-t-25">
-                    <div class="clearfix">
-                        <div class="chart stats-line"></div>
-                        <div class="count">
-                            <small>Employee Only</small>
-                            <h2>{{ mdn_t1_ercdhp }}</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="mini-charts-item bgm-lightgreen m-t-25">
-                    <div class="clearfix">
-                        <div class="chart stats-line"></div>
-                        <div class="count">
-                            <small>Employee + Spouse</small>
-                            <h2>{{ mdn_t2_ercdhp }}</h2>
-                        </div>
-                    </div>
-                </div>
-            </div> 
-            
-            <div class="col-md-3">
-                <div class="mini-charts-item bgm-lightgreen m-t-25">
-                    <div class="clearfix">
-                        <div class="chart stats-line"></div>
-                        <div class="count">
-                            <small>Employee + Child(ren)</small>
-                            <h2>{{ mdn_t3_ercdhp }}</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="mini-charts-item bgm-lightgreen m-t-25">
-                    <div class="clearfix">
-                        <div class="chart stats-line"></div>
-                        <div class="count">
-                            <small>Family</small>
-                            <h2>{{ mdn_t4_ercdhp }}</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-1 section-score text-center">         
-            </div> 
-        </div>
-    </div>
-
-    <!-- Gross contributions -->
-    <div class="card section">
-        <div class="row">
-            <div class="col-md-5 section-content">
-                <table class="table table-striped table-content">
-                    <col width="50%">
-                    <col width="25%">
-                    <col width="25%">
-                    <thead>
-                        <tr>
-                            <th class="row-label">Gross Annual Cost</th>
-                            <th>Benchmark</th>
-                            <th class="toggle_plan">Your Plan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="quintile-subject">
-                            <td class="row-label">Employee Only</td>
-                            <td>{{ mdn_t1_gross }}</td>
-                            <td><span id="prop_t1_gross"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Employee + Spouse</td>
-                            <td>{{ mdn_t2_gross }}</td>
-                            <td><span id="prop_t2_gross"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Employee + Child(ren)</td>
-                            <td>{{ mdn_t3_gross }}</td>
-                            <td><span id="prop_t3_gross"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Family</td>
-                            <td>{{ mdn_t4_gross }}</td>
-                            <td><span id="prop_t4_gross"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Age-Banded Rates</td>
-                            <td>{{ prcnt_age_rated }}</td>
-                            <td><span id="prop_age_rated"></span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-7 section-graph">
-                <div class="col-sm-12 m-b-15 m-r-25">
-                    <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-9', 'prop_rank_t1_gross', true);">
-                        <option value="D_t1_gross">Employee Only Gross Cost</option>
-                        <option value="D_t2_gross">Employee + Spouse Gross Cost</option>
-                        <option value="D_t3_gross">Employee + Child(ren) Gross Cost</option>
-                        <option value="D_t4_gross">Family Gross Cost</option>
-                    </select>
-                </div>                            
-                <div class="col-md-10">
-                    <div id="MEDICAL-9" class="flot-chart"></div>
-                </div>
-                <div class="col-md-2 section-score text-center">
-                    <h5 class="toggle_plan">Percentile Rank</h5>
-                    <p><span id="prop_rank_t1_gross" class="prop_rank_t1_gross"></span></p>           
-                </div> 
-            </div>
-        </div>
-    </div>
-
-    <!-- Does Deductible Apply -->
-    <div class="card section hdhp-benefit">
-        <div class="row">
-            <div class="col-md-5 section-content">
-                <table class="table table-striped table-content">
-                    <col width="50%">
-                    <col width="25%">
-                    <col width="25%">
-                    <thead>
-                        <tr>
-                            <th class="row-label">Does Deductible Apply?</th>
-                            <th>Benchmark</th>
-                            <th class="toggle_plan">Your Plan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="row-label">Primary Care Physician</td>
-                            <td>{{ prcnt_pcp_ded_apply }}</td>
-                            <td><span id="prop_pcp_ded_apply"></span></td>
-                        </tr> 
-                        <tr>
-                            <td class="row-label">Specialist Physician</td>
-                            <td>{{ prcnt_sp_ded_apply }}</td>
-                            <td><span id="prop_sp_ded_apply"></span></td>
-                        </tr>  
-                        <tr>
-                            <td class="row-label">Emergency Room</td>
-                            <td>{{ prcnt_er_ded_apply }}</td>
-                            <td><span id="prop_er_ded_apply"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Urgent Care</td>
-                            <td>{{ prcnt_uc_ded_apply }}</td>
-                            <td><span id="prop_uc_ded_apply"></span></td>
-                        </tr> 
-                        <tr>
-                            <td class="row-label">Inpatient Hospital</td>
-                            <td>{{ prcnt_ip_ded_apply }}</td>
-                            <td><span id="prop_ip_ded_apply"></span></td>
-                        </tr>  
-                        <tr>
-                            <td class="row-label">Outpatient Hospital</td>
-                            <td>{{ prcnt_op_ded_apply }}</td>
-                            <td><span id="prop_op_ded_apply"></span></td>
-                        </tr>             
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-5 section-content">
-                <table class="table table-striped table-content">
-                    <col width="50%">
-                    <col width="25%">
-                    <col width="25%">
-                    <thead>
-                        <tr>
-                            <th class="row-label">Does The Deductible Apply?</th>
-                            <th>Benchmark</th>
-                            <th class="toggle_plan">Your Plan</th>
-                        </tr>
-                    </thead>
-                    <tbody>   
-                        <tr>
-                            <td class="row-label">Labs & X-Ray</td>
-                            <td>{{ prcnt_lx_ded_apply }}</td>
-                            <td><span id="prop_lx_ded_apply"></span></td>
-                        </tr> 
-                        <tr>
-                            <td class="row-label">Generic Rx</td>
-                            <td>{{ prcnt_rx1_ded_apply }}</td>
-                            <td><span id="prop_rx1_ded_apply"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Preferred Rx</td>
-                            <td>{{ prcnt_rx2_ded_apply }}</td>
-                            <td><span id="prop_rx2_ded_apply"></span></td>
-                        </tr>   
-                        <tr>
-                            <td class="row-label">Non-Preferred Rx</td>
-                            <td>{{ prcnt_rx3_ded_apply }}</td>
-                            <td><span id="prop_rx3_ded_apply"></span></td>
-                        </tr>  
-                        <tr>
-                            <td class="row-label">Specialty Rx</td>
-                            <td>{{ prcnt_rx4_ded_apply }}</td>
-                            <td><span id="prop_rx4_ded_apply"></span></td>
-                        </tr>                
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <div class="card section hdhp-benefit">
-        <div class="row">
-            <div class="col-md-5 section-content">
-                <table class="table table-striped table-content">
-                    <col width="50%">
-                    <col width="25%">
-                    <col width="25%">
-                    <thead>
-                        <tr>
-                            <th class="row-label">Copay/Per Occurance Deductible</th>
-                            <th>Benchmark</th>
-                            <th class="toggle_plan">Your Plan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="quintile-subject">
-                            <td class="row-label">Primary Care Physician</td>
-                            <td>{{ mdn_pcp_copay }}</td>
-                            <td><span id="prop_pcp_copay"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Specialist Physician</td>
-                            <td>{{ mdn_sp_copay }}</td>
-                            <td><span id="prop_sp_copay"></span></td>
-                        </tr>
-                        <tr class="quintile-subject">
-                            <td class="row-label">Emergency Room</td>
-                            <td>{{ mdn_er_copay }}</td>
-                            <td><span id="prop_er_copay"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Urgent Care</td>
-                            <td>{{ mdn_uc_copay }}</td>
-                            <td><span id="prop_uc_copay"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Labs & X-Ray</td>
-                            <td>{{ mdn_lx_copay }}</td>
-                            <td><span id="prop_lx_copay"></span></td>
-                        </tr>
-                        <tr class="quintile-subject">
-                            <td class="row-label">Inpatient Hospital</td>
-                            <td>{{ mdn_ip_copay }}</td>
-                            <td><span id="prop_ip_copay"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Outpatient Hospital</td>
-                            <td>{{ mdn_op_copay }}</td>
-                            <td><span id="prop_op_copay"></span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-7 section-graph">
-                <div class="col-sm-12 m-b-15 m-r-25">
-                    <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-3', 'prop_rank_pcp_copay', true);">
-                        <option value="D_pcp_copay">Primary Care Physician</option>
-                        <option value="D_sp_copay">Specialist Physician</option>
-                        <option value="D_er_copay">Emergency Room</option>
-                        <option value="D_uc_copay">Urgent Care</option>
-                        <option value="D_lx_copay">Labs & X-Ray</option>
-                        <option value="D_ip_copay">Inpatient Hospital</option>
-                        <option value="D_op_copay">Outpatient Hospital</option>
-                    </select>
-                </div>                
-                
-                <div class="col-md-10">
-                    <div id="MEDICAL-3" class="flot-chart"></div>
-                </div>
-                <div class="col-md-2 section-score text-center">
-                    <h5 class="toggle_plan">Percentile Rank</h5>
-                    <p><span id="prop_rank_pcp_copay" class="prop_rank_pcp_copay"></span></p>           
-                </div> 
-            </div>
-        </div>
-    </div>
-
-    <div class="card section hdhp-benefit">
-        <div class="row">
-            <div class="col-md-5 section-content">
-                <table class="table table-striped table-content">
-                    <col width="50%">
-                    <col width="25%">
-                    <col width="25%">
-                    <thead>
-                        <tr>
-                            <th class="row-label">Prescription Copays</th>
-                            <th>Benchmark</th>
-                            <th class="toggle_plan">Your Plan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="quintile-subject">
-                            <td class="row-label">Generic Retail</td>
-                            <td>{{ mdn_rx1_copay }}</td>
-                            <td><span id="prop_rx1_copay"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Preferred Retail</td>
-                            <td>{{ mdn_rx2_copay }}</td>
-                            <td><span id="prop_rx2_copay"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Non-Preferred Retail</td>
-                            <td>{{ mdn_rx3_copay }}</td>
-                            <td><span id="prop_rx3_copay"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Specialty Retail</td>
-                            <td>{{ mdn_rx4_copay }}</td>
-                            <td><span id="prop_rx4_copay"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Generic Mail</td>
-                            <td>{{ mdn_rx1_mail_copay }}</td>
-                            <td><span id="prop_rx1_mail_copay"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Preferred Mail</td>
-                            <td>{{ mdn_rx2_mail_copay }}</td>
-                            <td><span id="prop_rx2_mail_copay"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Non-Preferred Mail</td>
-                            <td>{{ mdn_rx3_mail_copay }}</td>
-                            <td><span id="prop_rx3_mail_copay"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Specialty Mail</td>
-                            <td>{{ mdn_rx4_mail_copay }}</td>
-                            <td><span id="prop_rx4_mail_copay"></span></td>
-                        </tr>      
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-7 section-graph">
-                <div class="col-sm-12 m-b-15 m-r-25">
-                    <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-6', 'prop_rank_rx1_copay', true);">
-                        <option value="D_rx1_copay">Generic Retail</option>
-                        <option value="D_rx2_copay">Preferred Retail</option>
-                        <option value="D_rx3_copay">Non-Preferred Retail</option>
-                        <option value="D_rx4_copay">Specialty Retail</option>
-                        <option value="D_rx1_mail_copay">Generic Mail</option>
-                        <option value="D_rx2_mail_copay">Preferred Mail</option>
-                        <option value="D_rx3_mail_copay">Non-Preferred Mail</option>
-                        <option value="D_rx4_mail_copay">Specialty Mail</option>
-                    </select>
-                </div>                
-                
-                <div class="col-md-10">
-                    <div id="MEDICAL-6" class="flot-chart"></div>
-                </div>
-                <div class="col-md-2 section-score text-center">
-                    <h5 class="toggle_plan">Percentile Rank</h5>
-                    <p><span id="prop_rank_rx1_copay" class="prop_rank_rx1_copay"></span></p>           
-                </div> 
-            </div>
-        </div>
-    </div>
-
+    <!-- Prevalence -->
     <div class="card section">
         <div class="row">
             <div class="col-md-6 section-content-left">
@@ -755,6 +75,651 @@
         </div>
     </div> 
 
+    <!-- In-Network Cost Share -->
+    <div class="card section">
+        <div class="row">
+            <div class="col-md-5 section-content">
+                <table class="table table-striped table-content">
+                    <col width="50%">
+                    <col width="25%">
+                    <col width="25%">
+                    <thead>
+                        <tr>
+                            <th class="row-label">In Network Cost Share</th>
+                            <th>Benchmark</th>
+                            <th class="toggle_plan">Your Plan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="quintile-subject">
+                            <td class="row-label">Deductible - Individual</td>
+                            <td>{{ mdn_in_ded_single }}</td>
+                            <td><span id="prop_in_ded_single"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Deductible - Family</td>
+                            <td>{{ mdn_in_ded_family }}</td>
+                            <td><span id="prop_in_ded_family"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Out of Pocket Maximum - Individual</td>
+                            <td>{{ mdn_in_max_single }}</td>
+                            <td><span id="prop_in_max_single"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Out of Pocket Maximum - Family</td>
+                            <td>{{ mdn_in_max_family }}</td>
+                            <td><span id="prop_in_max_family"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Medical Coinsurance</td>
+                            <td>{{ mdn_in_coin }}</td>
+                            <td><span id="prop_in_coin"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Rx Coinsurance</td>
+                            <td>{{ mdn_rx_coin }}</td>
+                            <td><span id="prop_rx_coin"></span></td>
+                        </tr> 
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-7 section-graph">
+                <div class="col-sm-12 m-b-15 m-r-25">
+                    <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-1', 'prop_rank_in_ded_single', true);">
+                        <option value="D_in_ded_single">In Network Deductible - Individual</option>
+                        <option value="D_in_ded_family">In Network Deductible - Family</option>
+                        <option value="D_in_max_single">In Network Maximum - Individual</option>
+                        <option value="D_in_max_family">In Network Maximum - Family</option>
+                        <option value="P_in_coin">In Network Medical Coinsurance</option>
+                        <option value="P_rx_coin">In Network Rx Coinsurance</option>
+                    </select>
+                </div>                
+                <div class="col-md-10">
+                    <div id="MEDICAL-1" class="flot-chart"></div>
+                </div>
+                <div class="col-md-2 section-score text-center">
+                    <h5 class="toggle_plan">Percentile Rank</h5>
+                    <p><span id="prop_rank_in_ded_single" class="prop_rank_in_ded_single"></span></p>           
+                </div> 
+            </div>
+        </div>
+    </div>
+
+    <!-- Out-of-Network Cost Share -->
+    <div class="card section out-benefit">
+        <div class="row">
+            <div class="col-md-5 section-content">
+                <table class="table table-striped table-content">
+                    <col width="50%">
+                    <col width="25%">
+                    <col width="25%">
+                    <thead>
+                        <tr>
+                            <th class="row-label">Out of Network Cost Share</th>
+                            <th>Benchmark</th>
+                            <th class="toggle_plan">Your Plan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="quintile-subject">
+                            <td class="row-label">Deductible - Individual</td>
+                            <td>{{ mdn_out_ded_single }}</td>
+                            <td><span id="prop_out_ded_single"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Deductible - Family</td>
+                            <td>{{ mdn_out_ded_family }}</td>
+                            <td><span id="prop_out_ded_family"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Maximum - Individual</td>
+                            <td>{{ mdn_out_max_single }}</td>
+                            <td><span id="prop_out_max_single"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Maximum - Family</td>
+                            <td>{{ mdn_out_max_family }}</td>
+                            <td><span id="prop_out_max_family"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Coinsurance</td>
+                            <td>{{ mdn_out_coin }}</td>
+                            <td><span id="prop_out_coin"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Deductibles Accumulate Across Networks</td>
+                            <td>{{ prcnt_ded_cross }}</td>
+                            <td><span id="prop_ded_cross"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Maximums Accumulate Across Networks</td>
+                            <td>{{ prcnt_max_cross }}</td>
+                            <td><span id="prop_max_cross"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-7 section-graph">
+                <div class="col-sm-12 m-b-15 m-r-25">
+                    <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-2', 'prop_rank_out_ded_single', true);">
+                        <option value="D_out_ded_single">Out of Network Deductible - Individual</option>
+                        <option value="D_out_ded_family">Out of Network Deductible - Family</option>
+                        <option value="D_out_max_single">Out of Network Maximum - Individual</option>
+                        <option value="D_out_max_family">Out of Network Maximum - Family</option>
+                        <option value="P_out_coin">Out of Network Coinsurance</option>
+                    </select>
+                </div>                
+                <div class="col-md-10">
+                    <div id="MEDICAL-2" class="flot-chart"></div>
+                </div>
+                <div class="col-md-2 section-score text-center">
+                    <h5 class="toggle_plan">Percentile Rank</h5>
+                    <p><span id="prop_rank_out_ded_single" class="prop_rank_out_ded_single"></span></p>           
+                </div> 
+            </div>
+        </div>
+    </div>
+
+    <!-- Rx-Only Cost Share -->
+    <div class="card section hdhp-benefit">
+        <div class="row">
+            <div class="col-md-5 section-content">
+                <table class="table table-striped table-content">
+                    <col width="50%">
+                    <col width="25%">
+                    <col width="25%">
+                    <thead>
+                        <tr>
+                            <th class="row-label">Rx Only Cost Share</th>
+                            <th>Benchmark</th>
+                            <th class="toggle_plan">Your Plan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="quintile-subject">
+                            <td class="row-label">Deductible - Individual</td>
+                            <td>{{ mdn_rx_ded_single }}</td>
+                            <td><span id="prop_rx_ded_single"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Deductible - Family</td>
+                            <td>{{ mdn_rx_ded_family }}</td>
+                            <td><span id="prop_rx_ded_family"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Maximum - Individual</td>
+                            <td>{{ mdn_rx_max_single }}</td>
+                            <td><span id="prop_rx_max_single"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Maximum - Family</td>
+                            <td>{{ mdn_rx_max_family }}</td>
+                            <td><span id="prop_rx_max_family"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div> 
+
+            <div class="col-md-7 section-graph">
+                <div id="pie-charts" class="dash-widget-item">
+                    <div class="bgm-lightblue">
+                        <div class="dash-widget-header">
+                            <div class="dash-widget-title">Rx-Only</div>
+                        </div>
+                        
+                        <div class="clearfix"></div>
+                        
+                        <div class="row">
+                        <div class="col-md-4 col-md-offset-2">
+                        <div class="text-center p-20">
+                            <div class="easy-pie main-pie" data-percent="{{ prcnt_rx_max_single }}">
+                                <div class="percent">{{ prcnt_rx_ded_single|cut:"%" }}</div>
+                                <div class="pie-title p-b-10">Require Seperate Deductibles</div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="col-md-4">
+                        <div class="text-center p-20">
+                            <div class="easy-pie main-pie" data-percent="{{ prcnt_rx_max_single }}">
+                                <div class="percent">{{ prcnt_rx_max_single|cut:"%" }}</div>
+                                <div class="pie-title p-b-10">Require Seperate Maximums</div>
+                            </div>
+                        </div>
+                        </div>
+                        </div>
+                    </div>            
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Employee contributions -->
+    <div class="card section">
+        <div class="row">
+            <div class="col-md-5 section-content">
+                <table class="table table-striped table-content">
+                    <col width="50%">
+                    <col width="25%">
+                    <col width="25%">
+                    <thead>
+                        <tr>
+                            <th class="row-label">Employee Annual Contribution</th>
+                            <th>Benchmark</th>
+                            <th class="toggle_plan">Your Plan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="quintile-subject">
+                            <td class="row-label">Employee Only</td>
+                            <td>{{ mdn_t1_ee }}</td>
+                            <td><span id="prop_t1_ee"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Employee + Spouse</td>
+                            <td>{{ mdn_t2_ee }}</td>
+                            <td><span id="prop_t2_ee"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Employee + Child(ren)</td>
+                            <td>{{ mdn_t3_ee }}</td>
+                            <td><span id="prop_t3_ee"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Family</td>
+                            <td>{{ mdn_t4_ee }}</td>
+                            <td><span id="prop_t4_ee"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-7 section-graph">
+                <div class="col-sm-12 m-b-15 m-r-25">
+                    <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-8', 'prop_rank_t1_ee', true);">
+                        <option value="D_t1_ee">Employee Only Contribution</option>
+                        <option value="D_t2_ee">Employee + Spouse Contribution</option>
+                        <option value="D_t3_ee">Employee + Child(ren) Contribution</option>
+                        <option value="D_t4_ee">Family Contribution</option>
+                    </select>
+                </div>                            
+                <div class="col-md-10">
+                    <div id="MEDICAL-8" class="flot-chart"></div>
+                </div>
+                <div class="col-md-2 section-score text-center">
+                    <h5 class="toggle_plan">Percentile Rank</h5>
+                    <p><span id="prop_rank_t1_ee" class="prop_rank_t1_ee"></span></p>           
+                </div> 
+            </div>
+        </div>
+    </div>  
+
+    <!-- Gross contributions -->
+    <div class="card section">
+        <div class="row">
+            <div class="col-md-5 section-content">
+                <table class="table table-striped table-content">
+                    <col width="50%">
+                    <col width="25%">
+                    <col width="25%">
+                    <thead>
+                        <tr>
+                            <th class="row-label">Gross Annual Cost</th>
+                            <th>Benchmark</th>
+                            <th class="toggle_plan">Your Plan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="quintile-subject">
+                            <td class="row-label">Employee Only</td>
+                            <td>{{ mdn_t1_gross }}</td>
+                            <td><span id="prop_t1_gross"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Employee + Spouse</td>
+                            <td>{{ mdn_t2_gross }}</td>
+                            <td><span id="prop_t2_gross"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Employee + Child(ren)</td>
+                            <td>{{ mdn_t3_gross }}</td>
+                            <td><span id="prop_t3_gross"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Family</td>
+                            <td>{{ mdn_t4_gross }}</td>
+                            <td><span id="prop_t4_gross"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Age-Banded Rates</td>
+                            <td>{{ prcnt_age_rated }}</td>
+                            <td><span id="prop_age_rated"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-7 section-graph">
+                <div class="col-sm-12 m-b-15 m-r-25">
+                    <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-9', 'prop_rank_t1_gross', true);">
+                        <option value="D_t1_gross">Employee Only Gross Cost</option>
+                        <option value="D_t2_gross">Employee + Spouse Gross Cost</option>
+                        <option value="D_t3_gross">Employee + Child(ren) Gross Cost</option>
+                        <option value="D_t4_gross">Family Gross Cost</option>
+                    </select>
+                </div>                            
+                <div class="col-md-10">
+                    <div id="MEDICAL-9" class="flot-chart"></div>
+                </div>
+                <div class="col-md-2 section-score text-center">
+                    <h5 class="toggle_plan">Percentile Rank</h5>
+                    <p><span id="prop_rank_t1_gross" class="prop_rank_t1_gross"></span></p>           
+                </div> 
+            </div>
+        </div>
+    </div> 
+
+    <!-- Employer-funded Spending Accounts -->
+    <div class="card section">
+        <div class="row">
+            <div class="col-md-5 section-content">
+                <table class="table table-striped table-content">
+                    <col width="50%">
+                    <col width="25%">
+                    <col width="25%">
+                    <thead>
+                        <tr>
+                            <th class="row-label">Employer-Provided Funding</th>
+                            <th>Benchmark</th>
+                            <th class="toggle_plan">Your Plan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="quintile-subject">
+                            <td class="row-label">Employee Only</td>
+                            <td>{{ mdn_t1_ercdhp }}</td>
+                            <td><span id="prop_t1_ercdhp"></span></td>
+                        </tr>
+                        <tr class="quintile-subject">
+                            <td class="row-label">Employee + Spouse</td>
+                            <td>{{ mdn_t2_ercdhp }}</td>
+                            <td><span id="prop_t2_ercdhp"></span></td>
+                        </tr>
+                        <tr class="quintile-subject">
+                            <td class="row-label">Employee + Child(ren)</td>
+                            <td>{{ mdn_t3_ercdhp }}</td>
+                            <td><span id="prop_t3_ercdhp"></span></td>
+                        </tr>
+                        <tr class="quintile-subject">
+                            <td class="row-label">Family</td>
+                            <td>{{ mdn_t4_ercdhp }}</td>
+                            <td><span id="prop_t4_ercdhp"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-md-7 section-graph">
+                <div id="pie-charts" class="dash-widget-item">
+                    <div class="bgm-lightblue">
+                        <div class="dash-widget-header">
+                            <div class="dash-widget-title">Account Types</div>
+                        </div>
+                        
+                        <div class="clearfix"></div>
+                        <div class="row">
+                        {% if prcnt_hsa != '0%' %}
+                        <div class="col-md-4">
+                        <div class="text-center p-20">
+                            <div class="easy-pie main-pie out-benefit ppo-benefit" data-percent="{{ prcnt_hsa }}">
+                                <div class="percent">{{ prcnt_hsa|cut:"%" }}</div>
+                                <div class="pie-title p-b-10">Offer HSAs</div>
+                            </div>
+                        </div>
+                        </div>
+                        {% else %}
+                        <div class="col-md-2"></div>
+                        {% endif %}
+                        <div class="col-md-4">
+                        <div class="text-center p-20">
+                            <div class="easy-pie main-pie" data-percent="{{ prcnt_hra }}">
+                                <div class="percent">{{ prcnt_hra|cut:"%" }}</div>
+                                <div class="pie-title p-b-10">Offer an HRA</div>
+                            </div>
+                        </div>
+                        </div>
+                        <!-- <div class="col-md-4">
+                        <div class="text-center p-20">
+                            <div class="easy-pie main-pie" data-percent="{{ prcnt_hra }}">
+                                <div class="percent">{{ prcnt_hra|cut:"%" }}</div>
+                                <div class="pie-title p-b-10">Offer FSAs</div>
+                            </div>
+                        </div>
+                        </div> -->
+                        </div>
+                    </div>            
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Office Visits -->
+    <div class="card section hdhp-benefit">
+        <div class="row">
+            <div class="col-md-5 section-content">
+                <table class="table table-striped table-content">
+                    <col width="34%">
+                    <col width="33%">
+                    <col width="33%">
+                    <thead>
+                        <tr>
+                            <th class="row-label">Office Visits</th>
+                            <th>Benchmark</th>
+                            <th class="toggle_plan">Your Plan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="row-label">Primary Care Physician</td>
+                            <td><span id="PCP_attr">
+                            {% include "includes/employee_span.html" with attr=PCP_attr only %}                                
+                            </span></td>
+                            <td><span id="service_PCP"></span></td>
+                        </tr> 
+                        <tr>
+                            <td class="row-label">Specialist Physician</td>
+                            <td><span id="SP_attr">
+                            {% include "includes/employee_span.html" with attr=SP_attr only %}                                
+                            </span></td>
+                            <td><span id="service_SP"></span></td>
+                        </tr> 
+                        <tr>
+                            <td class="row-label">Labs & X-Ray</td>
+                            <td><span id="LX_attr">
+                            {% include "includes/employee_span.html" with attr=LX_attr only %}                                
+                            </span></td>
+                            <td><span id="service_LX"></span></td>
+                        </tr>                    
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-7 e-cost-section">
+                <div class="col-sm-12 m-b-15 m-r-25 m-t-25">
+                    <select class="selectpicker service" onchange="update_e_cost(this);">
+                        <option value="PCP">Primary Care Physician</option>
+                        <option value="SP">Specialist Physician</option>
+                        <option value="LX">Labs & X-Ray</option>
+                    </select>
+                </div>                
+                <div class="col-sm-10 m-b-15 m-t-20">
+                    <p class="f-500 c-black m-b-20"><span class="e_cost_title">{% include "includes/employee_span.html" with attr=PCP_attr only %} ( ${{ PCP_attr.1 }} )</span></p>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success" style="width: {{ PCP_attr.2|get_percent:PCP_attr.1 }}%">
+                        </div>
+                        <div class="progress-bar progress-bar-warning" style="width: {{ PCP_attr.3|get_percent:PCP_attr.1 }}%">
+                        </div>
+                        <div class="progress-bar progress-bar-danger" style="width: {{ PCP_attr.4|get_percent:PCP_attr.1 }}%">
+                        </div>
+                    </div>   
+                </div>   
+                <div class="col-sm-2 section-score text-center">
+                    <h5 class="toggle_plan">Percentile Rank</h5>
+                    <p><span id="prop_rank_PCP" class="prop_rank_PCP percentile"></span></p>           
+                </div>                 
+            </div>
+        </div>
+    </div>
+
+    <!-- Facility Visits -->
+    <div class="card section hdhp-benefit">
+        <div class="row">
+            <div class="col-md-5 section-content">
+                <table class="table table-striped table-content">
+                    <col width="34%">
+                    <col width="33%">
+                    <col width="33%">
+                    <thead>
+                        <tr>
+                            <th class="row-label">Facility Visits</th>
+                            <th>Benchmark</th>
+                            <th class="toggle_plan">Your Plan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="row-label">Inpatient Hospital</td>
+                            <td><span id="IP_attr">
+                            {% include "includes/employee_span.html" with attr=IP_attr only %}
+                            </span></td>
+                            <td><span id="service_IP"></span></td>
+                        </tr>  
+                        <tr>
+                            <td class="row-label">Outpatient Hospital</td>
+                            <td><span id="OP_attr">
+                            {% include "includes/employee_span.html" with attr=OP_attr only %}
+                            </span></td>
+                            <td><span id="service_OP"></span></td>
+                        </tr>                        
+                        <tr>
+                            <td class="row-label">Emergency Room</td>
+                            <td><span id="ER_attr">
+                            {% include "includes/employee_span.html" with attr=ER_attr only %}
+                            </span></td>
+                            <td><span id="service_ER"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Urgent Care</td>
+                            <td><span id="UC_attr">
+                            {% include "includes/employee_span.html" with attr=UC_attr only %}
+                            </span></td>
+                            <td><span id="service_UC"></span></td>
+                        </tr>  
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-7 e-cost-section">
+                <div class="">
+                <div class="col-sm-12 m-b-15 m-r-25 m-t-25">
+                    <select class="selectpicker service" onchange="update_e_cost(this);">
+                        <option value="IP">Inpatient Hospital</option>
+                        <option value="OP">Outpatient Hospital</option>
+                        <option value="ER">Emergency Room</option>
+                        <option value="UC">Urgent Care</option>
+                    </select>
+                </div>                
+                <div class="col-sm-10 m-b-15 m-t-20">
+                    <p class="f-500 c-black m-b-20"><span class="e_cost_title">{% include "includes/employee_span.html" with attr=IP_attr only %} ( ${{ IP_attr.1 }} )</span></p>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success" style="width: {{ IP_attr.2|get_percent:IP_attr.1 }}">
+                        </div>
+                        <div class="progress-bar progress-bar-warning" style="width: {{ IP_attr.3|get_percent:IP_attr.1 }}%">
+                        </div>
+                        <div class="progress-bar progress-bar-danger" style="width: {{ IP_attr.4|get_percent:IP_attr.1 }}%">
+                        </div>
+                    </div>   
+                </div>    
+                <div class="col-sm-2 section-score text-center">
+                    <h5 class="toggle_plan">Percentile Rank</h5>
+                    <p><span id="prop_rank_IP" class="prop_rank_IP percentile"></span></p>           
+                </div> 
+            </div>                                     
+            </div>
+        </div>
+    </div>
+
+    <!-- Prescription Tiers -->
+    <div class="card section hdhp-benefit">
+        <div class="row">
+            <div class="col-md-5 section-content">
+                <table class="table table-striped table-content">
+                    <col width="34%">
+                    <col width="33%">
+                    <col width="33%">
+                    <thead>
+                        <tr>
+                            <th class="row-label">Prescription Tiers</th>
+                            <th>Benchmark</th>
+                            <th class="toggle_plan">Your Plan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="row-label">Generic Rx</td>
+                            <td><span id="Rx1_attr">
+                            {% include "includes/employee_span.html" with attr=Rx1_attr only %}
+                            </span></td>
+                            <td><span id="service_Rx1"></span></td>
+                        </tr> 
+                        <tr>
+                            <td class="row-label">Preferred Rx</td>
+                            <td><span id="Rx2_attr">
+                            {% include "includes/employee_span.html" with attr=Rx2_attr only %}
+                            </span></td>
+                            <td><span id="service_Rx2"></span></td>
+                        </tr> 
+                        <tr>
+                            <td class="row-label">Non-Preferred Rx</td>
+                            <td><span id="Rx3_attr">
+                            {% include "includes/employee_span.html" with attr=Rx3_attr only %}
+                            </span></td>
+                            <td><span id="service_Rx3"></span></td>
+                        </tr>  
+                        <tr>
+                            <td class="row-label">Specialty Rx</td>
+                            <td><span id="Rx4_attr">
+                            {% include "includes/employee_span.html" with attr=Rx4_attr only %}
+                            </span></td>
+                            <td><span id="service_Rx4"></span></td>
+                        </tr>                 
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-7 e-cost-section">
+                <div class="col-sm-12 m-b-15 m-r-25 m-t-25">
+                    <select class="selectpicker service" onchange="update_e_cost(this);">
+                        <option value="Rx1">Generic Rx</option>
+                        <option value="Rx2">Preferred Rx</option>
+                        <option value="Rx3">Non-Preferred Rx</option>
+                        <option value="Rx4">Specialty Rx</option>
+                    </select>
+                </div>                
+                <div class="col-sm-10 m-b-15 m-t-20">
+                    <p class="f-500 c-black m-b-20"><span class="e_cost_title">{% include "includes/employee_span.html" with attr=Rx1_attr only %} ( ${{ Rx1_attr.1 }} )</span></p>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success" style="width: {{ Rx1_attr.2|get_percent:Rx1_attr.1 }}%">
+                        </div>
+                        <div class="progress-bar progress-bar-warning" style="width: {{ Rx1_attr.3|get_percent:Rx1_attr.1 }}%">
+                        </div>
+                        <div class="progress-bar progress-bar-danger" style="width: {{ Rx1_attr.4|get_percent:Rx1_attr.1 }}%">
+                        </div>
+                    </div>   
+                </div>    
+                 <div class="col-sm-2 section-score text-center">
+                    <h5 class="toggle_plan">Percentile Rank</h5>
+                    <p><span id="prop_rank_Rx1" class="prop_rank_Rx1 percentile"></span></p>           
+                </div>                 
+            </div>
+        </div>
+    </div>
+
 {% else %}
     {% include 'includes/too-few-employers.html' %}
 {% endif %}
@@ -766,8 +731,6 @@
     {% if num_employers >= EMPLOYER_THRESHOLD %}
         gh1_data = {{ quintile_in_ded_single }};
         gh2_data = {{ quintile_out_ded_single }};
-        gh3_data = {{ quintile_pcp_copay }};
-        gh6_data = {{ quintile_rx1_copay }};
         gh8_data = {{ quintile_t1_ee }};
         gh9_data = {{ quintile_t1_gross }};
 
@@ -829,31 +792,6 @@
                 t4_gross: 'dollar',
                 inverse: true
             },
-            {
-                data: gh3_data,
-                placeholder: 'MEDICAL-3',
-                pcp_copay: 'dollar',
-                sp_copay: 'dollar',
-                er_copay: 'dollar',
-                uc_copay: 'dollar',
-                lx_copay: 'dollar',
-                ip_copay: 'dollar',
-                op_copay: 'dollar',       
-                inverse: true     
-            },
-            {
-                data: gh6_data,
-                placeholder: 'MEDICAL-6',
-                rx1_copay: 'dollar',
-                rx2_copay: 'dollar',
-                rx3_copay: 'dollar',
-                rx4_copay: 'dollar',
-                rx1_mail_copay: 'dollar',
-                rx2_mail_copay: 'dollar',
-                rx3_mail_copay: 'dollar',
-                rx4_mail_copay: 'dollar',
-                inverse: true
-            }
         ];
 
     {% endif %}

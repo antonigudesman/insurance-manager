@@ -353,6 +353,54 @@ QUINTILE_THRESHOLD = {
     'medicalrx__in_max_single': [0, 7150],
 }
 
+CPT_COST = {
+    'PCP': {
+        'title': 'Office Visit, Established Patient (~10 min.)',
+        'value': 91
+    },
+    'SP': {
+        'title': 'Office Visit, Established Patient (~25 min.)',
+        'value': 222
+    },
+    'ER': {
+        'title': 'Emergency Room Visit - Moderate Problem',
+        'value': 1437
+    },
+    'UC': {
+        'title': 'Urgent Care',
+        'value': 199
+    },
+    'LX': {
+        'title': 'X-Ray: Knee',
+        'value': 64
+    },
+    'IP': {
+        'title': 'Hospitalization for Back Pain',
+        'value': 8530
+    },
+    'OP': {
+        'title': 'Skin Lesion Removal (malignant)',
+        'value': 1197
+    },
+    'Rx1': {
+        'title': 'Mevacor: 40mg, 30 Day Supply',
+        'value': 11
+    },
+    'Rx2': {
+        'title': 'Rx2   Crestor: 10mg, 30 Day Supply',
+        'value': 185
+    },
+    'Rx3': {
+        'title': 'Rx3   Lipitor: 20mg, 30 Day Supply',
+        'value': 364
+    },
+    'Rx4': {
+        'title': 'Rx4   Lipitor: 30mg, 30 Day Supply',
+        'value': 564
+    }
+}
+
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,

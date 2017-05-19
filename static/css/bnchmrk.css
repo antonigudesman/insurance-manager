@@ -18,9 +18,9 @@
 	padding-top: 15px;	
 }
 
-/*.section-score {
-	
-}*/
+.section {
+	height: 280px;
+}
 
 .dash-widget-item {
 	margin-bottom: 0px; 

@@ -35,6 +35,11 @@ def replace_slash(value): # Only one argument.
     else:
         return value
 
+
+@register.filter
+def get_percent(dn, db): # Only one argument.
+    return dn * 100.0 / db
+    
 @register.filter(name='has_group') 
 def has_group(user, group_name):
     group =  Group.objects.get(name=group_name) 

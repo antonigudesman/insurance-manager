@@ -153,7 +153,10 @@ def get_incremental_array(queryset, term, benefit=''):
 
     num_elements = queryset.count()
     raw_ya = [getattr(item, term) for item in queryset.order_by(term)]
-    # pdb.set_trace()
+    return get_incremental_array_(num_elements, raw_ya)
+
+
+def get_incremental_array_(num_elements, raw_ya):
     result = []
     if raw_ya:
         for xa in range(0, 110, 10):
@@ -239,7 +242,7 @@ def get_rank(quintile_array, value):
     try:
         if l_idx == u_idx:
             percentile = min(quintile_array[l_idx][0], settings.MAX_PERCENTILE)
-            percentile = max(quintile_array[l_idx][0], settings.MIN_PERCENTILE)            
+            percentile = max(percentile, settings.MIN_PERCENTILE)         
             return percentile
         if l_idx > u_idx:
             tt = u_idx
@@ -350,7 +353,7 @@ def get_quintile_properties(var_qs, instance, attrs, attrs_inv, context):
     for attr in attrs_inv: 
         rank = get_rank(var_qs['quintile_'+attr], getattr(instance, attr))
         rank = rank if rank == '-' else 100 - rank
-        context['rank_'+attr] = rank if rank != 100 else 98
+        context['rank_'+attr] = rank if rank != 100 else settings.MAX_PERCENTILE
 
 
 def get_industries():
@@ -362,3 +365,68 @@ def get_industries():
     industries3 = Employer.objects.order_by('industry3').values_list('industry3').distinct()
     industries3 = [item[0] for item in industries3 if item[0]]
     return sorted(set(industries1 + industries2 + industries3))
+
+
+def employee_pricing_medical(plans, service):
+    detail = settings.CPT_COST[service]
+    e_costs = []
+    e_stacks = []
+
+    for instance in plans:
+        # for service, detail in settings.CPT_COST.items():
+            attr = service.lower() + '_ded_apply'
+            _apply = getattr(instance, attr)
+            ded_max = getattr(instance, 'in_max_single')
+
+            if _apply == None:
+                # employee_cost = 0
+                ded_cost = 0
+                coin_cost = 0
+                copay_cost = 0
+            elif _apply == 'FALSE':
+                ded_cost = 0
+                coin_cost = 0
+                copay_cost = getattr(instance, service.lower()+'_copay') or 0
+            elif _apply == 'False/Coin':
+                ded_cost = 0
+                coin_cost = getattr(instance, 'in_coin') or 0
+                copay_cost = 0
+            elif _apply == 'TRUE':
+                ded_cost = getattr(instance, 'in_ded_single') or 0
+                coin_cost = 0
+                copay_cost = getattr(instance, service.lower()+'_copay') or 0
+            elif _apply == 'True/Coin':
+                ded_cost = getattr(instance, 'in_ded_single') or 0
+                coin_cost = getattr(instance, 'in_coin') or 0
+                copay_cost = 0
+
+            # print service, detail['value'], ded_max, '@@@@@@@@@@@@@@@@@@'
+            # print _apply, ded_cost, coin_cost, copay_cost
+
+            if ded_cost > detail['value']:
+                coin_cost = 0
+                employee_cost = detail['value']
+            else:
+                coin_cost *= (detail['value'] - ded_cost) * 1.0 / 100
+                employee_cost = min(min(ded_max, int(ded_cost+coin_cost+copay_cost+0.5)), detail['value'])
+
+            # print coin_cost
+            # print employee_cost, '=================\n\n'
+            if _apply:
+                e_costs.append(employee_cost)
+                e_stacks.append(['instance', detail['value'], ded_cost, coin_cost, copay_cost, _apply])
+
+    return e_costs, e_stacks
+
+
+def get_index(llist, val):
+    for ii in range(len(llist)):
+        if llist[ii] == val:
+            return ii
+
+
+def get_median_list(llist):
+    s_llist = sorted(llist)
+    idx = int(len(s_llist) * 1.0 / 2 - 0.5)
+    val = s_llist[idx]
+    return val, get_index(llist, val)

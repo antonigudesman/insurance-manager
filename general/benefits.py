@@ -121,6 +121,12 @@ def get_medicalrx_plan(employers, num_companies, plan_type=None):
         qs1 = qs.filter(**{ '{}__in'.format(attr): ['False/Coin', 'True/Coin'] })
         var_local['prcnt_coin_'+attr] = get_percent_count_(qs1, qs2)
 
+    # calculate employee costs
+    for service in settings.CPT_COST.keys():
+        e_costs, e_stacks = employee_pricing_medical(qs, service)
+        val, idx = get_median_list(e_costs)
+        var_local[service+'_attr'] = e_stacks[idx]
+
     return dict(var_local.items() 
               + prcnt_plan_count.items()
               + medians.items())
@@ -136,7 +142,7 @@ def get_medical_plan_(employers, num_companies, plan_type, quintile_properties, 
 
     return medians, var_local, qs
 
-def get_medical_properties(request, plan, plan_type, quintile_properties, quintile_properties_inv):
+def get_medical_properties(request, plan, plan_type, quintile_properties, quintile_properties_inv, services=[]):
     attrs = [item.name 
              for item in Medical._meta.fields 
              if item.name not in ['id', 'employer', 'title', 'type']]
@@ -161,7 +167,25 @@ def get_medical_properties(request, plan, plan_type, quintile_properties, quinti
         get_boolean_properties_5_states_coin(instance, medical_attrs_boolean_5_states, context)
         get_quintile_properties(var_local, instance, quintile_properties, quintile_properties_inv, context)
 
+        # calculate employee costs
+        for service in settings.CPT_COST.keys():
+            val, e_stacks = employee_pricing_medical([instance], service)
+            context['service_'+service] = e_stacks[0] if e_stacks else None
+
+        for service in services:
+            val, e_stacks = employee_pricing_medical([instance], service)            
+            e_costs, e_stacks = employee_pricing_medical(qs, service)
+            percentile_array = get_incremental_array_(len(e_costs), sorted(e_costs))
+
+            val = val[0] if val else None
+            rank = get_rank(percentile_array, val)
+            if rank != '-':
+                rank = 100 - rank
+            context['rank_'+service] = rank
+
+
     return JsonResponse(context, safe=False)
+
 
 def get_real_medical_type(plan_type):
     if plan_type == 'PPO':

@@ -187,6 +187,7 @@ def update_properties(request):
     plan = int(form_param.get('plan') or '0')
     quintile_properties = form_param.getlist('quintile_properties[]')
     quintile_properties_inv = form_param.getlist('quintile_properties_inv[]')
+    services = form_param.getlist('services[]')
 
     # save for print
     if plan != -1:
@@ -198,7 +199,7 @@ def update_properties(request):
         benefit = 'MEDICAL'
 
     func_name = 'get_{}_properties'.format(benefit.lower())
-    return globals()[func_name](request, plan, plan_type, quintile_properties, quintile_properties_inv)
+    return globals()[func_name](request, plan, plan_type, quintile_properties, quintile_properties_inv, services)
 
 
 @csrf_exempt
@@ -230,6 +231,48 @@ def update_quintile(request):
         'qscore': qscore,
         'val': value,
         'type': type_}, safe=False)
+
+
+@csrf_exempt
+def update_e_cost(request):
+    form_param = request.POST
+    benefit = form_param.get('benefit')
+    plan_type = form_param.get('plan_type')
+    service = form_param.get('service')    
+    plan = int(form_param.get('plan') or '-1')
+
+    ft_industries = request.session['ft_industries']
+    ft_head_counts = request.session['ft_head_counts']
+    ft_other = request.session['ft_other']
+    ft_regions = request.session['ft_regions']
+    ft_states = request.session['ft_states']
+
+    employers, num_companies = get_filtered_employers(ft_industries, 
+                                                      ft_head_counts, 
+                                                      ft_other,
+                                                      ft_regions,
+                                                      ft_states)
+
+    plan_type = get_real_medical_type(plan_type)
+    qs = Medical.objects.filter(employer__in=employers, type__in=plan_type) 
+    e_costs, e_stacks = employee_pricing_medical(qs, service)
+    val, idx = get_median_list(e_costs)
+
+    instance = Medical.objects.filter(id=plan).first()
+    if instance:
+        val, _ = employee_pricing_medical([instance], service)
+        percentile_array = get_incremental_array_(len(e_costs), sorted(e_costs))
+
+        val = val[0] if val else None
+        rank = get_rank(percentile_array, val)
+        if rank != '-':
+            rank = 100 - rank
+    else:
+        rank = 'N/A'
+
+    result = e_stacks[idx]
+    result.append(rank)
+    return JsonResponse(result, safe=False) 
 
 
 @csrf_exempt

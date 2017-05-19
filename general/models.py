@@ -220,10 +220,10 @@ MED_TYPE_CHOICES = (
 
 MED_BOOL_CHOICES = (
     (None, '-'),
-    ('FALSE', 'Copay Only'),
-    ('False/Coin', 'Coinsurance Applies'),
-    ('TRUE', 'Deductible Applies'),
-    ('True/Coin', 'Ded. & Coin. Applies')
+    ('FALSE', 'No Deductible'),
+    ('False/Coin', 'No Deductible, then Coinsurance'),
+    ('TRUE', 'Deductible'),
+    ('True/Coin', 'Deductible, then Coinurance')
 )
 
 

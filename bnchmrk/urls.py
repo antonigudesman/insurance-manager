@@ -41,6 +41,7 @@ urlpatterns += [
     url(r"^_benchmarking", ajax_benchmarking, name="_benchmarking"),
     url(r"^get_plan_type", get_plan_type, name="get_plan_type"),
     url(r"^update_quintile", update_quintile, name="update_quintile"),
+    url(r"^update_e_cost", update_e_cost, name="update_e_cost"),
     
     url(r"^support", support, name="support"),
     url(r"^faq$", faq, name="faq"),

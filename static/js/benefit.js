@@ -7,13 +7,14 @@ var plan_type = '';
 var plan = 0;
 var quintile_properties = [];
 var quintile_properties_inv = [];
+var services = [];
 
 var TYPE = {
     'D_': 'dollar',
     'P_': 'percent'
 }
 
-var colors = ['#f8696b', '#f8696b', '#FCAA78', '#FCAA78', '#bfbfbf', '#bfbfbf', '#B1D480', '#B1D480', '#63be7b', '#63be7b'];
+var colors = ['#f8696b', '#f8696b', '#FFE364', '#FFE364', '#bfbfbf', '#bfbfbf', '#B1D480', '#B1D480', '#63be7b', '#63be7b'];
 
 jQuery(function($) {
 	// mark left menu selected
@@ -265,16 +266,12 @@ update_content = function(benefit, plan_type) {
         // console.log(gh1_data);
         gh1_data = generate_quintile_data(gh1_data, true);
         gh2_data = generate_quintile_data(gh2_data, true);
-        gh3_data = generate_quintile_data(gh3_data, true);
-        gh6_data = generate_quintile_data(gh6_data, true);
         gh8_data = generate_quintile_data(gh8_data, true);
         gh9_data = generate_quintile_data(gh9_data, true);
         
         // console.log(gh1_data);
         draw_bar_chart('MEDICAL-1', gh1_data, 'dollar', 6.4);        
-        draw_bar_chart('MEDICAL-2', gh2_data, 'dollar', 6.8);        
-        draw_bar_chart('MEDICAL-3', gh3_data, 'dollar', 6.8);        
-        draw_bar_chart('MEDICAL-6', gh6_data, 'dollar', 7);        
+        draw_bar_chart('MEDICAL-2', gh2_data, 'dollar', 6.8);       
         draw_bar_chart('MEDICAL-8', gh8_data, 'dollar', 7);        
         draw_bar_chart('MEDICAL-9', gh9_data, 'dollar', 7);        
 
@@ -338,6 +335,11 @@ function update_properties() {
         quintile_properties_inv.push($(this).val().substring(2));
     });   
 
+    services = [];
+    $('select.service').each(function() {
+        services.push($(this).val());
+    });   
+
     if (!print_template) 
         if (plan != -2) // not changed benefit
             plan = $('#plans').val();
@@ -356,7 +358,8 @@ function update_properties() {
             plan_type: plan_type,
             plan: plan,
             quintile_properties: quintile_properties,
-            quintile_properties_inv: quintile_properties_inv
+            quintile_properties_inv: quintile_properties_inv,
+            services: services
         },
         function(data) {
             if (plan == 0) {
@@ -367,47 +370,120 @@ function update_properties() {
                     if (key.match("^rank_")) {
                         $('#prop_'+key).html(value);
                         $('#prop_'+key).removeAttr('style');
-                        if ( value != 'N/A' ) {
+
+                        if ( value != 'N/A') {
                             $('#prop_'+key).css('color', colors[parseInt(value/10)]);
 
                             var attr = key.substring(5);
-                            var ya = parseInt(data[attr].replace(',', '').replace('$', '').replace('%', ''));
 
-                            var gh_data, graph_holder, type, inverse;
-                            // iterate attribute_map and find relevant info.
-                            for (i=0; i < attribute_map.length; i++) {
-                                if (attribute_map[i][attr] != undefined ) {
-                                    gh_data = attribute_map[i].data;
-                                    graph_holder = attribute_map[i].placeholder;
-                                    type = attribute_map[i][attr];
-                                    inverse = attribute_map[i].inverse;                                
-                                    break;
+                            if (data[attr] !== undefined) {
+                                var ya = parseInt(data[attr].replace(',', '').replace('$', '').replace('%', ''));
+                                var gh_data, graph_holder, type, inverse;
+                                // iterate attribute_map and find relevant info.
+                                for (i=0; i < attribute_map.length; i++) {
+                                    if (attribute_map[i][attr] != undefined ) {
+                                        gh_data = attribute_map[i].data;
+                                        graph_holder = attribute_map[i].placeholder;
+                                        type = attribute_map[i][attr];
+                                        inverse = attribute_map[i].inverse;                                
+                                        break;
+                                    }
                                 }
-                            }
 
-                            if (ya < gh_data[0][1])
-                                ya = gh_data[0][1];
+                                if (ya < gh_data[0][1])
+                                    ya = gh_data[0][1];
 
-                            if (ya > gh_data[10][1])
-                                ya = gh_data[10][1];
-                            console.log(gh_data);
-                            var entry = {
-                                data: [[value, ya]],
-                                points: { show: true, radius: 4 },
-                                lines: { show: false, fill: 0.98 },
-                                color: '#000000'                                
+                                if (ya > gh_data[10][1])
+                                    ya = gh_data[10][1];
+                                // console.log(gh_data);
+                                var entry = {
+                                    data: [[value, ya]],
+                                    points: { show: true, radius: 4 },
+                                    lines: { show: false, fill: 0.98 },
+                                    color: '#000000'                                
+                                }
+                                // // get gh_data
+                                // // update it
+                                gh_data = generate_quintile_data(gh_data, inverse);
+                                gh_data.push(entry);
+                                // //redraw graph
+                                draw_bar_chart(graph_holder, gh_data, type, 6.4);        
+                                
+                            } else {
+                                $('select.service option').each(function() {
+                                    var attr_ = $(this).val();
+                                    if (key.indexOf(attr_) != -1) {
+                                        $(this).closest('.e-cost-section').find('.progress-bar').css('background-color', colors[parseInt(value/10)]);                                        
+                                    }
+                                });
                             }
-                            // // get gh_data
-                            // // update it
-                            gh_data = generate_quintile_data(gh_data, inverse);
-                            gh_data.push(entry);
-                            // //redraw graph
-                            draw_bar_chart(graph_holder, gh_data, type, 6.4);        
                         }
+                    } else if (key.match("^service_")) {
+                        var title = '';
+
+                        if (!value)
+                            title = '-';
+                        else if (value[5] == 'FALSE')
+                            title = 'No deductible, $' + value[4] + ' copay';
+                        else if (value[5] == 'False/Coin')
+                            title = 'No deductible, then coinsurance';
+                        else if (value[5] == 'TRUE')
+                            title = 'Deductible, $' + value[4] + ' copay';
+                        else
+                            title = 'Deductible, then coinsurance';
+
+                        $('#'+key).html(title);
                     } else {
                         $('#prop_'+key).html(value);
                     }
                 });         
             }            
+        });
+}
+
+function update_e_cost(obj) {
+    var service = $(obj).val();
+
+    $.post(
+        '/update_e_cost',
+        {
+            service: service,
+            benefit: bnchmrk_benefit,
+            plan_type: plan_type, 
+            plan: plan           
+        },
+        function(data) {
+            var title = '';
+
+            if (data[5] == 'FALSE')
+                title = 'No deductible, $' + data[4] + ' copay ( $' + data[1] + ' )';
+            else if (data[5] == 'False/Coin')
+                title = 'No deductible, then coinsurance ( $' + data[1] + ' )';
+            else if (data[5] == 'TRUE')
+                title = 'Deductible, $' + data[4] + ' copay ( $' + data[1] + ' )';
+            else
+                title = 'Deductible, then coinsurance ( $' + data[1] + ' )';
+
+            $(obj).closest('.e-cost-section').find('.e_cost_title').html(title);
+            
+            var ded_percent = data[2] * 100.0 / data[1];
+            var coin_percent = data[3] * 100.0 / data[1];
+            var copay_percent = data[4] * 100.0 / data[1];
+
+            $(obj).closest('.e-cost-section').find('.progress-bar-success').removeAttr('style');
+            $(obj).closest('.e-cost-section').find('.progress-bar-success').css('width', ded_percent+'%');
+            $(obj).closest('.e-cost-section').find('.progress-bar-warning').removeAttr('style');
+            $(obj).closest('.e-cost-section').find('.progress-bar-warning').css('width', coin_percent+'%');
+            $(obj).closest('.e-cost-section').find('.progress-bar-danger').removeAttr('style');
+            $(obj).closest('.e-cost-section').find('.progress-bar-danger').css('width', copay_percent+'%');
+            $(obj).closest('.e-cost-section').find('.percentile').attr('id', 'prop_rank_'+service);
+
+            var value = data[6];
+            if (value != 'N/A') {
+                $(obj).closest('.e-cost-section').find('.percentile').html(value);
+                $(obj).closest('.e-cost-section').find('.percentile').removeAttr('style');
+                $(obj).closest('.e-cost-section').find('.percentile').css('color', colors[parseInt(value/10)]);
+                $(obj).closest('.e-cost-section').find('.progress-bar').css('background-color', colors[parseInt(value/10)]);
+            }
         });
 }
