@@ -93,7 +93,7 @@
                         <h5>Employers in the Comparison Set: <span id="num_employers"></span></h5>
                     </div>
                     <div class="col-sm-2 m-t-25 pull-right">
-                        <a class="btn btn-default btn-icon-text bgm-green" href="/print_page"><i class="zmdi zmdi-print"></i> Print</a>
+                        <a class="btn btn-default btn-icon-text bgm-black" href="/print_page" onclick="show_print_pending_dialog('print_page_dialog');"><i class="zmdi zmdi-print"></i> Printer Friendly Report</a>
                     </div>
                 </div>
             </div>
@@ -107,13 +107,15 @@
 {% block extra_js %}
     <script type="text/javascript">
         var bnchmrk_benefit = '{{ request.session.bnchmrk_benefit }}';
+        var print_template = false;        
+    </script>
     </script>
 
     <script src="{% static 'js/benefit.js' %}"></script>
     <script src="{% static 'js/common.js' %}"></script>
     <script src="{% static 'vendors/bower_components/flot/jquery.flot.pie.js' %}"></script>
     <script src="{% static 'vendors/sparklines/jquery.sparkline.min.js' %}"></script>
-    
+    <script src="{% static 'vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js' %}"></script>
     <script src="{% static 'js/flot-charts/pie-chart.js' %}"></script>
     <script src="{% static 'js/flot-charts/bar-chart.js' %}"></script>  
 {% endblock %}

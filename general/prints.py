@@ -26,30 +26,10 @@ def print_template(request):
     #Retrieve data or whatever you need
     request.session['bnchmrk_benefit'] = benefit
     request.session['plan'] = plan
-    # Retrieve data or whatever you need
-    ft_industries = request.session['ft_industries']
-    ft_head_counts = request.session['ft_head_counts']
-    ft_other = request.session['ft_other']
-    ft_regions = request.session['ft_regions']
-    ft_states = request.session['ft_states']
 
-    ft_industries_label = 'All'
-    ft_head_counts_label = 'All'
-    ft_other_label = 'All'
-    ft_regions_label = 'All'
-
-    # need to add ft_states
     return get_response_template(request, 
                                  benefit, 
-                                 ft_industries, 
-                                 ft_head_counts, 
-                                 ft_other, 
-                                 ft_regions, 
-                                 True,
-                                 ft_industries_label,
-                                 ft_head_counts_label,
-                                 ft_other_label,
-                                 ft_regions_label)
+                                 True)
 
 
 @login_required(login_url='/admin/login')
@@ -59,12 +39,7 @@ def print_template_header(request):
     #Retrieve data or whatever you need
     request.session['benefit'] = benefit
     request.session['plan'] = plan
-    ft_industries = request.session['ft_industries']
-    ft_head_counts = request.session['ft_head_counts']
-    ft_other = request.session['ft_other']
-    ft_regions = request.session['ft_regions']
-    ft_states = request.session['ft_states']
-
+    
     ft_industries_label = ', '.join(request.session['ft_industries_label'])
     ft_head_counts_label = ', '.join(request.session['ft_head_counts_label'])
     ft_other_label = ', '.join(request.session['ft_other_label'])
@@ -73,10 +48,6 @@ def print_template_header(request):
     # need to add ft_states
     return get_response_template(request, 
                                  benefit, 
-                                 ft_industries, 
-                                 ft_head_counts, 
-                                 ft_other, 
-                                 ft_regions, 
                                  True,
                                  ft_industries_label,
                                  ft_head_counts_label,

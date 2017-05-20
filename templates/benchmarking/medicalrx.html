@@ -1,5 +1,7 @@
+{% extends base_template %}
 {% load humanize bnchmrk_tag %}
 
+{% block page_content %}
 {% if num_employers >= EMPLOYER_THRESHOLD %}
 
     <!-- Prevalence -->
@@ -735,20 +737,20 @@
         gh9_data = {{ quintile_t1_gross }};
 
         gh10_data = [
-            {data: {{ prcnt_plan0 }}, color: '#F44336', label: 'No Plans Offered'},
-            {data: {{ prcnt_plan1 }}, color: '#03A9F4', label: 'One Plan Offered'},
-            {data: {{ prcnt_plan2 }}, color: '#8BC34A', label: 'Two Plans Offered'},
-            {data: {{ prcnt_plan3_or_more }}, color: '#FFEB3B', label: 'Three or More Plans Offered'},
+            {data: {{ prcnt_plan0 }}, color: '#795548', label: 'No Plans Offered'},
+            {data: {{ prcnt_plan1 }}, color: '#FFC107', label: 'One Plan Offered'},
+            {data: {{ prcnt_plan2 }}, color: '#009688', label: 'Two Plans Offered'},
+            {data: {{ prcnt_plan3_or_more }}, color: '#9E9E9E', label: 'Three or More Plans Offered'},
         ];        
 
         gh11_data = [{
             data : [['PPO/POS', {{ prcnt_ppo|cut:'%' }}], ['HMO/EPO', {{ prcnt_hmo|cut:'%' }}], ['HDHP', {{ prcnt_hdhp|cut:'%' }}]],
             bars : {
                 show : true,
-                barWidth : 0.08,
+                barWidth : 0.30,
                 order : 1,
                 lineWidth: 0,
-                fillColor: '#8BC34A'
+                fillColor: '#607D8B'
             }
         }];        
 
@@ -796,3 +798,4 @@
 
     {% endif %}
 </script>
+{% endblock %}

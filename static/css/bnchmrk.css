@@ -19,10 +19,16 @@
 }
 
 .section {
-	height: 280px;
+	min-height: 280px; 
 }
 
 .dash-widget-item {
 	margin-bottom: 0px; 
 	padding-top: 10px;
+}
+
+
+/*for print template*/
+.print-container {
+	width: 1500px;
 }

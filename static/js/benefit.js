@@ -17,22 +17,27 @@ var TYPE = {
 var colors = ['#f8696b', '#f8696b', '#FFE364', '#FFE364', '#bfbfbf', '#bfbfbf', '#B1D480', '#B1D480', '#63be7b', '#63be7b'];
 
 jQuery(function($) {
-	// mark left menu selected
-    $('ul.stem-menu li').eq(2).addClass('active');
+    if (print_template) {
+        update_properties();
+        update_content(bnchmrk_benefit, plan_type);
+    } else {    
+    	// mark left menu selected
+        $('ul.stem-menu li').eq(2).addClass('active');
 
-    $('ul.stem-menu li a').removeClass('active');
-    $('ul.stem-menu li a').each(function() {
-        if ($(this).attr('href').indexOf(bnchmrk_benefit.toLowerCase()) >= 0)
-            $(this).addClass('active');
-    });
+        $('ul.stem-menu li a').removeClass('active');
+        $('ul.stem-menu li a').each(function() {
+            if ($(this).attr('href').indexOf(bnchmrk_benefit.toLowerCase()) >= 0)
+                $(this).addClass('active');
+        });
 
-    get_plan_type();
+        get_plan_type();
 
-    $('#plans').change(function() {
-    	update_properties();
-    });
+        $('#plans').change(function() {
+        	update_properties();
+        });
 
-    reload_plans();   
+        reload_plans();   
+    }
 });
 
 function update_quintile(obj, graph_holder, qscore_holder, inverse) {
@@ -43,23 +48,25 @@ function update_quintile(obj, graph_holder, qscore_holder, inverse) {
 
     // change the id of q-score placeholder
     $('.'+qscore_holder).attr('id', 'prop_rank_'+property);
+    get_dynamic_attributes();
 
     $.post(
         '/update_quintile',
         {
-            benefit: bnchmrk_benefit,
-            plan_type: plan_type,
             plan: plan,
             property: property,
             type: type,
-            inverse: inverse
+            inverse: inverse,
+
+            quintile_properties: quintile_properties,
+            quintile_properties_inv: quintile_properties_inv,
+            services: services            
         },
         function(data) {
-            if (plan == 0)
+            if (!plan || plan == "0")
                 $('.toggle_plan').hide();
             else
                 $('.toggle_plan').show();
-            
 
             gh_data = generate_quintile_data(data['graph'], inverse);        
 
@@ -143,15 +150,7 @@ function get_body() {
         });
 
     $.post(
-        '/get_num_employers',
-        {
-            industry: industries,
-            head_counts: head_counts,
-            benefit: bnchmrk_benefit,
-            others: others,
-            regions: regions,
-            states: states
-        },
+        '/get_num_employers',{},
         function(data) {
             $('#num_employers').html(data);
         })
@@ -321,10 +320,7 @@ generate_quintile_data = function(raw_data, inverse){
     return data;
 }
 
-function update_properties() {
-	var print_template = false;
-
-    // get current quintile properties
+function get_dynamic_attributes() {
     quintile_properties = [];
     $('select.property').each(function() {
         quintile_properties.push($(this).val().substring(2));
@@ -339,15 +335,21 @@ function update_properties() {
     $('select.service').each(function() {
         services.push($(this).val());
     });   
+}
 
-    if (!print_template) 
+function update_properties() {
+    get_dynamic_attributes();
+    // get current quintile properties
+
+    if (!print_template) {
+        plan = 0;        
         if (plan != -2) // not changed benefit
             plan = $('#plans').val();
-        else
-            plan = 0;
-    else
+    } else {
         plan = -1;
+    }
 
+    console.log(plan);
     if (plan == null)
     	return;
     
@@ -355,14 +357,13 @@ function update_properties() {
         '/update_properties',
         {
             benefit: bnchmrk_benefit,
-            plan_type: plan_type,
             plan: plan,
             quintile_properties: quintile_properties,
             quintile_properties_inv: quintile_properties_inv,
             services: services
         },
         function(data) {
-            if (plan == 0) {
+            if (plan == 0 || plan == "") {
                 $('.toggle_plan').hide();
             } else {
                 $('.toggle_plan').show();
@@ -443,6 +444,7 @@ function update_properties() {
 
 function update_e_cost(obj) {
     var service = $(obj).val();
+    get_dynamic_attributes();
 
     $.post(
         '/update_e_cost',
@@ -450,7 +452,11 @@ function update_e_cost(obj) {
             service: service,
             benefit: bnchmrk_benefit,
             plan_type: plan_type, 
-            plan: plan           
+            plan: plan,
+
+            quintile_properties: quintile_properties,
+            quintile_properties_inv: quintile_properties_inv,
+            services: services
         },
         function(data) {
             var title = '';
@@ -487,3 +493,9 @@ function update_e_cost(obj) {
             }
         });
 }
+
+
+function show_print_pending_dialog(id) {
+    swal("Printing Page Confirmation", "Please wait while your $$$ Benchmarking Report is generated. You will be alerted as soon as the report is ready to download.".replace('$$$', bnchmrk_benefit));
+}
+

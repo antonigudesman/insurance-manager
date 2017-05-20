@@ -1,8 +1,9 @@
-{% extends 'base.html' %}
+{% extends 'print_base.html' %}
 {% load pages_tags mezzanine_tags i18n staticfiles %}
 
 {% block extra_css %}
 <link href="{% static 'vendors/bootgrid/jquery.bootgrid.min.css' %}" rel="stylesheet">
+<link href="{% static 'css/bnchmrk.css' %}" rel="stylesheet">
 
 <style type="text/css">
     body {margin-top: 0;}
@@ -12,11 +13,11 @@
 {% block nav %}
 {% endblock %}
 
-{% block body %}
-<div class="container">
+{% block page_body %}
+<div class="container print-container">
     <div class="bnchmrk_table">
         <div class="card" id="bnchmrk_card">
-        {% block page_body %}
+        {% block page_content %}
         {% endblock %}
         </div>
     </div>
@@ -32,14 +33,15 @@
 {% block extra_js %}
     <script type="text/javascript">
         var EMPLOYER_THRESHOLD_MESSAGE = "{{ EMPLOYER_THRESHOLD_MESSAGE }}";
-        var benefit = '{{ request.session.benefit }}';
         var print_template = true;
+        var bnchmrk_benefit = '{{ request.session.bnchmrk_benefit }}';
     </script>
-    <script src="{% static 'vendors/bower_components/flot/jquery.flot.categories.js' %}"></script>
+
+    <script src="{% static 'js/benefit.js' %}"></script>
+    <script src="{% static 'js/common.js' %}"></script>
     <script src="{% static 'vendors/bower_components/flot/jquery.flot.pie.js' %}"></script>
-    <script src="{% static 'vendors/bootgrid/jquery.bootgrid.updated.min.js' %}"></script> 
-    <script src="{% static 'vendors/bower_components/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js' %}"></script>   
-    <script src="{% static 'js/enterprise.js' %}"></script>
+    <script src="{% static 'vendors/sparklines/jquery.sparkline.min.js' %}"></script>
+    <script src="{% static 'vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js' %}"></script>
     <script src="{% static 'js/flot-charts/pie-chart.js' %}"></script>
-    <script src="{% static 'js/flot-charts/bar-chart.js' %}"></script>
+    <script src="{% static 'js/flot-charts/bar-chart.js' %}"></script>      
 {% endblock %}
