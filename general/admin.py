@@ -59,9 +59,6 @@ class EmployerAdmin(admin.ModelAdmin):
         ids = ','.join([str(item.id) for item in queryset])
         # print selected, ids
         return print_report(request, queryset[0].id)
-        # fields = [f.name for f in Product._meta.get_fields() 
-        #           if f.name not in ['updated_at', 'is_new']]
-        # return render(request, 'product_properties.html', locals())
 
     def get_queryset(self, request):
         qs = super(EmployerAdmin, self).get_queryset(request)

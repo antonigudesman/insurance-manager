@@ -10,6 +10,11 @@
 <!-- STYLESHEETS / EXTRASTYLE -->
 {% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="{% static "grappelli/css/base.css" %}" />
+    <style type="text/css">
+        input[type="text"], input[type="password"], input[type="email"], input[type="url"] {
+            height: 28px;
+        }               
+    </style>
 {% endblock %}
 
 {% block extrastyle %}{% endblock %}

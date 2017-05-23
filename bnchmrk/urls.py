@@ -71,7 +71,8 @@ urlpatterns += [
     url(r"^98Wf37r2-3h4X2_jh9$", print_template, name="print_template"),
     url(r"^25Wfr7r2-3h4X25t$", print_template_header, name="print_template_header"),
     url(r"^print_page", print_page, name="print_page"),
-    url(r"^print_report", print_report, name="print_report"),
+    url(r"^print_report$", print_report, name="print_report"),
+    url(r"^print_report_/(?P<company_id>.*)$", print_report_pdf, name="print_report_pdf"),
 ]
 
 # Adds ``STATIC_URL`` to the context of error pages, so that error

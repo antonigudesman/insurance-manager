@@ -3,6 +3,11 @@ var regions = [];
 var head_counts = [];
 var others = [];
 var states = [];
+var industries_label = [];
+var head_counts_label = [];
+var others_label = [];
+var regions_label = [];
+var states_label = [];
 
 $(document).ready(function(){
     load_employers();
@@ -10,6 +15,7 @@ $(document).ready(function(){
 
 function refresh_content() {
     get_filters();
+    get_filters_label();
     $("#data-table-employer").bootgrid('reload');    
 }
 
@@ -28,8 +34,7 @@ function load_employers() {
                 // return "<a href=\"/admin/general/employer/"+row.id+"/change\">"+row[column.id]+"</a>";
             },            
             "commands": function(column, row) {
-                return "<button type=\"button\" class=\"btn btn-icon command-eye waves-effect waves-circle\" data-row-id=\"" + row.id + "\"><span class=\"zmdi zmdi-eye\"></span></button> " + 
-                    "<button type=\"button\" class=\"btn btn-icon command-edit waves-effect waves-circle\" data-row-id=\"" + row.id + "\"><span class=\"zmdi zmdi-edit\"></span></button>";
+                return "<a href='/print_report_/"+row.id+"' type=\"button\" class=\"btn btn-icon command-eye waves-effect waves-circle\" data-row-id=\"" + row.id + "\"><span class=\"zmdi zmdi-print\"></span></a> ";
             }
         },
         labels: {
@@ -50,7 +55,14 @@ function load_employers() {
                 others: others,
                 regions: regions,
                 states: states,
-                threshold: 0
+                threshold: 0,
+
+                print: true,
+                industry_label: industries_label,
+                head_counts_label: head_counts_label,
+                others_label: others_label,
+                regions_label: regions_label,
+                states_label: states_label,                
             };
 
             return JSON.stringify(model);

@@ -56,6 +56,35 @@ def enterprise(request):
         ft_states = form_param.get('states')
         q = form_param.get('q', '')
         threshold = form_param.get('threshold', 1)
+        is_print = form_param.get('print')
+
+        if is_print:
+            print form_param, '@@@@@@@@@'
+            ft_industries_label = form_param.get('industry_label')
+            ft_head_counts_label = form_param.get('head_counts_label')
+            ft_other_label = form_param.get('others_label')
+            ft_regions_label = form_param.get('regions_label')
+            ft_states_label = form_param.get('states_label')
+
+            # store for print
+            request.session['ft_industries'] = ft_industries
+            request.session['ft_head_counts'] = ft_head_counts
+            request.session['ft_other'] = ft_other
+            request.session['ft_regions'] = ft_regions
+            request.session['ft_states'] = ft_states
+
+            request.session['ft_industries_label'] = ft_industries_label
+            request.session['ft_head_counts_label'] = ft_head_counts_label
+            request.session['ft_other_label'] = ft_other_label
+            request.session['ft_regions_label'] = ft_regions_label
+            request.session['ft_states_label'] = ft_states_label
+
+            for benefit in MODEL_MAP.keys():
+                if benefit == 'MEDICAL':
+                    benefit = 'MEDICALRX'
+                request.session[benefit+'_quintile_properties'] = None
+                request.session[benefit+'_quintile_properties_inv'] = None
+                request.session[benefit+'_services'] = None
 
         lstart = (page - 1) * limit
         lend = lstart + limit
@@ -352,7 +381,6 @@ def support(request):
     categories = FAQCategory.objects.all()
     return render(request, 'support.html', locals())    
 
-## ----------------------------------------------------------------  ##
 
 @login_required(login_url='/login')
 def home(request):
@@ -573,3 +601,10 @@ def get_plan_type(request):
         return JsonResponse(['Multiple of Salary', 'Flat Amount'], safe=False)
     else:
         return JsonResponse(['All'], safe=False)
+
+
+def print_report(request):
+    return render(request, 'admin/print_report.html', {
+        'industries': get_industries(),
+        'STATES': STATE_CHOICES
+    })    

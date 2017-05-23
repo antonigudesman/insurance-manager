@@ -159,7 +159,7 @@ def get_pdf(request, benefits, plans, plan_types):
 
 
 @login_required(login_url='/admin/login')
-def print_report(request, company_id):
+def print_report_pdf(request, company_id):
     # company_id = request.GET.get('company_id')
     models = [Medical, Dental, Vision, Life, STD, LTD, Strategy]
     benefits = []

@@ -103,9 +103,9 @@ medical_services = [
 ]
 
 def get_medicalrx_plan(request, employers, num_companies, plan_type=None):
-    quintile_properties = request.session.get('MEDICALRX_quintile_properties', medical_quintile_attrs)
-    quintile_properties_inv = request.session.get('MEDICALRX_quintile_properties_inv', medical_quintile_attrs_inv)
-    services = request.session.get('MEDICALRX_services', medical_services)
+    quintile_properties = request.session.get('MEDICALRX_quintile_properties') or medical_quintile_attrs
+    quintile_properties_inv = request.session.get('MEDICALRX_quintile_properties_inv') or medical_quintile_attrs_inv
+    services = request.session.get('MEDICALRX_services') or medical_services
     
     medians, var_local, qs = get_medical_plan_(employers, num_companies, plan_type, quintile_properties, quintile_properties_inv)
     prcnt_plan_count = get_plan_percentages(employers, num_companies, 'med')
