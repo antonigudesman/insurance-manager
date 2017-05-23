@@ -52,7 +52,7 @@ class EmployerAdmin(admin.ModelAdmin):
         'renewal_date', 'address_line_1', 'address_line_2', 'zip_code', 'phone', 'employerurl',
         'employerbenefitsurl', 'stock_symbol', 'avid', 'naics_2012_code')
     form = EmployerForm
-    actions = ['print_report']
+    # actions = ['print_report']
 
     def print_report(self, request, queryset):
         selected = request.POST.getlist(admin.ACTION_CHECKBOX_NAME)
