@@ -111,13 +111,22 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-md-6 section-graph">
-            <div id="LIFE-1" class="flot-chart"></div>
-        </div>
-        <div class="col-md-1 section-score">
-            <h5 class="toggle_plan">Q-SCORE</h5>
-            <p><span id="prop_rank_multiple_max"></span></p>           
-        </div> 
+
+        <div class="col-md-7 section-graph">
+            <div class="col-sm-12 m-b-15 m-r-25">
+                <select class="selectpicker property" onchange="update_quintile(this, 'LIFE-1', 'prop_rank_multiple_max', true);">
+                    <option type="dollar" value="multiple_max">Maximum Benefit</option>
+                    <option type="percent" value="add_multiple">ADD Included</option>
+                </select>
+            </div>                
+            <div class="col-md-10">
+                <div id="LIFE-1" class="flot-chart"></div>
+            </div>
+            <div class="col-md-2 section-score text-center">
+                <h5 class="toggle_plan">Percentile Rank</h5>
+                <p><span id="prop_rank_multiple_max" class="prop_rank_multiple_max"></span></p>           
+            </div> 
+        </div>          
         </div>
     </div>
 
@@ -149,13 +158,21 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-md-6 section-graph">
-            <div id="LIFE-2" class="flot-chart"></div>
-        </div> 
-        <div class="col-md-1 section-score">
-            <h5 class="toggle_plan">Q-SCORE</h5>
-            <p><span id="prop_rank_flat_amount"></span></p>      
-        </div>
+        <div class="col-md-7 section-graph">
+            <div class="col-sm-12 m-b-15 m-r-25">
+                <select class="selectpicker property" onchange="update_quintile(this, 'LIFE-2', 'prop_rank_flat_amount', true);">
+                    <option type="dollar" value="flat_amount">Flat Benefit</option>
+                    <option type="percent" value="add_flat">ADD Included</option>
+                </select>
+            </div>                
+            <div class="col-md-10">
+                <div id="LIFE-2" class="flot-chart"></div>
+            </div>
+            <div class="col-md-2 section-score text-center">
+                <h5 class="toggle_plan">Percentile Rank</h5>
+                <p><span id="prop_rank_flat_amount" class="prop_rank_flat_amount"></span></p>           
+            </div> 
+        </div>              
         </div>
     </div>
 

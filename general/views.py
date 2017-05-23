@@ -323,7 +323,7 @@ def get_plans_(benefit, group, plan_type):
         return [
                    [item.id, '{} - {} - {}'.format(item.employer.name, item.type, item.title)]
                    for item in objects.order_by('employer__name', 'title')
-               ][:10]   # TEST
+               ]#[:10]   # TEST
     elif benefit in ['STD', 'LTD', 'VISION']:
         return [
                    [item.id, '{} - {}'.format(item.employer.name, item.title)]

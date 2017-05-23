@@ -119,13 +119,21 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-md-6 section-graph">
-            <div id="STD-1" class="flot-chart"></div>
-        </div>
-        <div class="col-md-1 section-score">
-            <h5 class="toggle_plan">Q-SCORE</h5>
-            <p><span id="prop_rank_weekly_max"></span></p>           
-        </div> 
+        <div class="col-md-7 section-graph">
+            <div class="col-sm-12 m-b-15 m-r-25">
+                <select class="selectpicker property" onchange="update_quintile(this, 'STD-1', 'prop_rank_weekly_max', true);">
+                    <option type="dollar" value="weekly_max">Weekly Maximum Benefit</option>
+                    <option type="percent" value="percentage">Replacement Percentage</option>
+                </select>
+            </div>                
+            <div class="col-md-10">
+                <div id="STD-1" class="flot-chart"></div>
+            </div>
+            <div class="col-md-2 section-score text-center">
+                <h5 class="toggle_plan">Percentile Rank</h5>
+                <p><span id="prop_rank_weekly_max" class="prop_rank_weekly_max"></span></p>           
+            </div> 
+        </div>              
         </div>
     </div>
 

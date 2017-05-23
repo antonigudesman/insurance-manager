@@ -134,13 +134,26 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-6 section-graph">
-                <div id="VISION-1" class="flot-chart"></div>
-            </div>
-            <div class="col-md-1 text-center section-score">
-                <h5 class="toggle_plan">Q-SCORE</h5>
-                <p><span id="prop_rank_exam_copay"></span></p>           
-            </div> 
+
+            <div class="col-md-7 section-graph">
+                <div class="col-sm-12 m-b-15 m-r-25">
+                    <select class="selectpicker property_inv" onchange="update_quintile(this, 'VISION-1', 'prop_rank_exam_copay', true);">
+                        <option type="dollar" value="exam_copay">Exam Copay</option>
+                        <option type="dollar" value="lenses_copay">Lenses Copay</option>
+                        <option type="dollar" value="frames_copay">Frames Copay</option>
+                        <option type="dollar" value="contacts_copay">Contacts Copay</option>
+                        <option type="dollar" value="frames_allowance">Frames Allowance</option>
+                        <option type="dollar" value="contacts_allowance">Contacts Allowance</option>
+                    </select>
+                </div>                
+                <div class="col-md-10">
+                    <div id="VISION-1" class="flot-chart"></div>
+                </div>
+                <div class="col-md-2 section-score text-center">
+                    <h5 class="toggle_plan">Percentile Rank</h5>
+                    <p><span id="prop_rank_exam_copay" class="prop_rank_exam_copay"></span></p>           
+                </div> 
+            </div>              
         </div>
     </div>
 
@@ -226,13 +239,25 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-md-6 section-graph">
-            <div id="VISION-5" class="flot-chart"></div>
-        </div>
-        <div class="col-md-1 text-center section-score">
-            <h5 class="toggle_plan">Q-SCORE</h5>
-            <p><span id="prop_rank_t1_ee"></span></p>           
-        </div> 
+       
+        <div class="col-md-7 section-graph">
+            <div class="col-sm-12 m-b-15 m-r-25">
+                <select class="selectpicker property_inv" onchange="update_quintile(this, 'VISION-5', 'prop_rank_t1_ee', true);">
+                    <option type="dollar" value="t1_ee">Employee Only</option>
+                    <option type="dollar" value="t2_ee">Employee & Spouse</option>
+                    <option type="dollar" value="t3_ee">Employee & Children</option>
+                    <option type="dollar" value="t4_ee">Family</option>
+                </select>
+            </div>                
+            <div class="col-md-10">
+                <div id="VISION-5" class="flot-chart"></div>
+            </div>
+            <div class="col-md-2 section-score text-center">
+                <h5 class="toggle_plan">Percentile Rank</h5>
+                <p><span id="prop_rank_t1_ee" class="prop_rank_t1_ee"></span></p>           
+            </div> 
+        </div>  
+
         </div>
     </div> 
 
@@ -274,13 +299,23 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-md-6 section-graph">
-            <div id="VISION-6" class="flot-chart"></div>
-        </div>
-        <div class="col-md-1 text-center section-score">
-            <h5 class="toggle_plan">Q-SCORE</h5>
-            <p><span id="prop_rank_t1_gross"></span></p>           
-        </div> 
+        <div class="col-md-7 section-graph">
+            <div class="col-sm-12 m-b-15 m-r-25">
+                <select class="selectpicker property_inv" onchange="update_quintile(this, 'VISION-6', 'prop_rank_t1_gross', true);">
+                    <option type="dollar" value="t1_gross">Employee Only</option>
+                    <option type="dollar" value="t2_gross">Employee + Spouse</option>
+                    <option type="dollar" value="t3_gross">Employee + Child(ren)</option>
+                    <option type="dollar" value="t4_gross">Family</option>
+                </select>
+            </div>                
+            <div class="col-md-10">
+                <div id="VISION-6" class="flot-chart"></div>
+            </div>
+            <div class="col-md-2 section-score text-center">
+                <h5 class="toggle_plan">Percentile Rank</h5>
+                <p><span id="prop_rank_t1_gross" class="prop_rank_t1_gross"></span></p>           
+            </div> 
+        </div>          
         </div>
     </div>  
 
