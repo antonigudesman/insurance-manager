@@ -1,3 +1,6 @@
+{% extends base_template %}
+{% block page_content %}
+
 {% if num_employers >= EMPLOYER_THRESHOLD %}
     <div class="card section">
         <div class="row">
@@ -81,14 +84,14 @@
                 <col width="25%">
                 <thead>
                     <tr>
-                        <th class="row-label">Benefit Amounts & Waiting Periods</th>
+                        <th class="row-label">STD Coverage</th>
                         <th>Benchmark</th>
                         <th class="toggle_plan">Your Plan</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="quintile-subject">
-                        <td class="row-label">Monthly Maximum Benefit *</td>
+                    <tr>
+                        <td class="row-label">Monthly Maximum Benefit</td>
                         <td>{{ mdn_monthly_max }}</td>
                         <td><span id="prop_monthly_max"></span></td>
                     </tr>
@@ -122,35 +125,39 @@
 
 <script type="text/javascript">
 
-var gh1_data, gh2_data, gh18_data, gh3_data, gh4_data;
+var gh1_data, gh3_data, gh4_data;
+var plan_type = '{{ request.session.plan_type }}';
 
 {% if num_employers >= EMPLOYER_THRESHOLD %}
     gh1_data = {{ quintile_monthly_max }};
-    gh2_data = {{ quintile_waiting_weeks }};
-
-    gh18_data = [
-        {data: {{ prcnt_plan0 }}, color: '#F44336', label: 'Not Offered'},
-        {data: {{ prcnt_plan1 }}, color: '#03A9F4', label: 'One Plan'},
-        {data: {{ prcnt_plan2 }}, color: '#8BC34A', label: 'Two Plans'},
-        {data: {{ prcnt_plan3_or_more }}, color: '#FFEB3B', label: 'Three or More Plans'},
-    ];
 
     gh3_data = [
-        {data: {{ prcnt_plan0 }}, color: '#F44336', label: 'No Plans Offered'},
-        {data: {{ prcnt_plan1 }}, color: '#03A9F4', label: 'One Plan Offered'},
-        {data: {{ prcnt_plan2 }}, color: '#8BC34A', label: 'Two Plans Offered'},
-        {data: {{ prcnt_plan3_or_more }}, color: '#FFEB3B', label: 'Three or More Plans Offered'},
+        {data: {{ prcnt_plan0 }}, color: '#795548', label: 'No Plans Offered'},
+        {data: {{ prcnt_plan1 }}, color: '#FFC107', label: 'One Plan Offered'},
+        {data: {{ prcnt_plan2 }}, color: '#009688', label: 'Two Plans Offered'},
+        {data: {{ prcnt_plan3_or_more }}, color: '#9E9E9E', label: 'Three or More Plans Offered'},
     ];        
 
     gh4_data = [{
         data : [['100% Employer Paid Only', {{ prcnt_paid|cut:'%' }}], ['Employee Cost Share Only', {{ prcnt_share|cut:'%' }}], ['Core & Buy Up Plans', {{ prcnt_paid_share|cut:'%' }}]],
         bars : {
             show : true,
-            barWidth : 0.08,
+            barWidth : 0.3,
             order : 1,
             lineWidth: 0,
-            fillColor: '#8BC34A'
+            fillColor: '#607D8B'
         }
     }]; 
+
+    var attribute_map = [
+        {
+            data: gh1_data,
+            placeholder: 'LTD-1',
+            monthly_max: 'dollar',
+            rx_coin: 'percent',
+            inverse: false
+        }
+    ];
 {% endif %}
 </script>
+{% endblock %}

@@ -80,6 +80,13 @@ def get_filtered_employers_session(request):
                                   ft_states)
 
 
+EXCEPT_ZERO_FIELDS = [
+    'rx_ded_single',
+    'rx_ded_family',
+    'rx_max_single',
+    'rx_max_family',
+]
+
 def get_medians(qs, attrs, num_companies, attrs_percent=[], attrs_int=[]):
     var_local = {}
     var_return = {
@@ -89,8 +96,12 @@ def get_medians(qs, attrs, num_companies, attrs_percent=[], attrs_int=[]):
     }
 
     for attr in attrs:
-        kwargs = { '{0}__isnull'.format(attr): True }        
+        kwargs = { '{0}__isnull'.format(attr): True } 
         var_local['qs_'+attr] = qs.exclude(**kwargs)
+        if attr in EXCEPT_ZERO_FIELDS:       
+            kwargs = { '{0}'.format(attr): 0 } 
+            var_local['qs_'+attr] = var_local['qs_'+attr].exclude(**kwargs)
+
         mdn_attr, _ = get_median_count(var_local['qs_'+attr], attr)
         var_return['mdn_'+attr] = mdn_attr
         if mdn_attr != '-':
@@ -354,6 +365,19 @@ def get_quintile_properties(var_qs, instance, attrs, attrs_inv, context):
         rank = get_rank(var_qs['quintile_'+attr], getattr(instance, attr))
         rank = rank if rank == '-' else 100 - rank
         context['rank_'+attr] = rank if rank != 100 else settings.MAX_PERCENTILE
+
+
+def get_quintile_properties_idx(var_qs, instance, attrs, attrs_inv, context):
+    idx = 0
+    for attr in attrs:            
+        context['rank_'+str(idx)] = get_rank(var_qs['quintile_'+attr], getattr(instance, attr))
+        idx += 1
+
+    for attr in attrs_inv: 
+        rank = get_rank(var_qs['quintile_'+str(idx)], getattr(instance, attr))
+        rank = rank if rank == '-' else 100 - rank
+        context['rank_'+attr] = rank if rank != 100 else settings.MAX_PERCENTILE
+        idx += 1
 
 
 def get_industries():

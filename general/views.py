@@ -187,17 +187,23 @@ def update_properties(request):
     quintile_properties = form_param.getlist('quintile_properties[]')
     quintile_properties_inv = form_param.getlist('quintile_properties_inv[]')
     services = form_param.getlist('services[]')
+    print_template = form_param.get('print_template')
 
-    request.session[benefit+'_quintile_properties'] = quintile_properties  
-    request.session[benefit+'_quintile_properties_inv'] = quintile_properties_inv  
-    request.session[benefit+'_services'] = services  
 
     plan_type = request.session.get('plan_type')
     # save for print
     if plan != -1:
         request.session['plan'] = plan
+        request.session[benefit+'_quintile_properties'] = quintile_properties  
+        request.session[benefit+'_quintile_properties_inv'] = quintile_properties_inv  
+        request.session[benefit+'_services'] = services  
+        # print locals(), '###############333'
     else:
         plan = request.session['plan']
+        quintile_properties = request.session[benefit+'_quintile_properties']
+        quintile_properties_inv = request.session[benefit+'_quintile_properties_inv']
+        services = request.session[benefit+'_services']
+        # print locals(), '@@@@@@@@@@@@'
 
     if benefit == 'MEDICALRX':
         benefit = 'MEDICAL'
@@ -496,6 +502,7 @@ def ajax_benchmarking(request):
     ft_head_counts_label = form_param.getlist('head_counts_label[]')
     ft_other_label = form_param.getlist('others_label[]')
     ft_regions_label = form_param.getlist('regions_label[]')
+    ft_states_label = form_param.getlist('states_label[]')
 
     request.session['bnchmrk_benefit'] = bnchmrk_benefit
     request.session['plan_type'] = plan_type
@@ -511,6 +518,7 @@ def ajax_benchmarking(request):
     request.session['ft_head_counts_label'] = ft_head_counts_label
     request.session['ft_other_label'] = ft_other_label
     request.session['ft_regions_label'] = ft_regions_label
+    request.session['ft_states_label'] = ft_states_label
 
     return get_response_template(request, bnchmrk_benefit)
 
@@ -518,15 +526,11 @@ def ajax_benchmarking(request):
 def get_response_template(request, 
                           benefit, 
                           is_print=False, 
-                          ft_industries_label='', 
-                          ft_head_counts_label='', 
-                          ft_other_label='', 
-                          ft_regions_label='',
                           is_print_header=False):
 
     today = datetime.strftime(datetime.now(), '%B %d, %Y')
     employers, num_companies = get_filtered_employers_session(request)
-    
+
     if num_companies < settings.EMPLOYER_THRESHOLD:
         context =  {
             'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE,
@@ -535,22 +539,24 @@ def get_response_template(request,
         }
     else:
         plan_type = request.session.get('plan_type')
+        print plan_type, '########'
         func_name = 'get_{}_plan'.format(benefit.lower())
-        context = globals()[func_name](employers, num_companies, plan_type)
+        context = globals()[func_name](request, employers, num_companies, plan_type)
 
     context['base_template'] = 'print.html' if is_print else 'empty.html'
     context['today'] = today
+    template = 'benchmarking/{}.html'.format(benefit.lower())
 
-    if is_print:
+    if is_print_header:
         # unescape html characters
         h = HTMLParser.HTMLParser()
-        context['ft_industries_label'] = h.unescape(ft_industries_label)
-        context['ft_head_counts_label'] = h.unescape(ft_head_counts_label)
-        context['ft_other_label'] = h.unescape(ft_other_label)
-        context['ft_regions_label'] = h.unescape(ft_regions_label)
+        context['ft_industries_label'] = h.unescape(', '.join(request.session['ft_industries_label']))
+        context['ft_head_counts_label'] = h.unescape(', '.join(request.session['ft_head_counts_label']))
+        context['ft_other_label'] = h.unescape(', '.join(request.session['ft_other_label']))
+        context['ft_regions_label'] = h.unescape(', '.join(request.session['ft_regions_label']))
+        context['ft_states_label'] = h.unescape(', '.join(request.session['ft_states_label']))
+        context['plan_type'] = plan_type
 
-    template = 'benchmarking/{}.html'.format(benefit.lower())
-    if is_print_header:
         group = request.user.groups.first().name
         context['group'] = group.lower()
         template = 'includes/print_header.html'

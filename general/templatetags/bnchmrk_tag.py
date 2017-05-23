@@ -1,5 +1,6 @@
 from django import template
 from django.contrib.auth.models import Group 
+import json
 
 register = template.Library()
 
@@ -19,6 +20,11 @@ def parse_none(value): # Only one argument.
         return None
     else:
         return value        
+
+@register.filter
+def parse_list(llist, idx): # Only one argument.
+    """Converts a string into none"""
+    return json.loads(llist)[idx]
 
 @register.filter
 def replace_slash(value): # Only one argument.

@@ -5,6 +5,7 @@ from django.db.models.functions import Lower
 
 from .models import *
 from .forms import *
+from .prints import *
 
 class EmployerForm(forms.ModelForm):
     class Meta:
@@ -51,6 +52,16 @@ class EmployerAdmin(admin.ModelAdmin):
         'renewal_date', 'address_line_1', 'address_line_2', 'zip_code', 'phone', 'employerurl',
         'employerbenefitsurl', 'stock_symbol', 'avid', 'naics_2012_code')
     form = EmployerForm
+    actions = ['print_report']
+
+    def print_report(self, request, queryset):
+        selected = request.POST.getlist(admin.ACTION_CHECKBOX_NAME)
+        ids = ','.join([str(item.id) for item in queryset])
+        # print selected, ids
+        return print_report(request, queryset[0].id)
+        # fields = [f.name for f in Product._meta.get_fields() 
+        #           if f.name not in ['updated_at', 'is_new']]
+        # return render(request, 'product_properties.html', locals())
 
     def get_queryset(self, request):
         qs = super(EmployerAdmin, self).get_queryset(request)

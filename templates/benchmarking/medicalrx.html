@@ -5,7 +5,7 @@
 {% if num_employers >= EMPLOYER_THRESHOLD %}
 
     <!-- Prevalence -->
-    <div class="card section">
+    <div class="card section" style="height: 310px; padding-top: 45px;">
         <div class="row">
             <div class="col-md-6 section-content-left">
                 <div class="col-md-9">
@@ -129,12 +129,12 @@
             <div class="col-md-7 section-graph">
                 <div class="col-sm-12 m-b-15 m-r-25">
                     <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-1', 'prop_rank_in_ded_single', true);">
-                        <option value="D_in_ded_single">In Network Deductible - Individual</option>
-                        <option value="D_in_ded_family">In Network Deductible - Family</option>
-                        <option value="D_in_max_single">In Network Maximum - Individual</option>
-                        <option value="D_in_max_family">In Network Maximum - Family</option>
-                        <option value="P_in_coin">In Network Medical Coinsurance</option>
-                        <option value="P_rx_coin">In Network Rx Coinsurance</option>
+                        <option type="dollar" value="in_ded_single">In Network Deductible - Individual</option>
+                        <option type="dollar" value="in_ded_family">In Network Deductible - Family</option>
+                        <option type="dollar" value="in_max_single">In Network Maximum - Individual</option>
+                        <option type="dollar" value="in_max_family">In Network Maximum - Family</option>
+                        <option type="percent" value="in_coin">In Network Medical Coinsurance</option>
+                        <option type="percent" value="rx_coin">In Network Rx Coinsurance</option>
                     </select>
                 </div>                
                 <div class="col-md-10">
@@ -142,7 +142,7 @@
                 </div>
                 <div class="col-md-2 section-score text-center">
                     <h5 class="toggle_plan">Percentile Rank</h5>
-                    <p><span id="prop_rank_in_ded_single" class="prop_rank_in_ded_single"></span></p>           
+                    <p><span id="prop_rank_{{ quintile_properties_inv|parse_list:0 }}" class="prop_rank_in_ded_single"></span></p>           
                 </div> 
             </div>
         </div>
@@ -205,11 +205,11 @@
             <div class="col-md-7 section-graph">
                 <div class="col-sm-12 m-b-15 m-r-25">
                     <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-2', 'prop_rank_out_ded_single', true);">
-                        <option value="D_out_ded_single">Out of Network Deductible - Individual</option>
-                        <option value="D_out_ded_family">Out of Network Deductible - Family</option>
-                        <option value="D_out_max_single">Out of Network Maximum - Individual</option>
-                        <option value="D_out_max_family">Out of Network Maximum - Family</option>
-                        <option value="P_out_coin">Out of Network Coinsurance</option>
+                        <option type="dollar" value="out_ded_single">Out of Network Deductible - Individual</option>
+                        <option type="dollar" value="out_ded_family">Out of Network Deductible - Family</option>
+                        <option type="dollar" value="out_max_single">Out of Network Maximum - Individual</option>
+                        <option type="dollar" value="out_max_family">Out of Network Maximum - Family</option>
+                        <option type="percent" value="out_coin">Out of Network Coinsurance</option>
                     </select>
                 </div>                
                 <div class="col-md-10">
@@ -217,7 +217,7 @@
                 </div>
                 <div class="col-md-2 section-score text-center">
                     <h5 class="toggle_plan">Percentile Rank</h5>
-                    <p><span id="prop_rank_out_ded_single" class="prop_rank_out_ded_single"></span></p>           
+                    <p><span id="prop_rank_{{ quintile_properties_inv|parse_list:1 }}" class="prop_rank_out_ded_single"></span></p>           
                 </div> 
             </div>
         </div>
@@ -265,7 +265,7 @@
 
             <div class="col-md-7 section-graph">
                 <div id="pie-charts" class="dash-widget-item">
-                    <div class="bgm-lightblue">
+                    <div class="bgm-teal">
                         <div class="dash-widget-header">
                             <div class="dash-widget-title">Rx-Only</div>
                         </div>
@@ -275,7 +275,7 @@
                         <div class="row">
                         <div class="col-md-4 col-md-offset-2">
                         <div class="text-center p-20">
-                            <div class="easy-pie main-pie" data-percent="{{ prcnt_rx_max_single }}">
+                            <div class="easy-pie main-pie" data-percent="{{ prcnt_rx_ded_single }}">
                                 <div class="percent">{{ prcnt_rx_ded_single|cut:"%" }}</div>
                                 <div class="pie-title p-b-10">Require Seperate Deductibles</div>
                             </div>
@@ -338,10 +338,10 @@
             <div class="col-md-7 section-graph">
                 <div class="col-sm-12 m-b-15 m-r-25">
                     <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-8', 'prop_rank_t1_ee', true);">
-                        <option value="D_t1_ee">Employee Only Contribution</option>
-                        <option value="D_t2_ee">Employee + Spouse Contribution</option>
-                        <option value="D_t3_ee">Employee + Child(ren) Contribution</option>
-                        <option value="D_t4_ee">Family Contribution</option>
+                        <option type="dollar" value="t1_ee">Employee Only Contribution</option>
+                        <option type="dollar" value="t2_ee">Employee + Spouse Contribution</option>
+                        <option type="dollar" value="t3_ee">Employee + Child(ren) Contribution</option>
+                        <option type="dollar" value="t4_ee">Family Contribution</option>
                     </select>
                 </div>                            
                 <div class="col-md-10">
@@ -349,7 +349,7 @@
                 </div>
                 <div class="col-md-2 section-score text-center">
                     <h5 class="toggle_plan">Percentile Rank</h5>
-                    <p><span id="prop_rank_t1_ee" class="prop_rank_t1_ee"></span></p>           
+                    <p><span id="prop_rank_{{ quintile_properties_inv|parse_list:2 }}" class="prop_rank_t1_ee"></span></p>           
                 </div> 
             </div>
         </div>
@@ -402,10 +402,10 @@
             <div class="col-md-7 section-graph">
                 <div class="col-sm-12 m-b-15 m-r-25">
                     <select class="selectpicker property_inv" onchange="update_quintile(this, 'MEDICAL-9', 'prop_rank_t1_gross', true);">
-                        <option value="D_t1_gross">Employee Only Gross Cost</option>
-                        <option value="D_t2_gross">Employee + Spouse Gross Cost</option>
-                        <option value="D_t3_gross">Employee + Child(ren) Gross Cost</option>
-                        <option value="D_t4_gross">Family Gross Cost</option>
+                        <option type="dollar" value="t1_gross">Employee Only Gross Cost</option>
+                        <option type="dollar" value="t2_gross">Employee + Spouse Gross Cost</option>
+                        <option type="dollar" value="t3_gross">Employee + Child(ren) Gross Cost</option>
+                        <option type="dollar" value="t4_gross">Family Gross Cost</option>
                     </select>
                 </div>                            
                 <div class="col-md-10">
@@ -413,7 +413,7 @@
                 </div>
                 <div class="col-md-2 section-score text-center">
                     <h5 class="toggle_plan">Percentile Rank</h5>
-                    <p><span id="prop_rank_t1_gross" class="prop_rank_t1_gross"></span></p>           
+                    <p><span id="prop_rank_{{ quintile_properties_inv|parse_list:3 }}" class="prop_rank_t1_gross"></span></p>           
                 </div> 
             </div>
         </div>
@@ -429,7 +429,7 @@
                     <col width="25%">
                     <thead>
                         <tr>
-                            <th class="row-label">Employer-Provided Funding</th>
+                            <th class="row-label">Employer Provided Funding</th>
                             <th>Benchmark</th>
                             <th class="toggle_plan">Your Plan</th>
                         </tr>
@@ -461,7 +461,7 @@
 
             <div class="col-md-7 section-graph">
                 <div id="pie-charts" class="dash-widget-item">
-                    <div class="bgm-lightblue">
+                    <div class="bgm-gray">
                         <div class="dash-widget-header">
                             <div class="dash-widget-title">Account Types</div>
                         </div>
@@ -564,7 +564,7 @@
                 </div>   
                 <div class="col-sm-2 section-score text-center">
                     <h5 class="toggle_plan">Percentile Rank</h5>
-                    <p><span id="prop_rank_PCP" class="prop_rank_PCP percentile"></span></p>           
+                    <p><span id="prop_rank_{{ services|parse_list:0 }}" class="prop_rank_PCP percentile"></span></p>           
                 </div>                 
             </div>
         </div>
@@ -640,7 +640,7 @@
                 </div>    
                 <div class="col-sm-2 section-score text-center">
                     <h5 class="toggle_plan">Percentile Rank</h5>
-                    <p><span id="prop_rank_IP" class="prop_rank_IP percentile"></span></p>           
+                    <p><span id="prop_rank_{{ services|parse_list:1 }}" class="prop_rank_IP percentile"></span></p>           
                 </div> 
             </div>                                     
             </div>
@@ -716,7 +716,7 @@
                 </div>    
                  <div class="col-sm-2 section-score text-center">
                     <h5 class="toggle_plan">Percentile Rank</h5>
-                    <p><span id="prop_rank_Rx1" class="prop_rank_Rx1 percentile"></span></p>           
+                    <p><span id="prop_rank_{{ services|parse_list:2 }}" class="prop_rank_Rx1 percentile"></span></p>           
                 </div>                 
             </div>
         </div>
@@ -727,14 +727,19 @@
 {% endif %}
 
 <script type="text/javascript">
+    var quintile_properties_, quintile_properties_inv_, services_;
+    quintile_properties_ = {{ quintile_properties|safe }};
+    quintile_properties_inv_ = {{ quintile_properties_inv|safe }};
+    services_ = {{ services|safe }};
 
+    var plan_type = '{{ request.session.plan_type }}';
     var gh1_data, gh2_data, gh3_data, gh6_data, gh8_data, gh9_data, gh10_data, gh11_data;
 
     {% if num_employers >= EMPLOYER_THRESHOLD %}
-        gh1_data = {{ quintile_in_ded_single }};
-        gh2_data = {{ quintile_out_ded_single }};
-        gh8_data = {{ quintile_t1_ee }};
-        gh9_data = {{ quintile_t1_gross }};
+        gh1_data = {{ quintile_0 }};
+        gh2_data = {{ quintile_1 }};
+        gh8_data = {{ quintile_2 }};
+        gh9_data = {{ quintile_3 }};
 
         gh10_data = [
             {data: {{ prcnt_plan0 }}, color: '#795548', label: 'No Plans Offered'},

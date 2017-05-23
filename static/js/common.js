@@ -62,3 +62,49 @@ function get_filters() {
         others.push($(this).val());
     });     
 }
+
+function get_filters_label() {
+    industries_label = [];
+    regions_label = [];
+    head_counts_label = [];
+    others_label = [];
+    states_label = [];
+
+    if ($('#states').length > 0) {
+        $('#states :selected').each(function() {
+            states.push($(this).html());
+        });
+    }
+
+    $('#industries :selected').each(function() {
+        industries_label.push($(this).html());
+    });
+
+    $('#regions :selected').each(function() {
+        regions_label.push($(this).html());
+    }); 
+
+    $('#head-counts :selected').each(function() {
+        head_counts_label.push($(this).html());
+    });   
+
+    $('#other_filter :selected').each(function() {
+        others_label.push($(this).html());
+    });     
+
+    // for default filters
+    if (industries_label.length == 0)
+        industries_label.push('All Industries');
+
+    if (regions_label.length == 0)
+        regions_label.push('All Regions');
+
+    if (head_counts_label.length == 0)
+        head_counts_label.push('All Sizes');
+
+    if (others_label.length == 0)
+        others_label.push('Other');
+
+    if (states_label.length == 0)
+        states_label.push('All');
+}

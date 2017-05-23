@@ -1,3 +1,6 @@
+{% extends base_template %}
+{% block page_content %}
+
 {% if num_employers >= EMPLOYER_THRESHOLD %}
 
     <div class="card section">
@@ -76,51 +79,31 @@
                     <col width="25%">
                     <thead>
                         <tr>
-                            <th class="row-label">In-Network Cost Share</th>
+                            <th class="row-label">Deductibles</th>
                             <th>Benchmark</th>
                             <th class="toggle_plan">Your Plan</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="quintile-subject">
-                            <td class="row-label">Individual Deductible *</td>
+                        <tr>
+                            <td class="row-label">In Network Individual Deductible</td>
                             <td>{{ mdn_in_ded_single }}</td>
                             <td><span id="prop_in_ded_single"></span></td>
                         </tr>
                         <tr>
-                            <td class="row-label">Family Deductible</td>
+                            <td class="row-label">In Network Family Deductible</td>
                             <td>{{ mdn_in_ded_family }}</td>
                             <td><span id="prop_in_ded_family"></span></td>
                         </tr>
-                        <tr>
-                            <td class="row-label">Preventive (Class I) Coinsurance</td>
-                            <td>{{ mdn_in_prev_coin }}</td>
-                            <td><span id="prop_in_prev_coin"></span></td>
+                        <tr class="out-benefit">
+                            <td class="row-label">Out of Network Individual Deductible</td>
+                            <td>{{ mdn_out_ded_single }}</td>
+                            <td><span id="prop_out_ded_single"></span></td>
                         </tr>
-                        <tr>
-                            <td class="row-label">Basic (Class II) Coinsurance</td>
-                            <td>{{ mdn_in_basic_coin }}</td>
-                            <td><span id="prop_in_basic_coin"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Major (Class III) Coinsurance</td>
-                            <td>{{ mdn_in_major_coin }}</td>
-                            <td><span id="prop_in_major_coin"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Deductible Applies to Preventive Care</td>
-                            <td>{{ prcnt_prev_ded_apply }}</td>
-                            <td><span id="prop_prev_ded_apply"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Deductible Applies to Basic Care</td>
-                            <td>{{ prcnt_basic_ded_apply }}</td>
-                            <td><span id="prop_basic_ded_apply"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">Deductible Applies to Major Care</td>
-                            <td>{{ prcnt_major_ded_apply }}</td>
-                            <td><span id="prop_major_ded_apply"></span></td>
+                        <tr class="out-benefit">
+                            <td class="row-label">Out of Network Family Deductible</td>
+                            <td>{{ mdn_out_ded_family }}</td>
+                            <td><span id="prop_out_ded_family"></span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -135,7 +118,7 @@
         </div>
     </div>
 
-    <div class="card section out-benefit">
+    <div class="card section">
         <div class="row">
             <div class="col-md-5 section-content">
                 <table class="table table-striped table-content">
@@ -144,36 +127,31 @@
                     <col width="25%">
                     <thead>
                         <tr>
-                            <th class="row-label">Out-of-Network Cost Share</th>
+                            <th class="row-label">Benefit Maximums</th>
                             <th>Benchmark</th>
                             <th class="toggle_plan">Your Plan</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="quintile-subject">
-                            <td class="row-label">Individual Deductible *</td>
-                            <td>{{ mdn_out_ded_single }}</td>
-                            <td><span id="prop_out_ded_single"></span></td>
+                        <tr>
+                            <td class="row-label">In Network Benefit Maximum</td>
+                            <td>{{ mdn_in_max }}</td>
+                            <td><span id="prop_in_max"></span></td>
                         </tr>
                         <tr>
-                            <td class="row-label">Family Deductible</td>
-                            <td>{{ mdn_out_ded_family }}</td>
-                            <td><span id="prop_out_ded_family"></span></td>
+                            <td class="row-label">In Network Orthodontia Maximum</td>
+                            <td>{{ mdn_in_max_ortho }}</td>
+                            <td><span id="prop_in_max_ortho"></span></td>
                         </tr>
                         <tr class="out-benefit">
-                            <td class="row-label">Preventive (Class I) Coinsurance</td>
-                            <td>{{ mdn_out_prev_coin }}</td>
-                            <td><span id="prop_out_prev_coin"></span></td>
+                            <td class="row-label">Out of Network Benefit Maximum</td>
+                            <td>{{ mdn_out_max }}</td>
+                            <td><span id="prop_out_max"></span></td>
                         </tr>
                         <tr class="out-benefit">
-                            <td class="row-label">Basic (Class II) Coinsurance</td>
-                            <td>{{ mdn_out_basic_coin }}</td>
-                            <td><span id="prop_out_basic_coin"></span></td>
-                        </tr>
-                        <tr class="out-benefit">
-                            <td class="row-label">Major (Class III) Coinsurance</td>
-                            <td>{{ mdn_out_major_coin }}</td>
-                            <td><span id="prop_out_major_coin"></span></td>
+                            <td class="row-label">Out of Network Orthodontia Maximum</td>
+                            <td>{{ mdn_out_max_ortho }}</td>
+                            <td><span id="prop_out_max_ortho"></span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -183,7 +161,7 @@
             </div>
             <div class="col-md-1 text-center section-score">
                 <h5 class="toggle_plan">Q-SCORE</h5>
-                <p><span id="prop_rank_out_ded_single"></span></p>           
+                <p><span id="prop_rank_in_max"></span></p>           
             </div> 
         </div>
     </div>
@@ -204,11 +182,6 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="row-label">Offer Ortho Coverage</td>
-                            <td></td>
-                            <td><span id=""></span></td>
-                        </tr>
-                        <tr>
                             <td class="row-label">In-Network Ortho (Class IV) Coinsurance</td>
                             <td>{{ mdn_in_ortho_coin }}</td>
                             <td><span id="prop_in_ortho_coin"></span></td>
@@ -224,66 +197,44 @@
                             <td><span id="prop_ortho_ded_apply"></span></td>
                         </tr>
                         <tr>
-                            <td class="row-label">Require Age Limit</td>
-                            <td></td>
-                            <td><span id=""></span></td>
-                        </tr>
-                        <tr>
                             <td class="row-label">Age Limit</td>
                             <td>{{ mdn_ortho_age_limit }}</td>
                             <td><span id="prop_ortho_age_limit"></span></td>
                         </tr>
                     </tbody>
                 </table>
-            </div>
-        </div>
-    </div>
-
-    <div class="card section">
-        <div class="row">
-            <div class="col-md-5 section-content">
-                <table class="table table-striped table-content">
-                    <col width="50%">
-                    <col width="25%">
-                    <col width="25%">
-                    <thead>
-                        <tr>
-                            <th class="row-label">Maximum Benefits</th>
-                            <th>Benchmark</th>
-                            <th class="toggle_plan">Your Plan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="quintile-subject">
-                            <td class="row-label">In-Network Maximum (Classes I, II, & III) *</td>
-                            <td>{{ mdn_in_max }}</td>
-                            <td><span id="prop_in_max"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="row-label">In-Network Orthodontia Maximum (Class IV)</td>
-                            <td>{{ mdn_in_max_ortho }}</td>
-                            <td><span id="prop_in_max_ortho"></span></td>
-                        </tr>
-                        <tr class="out-benefit">
-                            <td class="row-label">Out-of-Network Maximum (Classes I, II, & III)</td>
-                            <td>{{ mdn_out_max }}</td>
-                            <td><span id="prop_out_max"></span></td>
-                        </tr>
-                        <tr class="out-benefit">
-                            <td class="row-label">Out-of-Network Orthodontia Maximum (Class IV)</td>
-                            <td>{{ mdn_out_max_ortho }}</td>
-                            <td><span id="prop_out_max_ortho"></span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-6 section-graph">
-                <div id="DENTAL-2" class="flot-chart"></div>
-            </div>
-            <div class="col-md-1 text-center section-score">
-                <h5 class="toggle_plan">Q-SCORE</h5>
-                <p><span id="prop_rank_in_max"></span></p>           
             </div> 
+
+            <div class="col-md-7 section-graph">
+                <div id="pie-charts" class="dash-widget-item">
+                    <div class="bgm-teal">
+                        <div class="dash-widget-header">
+                            <div class="dash-widget-title">Orthodontia</div>
+                        </div>
+                        
+                        <div class="clearfix"></div>
+                        
+                        <div class="row">
+                            <div class="col-md-4 col-md-offset-2">
+                                <div class="text-center p-20">
+                                    <div class="easy-pie main-pie" data-percent="{{ pprcnt_ortho_ded_apply }}">
+                                        <div class="percent">{{ pprcnt_ortho_ded_apply|cut:"%" }}</div>
+                                        <div class="pie-title p-b-10">Offer Orthodontia Coverage</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="text-center p-20">
+                                    <div class="easy-pie main-pie" data-percent="{{ pprcnt_ortho_age_limit }}">
+                                        <div class="percent">{{ pprcnt_ortho_age_limit|cut:"%" }}</div>
+                                        <div class="pie-title p-b-10">Require Age Limit</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>            
+                </div>
+            </div>
         </div>
     </div>
 
@@ -302,8 +253,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="quintile-subject">
-                            <td class="row-label">Employee Only *</td>
+                        <tr>
+                            <td class="row-label">Employee Only</td>
                             <td>{{ mdn_t1_ee }}</td>
                             <td><span id="prop_t1_ee"></span></td>
                         </tr>
@@ -350,8 +301,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="quintile-subject">
-                            <td class="row-label">Employee Only *</td>
+                        <tr>
+                            <td class="row-label">Employee Only</td>
                             <td>{{ mdn_t1_gross }}</td>
                             <td><span id="prop_t1_gross"></span></td>
                         </tr>
@@ -381,7 +332,74 @@
                 <p><span id="prop_rank_t1_gross"></span></p>           
             </div> 
         </div>
-    </div>  
+    </div> 
+
+    <div class="card section">
+        <div class="row">
+            <div class="col-md-5 section-content">
+                <table class="table table-striped table-content">
+                    <col width="50%">
+                    <col width="25%">
+                    <col width="25%">
+                    <thead>
+                        <tr>
+                            <th class="row-label">Dental Services Cost Share</th>
+                            <th>Benchmark</th>
+                            <th class="toggle_plan">Your Plan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="row-label">Deductible Applies to Preventive Care</td>
+                            <td>{{ prcnt_prev_ded_apply }}</td>
+                            <td><span id="prop_prev_ded_apply"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Preventive (Class I) Coinsurance</td>
+                            <td>{{ mdn_in_prev_coin }}</td>
+                            <td><span id="prop_in_prev_coin"></span></td>
+                        </tr>
+                        <tr class="out-benefit">
+                            <td class="row-label">Preventive (Class I) Coinsurance</td>
+                            <td>{{ mdn_out_prev_coin }}</td>
+                            <td><span id="prop_out_prev_coin"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Deductible Applies to Basic Care</td>
+                            <td>{{ prcnt_basic_ded_apply }}</td>
+                            <td><span id="prop_basic_ded_apply"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Basic (Class II) Coinsurance</td>
+                            <td>{{ mdn_in_basic_coin }}</td>
+                            <td><span id="prop_in_basic_coin"></span></td>
+                        </tr>
+                        <tr class="out-benefit">
+                            <td class="row-label">Basic (Class II) Coinsurance</td>
+                            <td>{{ mdn_out_basic_coin }}</td>
+                            <td><span id="prop_out_basic_coin"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Deductible Applies to Major Care</td>
+                            <td>{{ prcnt_major_ded_apply }}</td>
+                            <td><span id="prop_major_ded_apply"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Major (Class III) Coinsurance</td>
+                            <td>{{ mdn_in_major_coin }}</td>
+                            <td><span id="prop_in_major_coin"></span></td>
+                        </tr>
+                        <tr class="out-benefit">
+                            <td class="row-label">Major (Class III) Coinsurance</td>
+                            <td>{{ mdn_out_major_coin }}</td>
+                            <td><span id="prop_out_major_coin"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div> 
 
 {% else %}
     {% include 'includes/too-few-employers.html' %}
@@ -391,35 +409,63 @@
 <script type="text/javascript">
 
 var gh1_data, gh2_data, gh3_data, gh4_data, gh6_data, gh7_data, gh8_data, gh9_data, gh10_data, gh11_data, gh12_data;
+var plan_type = '{{ request.session.plan_type }}';
 
 {% if num_employers >= EMPLOYER_THRESHOLD %}
     gh1_data = {{ quintile_in_ded_single }};
-    gh2_data = {{ quintile_in_max }};
-    gh3_data = {{ quintile_out_ded_single }};
-    gh4_data = {{ quintile_out_max }};
-    gh6_data = {{ quintile_in_basic_coin }};
-    gh7_data = {{ quintile_in_major_coin }};
-    gh8_data = {{ quintile_in_ortho_coin }};
+    gh3_data = {{ quintile_in_max }};
     gh9_data = {{ quintile_t1_ee }};
     gh10_data = {{ quintile_t1_gross }};
+    
 
     gh11_data = [
-        {data: {{ prcnt_plan0 }}, color: '#F44336', label: 'No Plans Offered'},
-        {data: {{ prcnt_plan1 }}, color: '#03A9F4', label: 'One Plan Offered'},
-        {data: {{ prcnt_plan2 }}, color: '#8BC34A', label: 'Two Plans Offered'},
-        {data: {{ prcnt_plan3_or_more }}, color: '#FFEB3B', label: 'Three or More Plans Offered'},
+        {data: {{ prcnt_plan0 }}, color: '#795548', label: 'No Plans Offered'},
+        {data: {{ prcnt_plan1 }}, color: '#9E9E9E', label: 'One Plan Offered'},
+        {data: {{ prcnt_plan2 }}, color: '#009688', label: 'Two Plans Offered'},
+        {data: {{ prcnt_plan3_or_more }}, color: '#FFC107', label: 'Three or More Plans Offered'},
     ];        
 
     gh12_data = [{
-        data : [['Offer DPPO', {{ prcnt_dppo|cut:'%' }}], ['Offer DMO', {{ prcnt_dmo|cut:'%' }}]],
+        data : [['DPPO', {{ prcnt_dppo|cut:'%' }}], ['DMO', {{ prcnt_dmo|cut:'%' }}]],
         bars : {
             show : true,
-            barWidth : 0.08,
+            barWidth : 0.30,
             order : 1,
             lineWidth: 0,
-            fillColor: '#8BC34A'
+            fillColor: '#607D8B'
         }
     }];        
 
+    var attribute_map = [
+        {
+            data: gh1_data,
+            placeholder: 'DENTAL-1',
+            in_ded_single: 'dollar',
+            rx_coin: 'percent',
+            inverse: true
+        },
+        {
+            data: gh3_data,
+            placeholder: 'DENTAL-3',
+            in_max: 'dollar',
+            rx_coin: 'percent',
+            inverse: false
+        },
+        {
+            data: gh9_data,
+            placeholder: 'DENTAL-9',
+            t1_ee: 'dollar',
+            rx_coin: 'percent',
+            inverse: true
+        },    
+        {
+            data: gh10_data,
+            placeholder: 'DENTAL-10',
+            t1_gross: 'dollar',
+            rx_coin: 'percent',
+            inverse: true
+        },        
+    ];  
 {% endif %}
 </script>
+{% endblock %}

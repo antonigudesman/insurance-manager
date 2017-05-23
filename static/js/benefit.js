@@ -3,16 +3,17 @@ var regions = [];
 var head_counts = [];
 var others = [];
 var states = [];
-var plan_type = '';
+// var plan_type = '';
 var plan = 0;
 var quintile_properties = [];
 var quintile_properties_inv = [];
 var services = [];
 
-var TYPE = {
-    'D_': 'dollar',
-    'P_': 'percent'
-}
+var industry_label = [];
+var head_counts_label = [];
+var others_label = [];
+var regions_label = [];
+var states_label = [];
 
 var colors = ['#f8696b', '#f8696b', '#FFE364', '#FFE364', '#bfbfbf', '#bfbfbf', '#B1D480', '#B1D480', '#63be7b', '#63be7b'];
 
@@ -35,16 +36,12 @@ jQuery(function($) {
         $('#plans').change(function() {
         	update_properties();
         });
-
-        reload_plans();   
     }
 });
 
 function update_quintile(obj, graph_holder, qscore_holder, inverse) {
     property = $(obj).val();
-    type = property.substring(0, 2);
-    type = TYPE[type];
-    property = property.substring(2);
+    type = $(obj).find(':selected').attr('type');
 
     // change the id of q-score placeholder
     $('.'+qscore_holder).attr('id', 'prop_rank_'+property);
@@ -114,6 +111,7 @@ function get_plan_type() {
             $('#plan_types').html(content);
             $('#plan_types').selectpicker('refresh');
 
+            reload_plans();   
             get_body();
         });
 }
@@ -123,7 +121,8 @@ function get_body() {
     // $('.page-loader').show();
 
     get_filters();
-    // get_filters_label();
+    get_filters_label();
+
     $.post(
         '/_benchmarking',
         {
@@ -133,15 +132,23 @@ function get_body() {
             regions: regions,
             plan_type: plan_type,
             states: states,
-            // industry_label: industries_label,
-            // head_counts_label: head_counts_label,
-            // others_label: others_label,
-            // regions_label: regions_label,
+
+            industry_label: industries_label,
+            head_counts_label: head_counts_label,
+            others_label: others_label,
+            regions_label: regions_label,
+            states_label: states_label,
 
             bnchmrk_benefit: bnchmrk_benefit,
             // plan: plan
         },
         function(data) {
+            $.post(
+                '/get_num_employers',{},
+                function(data) {
+                    $('#num_employers').html(data);
+                })
+
             $('.benefit-content').html(data);
             update_properties();
             $('.selectpicker').selectpicker();   
@@ -149,14 +156,11 @@ function get_body() {
             update_content(bnchmrk_benefit, plan_type);
         });
 
-    $.post(
-        '/get_num_employers',{},
-        function(data) {
-            $('#num_employers').html(data);
-        })
 }
 
 function reload_plans() {
+    plan_type = $('#plan_types').val();
+
     plan = -2;    
     $.post(
         '/get_plans',
@@ -175,11 +179,7 @@ update_content = function(benefit, plan_type) {
     // $('.btn-print-page').show();
 
 	if ($.inArray(benefit, ["STRATEGY"]) != -1) {
-        gh1_data = generate_quintile_data(gh1_data, true);
-        gh2_data = generate_quintile_data(gh2_data, true);
-        
-        draw_bar_chart(benefit+'-1', gh1_data, 'dollar', 6.8);        
-        draw_bar_chart(benefit+'-2', gh2_data, 'dollar', 6.8);        
+        draw_easy_pie_chart();
     } else if ($.inArray(benefit, ["LIFE"]) != -1) {
         if (plan_type != "Flat Amount")
             $('.flat-benefit').remove();
@@ -199,13 +199,7 @@ update_content = function(benefit, plan_type) {
     } else if ($.inArray(benefit, ["STD", "LTD"]) != -1) {
         gh1_data = generate_quintile_data(gh1_data);
 
-        if ( benefit == "LTD")
-            gh2_data = generate_quintile_data(gh2_data, true);
-        else
-            gh2_data = generate_quintile_data(gh2_data);
-        
-        draw_bar_chart(benefit+'-1', gh1_data, 'dollar', 7);        
-        draw_bar_chart(benefit+'-2', gh2_data, 'int', 7.2);        
+        draw_bar_chart(benefit+'-1', gh1_data, 'dollar', 7);       
 
         draw_donut_chart('donut-chart', gh3_data);
         draw_hbar_chart('bar-chart', gh4_data, 'percent');
@@ -213,16 +207,10 @@ update_content = function(benefit, plan_type) {
         // draw_easy_pie_chart();
     } else if ($.inArray(benefit, ["VISION"]) != -1) {
         gh1_data = generate_quintile_data(gh1_data, true);
-        gh2_data = generate_quintile_data(gh2_data, true);
-        gh3_data = generate_quintile_data(gh3_data);
-        gh4_data = generate_quintile_data(gh4_data);
         gh5_data = generate_quintile_data(gh5_data, true);
         gh6_data = generate_quintile_data(gh6_data, true);        
         
-        draw_bar_chart(benefit+'-1', gh1_data, 'dollar', 7);        
-        draw_bar_chart(benefit+'-2', gh2_data, 'dollar', 7);        
-        draw_bar_chart(benefit+'-3', gh3_data, 'dollar', 7);        
-        draw_bar_chart(benefit+'-4', gh4_data, 'dollar', 7);        
+        draw_bar_chart(benefit+'-1', gh1_data, 'dollar', 7);             
         draw_bar_chart(benefit+'-5', gh5_data, 'dollar', 7);        
         draw_bar_chart(benefit+'-6', gh6_data, 'dollar', 7);        
 
@@ -232,28 +220,18 @@ update_content = function(benefit, plan_type) {
             $('.out-benefit').remove();
 
         gh1_data = generate_quintile_data(gh1_data, true);
-        gh2_data = generate_quintile_data(gh2_data);
         gh3_data = generate_quintile_data(gh3_data, true);
-        gh4_data = generate_quintile_data(gh4_data);
-        gh6_data = generate_quintile_data(gh6_data, true);
-        gh7_data = generate_quintile_data(gh7_data, true);
-        gh8_data = generate_quintile_data(gh8_data, true);
         gh9_data = generate_quintile_data(gh9_data, true);
         gh10_data = generate_quintile_data(gh10_data, true);        
         
         draw_bar_chart('DENTAL-1', gh1_data, 'dollar', 7);        
-        draw_bar_chart('DENTAL-2', gh2_data, 'dollar', 7);        
-        draw_bar_chart('DENTAL-3', gh3_data, 'dollar', 7);        
-        draw_bar_chart('DENTAL-4', gh4_data, 'dollar', 7);        
-        draw_bar_chart('DENTAL-6', gh6_data, 'percent', 7);       
-        draw_bar_chart('DENTAL-7', gh7_data, 'percent', 7);        
-        draw_bar_chart('DENTAL-8', gh8_data, 'percent', 7);        
+        draw_bar_chart('DENTAL-3', gh3_data, 'dollar', 7);           
         draw_bar_chart('DENTAL-9', gh9_data, 'dollar', 6.8);        
         draw_bar_chart('DENTAL-10', gh10_data, 'dollar', 6.8);        
 
         draw_donut_chart('donut-chart', gh11_data);
         draw_hbar_chart('bar-chart', gh12_data, 'percent');
-
+        draw_easy_pie_chart();
     } else if ($.inArray(benefit, ["MEDICALRX"]) != -1) {
         if (plan_type == "HMO")
             $('.out-benefit').remove();
@@ -261,6 +239,12 @@ update_content = function(benefit, plan_type) {
             $('.hdhp-benefit').remove();
         else
             $('.ppo-benefit').remove();
+
+        for (var i = 0; i < $('select.property_inv').length; i++) {
+            var obj = $('select.property_inv').eq(i);
+            obj.val(''+quintile_properties_inv_[i]);
+            obj.selectpicker('refresh');
+        }
 
         // console.log(gh1_data);
         gh1_data = generate_quintile_data(gh1_data, true);
@@ -323,12 +307,12 @@ generate_quintile_data = function(raw_data, inverse){
 function get_dynamic_attributes() {
     quintile_properties = [];
     $('select.property').each(function() {
-        quintile_properties.push($(this).val().substring(2));
+        quintile_properties.push($(this).val());
     });   
 
     quintile_properties_inv = [];
     $('select.property_inv').each(function() {
-        quintile_properties_inv.push($(this).val().substring(2));
+        quintile_properties_inv.push($(this).val());
     });   
 
     services = [];
@@ -360,7 +344,8 @@ function update_properties() {
             plan: plan,
             quintile_properties: quintile_properties,
             quintile_properties_inv: quintile_properties_inv,
-            services: services
+            services: services,
+            print_template: print_template
         },
         function(data) {
             if (plan == 0 || plan == "") {
@@ -377,12 +362,12 @@ function update_properties() {
 
                             var attr = key.substring(5);
 
-                            if (data[attr] !== undefined) {
-                                var ya = parseInt(data[attr].replace(',', '').replace('$', '').replace('%', ''));
+                            if (data[attr] !== undefined && typeof attribute_map !== 'undefined') {
+                                var ya = parseInt(String(data[attr]).replace(',', '').replace('$', '').replace('%', ''));
                                 var gh_data, graph_holder, type, inverse;
                                 // iterate attribute_map and find relevant info.
                                 for (i=0; i < attribute_map.length; i++) {
-                                    if (attribute_map[i][attr] != undefined ) {
+                                    if (typeof attribute_map[i][attr] != 'undefined' ) {
                                         gh_data = attribute_map[i].data;
                                         graph_holder = attribute_map[i].placeholder;
                                         type = attribute_map[i][attr];
@@ -390,26 +375,27 @@ function update_properties() {
                                         break;
                                     }
                                 }
-
-                                if (ya < gh_data[0][1])
-                                    ya = gh_data[0][1];
-
-                                if (ya > gh_data[10][1])
-                                    ya = gh_data[10][1];
-                                // console.log(gh_data);
-                                var entry = {
-                                    data: [[value, ya]],
-                                    points: { show: true, radius: 4 },
-                                    lines: { show: false, fill: 0.98 },
-                                    color: '#000000'                                
-                                }
-                                // // get gh_data
-                                // // update it
-                                gh_data = generate_quintile_data(gh_data, inverse);
-                                gh_data.push(entry);
-                                // //redraw graph
-                                draw_bar_chart(graph_holder, gh_data, type, 6.4);        
                                 
+                                if (gh_data.length > 0) {
+                                    if (ya < gh_data[0][1])
+                                        ya = gh_data[0][1];
+
+                                    if (ya > gh_data[10][1])
+                                        ya = gh_data[10][1];
+                                    // console.log(gh_data);
+                                    var entry = {
+                                        data: [[value, ya]],
+                                        points: { show: true, radius: 4 },
+                                        lines: { show: false, fill: 0.98 },
+                                        color: '#000000'                                
+                                    }
+                                    // // get gh_data
+                                    // // update it
+                                    gh_data = generate_quintile_data(gh_data, inverse);
+                                    gh_data.push(entry);
+                                    // //redraw graph
+                                    draw_bar_chart(graph_holder, gh_data, type, 6.4);        
+                                }
                             } else {
                                 $('select.service option').each(function() {
                                     var attr_ = $(this).val();
@@ -464,11 +450,11 @@ function update_e_cost(obj) {
             if (data[5] == 'FALSE')
                 title = 'No deductible, $' + data[4] + ' copay ( $' + data[1] + ' )';
             else if (data[5] == 'False/Coin')
-                title = 'No deductible, then coinsurance ( $' + data[1] + ' )';
+                title = 'No deductible, then coinsurance (Benchmark)';
             else if (data[5] == 'TRUE')
-                title = 'Deductible, $' + data[4] + ' copay ( $' + data[1] + ' )';
+                title = 'Deductible, $' + data[4] + ' copay (Benchmark)';
             else
-                title = 'Deductible, then coinsurance ( $' + data[1] + ' )';
+                title = 'Deductible, then coinsurance (Benchmark)';
 
             $(obj).closest('.e-cost-section').find('.e_cost_title').html(title);
             
@@ -499,3 +485,6 @@ function show_print_pending_dialog(id) {
     swal("Printing Page Confirmation", "Please wait while your $$$ Benchmarking Report is generated. You will be alerted as soon as the report is ready to download.".replace('$$$', bnchmrk_benefit));
 }
 
+function show_print_report_pending_dialog() {
+    swal("Printing Page Confirmation", "Please wait while your Benchmarking Report is generated. You will be alerted as soon as the report is ready to download.");
+}

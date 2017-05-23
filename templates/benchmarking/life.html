@@ -1,3 +1,6 @@
+{% extends base_template %}
+{% block page_content %}
+
 {% if num_employers >= EMPLOYER_THRESHOLD %}
 
     <div class="card section">
@@ -90,8 +93,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="quintile-subject">
-                        <td class="row-label">Maximum Benefit *</td>
+                    <tr>
+                        <td class="row-label">Maximum Benefit</td>
                         <td>{{ mdn_multiple_max }}</td>
                         <td><span id="prop_multiple_max"></span></td>
                     </tr>
@@ -187,18 +190,42 @@
             </table>  
         </div>
         <div class="col-md-6 section-graph">
-            <div class="easy-pie LIFE-12" data-percent="{{ prcnt_paid }}">
-                <div class="percent">{{ prcnt_paid }}</div>
-                <div class="pie-title">100% Employer Paid Only</div>
-            </div>
-            <div class="easy-pie LIFE-13" data-percent="{{ prcnt_share }}">
-                <div class="percent">{{ prcnt_share }}</div>
-                <div class="pie-title">Employee Cost Share Only</div>
-            </div>
-            <div class="easy-pie LIFE-14" data-percent="{{ prcnt_paid_share }}">
-                <div class="percent">{{ prcnt_paid_share }}</div>
-                <div class="pie-title">Core & Buy Up Plans</div>
-            </div>
+                <div id="pie-charts" class="dash-widget-item">
+                    <div class="bgm-teal">
+                        <div class="dash-widget-header">
+                            <div class="dash-widget-title">Rx-Only</div>
+                        </div>
+                        
+                        <div class="clearfix"></div>
+                        
+                        <div class="row">
+                        <div class="col-md-4">
+                        <div class="text-center p-20">
+                            <div class="easy-pie main-pie LIFE-12" data-percent="{{ prcnt_paid }}">
+                                <div class="percent">{{ prcnt_paid }}</div>
+                                <div class="pie-title">100% Employer Paid Only</div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="col-md-4">
+                        <div class="text-center p-20">
+                           <div class="easy-pie main-pie LIFE-13" data-percent="{{ prcnt_share }}">
+                                <div class="percent">{{ prcnt_share }}</div>
+                                <div class="pie-title">Employee Cost Share Only</div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="col-md-4">
+                        <div class="text-center p-20">
+                            <div class="easy-pie main-pie LIFE-14" data-percent="{{ prcnt_paid_share }}">
+                                <div class="percent">{{ prcnt_paid_share }}</div>
+                                <div class="pie-title">Core & Buy Up Plans</div>
+                            </div>
+                        </div>
+                        </div>
+                        </div>
+                    </div>            
+                </div>
         </div>
         </div>
     </div>
@@ -210,27 +237,46 @@
 <script type="text/javascript">
 
 var gh1_data, gh2_data, gh3_data, gh4_data;
+var plan_type = '{{ request.session.plan_type }}';
 
 {% if num_employers >= EMPLOYER_THRESHOLD %}
     gh1_data = {{ quintile_multiple_max }};
     gh2_data = {{ quintile_flat_amount }};
 
     gh3_data = [
-        {data: {{ prcnt_plan0 }}, color: '#F44336', label: 'No Plans Offered'},
-        {data: {{ prcnt_plan1 }}, color: '#03A9F4', label: 'One Plan Offered'},
-        {data: {{ prcnt_plan2 }}, color: '#8BC34A', label: 'Two Plans Offered'},
-        {data: {{ prcnt_plan3_or_more }}, color: '#FFEB3B', label: 'Three or More Plans Offered'},
+        {data: {{ prcnt_plan0 }}, color: '#795548', label: 'No Plans Offered'},
+        {data: {{ prcnt_plan1 }}, color: '#FFC107', label: 'One Plan Offered'},
+        {data: {{ prcnt_plan2 }}, color: '#009688', label: 'Two Plans Offered'},
+        {data: {{ prcnt_plan3_or_more }}, color: '#9E9E9E', label: 'Three or More Plans Offered'},
     ];        
 
     gh4_data = [{
-        data : [['Multiple of Salary Plans Only', {{ prcnt_type_plan_mul|cut:'%' }}], ['Flat Plans Only', {{ prcnt_type_plan_flat|cut:'%' }}], ['Both Multiple & Flat Plans', {{ prcnt_type_plan_mul_flat|cut:'%' }}]],
+        data : [['Multiple of Salary Only', {{ prcnt_type_plan_mul|cut:'%' }}], ['Flat Amount Only', {{ prcnt_type_plan_flat|cut:'%' }}], ['Both Plans', {{ prcnt_type_plan_mul_flat|cut:'%' }}]],
         bars : {
             show : true,
-            barWidth : 0.08,
+            barWidth : 0.3,
             order : 1,
             lineWidth: 0,
-            fillColor: '#8BC34A'
+            fillColor: '#607D8B'
         }
     }]; 
+
+    var attribute_map = [
+        {
+            data: gh1_data,
+            placeholder: 'LIFE-1',
+            multiple_max: 'dollar',
+            rx_coin: 'percent',
+            inverse: false
+        },
+        {
+            data: gh2_data,
+            placeholder: 'LIFE-2',
+            flat_amount: 'dollar',
+            rx_coin: 'percent',
+            inverse: false
+        },
+    ];    
 {% endif %}
 </script>
+{% endblock %}

@@ -23,9 +23,11 @@ log = logging.getLogger(__name__)
 def print_template(request):
     benefit = request.GET.get('benefit')
     plan = request.GET.get('plan')
+    plan_type = request.GET.get('plan_type')
     #Retrieve data or whatever you need
     request.session['bnchmrk_benefit'] = benefit
     request.session['plan'] = plan
+    request.session['plan_type'] = plan_type
 
     return get_response_template(request, 
                                  benefit, 
@@ -36,23 +38,15 @@ def print_template(request):
 def print_template_header(request):
     benefit = request.GET.get('benefit')
     plan = request.GET.get('plan')
+    plan_type = request.GET.get('plan_type')
     #Retrieve data or whatever you need
     request.session['benefit'] = benefit
     request.session['plan'] = plan
-    
-    ft_industries_label = ', '.join(request.session['ft_industries_label'])
-    ft_head_counts_label = ', '.join(request.session['ft_head_counts_label'])
-    ft_other_label = ', '.join(request.session['ft_other_label'])
-    ft_regions_label = ', '.join(request.session['ft_regions_label'])
-
+    request.session['plan_type'] = plan_type
     # need to add ft_states
     return get_response_template(request, 
                                  benefit, 
                                  True,
-                                 ft_industries_label,
-                                 ft_head_counts_label,
-                                 ft_other_label,
-                                 ft_regions_label,
                                  True)
 
 
@@ -61,17 +55,18 @@ def print_page(request):
     # for universal format
     benefit = request.session['bnchmrk_benefit']
     plan = request.session['plan']
-    return get_pdf(request, [benefit], [plan])
+    plan_type = request.session['plan_type']
+    return get_pdf(request, [benefit], [plan], [plan_type])
 
 
-def get_pdf(request, benefits, plans):
+def get_pdf(request, benefits, plans, plan_types):
     # store original benefit and plan for front end
     benefit_o = request.session['bnchmrk_benefit']
     plan_o = request.session['plan']    
 
     # get screenshot for current page with same session using selenium    
     driver = webdriver.PhantomJS()
-    driver.set_window_size(1360, 1000)
+    driver.set_window_size(1850, 1000)
 
     cc = { 
         'domain': request.META.get('HTTP_HOST').split(':')[0], 
@@ -86,9 +81,12 @@ def get_pdf(request, benefits, plans):
         pass
 
     # initialize pdf file
-    margin_v = 30
-    margin_h = 103
-    pdf = FPDF(orientation='L', format=(1200+2*margin_v, 1425+2*margin_h), unit='pt')
+    page_height_on_image = 1240.0
+    page_width_on_image = 1500
+    margin_h = 90
+    margin_v = ((page_width_on_image+2*margin_h) * 0.773 - page_height_on_image) / 2
+
+    pdf = FPDF(orientation='L', format=(page_height_on_image+2*margin_v, page_width_on_image+2*margin_h), unit='pt')
     pdf.set_auto_page_break(False)
 
     base_path = '/tmp/page{}'.format(random.randint(-100000000, 100000000))
@@ -101,17 +99,17 @@ def get_pdf(request, benefits, plans):
             vars_d['img_path_header_{}'.format(uidx)] = '{}_{}_header.png'.format(base_path, uidx)
 
             # for body
-            url = 'http://{}/98Wf37r2-3h4X2_jh9?benefit={}&plan={}'.format(request.META.get('HTTP_HOST'), benefits[uidx], plans[uidx])
+            url = 'http://{}/98Wf37r2-3h4X2_jh9?benefit={}&plan={}&plan_type={}'.format(request.META.get('HTTP_HOST'), benefits[uidx], plans[uidx], plan_types[uidx])
             print url, '#############3'
             driver.get(url)        
-            time.sleep(0.6)
-            if benefits[uidx] in ['PPO', 'HDHP', 'HMO']:
-                time.sleep(1.2)
+            time.sleep(2.6) #0.6
+            # if benefits[uidx] in ['MEDICALRX', 'HDHP', 'HMO']:
+            #     time.sleep(3.2) #1.2
 
             driver.save_screenshot(vars_d['img_path_{}'.format(uidx)])
 
             # for header
-            url = 'http://{}/25Wfr7r2-3h4X25t?benefit={}&plan={}'.format(request.META.get('HTTP_HOST'), benefits[uidx], plans[uidx])
+            url = 'http://{}/25Wfr7r2-3h4X25t?benefit={}&plan={}&plan_type={}'.format(request.META.get('HTTP_HOST'), benefits[uidx], plans[uidx], plan_types[uidx])
             driver.get(url)
             time.sleep(0.4)
             driver.save_screenshot(vars_d['img_path_header_{}'.format(uidx)])
@@ -122,23 +120,24 @@ def get_pdf(request, benefits, plans):
 
             # split the image in proper size
             origin = Image.open(vars_d['img_path_{}'.format(uidx)])
-            header_height = 141 - 5
+            header_height = 100
+            bottom_height = 140
             width, height = origin.size
 
-            num_pages = int(( height - header_height ) / 1200.0 + 0.5)
-
+            num_pages = int(( height - header_height - bottom_height ) / page_height_on_image + 0.99)
+            
             for idx in range(num_pages):
                 vars_d['img_path_s_{}_{}'.format(uidx, idx)] = '{}_{}_{}s.png'.format(base_path, idx, uidx)
-                height_s = header_height + 1200 * (idx + 1) + 1
-                if height_s > height:
-                    height_s = height
-                origin.crop((0,header_height+1200*idx, width, height_s)).save(vars_d['img_path_s_{}_{}'.format(uidx, idx)])
+                height_s = header_height + page_height_on_image * (idx + 1) + 1
+                if height_s > height - bottom_height:
+                    height_s = height - bottom_height
+                origin.crop((174,header_height+page_height_on_image*idx-1, 177+page_width_on_image, height_s+2)).save(vars_d['img_path_s_{}_{}'.format(uidx, idx)])
 
                 pdf.add_page()
                 pdf.image(vars_d['img_path_s_{}_{}'.format(uidx, idx)], margin_h, margin_v)
                 os.remove(vars_d['img_path_s_{}_{}'.format(uidx, idx)])
             # remove image files
-            os.remove(vars_d['img_path_{}'.format(uidx)])
+            # os.remove(vars_d['img_path_{}'.format(uidx)])
             os.remove(vars_d['img_path_header_{}'.format(uidx)])
     except Exception, e:
         log.debug(str(e))
@@ -160,12 +159,12 @@ def get_pdf(request, benefits, plans):
 
 
 @login_required(login_url='/admin/login')
-def print_report(request):
-    company_id = request.GET.get('company_id')
+def print_report(request, company_id):
+    # company_id = request.GET.get('company_id')
     models = [Medical, Dental, Vision, Life, STD, LTD, Strategy]
-
     benefits = []
     plans = []
+    plan_types = []
 
     for model in models:
         benefit = model.__name__.upper()
@@ -173,22 +172,24 @@ def print_report(request):
         for instance_ in instance:
             plan = instance_.id
             try:
-                type = getattr(instance_, 'type')
-                if type in ['PPO', 'POS']:
-                    benefit = 'PPO'
-                elif type in ['HMO', 'EPO']:
-                    benefit = 'HMO'
-                elif type in ['HDHP', 'DPPO', 'DMO']:
-                    benefit = type
+                plan_type = getattr(instance_, 'type')
+                if plan_type in ['PPO', 'POS']:
+                    plan_type = 'PPO'
+                elif plan_type in ['HMO', 'EPO']:
+                    plan_type = 'HMO'
             except Exception as e:
-                pass
+                plan_type = None
+
+            if benefit == 'MEDICAL':
+                benefit = 'MEDICALRX'
 
             benefits.append(benefit)
             plans.append(plan)
-    # log.debug(benefits)
+            plan_types.append(plan_type)
+    log.debug(benefits)
     # log.debug(plans)
     # log.debug('@@@@@@@@@@@2')
-    return get_pdf(request, benefits, plans)
+    return get_pdf(request, benefits, plans, plan_types)
 
 
 def get_download_response(path):
