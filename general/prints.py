@@ -102,9 +102,9 @@ def get_pdf(request, benefits, plans, plan_types):
             url = 'http://{}/98Wf37r2-3h4X2_jh9?benefit={}&plan={}&plan_type={}'.format(request.META.get('HTTP_HOST'), benefits[uidx], plans[uidx], plan_types[uidx])
             print url, '#############3'
             driver.get(url)        
-            time.sleep(0.6) #0.6
-            if benefits[uidx] in ['MEDICALRX']:
-                time.sleep(1) #1.2
+            time.sleep(1.6) #0.6
+            # if benefits[uidx] in ['MEDICALRX']:
+            #     time.sleep(1) #1.2
 
             driver.save_screenshot(vars_d['img_path_{}'.format(uidx)])
 
