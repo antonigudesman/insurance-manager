@@ -7,6 +7,9 @@ from .models import *
 from .aux import *
 import json
 
+import logging
+log = logging.getLogger(__name__)
+
 """
 Medical ( PPO, HMO, HDHP ) page
 """
@@ -111,6 +114,8 @@ def get_medicalrx_plan(request, employers, num_companies, plan_type=None):
     var_local['quintile_properties'] = json.dumps(quintile_properties)
     var_local['quintile_properties_inv'] = json.dumps(quintile_properties_inv)
     var_local['services'] = json.dumps(services)
+
+    log.debug(quintile_properties_inv)
 
     num_t = Medical.objects.filter(employer__in=employers, type__in=['PPO', 'POS']).values('employer_id').distinct()
     var_local['prcnt_ppo'] = '{:,.0f}%'.format(len(num_t) * 100 / num_companies)
