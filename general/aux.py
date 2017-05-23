@@ -68,7 +68,7 @@ def get_filtered_employers(ft_industries,
 
 def get_filtered_employers_session(request):
     ft_industries = request.session.get('ft_industries', ['*'])
-    ft_head_counts = request.session.get('ft_head_counts', [])
+    ft_head_counts = request.session.get('ft_head_counts', ['0-2000000'])
     ft_other = request.session.get('ft_other', [])
     ft_regions = request.session.get('ft_regions', ['*'])
     ft_states = request.session.get('ft_states', [])
