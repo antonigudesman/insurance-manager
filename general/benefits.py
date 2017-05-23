@@ -166,6 +166,9 @@ def get_medical_plan_(employers, num_companies, plan_type, quintile_properties, 
     return medians, var_local, qs
 
 def get_medical_properties(request, plan, plan_type, quintile_properties, quintile_properties_inv, services=[]):
+    quintile_properties = quintile_properties or medical_quintile_attrs
+    quintile_properties_inv = quintile_properties_inv or medical_quintile_attrs_inv
+    services = services or medical_services
     attrs = [item.name 
              for item in Medical._meta.fields 
              if item.name not in ['id', 'employer', 'title', 'type']]
