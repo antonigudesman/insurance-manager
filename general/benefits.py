@@ -120,7 +120,7 @@ def get_medicalrx_plan(request, employers, num_companies, plan_type=None):
     var_local['prcnt_hdhp'] = '{:,.0f}%'.format(len(num_t) * 100 / num_companies)
 
     plan_types = get_real_medical_type(plan_type)
-    num_tt = Medical.objects.filter(employer__in=employers, type__in=plan_types).count() 
+    num_tt = Medical.objects.filter(employer__in=employers, type__in=plan_types).count() or 1
     num_t = Medical.objects.filter(employer__in=employers, type__in=plan_types, rx_ded_single__isnull=False,rx_ded_single__gt=0).count()
     var_local['prcnt_rx_ded_single'] = '{:,.0f}%'.format(num_t * 100 / num_tt)
     num_t = Medical.objects.filter(employer__in=employers, type__in=plan_types, rx_max_single__isnull=False, rx_max_single__gt=0).count()
@@ -304,7 +304,7 @@ def get_dental_plan(request, employers, num_companies, plan_type=None):
     num_t = Dental.objects.filter(employer__in=employers, type__in=['DMO']).values('employer_id').distinct()
     var_local['prcnt_dmo'] = '{:,.0f}%'.format(len(num_t) * 100 / num_companies)
 
-    num_tt = Dental.objects.filter(employer__in=employers, type=plan_type).count() 
+    num_tt = Dental.objects.filter(employer__in=employers, type=plan_type).count() or 1
     num_t = Dental.objects.filter(employer__in=employers, type=plan_type, ortho_ded_apply__isnull=False, ortho_ded_apply__gt=0).count()
     var_local['pprcnt_ortho_ded_apply'] = '{:,.0f}%'.format(num_t * 100 / num_tt)
     num_t = Dental.objects.filter(employer__in=employers, type=plan_type, ortho_age_limit__isnull=False, ortho_age_limit__gt=0).count()
