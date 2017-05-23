@@ -550,11 +550,11 @@ def get_response_template(request,
     if is_print_header:
         # unescape html characters
         h = HTMLParser.HTMLParser()
-        context['ft_industries_label'] = h.unescape(', '.join(request.session.get('ft_industries_label', 'All')))
-        context['ft_head_counts_label'] = h.unescape(', '.join(request.session.get('ft_head_counts_label', 'All')))
-        context['ft_other_label'] = h.unescape(', '.join(request.session.get('ft_other_label', 'All')))
-        context['ft_regions_label'] = h.unescape(', '.join(request.session.get('ft_regions_label')))
-        context['ft_states_label'] = h.unescape(', '.join(request.session.get('ft_states_label')))
+        context['ft_industries_label'] = h.unescape(', '.join(request.session.get('ft_industries_label', ['All'])))
+        context['ft_head_counts_label'] = h.unescape(', '.join(request.session.get('ft_head_counts_label', ['All'])))
+        context['ft_other_label'] = h.unescape(', '.join(request.session.get('ft_other_label', ['All'])))
+        context['ft_regions_label'] = h.unescape(', '.join(request.session.get('ft_regions_label', ['All'])))
+        context['ft_states_label'] = h.unescape(', '.join(request.session.get('ft_states_label', ['All'])))
         context['plan_type'] = plan_type
 
         group = request.user.groups.first().name
