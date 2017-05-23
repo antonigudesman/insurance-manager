@@ -200,9 +200,9 @@ def update_properties(request):
         # print locals(), '###############333'
     else:
         plan = request.session['plan']
-        quintile_properties = request.session[benefit+'_quintile_properties']
-        quintile_properties_inv = request.session[benefit+'_quintile_properties_inv']
-        services = request.session[benefit+'_services']
+        quintile_properties = request.session.get(benefit+'_quintile_properties')
+        quintile_properties_inv = request.session.get(benefit+'_quintile_properties_inv')
+        services = request.session.get(benefit+'_services')
         # print locals(), '@@@@@@@@@@@@'
 
     if benefit == 'MEDICALRX':
