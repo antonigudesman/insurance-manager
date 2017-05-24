@@ -61,8 +61,8 @@ def print_page(request):
 
 def get_pdf(request, benefits, plans, plan_types):
     # store original benefit and plan for front end
-    benefit_o = request.session['bnchmrk_benefit']
-    plan_o = request.session['plan']    
+    benefit_o = request.session.get('bnchmrk_benefit')
+    plan_o = request.session.get('plan')
 
     # get screenshot for current page with same session using selenium    
     driver = webdriver.PhantomJS()
