@@ -248,6 +248,7 @@ def get_attr_quintile(benefit, employers, num_companies, plan_type, attr, MODEL_
         instance = model.objects.get(id=plan)
         val = getattr(instance, attr)
         qscore = get_rank(quintile, getattr(instance, attr))
+        print qscore, inverse, '@@@@@@@@'
         if qscore != '-':
             qscore = qscore if not inverse else 100 - qscore
 
@@ -476,7 +477,16 @@ life_attrs_percent = []
 life_attrs_int = ['multiple']
 
 def get_life_plan(request, employers, num_companies, plan_type=None):
-    medians, var_local, qs = get_life_plan_(employers, num_companies, plan_type)
+    quintile_properties = request.session.get('LIFE_quintile_properties') or life_quintile_attrs
+    quintile_properties_inv = request.session.get('LIFE_quintile_properties_inv') or life_quintile_attrs_inv
+    # services = request.session.get('DENTAL_services') or dental_services
+    
+    medians, var_local, qs = get_life_plan_(employers, num_companies, plan_type, quintile_properties, quintile_properties_inv)
+
+    h = HTMLParser.HTMLParser()
+    var_local['quintile_properties'] = json.dumps(quintile_properties)
+    var_local['quintile_properties_inv'] = json.dumps(quintile_properties_inv)
+    
 
     var_local['prcnt_add_flat'] = get_percent_count_( qs.filter(add=True, type='Flat Amount'), qs.filter(type='Flat Amount'))
     var_local['prcnt_add_multiple'] = get_percent_count_( qs.filter(add=True, type='Multiple of Salary'), qs.filter(type='Multiple of Salary'))
@@ -492,23 +502,25 @@ def get_life_plan(request, employers, num_companies, plan_type=None):
               + prcnt_plan_count.items()
               + medians.items())
 
-def get_life_plan_(employers, num_companies, plan_type):
+def get_life_plan_(employers, num_companies, plan_type, quintile_properties, quintile_properties_inv):
     qs = Life.objects.filter(employer__in=employers)
     medians, sub_qs = get_medians(qs, life_attrs_dollar, num_companies, life_attrs_percent, life_attrs_int)
 
     var_local = {}
-    for attr in life_quintile_attrs + life_quintile_attrs_inv:
-        var_local['quintile_'+attr] = get_incremental_array(sub_qs['qs_'+attr], attr)
+    idx = 0
+    for attr in quintile_properties + quintile_properties_inv:
+        var_local['quintile_'+str(idx)] = get_incremental_array(sub_qs['qs_'+attr], attr)
+        idx += 1
 
     return medians, var_local, qs
 
 def get_life_properties(request, plan, plan_type, quintile_properties, quintile_properties_inv, services=[]):
     attrs = ['multiple_max', 'flat_amount', 'multiple', 'add_flat', 'add_multiple']
-    context = get_init_properties(attrs, life_quintile_attrs + life_quintile_attrs_inv)
+    context = get_init_properties(attrs, quintile_properties + quintile_properties_inv)
 
     if plan:
         employers, num_companies = get_filtered_employers_session(request)
-        medians, var_local, _ = get_life_plan_(employers, num_companies, plan_type)
+        medians, var_local, _ = get_life_plan_(employers, num_companies, plan_type, quintile_properties, quintile_properties_inv)
         instance = Life.objects.get(id=plan)
         context['plan_info'] = ': {}, {}'.format(instance.employer.name, instance.title)
         context['client_name'] = instance.employer.name
@@ -520,10 +532,12 @@ def get_life_properties(request, plan, plan_type, quintile_properties, quintile_
         if instance.type == 'Flat Amount':
             context['add_flat'] = 'Yes' if instance.add else 'No'
             attr = 'flat_amount'
+            idx = 1
         else:
             context['add_multiple'] = 'Yes' if instance.add else 'No'
             attr = 'multiple_max'
-        context['rank_'+attr] = get_rank(var_local['quintile_'+attr], getattr(instance, attr))
+            idx = 0
+        context['rank_'+attr] = get_rank(var_local['quintile_'+str(idx)], getattr(instance, attr))
 
     return JsonResponse(context, safe=False)
 
@@ -540,7 +554,16 @@ std_attrs_int = ['waiting_days', 'waiting_days_sick', 'duration_weeks']
 std_attrs_boolean = ['salary_cont']
 
 def get_std_plan(request, employers, num_companies, plan_type=None):
-    medians, var_local, qs = get_std_plan_(employers, num_companies)
+    quintile_properties = request.session.get('STD_quintile_properties') or std_quintile_attrs
+    quintile_properties_inv = request.session.get('STD_quintile_properties_inv') or std_quintile_attrs_inv
+    # services = request.session.get('DENTAL_services') or dental_services
+    
+    medians, var_local, qs = get_std_plan_(employers, num_companies, plan_type, quintile_properties, quintile_properties_inv)
+
+    h = HTMLParser.HTMLParser()
+    var_local['quintile_properties'] = json.dumps(quintile_properties)
+    var_local['quintile_properties_inv'] = json.dumps(quintile_properties_inv)
+
     var_local['prcnt_salary_cont'] = get_percent_count_(qs.filter(salary_cont=True), qs)
 
     # percentages for plans and cost share
@@ -552,23 +575,25 @@ def get_std_plan(request, employers, num_companies, plan_type=None):
               + prcnt_plan_count.items()
               + medians.items())
 
-def get_std_plan_(employers, num_companies):
+def get_std_plan_(employers, num_companies, plan_type, quintile_properties, quintile_properties_inv):
     qs = STD.objects.filter(employer__in=employers)
     medians, sub_qs = get_medians(qs, std_attrs_dollar, num_companies, std_attrs_percent, std_attrs_int)
 
     var_local = {}
-    for attr in std_quintile_attrs + std_quintile_attrs_inv:
-        var_local['quintile_'+attr] = get_incremental_array(sub_qs['qs_'+attr], attr)
+    idx = 0
+    for attr in quintile_properties + quintile_properties_inv:
+        var_local['quintile_'+str(idx)] = get_incremental_array(sub_qs['qs_'+attr], attr)
+        idx += 1
 
     return medians, var_local, qs
 
 def get_std_properties(request, plan, plan_type, quintile_properties, quintile_properties_inv, services=[]):
     attrs = std_attrs_dollar + std_attrs_percent + std_attrs_int + std_attrs_boolean
-    context = get_init_properties(attrs, std_quintile_attrs + std_quintile_attrs_inv)
+    context = get_init_properties(attrs, quintile_properties + quintile_properties_inv)
 
     if plan:
         employers, num_companies = get_filtered_employers_session(request)
-        medians, var_local, _ = get_std_plan_(employers, num_companies)
+        medians, var_local, _ = get_std_plan_(employers, num_companies, plan_type, quintile_properties, quintile_properties_inv)
         instance = STD.objects.get(id=plan)
         context['plan_info'] = ': {}, {}'.format(instance.employer.name, instance.title)
         context['client_name'] = instance.employer.name
@@ -578,7 +603,7 @@ def get_std_properties(request, plan, plan_type, quintile_properties, quintile_p
         get_percent_properties(instance, std_attrs_percent, context)
         get_int_properties(instance, std_attrs_int, context)
         get_boolean_properties(instance, std_attrs_boolean, context)
-        get_quintile_properties(var_local, instance, std_quintile_attrs, std_quintile_attrs_inv, context)
+        get_quintile_properties_idx(var_local, instance, quintile_properties, quintile_properties_inv, context)
         
     return JsonResponse(context, safe=False)
 
@@ -594,7 +619,16 @@ ltd_attrs_percent = ['percentage']
 ltd_attrs_int = ['waiting_weeks']
 
 def get_ltd_plan(request, employers, num_companies, plan_type=None):
-    medians, var_local, qs = get_ltd_plan_(employers, num_companies)
+    quintile_properties = request.session.get('LTD_quintile_properties') or ltd_quintile_attrs
+    quintile_properties_inv = request.session.get('LTD_quintile_properties_inv') or ltd_quintile_attrs_inv
+    # services = request.session.get('DENTAL_services') or dental_services
+    
+    medians, var_local, qs = get_ltd_plan_(employers, num_companies, plan_type, quintile_properties, quintile_properties_inv)
+
+    h = HTMLParser.HTMLParser()
+    var_local['quintile_properties'] = json.dumps(quintile_properties)
+    var_local['quintile_properties_inv'] = json.dumps(quintile_properties_inv)
+
     # percentages for plans and cost share
     prcnt_plan_count = get_plan_percentages(employers, num_companies, 'ltd')
     prcnt_cost_share = get_plan_cost_share(qs)
@@ -604,23 +638,25 @@ def get_ltd_plan(request, employers, num_companies, plan_type=None):
               + prcnt_plan_count.items()
               + medians.items())
 
-def get_ltd_plan_(employers, num_companies):
+def get_ltd_plan_(employers, num_companies, plan_type, quintile_properties, quintile_properties_inv):
     qs = LTD.objects.filter(employer__in=employers)
     medians, sub_qs = get_medians(qs, ltd_attrs_dollar, num_companies, ltd_attrs_percent, ltd_attrs_int)
 
     var_local = {}
-    for attr in ltd_quintile_attrs + ltd_quintile_attrs_inv:
-        var_local['quintile_'+attr] = get_incremental_array(sub_qs['qs_'+attr], attr)
+    idx = 0
+    for attr in quintile_properties + quintile_properties_inv:
+        var_local['quintile_'+str(idx)] = get_incremental_array(sub_qs['qs_'+attr], attr)
+        idx += 1
 
     return medians, var_local, qs
 
 def get_ltd_properties(request, plan, plan_type, quintile_properties, quintile_properties_inv, services=[]):
     attrs = ltd_attrs_dollar + ltd_attrs_percent + ltd_attrs_int
-    context = get_init_properties(attrs, ltd_quintile_attrs + ltd_quintile_attrs_inv)
+    context = get_init_properties(attrs, quintile_properties + quintile_properties_inv)
 
     if plan:
         employers, num_companies = get_filtered_employers_session(request)
-        medians, var_local, _ = get_ltd_plan_(employers, num_companies)
+        medians, var_local, _ = get_ltd_plan_(employers, num_companies, plan_type, quintile_properties, quintile_properties_inv)
         instance = LTD.objects.get(id=plan)
         context['plan_info'] = ': {}, {}'.format(instance.employer.name, instance.title)
         context['client_name'] = instance.employer.name
@@ -629,7 +665,7 @@ def get_ltd_properties(request, plan, plan_type, quintile_properties, quintile_p
         get_dollar_properties(instance, ltd_attrs_dollar, context)
         get_percent_properties(instance, ltd_attrs_percent, context)
         get_int_properties(instance, ltd_attrs_int, context)
-        get_quintile_properties(var_local, instance, ltd_quintile_attrs, ltd_quintile_attrs_inv, context)
+        get_quintile_properties_idx(var_local, instance, quintile_properties, quintile_properties_inv, context)
 
     return JsonResponse(context, safe=False)
 

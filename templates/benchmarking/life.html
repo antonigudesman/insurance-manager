@@ -1,4 +1,6 @@
 {% extends base_template %}
+{% load humanize bnchmrk_tag %}
+
 {% block page_content %}
 
 {% if num_employers >= EMPLOYER_THRESHOLD %}
@@ -114,9 +116,9 @@
 
         <div class="col-md-7 section-graph">
             <div class="col-sm-12 m-b-15 m-r-25">
-                <select class="selectpicker property" onchange="update_quintile(this, 'LIFE-1', 'prop_rank_multiple_max', true);">
+                <select class="selectpicker property" onchange="update_quintile(this, 'LIFE-1', 'prop_rank_multiple_max', false);">
                     <option type="dollar" value="multiple_max">Maximum Benefit</option>
-                    <option type="percent" value="add_multiple">ADD Included</option>
+                    <!-- <option type="percent" value="add_multiple">ADD Included</option> -->
                 </select>
             </div>                
             <div class="col-md-10">
@@ -124,7 +126,7 @@
             </div>
             <div class="col-md-2 section-score text-center">
                 <h5 class="toggle_plan">Percentile Rank</h5>
-                <p><span id="prop_rank_multiple_max" class="prop_rank_multiple_max"></span></p>           
+                <p><span id="prop_rank_{{ quintile_properties|parse_list:0 }}" class="prop_rank_multiple_max"></span></p>           
             </div> 
         </div>          
         </div>
@@ -160,9 +162,9 @@
         </div>
         <div class="col-md-7 section-graph">
             <div class="col-sm-12 m-b-15 m-r-25">
-                <select class="selectpicker property" onchange="update_quintile(this, 'LIFE-2', 'prop_rank_flat_amount', true);">
+                <select class="selectpicker property" onchange="update_quintile(this, 'LIFE-2', 'prop_rank_flat_amount', false);">
                     <option type="dollar" value="flat_amount">Flat Benefit</option>
-                    <option type="percent" value="add_flat">ADD Included</option>
+                    <!-- <option type="percent" value="add_flat">ADD Included</option> -->
                 </select>
             </div>                
             <div class="col-md-10">
@@ -170,7 +172,7 @@
             </div>
             <div class="col-md-2 section-score text-center">
                 <h5 class="toggle_plan">Percentile Rank</h5>
-                <p><span id="prop_rank_flat_amount" class="prop_rank_flat_amount"></span></p>           
+                <p><span id="prop_rank_{{ quintile_properties|parse_list:0 }}" class="prop_rank_flat_amount"></span></p>           
             </div> 
         </div>              
         </div>
@@ -252,13 +254,16 @@
 {% endif %}
 
 <script type="text/javascript">
+var quintile_properties_, quintile_properties_inv_;
+quintile_properties_ = {{ quintile_properties|safe }};
+quintile_properties_inv_ = {{ quintile_properties_inv|safe }};
 
 var gh1_data, gh2_data, gh3_data, gh4_data;
 var plan_type = '{{ request.session.plan_type }}';
 
 {% if num_employers >= EMPLOYER_THRESHOLD %}
-    gh1_data = {{ quintile_multiple_max }};
-    gh2_data = {{ quintile_flat_amount }};
+    gh1_data = {{ quintile_0 }};
+    gh2_data = {{ quintile_0 }};
 
     gh3_data = [
         {data: {{ prcnt_plan0 }}, color: '#795548', label: 'No Plans Offered'},
@@ -283,14 +288,14 @@ var plan_type = '{{ request.session.plan_type }}';
             data: gh1_data,
             placeholder: 'LIFE-1',
             multiple_max: 'dollar',
-            rx_coin: 'percent',
+            add_multiple: 'percent',
             inverse: false
         },
         {
             data: gh2_data,
             placeholder: 'LIFE-2',
             flat_amount: 'dollar',
-            rx_coin: 'percent',
+            add_flat: 'percent',
             inverse: false
         },
     ];    

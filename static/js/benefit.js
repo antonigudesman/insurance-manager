@@ -197,7 +197,7 @@ update_content = function(benefit, plan_type) {
       
         draw_easy_pie_chart();
     } else if ($.inArray(benefit, ["STD", "LTD"]) != -1) {
-        gh1_data = generate_quintile_data(gh1_data);
+        gh1_data = generate_quintile_data(gh1_data, false);
 
         draw_bar_chart(benefit+'-1', gh1_data, 'dollar', 7);       
 
@@ -273,7 +273,7 @@ update_content = function(benefit, plan_type) {
         obj.val(quintile_properties_inv_[i]);
         obj.selectpicker('refresh');
     }
-    
+
     $('.page-loader').fadeOut();
 }
 

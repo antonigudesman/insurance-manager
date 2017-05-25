@@ -1,4 +1,6 @@
 {% extends base_template %}
+{% load humanize bnchmrk_tag %}
+
 {% block page_content %}
 
 
@@ -121,7 +123,7 @@
         </div>
         <div class="col-md-7 section-graph">
             <div class="col-sm-12 m-b-15 m-r-25">
-                <select class="selectpicker property" onchange="update_quintile(this, 'STD-1', 'prop_rank_weekly_max', true);">
+                <select class="selectpicker property" onchange="update_quintile(this, 'STD-1', 'prop_rank_weekly_max', false);">
                     <option type="dollar" value="weekly_max">Weekly Maximum Benefit</option>
                     <option type="percent" value="percentage">Replacement Percentage</option>
                 </select>
@@ -131,7 +133,7 @@
             </div>
             <div class="col-md-2 section-score text-center">
                 <h5 class="toggle_plan">Percentile Rank</h5>
-                <p><span id="prop_rank_weekly_max" class="prop_rank_weekly_max"></span></p>           
+                <p><span id="prop_rank_{{ quintile_properties|parse_list:0 }}" class="prop_rank_weekly_max"></span></p>           
             </div> 
         </div>              
         </div>
@@ -143,12 +145,15 @@
 
 
 <script type="text/javascript">
+var quintile_properties_, quintile_properties_inv_;
+quintile_properties_ = {{ quintile_properties|safe }};
+quintile_properties_inv_ = {{ quintile_properties_inv|safe }};
 
 var gh1_data, gh3_data, gh4_data;
 var plan_type = '{{ request.session.plan_type }}';
 
 {% if num_employers >= EMPLOYER_THRESHOLD %}
-    gh1_data = {{ quintile_weekly_max }};
+    gh1_data = {{ quintile_0 }};
 
     gh3_data = [
         {data: {{ prcnt_plan0 }}, color: '#795548', label: 'No Plans Offered'},
@@ -173,7 +178,7 @@ var plan_type = '{{ request.session.plan_type }}';
             data: gh1_data,
             placeholder: 'STD-1',
             weekly_max: 'dollar',
-            rx_coin: 'percent',
+            percentage: 'percent',
             inverse: false
         }
     ];
