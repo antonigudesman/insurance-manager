@@ -240,12 +240,6 @@ update_content = function(benefit, plan_type) {
         else
             $('.ppo-benefit').remove();
 
-        for (var i = 0; i < $('select.property_inv').length; i++) {
-            var obj = $('select.property_inv').eq(i);
-            obj.val(''+quintile_properties_inv_[i]);
-            obj.selectpicker('refresh');
-        }
-
         // console.log(gh1_data);
         gh1_data = generate_quintile_data(gh1_data, true);
         gh2_data = generate_quintile_data(gh2_data, true);
@@ -268,6 +262,18 @@ update_content = function(benefit, plan_type) {
         }        
     }
 
+    for (var i = 0; i < $('select.property').length; i++) {
+        var obj = $('select.property').eq(i);
+        obj.val(quintile_properties_[i]);
+        obj.selectpicker('refresh');
+    }
+
+    for (var i = 0; i < $('select.property_inv').length; i++) {
+        var obj = $('select.property_inv').eq(i);
+        obj.val(quintile_properties_inv_[i]);
+        obj.selectpicker('refresh');
+    }
+    
     $('.page-loader').fadeOut();
 }
 

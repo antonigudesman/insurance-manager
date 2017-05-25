@@ -1,4 +1,6 @@
 {% extends base_template %}
+{% load humanize bnchmrk_tag %}
+
 {% block page_content %}
 
 {% if num_employers >= EMPLOYER_THRESHOLD %}
@@ -151,7 +153,7 @@
                 </div>
                 <div class="col-md-2 section-score text-center">
                     <h5 class="toggle_plan">Percentile Rank</h5>
-                    <p><span id="prop_rank_exam_copay" class="prop_rank_exam_copay"></span></p>           
+                    <p><span id="prop_rank_{{ quintile_properties_inv|parse_list:0 }}" class="prop_rank_exam_copay"></span></p>           
                 </div> 
             </div>              
         </div>
@@ -254,7 +256,7 @@
             </div>
             <div class="col-md-2 section-score text-center">
                 <h5 class="toggle_plan">Percentile Rank</h5>
-                <p><span id="prop_rank_t1_ee" class="prop_rank_t1_ee"></span></p>           
+                <p><span id="prop_rank_{{ quintile_properties_inv|parse_list:1 }}" class="prop_rank_t1_ee"></span></p>           
             </div> 
         </div>  
 
@@ -313,7 +315,7 @@
             </div>
             <div class="col-md-2 section-score text-center">
                 <h5 class="toggle_plan">Percentile Rank</h5>
-                <p><span id="prop_rank_t1_gross" class="prop_rank_t1_gross"></span></p>           
+                <p><span id="prop_rank_{{ quintile_properties_inv|parse_list:2 }}" class="prop_rank_t1_gross"></span></p>           
             </div> 
         </div>          
         </div>
@@ -325,14 +327,17 @@
 
 
 <script type="text/javascript">
+var quintile_properties_, quintile_properties_inv_;
+quintile_properties_ = {{ quintile_properties|safe }};
+quintile_properties_inv_ = {{ quintile_properties_inv|safe }};
 
 var gh1_data, gh2_data, gh3_data, gh4_data, gh5_data, gh6_data, gh7_data;
 var plan_type = '{{ request.session.plan_type }}';
 
 {% if num_employers >= EMPLOYER_THRESHOLD %}
-    gh1_data = {{ quintile_exam_copay }};
-    gh5_data = {{ quintile_t1_ee }};
-    gh6_data = {{ quintile_t1_gross }};
+    gh1_data = {{ quintile_0 }};
+    gh5_data = {{ quintile_1 }};
+    gh6_data = {{ quintile_2 }};
 
     gh7_data = [
         {data: {{ prcnt_plan0 }}, color: '#795548', label: 'No Plans Offered'},
@@ -346,21 +351,29 @@ var plan_type = '{{ request.session.plan_type }}';
             data: gh1_data,
             placeholder: 'VISION-1',
             exam_copay: 'dollar',
-            rx_coin: 'percent',
+            lenses_copay: 'dollar',
+            contacts_copay: 'dollar',
+            frames_copay: 'dollar',
+            frames_allowance: 'dollar',
+            contacts_allowance: 'dollar',
             inverse: true
         },
         {
             data: gh5_data,
             placeholder: 'VISION-5',
             t1_ee: 'dollar',
-            rx_coin: 'percent',
+            t2_ee: 'dollar',
+            t3_ee: 'dollar',
+            t4_ee: 'dollar',
             inverse: true
         },
         {
             data: gh6_data,
             placeholder: 'VISION-6',
             t1_gross: 'dollar',
-            rx_coin: 'percent',
+            t2_gross: 'dollar',
+            t3_gross: 'dollar',
+            t4_gross: 'dollar',
             inverse: true
         },    
     ];  

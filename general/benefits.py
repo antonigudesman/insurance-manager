@@ -6,7 +6,7 @@ import HTMLParser
 from .models import *
 from .aux import *
 import json
-
+import pdb
 import logging
 log = logging.getLogger(__name__)
 
@@ -191,6 +191,7 @@ def get_medical_properties(request, plan, plan_type, quintile_properties, quinti
         get_boolean_properties(instance, medical_attrs_boolean, context)
         get_boolean_properties_5_states(instance, medical_attrs_boolean_5_states, context)
         get_boolean_properties_5_states_coin(instance, medical_attrs_boolean_5_states, context)
+        print var_local, '@@@@@@@@@@@@'
         get_quintile_properties_idx(var_local, instance, quintile_properties, quintile_properties_inv, context)
 
         # calculate employee costs
@@ -229,10 +230,12 @@ def get_attr_quintile(benefit, employers, num_companies, plan_type, attr, MODEL_
         plan_type = get_real_medical_type(plan_type)
         model = MODEL_MAP['MEDICAL']
     else:
+        plan_type = [plan_type]
         model = MODEL_MAP[benefit]
 
     qs = model.objects.filter(employer__in=employers)
-    if plan_type:
+    # pdb.set_trace()
+    if plan_type and not 'All' in plan_type:
         qs = qs.filter(type__in=plan_type) 
 
     kwargs = { '{0}__isnull'.format(attr): True }
@@ -304,8 +307,17 @@ dental_attrs_boolean = [
 ]
 
 def get_dental_plan(request, employers, num_companies, plan_type=None):
-    medians, var_local, qs = get_dental_plan_(employers, num_companies, plan_type)
+    quintile_properties = request.session.get('DENTAL_quintile_properties') or dental_quintile_attrs
+    quintile_properties_inv = request.session.get('DENTAL_quintile_properties_inv') or dental_quintile_attrs_inv
+    # services = request.session.get('DENTAL_services') or dental_services
+    
+    medians, var_local, qs = get_dental_plan_(employers, num_companies, plan_type, quintile_properties, quintile_properties_inv)
     prcnt_plan_count = get_plan_percentages(employers, num_companies, 'den')
+
+    h = HTMLParser.HTMLParser()
+    var_local['quintile_properties'] = json.dumps(quintile_properties)
+    var_local['quintile_properties_inv'] = json.dumps(quintile_properties_inv)
+    # var_local['services'] = json.dumps(services)
 
     num_t = Dental.objects.filter(employer__in=employers, type__in=['DPPO']).values('employer_id').distinct()
     var_local['prcnt_dppo'] = '{:,.0f}%'.format(len(num_t) * 100 / num_companies)
@@ -325,13 +337,15 @@ def get_dental_plan(request, employers, num_companies, plan_type=None):
               + prcnt_plan_count.items()
               + medians.items())
 
-def get_dental_plan_(employers, num_companies, plan_type=None):
+def get_dental_plan_(employers, num_companies, plan_type, quintile_properties, quintile_properties_inv):
     qs = Dental.objects.filter(employer__in=employers, type=plan_type)
     medians, sub_qs = get_medians(qs, dental_attrs_dollar, num_companies, dental_attrs_percent, dental_attrs_int)
 
     var_local = {}
-    for attr in dental_quintile_attrs + dental_quintile_attrs_inv:
-        var_local['quintile_'+attr] = get_incremental_array(sub_qs['qs_'+attr], attr)
+    idx = 0
+    for attr in quintile_properties + quintile_properties_inv:
+        var_local['quintile_'+str(idx)] = get_incremental_array(sub_qs['qs_'+attr], attr)
+        idx += 1
 
     return medians, var_local, qs
 
@@ -339,12 +353,12 @@ def get_dental_properties(request, plan, plan_type, quintile_properties, quintil
     attrs = [item.name 
              for item in Dental._meta.fields 
              if item.name not in ['id', 'employer', 'title', 'type']]
-    context = get_init_properties(attrs, dental_quintile_attrs + dental_quintile_attrs_inv)
-
+    context = get_init_properties(attrs, quintile_properties + quintile_properties_inv)
+    # pdb.set_trace()
     if plan:
         employers, num_companies = get_filtered_employers_session(request)
         instance = Dental.objects.get(id=plan)
-        medians, var_local, qs = get_dental_plan_(employers, num_companies, instance.type)
+        medians, var_local, qs = get_dental_plan_(employers, num_companies, instance.type, quintile_properties, quintile_properties_inv)
         context['plan_info'] = ': {}, {}'.format(instance.employer.name, instance.title)
         context['client_name'] = instance.employer.name
         context['print_plan_name'] = instance.title
@@ -353,7 +367,7 @@ def get_dental_properties(request, plan, plan_type, quintile_properties, quintil
         get_percent_properties(instance, dental_attrs_percent, context)
         get_int_properties(instance, dental_attrs_int, context)
         get_boolean_properties(instance, dental_attrs_boolean, context)
-        get_quintile_properties(var_local, instance, dental_quintile_attrs, dental_quintile_attrs_inv, context)
+        get_quintile_properties_idx(var_local, instance, quintile_properties, quintile_properties_inv, context)
 
     return JsonResponse(context, safe=False)
 
@@ -405,29 +419,39 @@ vision_attrs_int = [
 ]
 
 def get_vision_plan(request, employers, num_companies, plan_type=None):
-    medians, var_local = get_vision_plan_(employers, num_companies)
+    quintile_properties = request.session.get('VISION_quintile_properties') or vision_quintile_attrs
+    quintile_properties_inv = request.session.get('VISION_quintile_properties_inv') or vision_quintile_attrs_inv
+    # services = request.session.get('DENTAL_services') or dental_services
+    
+    medians, var_local = get_vision_plan_(employers, num_companies, plan_type, quintile_properties, quintile_properties_inv)
     prcnt_plan_count = get_plan_percentages(employers, num_companies, 'vis')
+
+    h = HTMLParser.HTMLParser()
+    var_local['quintile_properties'] = json.dumps(quintile_properties)
+    var_local['quintile_properties_inv'] = json.dumps(quintile_properties_inv)
 
     return dict(var_local.items() 
               + prcnt_plan_count.items()
               + medians.items())
 
-def get_vision_plan_(employers, num_companies):
+def get_vision_plan_(employers, num_companies, plan_type, quintile_properties, quintile_properties_inv):
     qs = Vision.objects.filter(employer__in=employers)
     medians, sub_qs = get_medians(qs, vision_attrs_dollar, num_companies, vision_attrs_percent, vision_attrs_int)
 
     var_local = {}
-    for attr in vision_quintile_attrs + vision_quintile_attrs_inv:
-        var_local['quintile_'+attr] = get_incremental_array(sub_qs['qs_'+attr], attr)
+    idx = 0
+    for attr in quintile_properties + quintile_properties_inv:
+        var_local['quintile_'+str(idx)] = get_incremental_array(sub_qs['qs_'+attr], attr)
+        idx += 1
     return medians, var_local
 
 def get_vision_properties(request, plan, plan_type, quintile_properties, quintile_properties_inv, services=[]):
     attrs = [item.name for item in Vision._meta.fields if item.name not in ['id', 'employer', 'title']]
-    context = get_init_properties(attrs, vision_quintile_attrs + vision_quintile_attrs_inv)
+    context = get_init_properties(attrs, quintile_properties + quintile_properties_inv)
 
     if plan:
         employers, num_companies = get_filtered_employers_session(request)
-        medians, var_local = get_vision_plan_(employers, num_companies)
+        medians, var_local = get_vision_plan_(employers, num_companies, plan_type, quintile_properties, quintile_properties_inv)
         instance = Vision.objects.get(id=plan)
         context['plan_info'] = ': {}, {}'.format(instance.employer.name, instance.title)
         context['client_name'] = instance.employer.name
@@ -436,7 +460,7 @@ def get_vision_properties(request, plan, plan_type, quintile_properties, quintil
         get_dollar_properties(instance, vision_attrs_dollar, context)
         get_percent_properties(instance, vision_attrs_percent, context)
         get_int_properties(instance, vision_attrs_int, context)
-        get_quintile_properties(var_local, instance, vision_quintile_attrs, vision_quintile_attrs_inv, context)
+        get_quintile_properties_idx(var_local, instance, quintile_properties, quintile_properties_inv, context)
 
     return JsonResponse(context, safe=False)
 

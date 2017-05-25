@@ -155,6 +155,7 @@ def get_median_count(queryset, term):
 def get_incremental_array(queryset, term, benefit=''):
     threshold_key = benefit + '__' + term
 
+    # pdb.set_trace()
     if threshold_key in settings.QUINTILE_THRESHOLD:
         threshold = settings.QUINTILE_THRESHOLD[threshold_key]
         kwargs = { '{0}__gte'.format(term): threshold[0] }
@@ -168,6 +169,7 @@ def get_incremental_array(queryset, term, benefit=''):
 
 
 def get_incremental_array_(num_elements, raw_ya):
+    # pdb.set_trace()
     result = []
     if raw_ya:
         for xa in range(0, 110, 10):
@@ -370,7 +372,7 @@ def get_quintile_properties(var_qs, instance, attrs, attrs_inv, context):
 def get_quintile_properties_idx(var_qs, instance, attrs, attrs_inv, context):
     idx = 0
     for attr in attrs:            
-        context['rank_'+str(idx)] = get_rank(var_qs['quintile_'+attr], getattr(instance, attr))
+        context['rank_'+attr] = get_rank(var_qs['quintile_'+str(idx)], getattr(instance, attr))
         idx += 1
 
     for attr in attrs_inv: 

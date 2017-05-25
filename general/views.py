@@ -261,6 +261,7 @@ def update_quintile(request):
     request.session[benefit+'_services'] = services  
 
     employers, num_companies = get_filtered_employers_session(request)
+    print plan_type, '@@@@@@@@@@@@@'
     quintile, qscore, value = get_attr_quintile(benefit, employers, num_companies, plan_type, attr, MODEL_MAP, plan, inverse)
 
     return JsonResponse({

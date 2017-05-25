@@ -24,6 +24,7 @@ def parse_none(value): # Only one argument.
 @register.filter
 def parse_list(llist, idx): # Only one argument.
     """Converts a string into none"""
+    print llist, '@@@@@@@@@@@'
     return json.loads(llist)[idx]
 
 @register.filter
