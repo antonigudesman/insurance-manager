@@ -220,7 +220,7 @@ update_content = function(benefit, plan_type) {
             $('.out-benefit').remove();
 
         gh1_data = generate_quintile_data(gh1_data, true);
-        gh3_data = generate_quintile_data(gh3_data, true);
+        gh3_data = generate_quintile_data(gh3_data, false);
         gh9_data = generate_quintile_data(gh9_data, true);
         gh10_data = generate_quintile_data(gh10_data, true);        
         
