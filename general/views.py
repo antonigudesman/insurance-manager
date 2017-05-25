@@ -267,6 +267,7 @@ def update_quintile(request):
         'graph': quintile,
         'qscore': qscore,
         'val': value,
+        'property': attr,
         'type': type_}, safe=False)
 
 

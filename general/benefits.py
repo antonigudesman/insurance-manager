@@ -646,6 +646,7 @@ def get_ltd_plan_(employers, num_companies, plan_type, quintile_properties, quin
     idx = 0
     for attr in quintile_properties + quintile_properties_inv:
         var_local['quintile_'+str(idx)] = get_incremental_array(sub_qs['qs_'+attr], attr)
+        print var_local['quintile_'+str(idx)], '##############'
         idx += 1
 
     return medians, var_local, qs
@@ -653,7 +654,7 @@ def get_ltd_plan_(employers, num_companies, plan_type, quintile_properties, quin
 def get_ltd_properties(request, plan, plan_type, quintile_properties, quintile_properties_inv, services=[]):
     attrs = ltd_attrs_dollar + ltd_attrs_percent + ltd_attrs_int
     context = get_init_properties(attrs, quintile_properties + quintile_properties_inv)
-
+    
     if plan:
         employers, num_companies = get_filtered_employers_session(request)
         medians, var_local, _ = get_ltd_plan_(employers, num_companies, plan_type, quintile_properties, quintile_properties_inv)

@@ -65,6 +65,13 @@ function update_quintile(obj, graph_holder, qscore_holder, inverse) {
             else
                 $('.toggle_plan').show();
 
+            for (i=0; i < attribute_map.length; i++) {
+                if (typeof attribute_map[i][data['property']] != 'undefined' ) {
+                    attribute_map[i].data = data['graph'];
+                    break;
+                }
+            }
+
             gh_data = generate_quintile_data(data['graph'], inverse);        
 
             var value = data['qscore'];
