@@ -733,3 +733,74 @@ def get_strategy_properties(request, plan, plan_type, quintile_properties, quint
         get_quintile_properties(var_local, instance, strategy_quintile_attrs, strategy_quintile_attrs_inv, context)
         
     return JsonResponse(context, safe=False)
+
+
+ATTRIBUTE_MAP = {
+    'MEDICAL': [
+        {
+            'attrs': ['in_ded_single', 'in_ded_family', 'in_max_single', 'in_max_family', 'in_coin', 'rx_coin'],             
+            'inverse': True
+        },
+        {
+            'attrs': ['out_ded_single', 'out_ded_family', 'out_max_single', 'out_max_family', 'out_coin'],
+            'inverse': True
+        },
+        {
+            'attrs': ['t1_ee', 't2_ee', 't3_ee', 't4_ee'],
+            'inverse': True
+        },
+        {
+            'attrs': ['t1_gross', 't2_gross', 't3_gross', 't4_gross'],
+            'inverse': True
+        }],
+    'DENTAL': [
+        {
+            'attrs': ['in_ded_single', 'in_ded_family', 'out_ded_single', 'out_ded_family'],
+            'inverse': True
+        },
+        {
+            'attrs': ['in_max', 'in_max_ortho', 'out_max', 'out_max_ortho'],
+            'inverse': False
+        },
+        {
+            'attrs': ['t1_ee', 't2_ee', 't3_ee', 't4_ee'],
+            'inverse': True
+        },
+        {
+            'attrs': ['t1_gross', 't2_gross', 't3_gross', 't4_gross'],
+            'inverse': True
+        }],
+    'VISION': [
+        {
+            'attrs': ['exam_copay', 'lenses_copay', 'contacts_copay', 'frames_copay', 'frames_allowance', 'contacts_allowance'],
+            'inverse': True
+        },
+        {
+            'attrs': ['t1_ee', 't2_ee', 't3_ee', 't4_ee'],
+            'inverse': True
+        },
+        {
+            'attrs': ['t1_gross', 't2_gross', 't3_gross', 't4_gross'],
+            'inverse': True
+        }],
+    'STD': [
+        {
+            'attrs': ['weekly_max', 'percentage'],
+            'inverse': False
+        }],
+    'LTD': [
+        {
+            'attrs': ['monthly_max', 'percentage'],
+            'inverse': False
+        }],
+    'LIFE': [
+        {
+            'attrs': ['multiple_max', 'add_multiple'],
+            'inverse': False
+        },
+        {
+            'attrs': ['flat_amount', 'add_flat'],
+            'inverse': False
+        }],
+    'STRATEGY': []
+}

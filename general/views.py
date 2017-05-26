@@ -572,7 +572,7 @@ def get_response_template(request,
         func_name = 'get_{}_plan'.format(benefit.lower())
         context = globals()[func_name](request, employers, num_companies, plan_type)
 
-    context['base_template'] = 'print.html' if is_print else 'empty.html'
+    context['base_template'] = 'print/print_body.html' if is_print else 'empty.html'
     context['today'] = today
     template = 'benchmarking/{}.html'.format(benefit.lower())
 
@@ -588,7 +588,7 @@ def get_response_template(request,
 
         group = request.user.groups.first().name
         context['group'] = group.lower()
-        template = 'includes/print_header.html'
+        template = 'print/print_header.html'
     return render(request, template, context)
 
 
@@ -609,3 +609,16 @@ def print_report(request):
         'industries': get_industries(),
         'STATES': STATE_CHOICES
     })    
+
+def print_plan_order(request, company_id):
+    plans = []
+    for model in [Medical, Dental, Vision, Life, STD, LTD, Strategy]:
+        # plans[model.__name__] = []
+        attrs = ATTRIBUTE_MAP[model.__name__.upper()]
+        for item in model.objects.filter(employer_id=company_id):
+            if model == Strategy:
+                plans.append([item.employer.name, item.pk, model.__name__, attrs])
+            else:
+                plans.append([item.title, item.pk, model.__name__, attrs])
+
+    return render(request, 'print/print_plan_order.html', { 'plans': plans })

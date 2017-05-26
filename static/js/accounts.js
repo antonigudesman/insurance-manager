@@ -20,7 +20,7 @@ function refresh_content() {
 }
 
 function load_employers() {
-    $("#data-table-employer").bootgrid({
+    var grid = $("#data-table-employer").bootgrid({
         css: {
             icon: 'zmdi icon',
             iconColumns: 'zmdi-view-module',
@@ -30,11 +30,11 @@ function load_employers() {
         },
         formatters: {
             "link": function (column, row) {
-                return "<a href=\"/accounts/"+row.id+"\">"+row[column.id]+"</a>";
+                return "<a target='_self' href=\"/accounts/"+row.id+"\">"+row[column.id]+"</a>";
                 // return "<a href=\"/admin/general/employer/"+row.id+"/change\">"+row[column.id]+"</a>";
             },            
             "commands": function(column, row) {
-                return "<a href='/print_report_/"+row.id+"' type=\"button\" class=\"btn btn-icon command-eye waves-effect waves-circle\" data-row-id=\"" + row.id + "\"><span class=\"zmdi zmdi-print\"></span></a> ";
+                return "<button type=\"button\" class=\"btn btn-icon command-print waves-effect waves-circle\" data-row-id=\"" + row.id + "\"><span class=\"zmdi zmdi-print\"></span></button> ";
             }
         },
         labels: {
@@ -67,5 +67,9 @@ function load_employers() {
 
             return JSON.stringify(model);
         }                
+    }).on("loaded.rs.jquery.bootgrid", function() {
+        grid.find(".command-print").on("click", function(e) {
+            var myWindow = window.open("/print_plan_order/"+$(this).data("row-id"), "myWindow"+$(this).data("row-id"), "width=1000,height=600,left=200,top=200,scrollbars=yes");
+        });
     });       
 }
