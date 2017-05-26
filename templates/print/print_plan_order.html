@@ -34,7 +34,7 @@
             <div class="panel-body">
 				{% for item in plan.3 %}
 					<div class="col-md-12">
-						<select class="selectpicker {% if item.inverse %} property_inv {% else %} property {% endif %}">
+						<select class="selectpicker {{ item.class }}">
 							{% for attr in item.attrs %}	
 							<option value="{{ attr }}">{{ attr|title }}</option>
 							{% endfor %}

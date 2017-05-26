@@ -619,6 +619,11 @@ def print_plan_order(request, company_id):
             if model == Strategy:
                 plans.append([item.employer.name, item.pk, model.__name__, attrs])
             else:
+                if model == Life: 
+                    if item.type == 'Flat Amount':
+                        attrs = [attrs[1]]
+                    else:
+                        attrs = [attrs[0]]
                 plans.append([item.title, item.pk, model.__name__, attrs])
 
     return render(request, 'print/print_plan_order.html', { 'plans': plans })

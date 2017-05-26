@@ -739,68 +739,80 @@ ATTRIBUTE_MAP = {
     'MEDICAL': [
         {
             'attrs': ['in_ded_single', 'in_ded_family', 'in_max_single', 'in_max_family', 'in_coin', 'rx_coin'],             
-            'inverse': True
+            'class': 'property_inv'
         },
         {
             'attrs': ['out_ded_single', 'out_ded_family', 'out_max_single', 'out_max_family', 'out_coin'],
-            'inverse': True
+            'class': 'property_inv'
         },
         {
             'attrs': ['t1_ee', 't2_ee', 't3_ee', 't4_ee'],
-            'inverse': True
+            'class': 'property_inv'
         },
         {
             'attrs': ['t1_gross', 't2_gross', 't3_gross', 't4_gross'],
-            'inverse': True
+            'class': 'property_inv'
+        },
+        {
+            'attrs': ['PCP', 'SP', 'LX'],
+            'class': 'service'
+        },
+        {
+            'attrs': ['IP', 'OP', 'ER', 'UC'],
+            'class': 'service'
+        },
+        {
+            'attrs': ['Rx1', 'Rx2', 'Rx3', 'Rx4'],
+            'class': 'service'
         }],
     'DENTAL': [
         {
             'attrs': ['in_ded_single', 'in_ded_family', 'out_ded_single', 'out_ded_family'],
-            'inverse': True
+            'class': 'property_inv'
         },
         {
             'attrs': ['in_max', 'in_max_ortho', 'out_max', 'out_max_ortho'],
-            'inverse': False
+            'class': 'property'
         },
         {
             'attrs': ['t1_ee', 't2_ee', 't3_ee', 't4_ee'],
-            'inverse': True
+            'class': 'property_inv'
         },
         {
             'attrs': ['t1_gross', 't2_gross', 't3_gross', 't4_gross'],
-            'inverse': True
+            'class': 'property_inv'
         }],
     'VISION': [
         {
             'attrs': ['exam_copay', 'lenses_copay', 'contacts_copay', 'frames_copay', 'frames_allowance', 'contacts_allowance'],
-            'inverse': True
+            'class': 'property_inv'
         },
         {
             'attrs': ['t1_ee', 't2_ee', 't3_ee', 't4_ee'],
-            'inverse': True
+            'class': 'property_inv'
         },
         {
             'attrs': ['t1_gross', 't2_gross', 't3_gross', 't4_gross'],
-            'inverse': True
+            'class': 'property_inv'
         }],
     'STD': [
         {
             'attrs': ['weekly_max', 'percentage'],
-            'inverse': False
+            'class': 'property'
         }],
     'LTD': [
         {
             'attrs': ['monthly_max', 'percentage'],
-            'inverse': False
+            'class': 'property'
         }],
     'LIFE': [
         {
-            'attrs': ['multiple_max', 'add_multiple'],
-            'inverse': False
+            'attrs': ['multiple_max'],
+            'class': 'property'
         },
         {
-            'attrs': ['flat_amount', 'add_flat'],
-            'inverse': False
+            'attrs': ['flat_amount'],
+            'class': 'property'
         }],
     'STRATEGY': []
 }
