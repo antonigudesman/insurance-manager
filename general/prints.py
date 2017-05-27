@@ -21,45 +21,40 @@ log = logging.getLogger(__name__)
 
 @login_required(login_url='/admin/login')
 def print_template(request):
-    benefit = request.GET.get('benefit')
-    plan = request.GET.get('plan')
-    plan_type = request.GET.get('plan_type')
-    #Retrieve data or whatever you need
-    request.session['bnchmrk_benefit'] = benefit
-    request.session['plan'] = plan
-    request.session['plan_type'] = plan_type
+    p_benefit = json.loads(request.GET.get('p_benefit'))
+    request.session['bnchmrk_benefit'] = p_benefit['benefit']
+    request.session['plan'] = p_benefit['plan']
+    request.session['plan_type'] = p_benefit['plan_type']
 
     return get_response_template(request, 
-                                 benefit, 
+                                 p_benefit['benefit'], 
                                  True)
 
 
 @login_required(login_url='/admin/login')
 def print_template_header(request):
-    benefit = request.GET.get('benefit')
-    plan = request.GET.get('plan')
-    plan_type = request.GET.get('plan_type')
-    #Retrieve data or whatever you need
-    request.session['benefit'] = benefit
-    request.session['plan'] = plan
-    request.session['plan_type'] = plan_type
-    # need to add ft_states
+    p_benefit = json.loads(request.GET.get('p_benefit'))
+    request.session['bnchmrk_benefit'] = p_benefit['benefit']
+    request.session['plan'] = p_benefit['plan']
+    request.session['plan_type'] = p_benefit['plan_type']
+
     return get_response_template(request, 
-                                 benefit, 
+                                 p_benefit['benefit'], 
                                  True,
                                  True)
 
 
 @login_required(login_url='/admin/login')
 def print_page(request):
-    # for universal format
-    benefit = request.session['bnchmrk_benefit']
-    plan = request.session['plan']
-    plan_type = request.session['plan_type']
-    return get_pdf(request, [benefit], [plan], [plan_type])
+    return get_pdf(request, [{
+        'benefit': request.session['bnchmrk_benefit'],
+        'plan': request.session['plan'],
+        'plan_type': request.session['plan_type'],
+        'quintile_properties_inv': [u'exam_copay', u't1_ee', u't1_gross']
+    }])
 
 
-def get_pdf(request, benefits, plans, plan_types):
+def get_pdf(request, print_benefits):
     # store original benefit and plan for front end
     benefit_o = request.session.get('bnchmrk_benefit')
     plan_o = request.session.get('plan')
@@ -94,12 +89,15 @@ def get_pdf(request, benefits, plans, plan_types):
 
     try:
         vars_d = {}
-        for uidx in range(len(benefits)):
+        uidx = 0
+        for p_benefit in print_benefits:
             vars_d['img_path_{}'.format(uidx)] = '{}_{}.png'.format(base_path, uidx)
             vars_d['img_path_header_{}'.format(uidx)] = '{}_{}_header.png'.format(base_path, uidx)
 
             # for body
-            url = 'http://{}/98Wf37r2-3h4X2_jh9?benefit={}&plan={}&plan_type={}'.format(request.META.get('HTTP_HOST'), benefits[uidx], plans[uidx], plan_types[uidx])
+            url = 'http://{}/98Wf37r2-3h4X2_jh9?p_benefit={}'.format(request.META.get('HTTP_HOST'), 
+                json.dumps(p_benefit))
+
             print url, '#############3'
             driver.get(url)        
             time.sleep(1.6) #0.6
@@ -109,7 +107,9 @@ def get_pdf(request, benefits, plans, plan_types):
             driver.save_screenshot(vars_d['img_path_{}'.format(uidx)])
 
             # for header
-            url = 'http://{}/25Wfr7r2-3h4X25t?benefit={}&plan={}&plan_type={}'.format(request.META.get('HTTP_HOST'), benefits[uidx], plans[uidx], plan_types[uidx])
+            url = 'http://{}/25Wfr7r2-3h4X25t?p_benefit={}'.format(request.META.get('HTTP_HOST'), 
+                json.dumps(p_benefit))
+
             driver.get(url)
             time.sleep(0.4)
             driver.save_screenshot(vars_d['img_path_header_{}'.format(uidx)])
@@ -131,7 +131,8 @@ def get_pdf(request, benefits, plans, plan_types):
                 height_s = header_height + page_height_on_image * (idx + 1) + 1
                 if height_s > height - bottom_height:
                     height_s = height - bottom_height
-                origin.crop((174,header_height+page_height_on_image*idx-1, 177+page_width_on_image, height_s+2)).save(vars_d['img_path_s_{}_{}'.format(uidx, idx)])
+                origin.crop((174,header_height+page_height_on_image*idx-1, 177+page_width_on_image, height_s+2)) \
+                    .save(vars_d['img_path_s_{}_{}'.format(uidx, idx)])
 
                 pdf.add_page()
                 pdf.image(vars_d['img_path_s_{}_{}'.format(uidx, idx)], margin_h, margin_v)
@@ -139,6 +140,7 @@ def get_pdf(request, benefits, plans, plan_types):
             # remove image files
             # os.remove(vars_d['img_path_{}'.format(uidx)])
             os.remove(vars_d['img_path_header_{}'.format(uidx)])
+            uidx += 1
     except Exception, e:
         log.debug(str(e))
         log.debug('###########32')
@@ -191,6 +193,16 @@ def print_report_pdf(request, company_id):
     # log.debug('@@@@@@@@@@@2')
     return get_pdf(request, benefits, plans, plan_types)
 
+@csrf_exempt
+def print_report_in_order(request):
+    print_order = json.loads(request.POST['print_order'])
+    print print_order, '#########'
+    return HttpResponse('google.pdf')
+
+
+def download_report(request, report_name):
+    base_path = '/root/tmp/'
+    return get_download_response(base_path+report_name)    
 
 def get_download_response(path):
     wrapper = FileWrapper( open( path, "r" ) )

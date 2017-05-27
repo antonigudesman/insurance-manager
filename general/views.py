@@ -616,14 +616,28 @@ def print_plan_order(request, company_id):
         # plans[model.__name__] = []
         attrs = ATTRIBUTE_MAP[model.__name__.upper()]
         for item in model.objects.filter(employer_id=company_id):
+            try:
+                plan_type = getattr(item, 'type')
+                if plan_type in ['PPO', 'POS']:
+                    plan_type = 'PPO'
+                elif plan_type in ['HMO', 'EPO']:
+                    plan_type = 'HMO'
+            except Exception as e:
+                plan_type = None
+
+            benefit = model.__name__.upper()
             if model == Strategy:
-                plans.append([item.employer.name, item.pk, model.__name__, attrs])
+                title = item.employer.name
             else:
+                title = item.title
                 if model == Life: 
                     if item.type == 'Flat Amount':
                         attrs = [attrs[1]]
                     else:
                         attrs = [attrs[0]]
-                plans.append([item.title, item.pk, model.__name__, attrs])
+                elif model == Medical:
+                    benefit = 'MEDICALRX'
+                    
+            plans.append([title, item.pk, benefit, attrs, plan_type])
 
     return render(request, 'print/print_plan_order.html', { 'plans': plans })

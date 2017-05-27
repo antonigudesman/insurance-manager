@@ -16,7 +16,7 @@
 <div class="row">
 	{% for plan in plans %}
 	<div class="col-md-offset-1 col-md-10">
-    <div class="panel panel-collapse">
+    <div class="panel panel-collapse" data-benefit="{{ plan.2 }}" data-plan="{{ plan.1 }}" data-plan_type="{{ plan.4 }}">
         <div class="panel-heading" role="tab" style="border-bottom: 2px solid #eee;">
             <h4 class="panel-title">
                 <a class="collapsed pull-left" data-toggle="collapse" data-parent="#accordionGreen" href="#accordionGreen-{{ plan.1 }}" aria-expanded="false">
@@ -50,7 +50,7 @@
 <div class="row">
 	<div class="col-md-offset-1 col-md-10">
 		<div class="pull-right m-t-20">
-			<button class="btn btn-success m-r-10">Print</button>
+			<button class="btn btn-success m-r-10" onclick="get_order();">Print</button>
 			<button class="btn btn-default" onclick="window.close();">Cancel</button>
 		</div>
 	</div>
