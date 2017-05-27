@@ -59,7 +59,6 @@ def enterprise(request):
         is_print = form_param.get('print')
 
         if is_print:
-            print form_param, '@@@@@@@@@'
             ft_industries_label = form_param.get('industry_label')
             ft_head_counts_label = form_param.get('head_counts_label')
             ft_other_label = form_param.get('others_label')
@@ -568,7 +567,6 @@ def get_response_template(request,
         }
     else:
         plan_type = request.session.get('plan_type')
-        print plan_type, '########'
         func_name = 'get_{}_plan'.format(benefit.lower())
         context = globals()[func_name](request, employers, num_companies, plan_type)
 
@@ -637,7 +635,10 @@ def print_plan_order(request, company_id):
                         attrs = [attrs[0]]
                 elif model == Medical:
                     benefit = 'MEDICALRX'
-                    
+
             plans.append([title, item.pk, benefit, attrs, plan_type])
 
-    return render(request, 'print/print_plan_order.html', { 'plans': plans })
+    return render(request, 'print/print_plan_order.html', { 
+        'plans': plans,
+        'company': Employer.objects.get(id=company_id).name
+    })

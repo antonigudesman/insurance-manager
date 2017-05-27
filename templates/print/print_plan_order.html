@@ -12,7 +12,7 @@
 {% block page_body %}
 
 <div class="container print-container">
-<h1 class="text-center c-lightgreen m-b-25 p-b-25">Plan Order</h1>
+<h1 class="text-center c-lightgreen m-b-25 p-b-25">Plan Order ( {{ company }} )</h1>
 <div class="row">
 	{% for plan in plans %}
 	<div class="col-md-offset-1 col-md-10">
@@ -20,7 +20,7 @@
         <div class="panel-heading" role="tab" style="border-bottom: 2px solid #eee;">
             <h4 class="panel-title">
                 <a class="collapsed pull-left" data-toggle="collapse" data-parent="#accordionGreen" href="#accordionGreen-{{ plan.1 }}" aria-expanded="false">
-					<span>{{ plan.2 }} ( {{ plan.0 }} )</span>
+					<span>{{ plan.2 }} ( {{ plan.0 }} {% if plan.4 %} - {{ plan.4 }} {% endif %} )</span>
                 </a>
 				<span class="pull-right">
 					<i class="zmdi zmdi-caret-down-circle zmdi-hc-lg" onclick="down(event, this);" st></i>
@@ -33,6 +33,7 @@
         <div id="accordionGreen-{{ plan.1 }}" class="collapse" role="tabpanel">
             <div class="panel-body">
 				{% for item in plan.3 %}
+					{% if item.class != 'service' or item.class == 'service' and plan.4 != 'HDHP' %}
 					<div class="col-md-12">
 						<select class="selectpicker {{ item.class }}">
 							{% for attr in item.attrs %}	
@@ -40,6 +41,7 @@
 							{% endfor %}
 						</select>
 					</div>
+					{% endif %}
 				{% endfor %}
             </div>
         </div>

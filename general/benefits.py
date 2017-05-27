@@ -191,7 +191,7 @@ def get_medical_properties(request, plan, plan_type, quintile_properties, quinti
         get_boolean_properties(instance, medical_attrs_boolean, context)
         get_boolean_properties_5_states(instance, medical_attrs_boolean_5_states, context)
         get_boolean_properties_5_states_coin(instance, medical_attrs_boolean_5_states, context)
-        print var_local, '@@@@@@@@@@@@'
+        
         get_quintile_properties_idx(var_local, instance, quintile_properties, quintile_properties_inv, context)
 
         # calculate employee costs
@@ -248,7 +248,7 @@ def get_attr_quintile(benefit, employers, num_companies, plan_type, attr, MODEL_
         instance = model.objects.get(id=plan)
         val = getattr(instance, attr)
         qscore = get_rank(quintile, getattr(instance, attr))
-        print qscore, inverse, '@@@@@@@@'
+        
         if qscore != '-':
             qscore = qscore if not inverse else 100 - qscore
 
@@ -517,7 +517,7 @@ def get_life_plan_(employers, num_companies, plan_type, quintile_properties, qui
 def get_life_properties(request, plan, plan_type, quintile_properties, quintile_properties_inv, services=[]):
     attrs = ['multiple_max', 'flat_amount', 'multiple', 'add_flat', 'add_multiple']
     context = get_init_properties(attrs, quintile_properties + quintile_properties_inv)
-
+    
     if plan:
         employers, num_companies = get_filtered_employers_session(request)
         medians, var_local, _ = get_life_plan_(employers, num_companies, plan_type, quintile_properties, quintile_properties_inv)
@@ -532,7 +532,7 @@ def get_life_properties(request, plan, plan_type, quintile_properties, quintile_
         if instance.type == 'Flat Amount':
             context['add_flat'] = 'Yes' if instance.add else 'No'
             attr = 'flat_amount'
-            idx = 1
+            idx = 0 # 1
         else:
             context['add_multiple'] = 'Yes' if instance.add else 'No'
             attr = 'multiple_max'
@@ -646,7 +646,6 @@ def get_ltd_plan_(employers, num_companies, plan_type, quintile_properties, quin
     idx = 0
     for attr in quintile_properties + quintile_properties_inv:
         var_local['quintile_'+str(idx)] = get_incremental_array(sub_qs['qs_'+attr], attr)
-        print var_local['quintile_'+str(idx)], '##############'
         idx += 1
 
     return medians, var_local, qs

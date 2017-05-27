@@ -281,6 +281,12 @@ update_content = function(benefit, plan_type) {
         obj.selectpicker('refresh');
     }
 
+    for (var i = 0; i < $('select.service').length; i++) {
+        var obj = $('select.service').eq(i);
+        obj.val(services_[i]);
+        obj.selectpicker('refresh');
+    }
+
     $('.page-loader').fadeOut();
 }
 

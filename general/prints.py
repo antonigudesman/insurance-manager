@@ -22,12 +22,18 @@ log = logging.getLogger(__name__)
 @login_required(login_url='/admin/login')
 def print_template(request):
     p_benefit = json.loads(request.GET.get('p_benefit'))
-    request.session['bnchmrk_benefit'] = p_benefit['benefit']
+    benefit = p_benefit['benefit']
+    request.session['bnchmrk_benefit'] = benefit
     request.session['plan'] = p_benefit['plan']
     request.session['plan_type'] = p_benefit['plan_type']
 
+    if 'quintile_properties' in p_benefit:
+        request.session[benefit+'_quintile_properties'] = p_benefit['quintile_properties']
+        request.session[benefit+'_quintile_properties_inv'] = p_benefit['quintile_properties_inv']
+        request.session[benefit+'_services'] = p_benefit['services']  
+
     return get_response_template(request, 
-                                 p_benefit['benefit'], 
+                                 benefit, 
                                  True)
 
 
@@ -50,11 +56,10 @@ def print_page(request):
         'benefit': request.session['bnchmrk_benefit'],
         'plan': request.session['plan'],
         'plan_type': request.session['plan_type'],
-        'quintile_properties_inv': [u'exam_copay', u't1_ee', u't1_gross']
     }])
 
 
-def get_pdf(request, print_benefits):
+def get_pdf(request, print_benefits, download=True):
     # store original benefit and plan for front end
     benefit_o = request.session.get('bnchmrk_benefit')
     plan_o = request.session.get('plan')
@@ -109,9 +114,9 @@ def get_pdf(request, print_benefits):
             # for header
             url = 'http://{}/25Wfr7r2-3h4X25t?p_benefit={}'.format(request.META.get('HTTP_HOST'), 
                 json.dumps(p_benefit))
-
+            print url, '######################3'
             driver.get(url)
-            time.sleep(0.4)
+            time.sleep(0.8)
             driver.save_screenshot(vars_d['img_path_header_{}'.format(uidx)])
             
             # build a pdf with images using fpdf
@@ -157,7 +162,9 @@ def get_pdf(request, print_benefits):
     request.session['bnchmrk_benefit'] = benefit_o
     request.session['plan'] = plan_o                 
 
-    return get_download_response(pdf_path)    
+    if download:
+        return get_download_response(pdf_path)    
+    return pdf_path[5:]
 
 
 @login_required(login_url='/admin/login')
@@ -197,11 +204,11 @@ def print_report_pdf(request, company_id):
 def print_report_in_order(request):
     print_order = json.loads(request.POST['print_order'])
     print print_order, '#########'
-    return HttpResponse('google.pdf')
-
+    file_path = get_pdf(request, print_order, False)
+    return HttpResponse(file_path)
 
 def download_report(request, report_name):
-    base_path = '/root/tmp/'
+    base_path = '/tmp/'
     return get_download_response(base_path+report_name)    
 
 def get_download_response(path):
