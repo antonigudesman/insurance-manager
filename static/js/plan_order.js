@@ -17,6 +17,7 @@ function get_order() {
 
 		model.benefit = $(this).data('benefit');
 		model.plan = $(this).data('plan');
+		model.title = $(this).data('title');
 		model.plan_type = $(this).data('plan_type');
 
 		$(this).find('select.property_inv').each(function(){

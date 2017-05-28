@@ -95,9 +95,23 @@ def get_pdf(request, print_benefits, download=True):
     try:
         vars_d = {}
         uidx = 0
+
+        # for header
+        url = 'http://{}/25Wfr7r2-3h4X25t?p_benefit={}'.format(request.META.get('HTTP_HOST'), 
+            json.dumps(print_benefits[0]))
+        print url, '######################3'
+        driver.get(url)
+        time.sleep(0.8)
+        vars_d['img_path_header_{}'.format(uidx)] = '{}_{}_header.png'.format(base_path, uidx)
+        driver.save_screenshot(vars_d['img_path_header_{}'.format(uidx)])
+        
+        # build a pdf with images using fpdf
+        pdf.add_page()
+        pdf.image(vars_d['img_path_header_{}'.format(uidx)], margin_h, margin_v)
+        os.remove(vars_d['img_path_header_{}'.format(uidx)])
+
         for p_benefit in print_benefits:
             vars_d['img_path_{}'.format(uidx)] = '{}_{}.png'.format(base_path, uidx)
-            vars_d['img_path_header_{}'.format(uidx)] = '{}_{}_header.png'.format(base_path, uidx)
 
             # for body
             url = 'http://{}/98Wf37r2-3h4X2_jh9?p_benefit={}'.format(request.META.get('HTTP_HOST'), 
@@ -110,18 +124,6 @@ def get_pdf(request, print_benefits, download=True):
             #     time.sleep(1) #1.2
 
             driver.save_screenshot(vars_d['img_path_{}'.format(uidx)])
-
-            # for header
-            url = 'http://{}/25Wfr7r2-3h4X25t?p_benefit={}'.format(request.META.get('HTTP_HOST'), 
-                json.dumps(p_benefit))
-            print url, '######################3'
-            driver.get(url)
-            time.sleep(0.8)
-            driver.save_screenshot(vars_d['img_path_header_{}'.format(uidx)])
-            
-            # build a pdf with images using fpdf
-            pdf.add_page()
-            pdf.image(vars_d['img_path_header_{}'.format(uidx)], margin_h, margin_v)
 
             # split the image in proper size
             origin = Image.open(vars_d['img_path_{}'.format(uidx)])
@@ -144,9 +146,9 @@ def get_pdf(request, print_benefits, download=True):
                 os.remove(vars_d['img_path_s_{}_{}'.format(uidx, idx)])
             # remove image files
             # os.remove(vars_d['img_path_{}'.format(uidx)])
-            os.remove(vars_d['img_path_header_{}'.format(uidx)])
             uidx += 1
     except Exception, e:
+        # raise e
         log.debug(str(e))
         log.debug('###########32')
 

@@ -1,4 +1,5 @@
 {% extends 'print/print_base.html' %}
+{% load humanize %}
 {% load pages_tags mezzanine_tags i18n staticfiles %}
 
 {% block extra_css %}
@@ -16,6 +17,29 @@
 {% block page_body %}
 <div class="container print-container">
     <div class="bnchmrk_table">
+        <div class="card section">
+            <div class="row">
+            <div class="col-md-12 m-t-25"><div class="col-md-12 m-t-25"><div class="col-md-12">
+                <h4>{{ request.session.bnchmrk_benefit }} Benchmarking Analysis</h4>
+                <h4><span id='prop_client_name'></span></h4>
+                <h4><span id='prop_print_plan_name'></span></h4>
+                <h6>Comparison Set Includes: {{ num_employers|intcomma }} Employers</h6>
+                <p>
+                    <b>Industries:</b> <span id='lbl_ft_industries'>{{ ft_industries_label }}</span>, &nbsp;&nbsp;&nbsp;&nbsp;
+                    <b>Regions:</b> <span id='lbl_ft_regions'>{{ ft_regions_label }}</span>, &nbsp;&nbsp;&nbsp;&nbsp;
+                    <b>Headcounts:</b> <span id='lbl_ft_headcounts'>{{ ft_head_counts_label }}</span>
+                </p>
+                <p>
+                    <b>Other Filters:</b> <span id='lbl_ft_other'>{{ ft_other_label }}</span>,&nbsp;&nbsp;&nbsp;&nbsp;
+                    <b>States Filters:</b> <span id='lbl_ft_state'>{{ ft_states_label }}</span>,&nbsp;&nbsp;&nbsp;&nbsp;
+                    {% if plan_type and plan_type != 'None' %}
+                    <b>Plan Type:</b> <span id='lbl_plan_type'>{{ plan_type }}</span>
+                    {% endif %}
+                </p>
+            </div></div></div>
+            </div>
+        </div>
+
         <div class="card1" id="bnchmrk_card">
         {% block page_content %}
         {% endblock %}

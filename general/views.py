@@ -572,9 +572,12 @@ def get_response_template(request,
 
     context['base_template'] = 'print/print_body.html' if is_print else 'empty.html'
     context['today'] = today
-    template = 'benchmarking/{}.html'.format(benefit.lower())
 
+    template = 'benchmarking/{}.html'.format(benefit.lower())
     if is_print_header:
+        template = 'print/print_header.html'
+
+    if is_print:
         # unescape html characters
         h = HTMLParser.HTMLParser()
         context['ft_industries_label'] = h.unescape(', '.join(request.session.get('ft_industries_label', ['All'])))
@@ -586,7 +589,6 @@ def get_response_template(request,
 
         group = request.user.groups.first().name
         context['group'] = group.lower()
-        template = 'print/print_header.html'
     return render(request, template, context)
 
 
