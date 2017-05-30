@@ -4,6 +4,7 @@ from django.shortcuts import render
 
 from .models import *
 import pdb
+import json
 
 def get_filtered_employers(ft_industries, 
                            ft_head_counts, 
@@ -456,3 +457,11 @@ def get_median_list(llist):
     idx = int(len(s_llist) * 1.0 / 2 - 0.5)
     val = s_llist[idx]
     return val, get_index(llist, val)
+
+
+def encode_url(obj):
+    return json.dumps(obj).replace('&', '$$$')
+
+
+def decode_url(obj_str):
+    return json.loads(obj_str.replace('$$$', '&'))

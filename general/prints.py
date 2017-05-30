@@ -21,7 +21,7 @@ log = logging.getLogger(__name__)
 
 @login_required(login_url='/admin/login')
 def print_template(request):
-    p_benefit = json.loads(request.GET.get('p_benefit'))
+    p_benefit = decode_url(request.GET.get('p_benefit'))
     benefit = p_benefit['benefit']
     request.session['bnchmrk_benefit'] = benefit
     request.session['plan'] = p_benefit['plan']
@@ -39,7 +39,7 @@ def print_template(request):
 
 @login_required(login_url='/admin/login')
 def print_template_header(request):
-    p_benefit = json.loads(request.GET.get('p_benefit'))
+    p_benefit = decode_url(request.GET.get('p_benefit'))
     request.session['bnchmrk_benefit'] = p_benefit['benefit']
     request.session['plan'] = p_benefit['plan']
     request.session['plan_type'] = p_benefit['plan_type']
@@ -52,7 +52,8 @@ def print_template_header(request):
 
 @login_required(login_url='/admin/login')
 def print_contents(request):
-    contents = json.loads(request.GET.get('contents'))
+    print request.GET.get('contents'), '@@@@@@@@@@@@@'
+    contents = decode_url(request.GET.get('contents'))
     print contents, '############'
     return render(request, 'print/contents.html', { 
         'contents': contents,
@@ -123,7 +124,7 @@ def get_pdf(request, print_benefits, download=True):
 
         # for header
         url = 'http://{}/25Wfr7r2-3h4X25t?p_benefit={}'.format(request.META.get('HTTP_HOST'), 
-            json.dumps(print_benefits[0]))
+            encode_url(print_benefits[0]))
         print url, '######################3'
         driver.get(url)
         time.sleep(0.8)
@@ -149,7 +150,7 @@ def get_pdf(request, print_benefits, download=True):
             _page += pages[key]
 
         url = 'http://{}/print_contents?contents={}'.format(request.META.get('HTTP_HOST'), 
-            json.dumps(contents))
+            encode_url(contents))
         
         driver.get(url)
         time.sleep(0.4)
@@ -164,7 +165,7 @@ def get_pdf(request, print_benefits, download=True):
 
             # for body
             url = 'http://{}/98Wf37r2-3h4X2_jh9?p_benefit={}'.format(request.META.get('HTTP_HOST'), 
-                json.dumps(p_benefit))
+                encode_url(p_benefit))
 
             print url, '#############3'
             driver.get(url)        
