@@ -51,6 +51,15 @@ def print_template_header(request):
 
 
 @login_required(login_url='/admin/login')
+def print_contents(request):
+    contents = json.loads(request.GET.get('contents'))
+    print contents, '############'
+    return render(request, 'print/contents.html', { 
+        'contents': contents,
+    })
+
+
+@login_required(login_url='/admin/login')
 def print_page(request):
     return get_pdf(request, [{
         'benefit': request.session['bnchmrk_benefit'],
@@ -58,6 +67,20 @@ def print_page(request):
         'plan_type': request.session['plan_type'],
     }])
 
+
+pages = {
+    'PPO': 3,
+    'HDHP': 2,
+    'HMO': 3,
+    'DPPO': 2,
+    'DMO': 2,
+    'VISION': 2,
+    'LTD': 1,
+    'STD': 1,
+    'Flat Amount': 1,
+    'Multiple of Salary': 1,
+    'STRATEGY': 1,
+}
 
 def get_pdf(request, print_benefits, download=True):
     # store original benefit and plan for front end
@@ -88,9 +111,11 @@ def get_pdf(request, print_benefits, download=True):
 
     pdf = FPDF(orientation='L', format=(page_height_on_image+2*margin_v, page_width_on_image+2*margin_h), unit='pt')
     pdf.set_auto_page_break(False)
+    pdf.set_font('Arial', 'B', 16)
 
     base_path = '/tmp/page{}'.format(random.randint(-100000000, 100000000))
     pdf_path = base_path + '.pdf'
+    page = 1
 
     try:
         vars_d = {}
@@ -110,6 +135,30 @@ def get_pdf(request, print_benefits, download=True):
         pdf.image(vars_d['img_path_header_{}'.format(uidx)], margin_h, margin_v)
         os.remove(vars_d['img_path_header_{}'.format(uidx)])
 
+        # print contents
+        _page = 1
+        contents = []
+        for item in print_benefits:
+            if item['plan_type'] != 'None':
+                entry = '{} ( {} - {} )'.format(item['benefit'], item['title'], item['plan_type'])
+                key = item['plan_type']
+            else:
+                entry = '{} ( {} )'.format(item['benefit'], item['title'])
+                key = item['benefit']
+            contents.append([entry, _page])
+            _page += pages[key]
+
+        url = 'http://{}/print_contents?contents={}'.format(request.META.get('HTTP_HOST'), 
+            json.dumps(contents))
+        
+        driver.get(url)
+        time.sleep(0.4)
+        driver.save_screenshot(base_path+'_contents.png')
+        
+        # build a pdf with images using fpdf
+        pdf.add_page()
+        pdf.image(base_path+'_contents.png', -margin_h, margin_v)
+
         for p_benefit in print_benefits:
             vars_d['img_path_{}'.format(uidx)] = '{}_{}.png'.format(base_path, uidx)
 
@@ -120,8 +169,6 @@ def get_pdf(request, print_benefits, download=True):
             print url, '#############3'
             driver.get(url)        
             time.sleep(1.6) #0.6
-            # if benefits[uidx] in ['MEDICALRX']:
-            #     time.sleep(1) #1.2
 
             driver.save_screenshot(vars_d['img_path_{}'.format(uidx)])
 
@@ -143,9 +190,13 @@ def get_pdf(request, print_benefits, download=True):
 
                 pdf.add_page()
                 pdf.image(vars_d['img_path_s_{}_{}'.format(uidx, idx)], margin_h, margin_v)
+
+                pdf.text(1610, 1265, 'Page {}'.format(page))
+                page += 1
+
                 os.remove(vars_d['img_path_s_{}_{}'.format(uidx, idx)])
             # remove image files
-            # os.remove(vars_d['img_path_{}'.format(uidx)])
+            os.remove(vars_d['img_path_{}'.format(uidx)])
             uidx += 1
     except Exception, e:
         # raise e
@@ -168,43 +219,10 @@ def get_pdf(request, print_benefits, download=True):
         return get_download_response(pdf_path)    
     return pdf_path[5:]
 
-
-@login_required(login_url='/admin/login')
-def print_report_pdf(request, company_id):
-    # company_id = request.GET.get('company_id')
-    models = [Medical, Dental, Vision, Life, STD, LTD, Strategy]
-    benefits = []
-    plans = []
-    plan_types = []
-
-    for model in models:
-        benefit = model.__name__.upper()
-        instance = model.objects.filter(employer=company_id)
-        for instance_ in instance:
-            plan = instance_.id
-            try:
-                plan_type = getattr(instance_, 'type')
-                if plan_type in ['PPO', 'POS']:
-                    plan_type = 'PPO'
-                elif plan_type in ['HMO', 'EPO']:
-                    plan_type = 'HMO'
-            except Exception as e:
-                plan_type = None
-
-            if benefit == 'MEDICAL':
-                benefit = 'MEDICALRX'
-
-            benefits.append(benefit)
-            plans.append(plan)
-            plan_types.append(plan_type)
-    log.debug(benefits)
-    # log.debug(plans)
-    # log.debug('@@@@@@@@@@@2')
-    return get_pdf(request, benefits, plans, plan_types)
-
 @csrf_exempt
 def print_report_in_order(request):
     print_order = json.loads(request.POST['print_order'])
+
     print print_order, '#########'
     file_path = get_pdf(request, print_order, False)
     return HttpResponse(file_path)

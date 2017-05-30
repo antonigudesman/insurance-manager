@@ -1,0 +1,31 @@
+{% extends 'print/print_base.html' %}
+{% load pages_tags humanize i18n staticfiles %}
+
+{% block extra_css %}
+	<link href="{% static 'vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css' %}" rel="stylesheet">
+{% endblock %}
+
+
+{% block page_body %}
+
+<div class="container print-container">
+<h1 class="text-center c-lightgreen m-b-25 p-b-25">Contents</h1>
+<div class="row">
+	{% for plan in contents %}
+	<div class="col-md-offset-1 col-md-10">
+    <div class="panel panel-collapse" >
+        <div class="panel-heading" role="tab" style="border-bottom: 2px solid #eee;">
+            <h4 class="panel-title">
+                <a class="collapsed pull-left" data-toggle="collapse" data-parent="#accordionGreen" href="#accordionGreen-{{ plan.1 }}" aria-expanded="false">
+					<span>{{ plan.0 }} </span>
+                </a>
+				<span class="pull-right"> {{ plan.1 }} </span>
+				<div class="clearfix"></div>
+            </h4>
+        </div>
+    </div>
+    </div>
+	{% endfor %}
+</div>
+</div>
+{% endblock %}
