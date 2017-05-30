@@ -51,12 +51,9 @@ def print_template_header(request):
 
 
 @login_required(login_url='/admin/login')
-def print_contents(request):
-    print request.GET.get('contents'), '@@@@@@@@@@@@@'
-    contents = decode_url(request.GET.get('contents'))
-    print contents, '############'
+def print_contents(request):    
     return render(request, 'print/contents.html', { 
-        'contents': contents,
+        'contents': decode_url(request.GET.get('contents'))
     })
 
 
@@ -224,7 +221,6 @@ def get_pdf(request, print_benefits, download=True):
 def print_report_in_order(request):
     print_order = json.loads(request.POST['print_order'])
 
-    print print_order, '#########'
     file_path = get_pdf(request, print_order, False)
     return HttpResponse(file_path)
 

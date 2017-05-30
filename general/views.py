@@ -10,7 +10,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.forms.models import model_to_dict
 from django.conf import settings
 
-
 from .models import *
 from .benefits import *
 from .forms import *
@@ -35,8 +34,6 @@ MODEL_MAP = {
 }
 
 get_class = lambda x: globals()[x]
-
-PLAN_ALLOWED_BENEFITS = ['LIFE', 'STD', 'LTD', 'STRATEGY', 'VISION', 'DENTAL', 'MEDICAL']
 
 
 @csrf_exempt
@@ -217,7 +214,6 @@ def update_properties(request):
     services = form_param.getlist('services[]')
     print_template = form_param.get('print_template')
 
-
     plan_type = request.session.get('plan_type')
     # save for print
     if plan != -1:
@@ -225,13 +221,11 @@ def update_properties(request):
         request.session[benefit+'_quintile_properties'] = quintile_properties  
         request.session[benefit+'_quintile_properties_inv'] = quintile_properties_inv  
         request.session[benefit+'_services'] = services  
-        # print locals(), '###############333'
     else:
         plan = request.session['plan']
         quintile_properties = request.session.get(benefit+'_quintile_properties')
         quintile_properties_inv = request.session.get(benefit+'_quintile_properties_inv')
         services = request.session.get(benefit+'_services')
-        # print locals(), '@@@@@@@@@@@@'
 
     if benefit == 'MEDICALRX':
         benefit = 'MEDICAL'
@@ -369,13 +363,6 @@ def get_plans_(benefit, group, plan_type):
                    for item in objects.order_by('name')
                ]
 
-def contact_us(request):
-    return render(request, 'contact_us.html')
-
-
-def company(request):
-    return render(request, 'company.html')    
-
 
 def support(request):
     categories = FAQCategory.objects.all()
@@ -471,6 +458,7 @@ def account_detail_benefit(request):
     template = 'account_detail/benefit.html'
     return render(request, template, locals())
 
+
 @csrf_exempt
 def update_benefit(request, instance_id):
     employer_id = request.POST['employer']
@@ -500,10 +488,8 @@ def update_benefit(request, instance_id):
                                     })    
 
 
-
 @login_required(login_url='/login')
 def benchmarking(request, benefit):
-    # request.session['bnchmrk_benefit'] = request.session.get('bnchmrk_benefit', 'MEDICALRX')
     request.session['bnchmrk_benefit'] = benefit.upper()
 
     return render(request, 'benchmarking/benefit.html', {

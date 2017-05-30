@@ -345,9 +345,10 @@ function update_properties() {
     // get current quintile properties
 
     if (!print_template) {
-        plan = 0;        
         if (plan != -2) // not changed benefit
             plan = $('#plans').val();
+        else 
+            plan = 0;        
     } else {
         plan = -1;
     }
