@@ -108,7 +108,16 @@
     <script type="text/javascript">
         var bnchmrk_benefit = '{{ request.session.bnchmrk_benefit }}';
         var print_template = false;        
-    </script>
+        $('#industries').selectpicker();
+        $('#industries').selectpicker('val', {{ request.session.ft_industries|json_dump|safe }});
+        $('#regions').selectpicker();
+        $('#regions').selectpicker('val', {{ request.session.ft_regions|json_dump|safe }});
+        $('#states').selectpicker();
+        $('#states').selectpicker('val', {{ request.session.ft_states|json_dump|safe }});
+        $('#head-counts').selectpicker();
+        $('#head-counts').selectpicker('val', {{ request.session.ft_head_counts|json_dump|safe }});
+        $('#other_filter').selectpicker();
+        $('#other_filter').selectpicker('val', {{ request.session.ft_other|json_dump|safe }});
     </script>
 
     <script src="{% static 'js/benefit.js' %}"></script>

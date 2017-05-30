@@ -53,3 +53,8 @@ def get_percent(dn, db): # Only one argument.
 def has_group(user, group_name):
     group =  Group.objects.get(name=group_name) 
     return group in user.groups.all() 
+
+
+@register.filter
+def json_dump(llist): # Only one argument.
+    return json.dumps(llist)

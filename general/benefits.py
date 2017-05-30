@@ -110,7 +110,6 @@ def get_medicalrx_plan(request, employers, num_companies, plan_type=None):
     medians, var_local, qs = get_medical_plan_(employers, num_companies, plan_type, quintile_properties, quintile_properties_inv)
     prcnt_plan_count = get_plan_percentages(employers, num_companies, 'med')
 
-    h = HTMLParser.HTMLParser()
     var_local['quintile_properties'] = json.dumps(quintile_properties)
     var_local['quintile_properties_inv'] = json.dumps(quintile_properties_inv)
     var_local['services'] = json.dumps(services)
@@ -315,7 +314,6 @@ def get_dental_plan(request, employers, num_companies, plan_type=None):
     medians, var_local, qs = get_dental_plan_(employers, num_companies, plan_type, quintile_properties, quintile_properties_inv)
     prcnt_plan_count = get_plan_percentages(employers, num_companies, 'den')
 
-    h = HTMLParser.HTMLParser()
     var_local['quintile_properties'] = json.dumps(quintile_properties)
     var_local['quintile_properties_inv'] = json.dumps(quintile_properties_inv)
     # var_local['services'] = json.dumps(services)
@@ -427,7 +425,6 @@ def get_vision_plan(request, employers, num_companies, plan_type=None):
     medians, var_local = get_vision_plan_(employers, num_companies, plan_type, quintile_properties, quintile_properties_inv)
     prcnt_plan_count = get_plan_percentages(employers, num_companies, 'vis')
 
-    h = HTMLParser.HTMLParser()
     var_local['quintile_properties'] = json.dumps(quintile_properties)
     var_local['quintile_properties_inv'] = json.dumps(quintile_properties_inv)
 
@@ -483,7 +480,6 @@ def get_life_plan(request, employers, num_companies, plan_type=None):
     
     medians, var_local, qs = get_life_plan_(employers, num_companies, plan_type, quintile_properties, quintile_properties_inv)
 
-    h = HTMLParser.HTMLParser()
     var_local['quintile_properties'] = json.dumps(quintile_properties)
     var_local['quintile_properties_inv'] = json.dumps(quintile_properties_inv)
     
@@ -560,7 +556,6 @@ def get_std_plan(request, employers, num_companies, plan_type=None):
     
     medians, var_local, qs = get_std_plan_(employers, num_companies, plan_type, quintile_properties, quintile_properties_inv)
 
-    h = HTMLParser.HTMLParser()
     var_local['quintile_properties'] = json.dumps(quintile_properties)
     var_local['quintile_properties_inv'] = json.dumps(quintile_properties_inv)
 
@@ -625,7 +620,6 @@ def get_ltd_plan(request, employers, num_companies, plan_type=None):
     
     medians, var_local, qs = get_ltd_plan_(employers, num_companies, plan_type, quintile_properties, quintile_properties_inv)
 
-    h = HTMLParser.HTMLParser()
     var_local['quintile_properties'] = json.dumps(quintile_properties)
     var_local['quintile_properties_inv'] = json.dumps(quintile_properties_inv)
 
