@@ -651,10 +651,10 @@ def reset_password(request):
     # path = 'signup.html'
     # temp = codecs.open(path, encoding='utf-8')
     # content = temp.read().replace('[USERNAME]', 'Jason')
-    passwd = base64.b64encode(hashlib.new('md5').digest())[:15]
+    passwd = User.objects.make_random_password()
     user.set_password(passwd)
     user.save()
-    
+
     content = 'This is the new password: <b>{}</b><br><br>You can login the system with it and change the password again.'.format(passwd)
     content = Content("text/html", content)
     mail = Mail(from_email, subject, to_email, content)
