@@ -1,4 +1,7 @@
 import json
+import base64
+import hashlib
+import sendgrid
 import HTMLParser
 from datetime import datetime
 
@@ -9,6 +12,8 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.forms.models import model_to_dict
 from django.conf import settings
+from django.contrib.auth.models import User 
+from sendgrid.helpers.mail import *
 
 from .models import *
 from .benefits import *
@@ -630,3 +635,28 @@ def print_plan_order(request, company_id):
         'plans': plans,
         'company': Employer.objects.get(id=company_id).name
     })
+
+
+@csrf_exempt
+def reset_password(request):
+    to_email = request.POST['email']
+    user = User.objects.filter(email=to_email).first()
+    if not user:
+        return HttpResponse('There is no such user!<br>Please check your email again.')
+    sg = sendgrid.SendGridAPIClient(apikey='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')
+
+    from_email = Email("info@bnchmrk.com", "Benchmark")
+    subject = "Reset Password"
+    to_email = Email(to_email)
+    # path = 'signup.html'
+    # temp = codecs.open(path, encoding='utf-8')
+    # content = temp.read().replace('[USERNAME]', 'Jason')
+    passwd = base64.b64encode(hashlib.new('md5').digest())[:15]
+    user.set_password(passwd)
+    user.save()
+    
+    content = 'This is the new password: <b>{}</b><br><br>You can login the system with it and change the password again.'.format(passwd)
+    content = Content("text/html", content)
+    mail = Mail(from_email, subject, to_email, content)
+    response = sg.client.mail.send.post(request_body=mail.get())
+    return HttpResponse(str(response.status_code))

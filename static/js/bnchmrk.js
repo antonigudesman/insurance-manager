@@ -36,8 +36,7 @@ function load_employers() {
             },
             "commands": function(column, row) {
                 return "<button type=\"button\" class=\"btn btn-icon command-eye waves-effect waves-circle\" data-row-id=\"" + row.id + "\"><span class=\"zmdi zmdi-eye\"></span></button> " + 
-                    "<button type=\"button\" class=\"btn btn-icon command-edit waves-effect waves-circle\" data-row-id=\"" + row.id + "\"><span class=\"zmdi zmdi-edit\"></span></button>" + 
-                    "<button type=\"button\" class=\"btn btn-icon command-print waves-effect waves-circle\" data-row-id=\"" + row.id + "\"><span class=\"zmdi zmdi-print\"></span></button>";
+                    "<button type=\"button\" class=\"btn btn-icon command-edit waves-effect waves-circle\" data-row-id=\"" + row.id + "\"><span class=\"zmdi zmdi-edit\"></span></button>";
             }
 
         },
