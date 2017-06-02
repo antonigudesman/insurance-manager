@@ -133,29 +133,30 @@ def get_pdf(request, print_benefits, download=True):
         pdf.image(vars_d['img_path_header_{}'.format(uidx)], margin_h, margin_v)
         os.remove(vars_d['img_path_header_{}'.format(uidx)])
 
-        # print contents
-        _page = 1
-        contents = []
-        for item in print_benefits:
-            if item['plan_type'] != 'None':
-                entry = '{} ( {} - {} )'.format(item['benefit'], item['title'], item['plan_type'])
-                key = item['plan_type']
-            else:
-                entry = '{} ( {} )'.format(item['benefit'], item['title'])
-                key = item['benefit']
-            contents.append([entry, _page])
-            _page += pages[key]
+        if not download:
+            # print contents
+            _page = 1
+            contents = []
+            for item in print_benefits:
+                if item['plan_type'] != 'None':
+                    entry = '{} ( {} - {} )'.format(item['benefit'], item['title'], item['plan_type'])
+                    key = item['plan_type']
+                else:
+                    entry = '{} ( {} )'.format(item['benefit'], item['title'])
+                    key = item['benefit']
+                contents.append([entry, _page])
+                _page += pages[key]
 
-        url = 'http://{}/print_contents?contents={}'.format(request.META.get('HTTP_HOST'), 
-            encode_url(contents))
-        
-        driver.get(url)
-        time.sleep(0.4)
-        driver.save_screenshot(base_path+'_contents.png')
-        
-        # build a pdf with images using fpdf
-        pdf.add_page()
-        pdf.image(base_path+'_contents.png', -margin_h, margin_v)
+            url = 'http://{}/print_contents?contents={}'.format(request.META.get('HTTP_HOST'), 
+                encode_url(contents))
+            
+            driver.get(url)
+            time.sleep(0.4)
+            driver.save_screenshot(base_path+'_contents.png')
+            
+            # build a pdf with images using fpdf
+            pdf.add_page()
+            pdf.image(base_path+'_contents.png', -margin_h, margin_v)
 
         for p_benefit in print_benefits:
             vars_d['img_path_{}'.format(uidx)] = '{}_{}.png'.format(base_path, uidx)
