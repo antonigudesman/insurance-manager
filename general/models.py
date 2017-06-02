@@ -533,3 +533,23 @@ class FAQCategory(models.Model):
     class Meta:
         verbose_name = 'FAQ Category'
         verbose_name_plural = 'FAQ Categories'
+
+class PrintHistory(models.Model):
+    user = models.ForeignKey(User, blank=True, null=True)
+    benefit = models.CharField(max_length=50)
+    plan = models.IntegerField(blank=True, null=True)
+    plan_type = models.CharField(max_length=50, blank=True, null=True)
+    ft_industries = models.TextField(blank=True, null=True)
+    ft_head_counts = models.TextField(blank=True, null=True)
+    ft_regions = models.TextField(blank=True, null=True)
+    ft_states = models.TextField(blank=True, null=True)
+    ft_other = models.TextField(blank=True, null=True)
+    properties = models.TextField(blank=True, null=True)
+    properties_inv = models.TextField(blank=True, null=True)
+    services = models.TextField(blank=True, null=True)
+    print_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Print History'
+        verbose_name_plural = 'Print Histories'
+            

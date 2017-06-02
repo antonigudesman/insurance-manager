@@ -71,8 +71,11 @@ urlpatterns += [
     # print page
     url(r"^98Wf37r2-3h4X2_jh9$", print_template, name="print_template"),
     url(r"^25Wfr7r2-3h4X25t$", print_template_header, name="print_template_header"),
-    url(r"^print_page", print_page, name="print_page"),
+    url(r"^print_page$", print_page, name="print_page"),
     url(r"^print_report$", print_report, name="print_report"),
+    url(r"^print_history$", print_history, name="print_history"),
+    url(r"^print_page_preview$", print_page_preview, name="print_page_preview"),
+    url(r"^print_history/(?P<id>\d+)$", edit_print_history, name="edit_print_history"),
     url(r"^print_plan_order/(?P<company_id>.*)$", print_plan_order, name="print_plan_order"),
     url(r"^print_report_in_order$", print_report_in_order, name="print_report_in_order"),
     url(r"^print_contents$", print_contents, name="print_contents"),

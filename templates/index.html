@@ -12,43 +12,24 @@
         </ol>
         <div class="card">
             <div class="card-header">
-                <h2>Sales Statistics <small>Vestibulum purus quam scelerisque, mollis nonummy metus</small></h2>
-                
-                <ul class="actions">
-                    <li>
-                        <a href="">
-                            <i class="zmdi zmdi-refresh-alt"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <i class="zmdi zmdi-download"></i>
-                        </a>
-                    </li>
-                    <li class="dropdown">
-                        <a href="" data-toggle="dropdown">
-                            <i class="zmdi zmdi-more-vert"></i>
-                        </a>
-                        
-                        <ul class="dropdown-menu dropdown-menu-right">
-                            <li>
-                                <a href="">Change Date Range</a>
-                            </li>
-                            <li>
-                                <a href="">Change Graph Type</a>
-                            </li>
-                            <li>
-                                <a href="">Other Settings</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+                <h2>Print History <small>Vestibulum purus quam scelerisque, mollis nonummy metus</small></h2>
             </div>
             
-            <div class="card-body">
-                <div class="chart-edge">
-                    <div id="curved-line-chart" class="flot-chart "></div>
-                </div>
+            <div class="card-body card-padding">
+                <div class="table-responsive">
+                    <table id="data-table-print-history" class="table table-striped" data-ajax="true" data-url="/print_history">
+                        <thead>
+                            <tr>
+                                <th data-column-id="benefit">Benefit</th>
+                                <th data-column-id="benefit">Benefit</th>
+                                <th data-column-id="plan_name">Plan Name</th>
+                                <th data-column-id="plan_type">Plan Type</th>
+                                <th data-column-id="print_date">Print Date</th>
+                                <th data-column-id="action" data-formatter="commands" data-sortable="false">Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>            
             </div>
         </div>
         
@@ -105,7 +86,7 @@
                     <table id="data-table-employer" class="table table-striped" data-ajax="true" data-url="/enterprise">
                         <thead>
                             <tr>
-                                <th data-column-id="name">Name</th>
+                                <th data-column-id="id" data-visible="false">ID</th>
                                 <th data-column-id="industry" data-formatter="newline">Industry</th>
                                 <th data-column-id="size">Headcount</th>
                                 <th data-column-id="region" data-formatter="newline">Region</th>

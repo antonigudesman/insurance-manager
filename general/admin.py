@@ -551,6 +551,11 @@ class FAQCategoryAdmin(admin.ModelAdmin):
     search_fields = ('title',)
 
 
+class PrintHistoryAdmin(admin.ModelAdmin):
+    list_display = ['user', 'benefit', 'plan_type', 'print_date']
+    search_fields = ('plan_type',)
+
+
 admin.site.register(Employer, EmployerAdmin)
 admin.site.register(Life, LifeAdmin)
 admin.site.register(STD, STDAdmin)
@@ -561,3 +566,5 @@ admin.site.register(Dental, DentalAdmin)
 admin.site.register(Medical, MedicalAdmin)
 admin.site.register(FAQ, FAQAdmin)
 admin.site.register(FAQCategory, FAQCategoryAdmin)
+admin.site.register(PrintHistory, PrintHistoryAdmin)
+

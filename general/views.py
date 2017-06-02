@@ -5,7 +5,7 @@ import sendgrid
 import HTMLParser
 from datetime import datetime
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
@@ -39,6 +39,60 @@ MODEL_MAP = {
 }
 
 get_class = lambda x: globals()[x]
+
+
+@csrf_exempt
+def print_history(request):
+    form_param = json.loads(request.body or "{}")
+    limit = int(form_param.get('rowCount'))
+    page = int(form_param.get('current'))
+    qs_ph = PrintHistory.objects.filter(user=request.user)
+    total = qs_ph.count()
+    ph_list = []
+
+    for ph in qs_ph:
+        benefit = ph.benefit if ph.benefit != 'MEDICALRX' else 'MEDICAL'
+        model = MODEL_MAP[benefit]
+        plan_name = ''
+        if ph.plan:
+            if benefit != 'STRATEGY':
+                plan_name = model.objects.get(id=ph.plan).title
+            else:
+                plan_name = model.objects.get(id=ph.plan).employer.name
+
+        plan_type = ph.plan_type if ph.plan_type != 'None' else ''
+        ph_ = {
+            'id': ph.id,
+            'benefit': ph.benefit,
+            'plan_name': plan_name,
+            'plan_type': plan_type,
+            'print_date': ph.print_date.strftime('%Y-%m-%d %H:%M:%S')
+        }
+        ph_list.append(ph_)
+
+    return JsonResponse({
+        "current": page,
+        "rowCount": limit,
+        "rows": ph_list,
+        "total": total
+        }, safe=False)
+
+
+@login_required(login_url='/login')
+def edit_print_history(request, id):
+    ph = PrintHistory.objects.get(id=id)
+    request.session['bnchmrk_benefit'] = ph.benefit
+    request.session['plan'] = ph.plan
+    request.session['plan_type'] = ph.plan_type
+    request.session['ft_industries'] = json.loads(ph.ft_industries)
+    request.session['ft_head_counts'] = json.loads(ph.ft_head_counts)
+    request.session['ft_regions'] = json.loads(ph.ft_regions)
+    request.session['ft_states'] = json.loads(ph.ft_states)
+    request.session['ft_other'] = json.loads(ph.ft_other)
+    request.session[ph.benefit+'_quintile_properties'] = json.loads(ph.properties)
+    request.session[ph.benefit+'_quintile_properties_inv'] = json.loads(ph.properties_inv)
+    request.session[ph.benefit+'_services'] = json.loads(ph.services)
+    return HttpResponseRedirect('/benchmarking/'+ph.benefit.lower())
 
 
 @csrf_exempt
