@@ -40,6 +40,23 @@ def print_template(request):
 
 
 def print_page_preview(request):
+    benefit = request.session['bnchmrk_benefit']
+    plan = request.session['plan']
+    plan_type = request.session['plan_type']
+
+    PrintHistory.objects.create(user=request.user,
+                                benefit=benefit,
+                                plan=plan,
+                                plan_type=plan_type,
+                                ft_industries=json.dumps(request.session['ft_industries']),
+                                ft_head_counts=json.dumps(request.session['ft_head_counts']),
+                                ft_regions=json.dumps(request.session['ft_regions']),
+                                ft_states=json.dumps(request.session['ft_states']),
+                                ft_other=json.dumps(request.session['ft_other']),
+                                properties=json.dumps(request.session[benefit+'_quintile_properties']),
+                                properties_inv=json.dumps(request.session[benefit+'_quintile_properties_inv']),
+                                services=json.dumps(request.session[benefit+'_services']))
+    
     return get_response_template(request, 
                                  request.session['bnchmrk_benefit'], 
                                  True)
