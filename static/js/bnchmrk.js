@@ -87,19 +87,19 @@ function load_print_history() {
                 return "<a type=\"button\" class=\"btn btn-icon command-edit waves-effect waves-circle\" href=\"/print_history/" + row.id + "\"><span class=\"zmdi zmdi-edit\"></span></a>";
             }
         },
-        templates: {
-            footer: "",
-            header: '<div id="{{ctx.id}}" class="{{css.footer}}"><div class="row"><div class="col-sm-6"><p class="{{css.pagination}}"></p></div><div class="col-sm-6 infoBar"><p class="{{css.infos}}"></p></div></div></div>'
-        },
         labels: {
             infos: 'Showing {{ctx.start}} to {{ctx.end}} of {{ctx.total}} Print Page Records',
             noResults: 'There is no print history'
         },
-        rowCount: [15],
+        templates: {
+            footer: "",
+            header: '<div id="{{ctx.id}}" class="{{css.footer}}"><div class="row"><div class="col-sm-6"><p class="{{css.pagination}}"></p></div><div class="col-sm-6 infoBar"><p class="{{css.infos}}"></p></div></div></div>'
+        },
         ajaxSettings: {
             method: "POST",
             cache: false
         },
+        rowCount: [15],
         requestHandler: function (request) {
             var model = {
                 current: request.current,

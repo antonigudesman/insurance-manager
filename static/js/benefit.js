@@ -3,7 +3,7 @@ var regions = [];
 var head_counts = [];
 var others = [];
 var states = [];
-// var plan_type = '';
+
 var plan = 0;
 var quintile_properties = [];
 var quintile_properties_inv = [];
@@ -125,8 +125,6 @@ function get_plan_type() {
 
 // called for only real template
 function get_body() {
-    // $('.page-loader').show();
-
     get_filters();
     get_filters_label();
 
@@ -182,9 +180,6 @@ function reload_plans() {
 }
 
 update_content = function(benefit, plan_type) {
-    // $('.btn-print-report').hide();
-    // $('.btn-print-page').show();
-
 	if ($.inArray(benefit, ["STRATEGY"]) != -1) {
         draw_easy_pie_chart();
     } else if ($.inArray(benefit, ["LIFE"]) != -1) {
@@ -295,7 +290,6 @@ generate_quintile_data = function(raw_data, inverse){
         return [];
 
     var data = [];
-
     var section = [];
     var N = raw_data.length;
 
