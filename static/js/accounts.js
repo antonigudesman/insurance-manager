@@ -69,7 +69,7 @@ function load_employers() {
         }                
     }).on("loaded.rs.jquery.bootgrid", function() {
         grid.find(".command-print").on("click", function(e) {
-            var myWindow = window.open("/print_plan_order/"+$(this).data("row-id"), "myWindow"+$(this).data("row-id"), "width=1000,height=600,left=200,top=200,scrollbars=yes,location=no");
+            var myWindow = window.open("/print_plan_order/"+$(this).data("row-id"), "myWindow"+$(this).data("row-id"), "width=1000,height=600,left=200,top=200,scrollbars=yes,status=1");
         });
     });       
 }

@@ -106,6 +106,10 @@
             <td colspan="3" {% if fieldset.form.title.errors %} class="errors"{% endif %}>{{ fieldset.form.title }}</td>
         </tr>
         <tr>
+            <td {% if fieldset.form.carrier.errors %} class="errors"{% endif %}>{{ fieldset.form.carrier.errors }}{{ fieldset.form.carrier.label_tag }}</td>
+            <td colspan="3" {% if fieldset.form.carrier.errors %} class="errors"{% endif %}>{{ fieldset.form.carrier }}</td>
+        </tr>        
+        <tr>
             <td {% if fieldset.form.employer.errors %} class="errors"{% endif %}>{{ fieldset.form.employer.errors }}{{ fieldset.form.employer.label_tag }}</td>
             <td {% if fieldset.form.employer.errors %} class="errors"{% endif %}>{{ fieldset.form.employer }}</td>
             <td></td>
@@ -229,7 +233,8 @@
             <!-- Submit-Row -->
             {% block submit_buttons_bottom %}
             <div class="submit-row">
-                <p class="deletelink-box"><a href="/admin/general/life/3084/delete/" class="deletelink">Delete</a></p>
+                {% url opts|admin_urlname:'delete' original.pk|admin_urlquote as delete_url %}
+                <p class="deletelink-box"><a href="{{ delete_url }}" class="deletelink">Delete</a></p>
                 {% url opts|admin_urlname:'history' original.pk|admin_urlquote as history_url %}
                 <a href="{{ history_url }}">{% trans "History" %}</a>
                 <input value="Cancel" class="warning" name="_cancel" onclick="history.go(-1);" type="button">

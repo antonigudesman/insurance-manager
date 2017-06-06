@@ -46,6 +46,22 @@ def replace_slash(value): # Only one argument.
 
 
 @register.filter
+def format_benefit(value): # Only one argument.
+    if value == 'MEDICALRX':
+        return 'Medical / Rx'
+    elif value == 'DENTAL':
+        return 'Dental'
+    elif value == 'LIFE':
+        return 'Life'
+    elif value == 'VISION':
+        return 'Vision'
+    elif value == 'STRATEGY':
+        return 'Strategy'
+    else:
+        return value
+
+
+@register.filter
 def get_percent(dn, db): # Only one argument.
     return dn * 100.0 / db
     

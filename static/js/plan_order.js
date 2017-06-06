@@ -10,7 +10,9 @@ function down(e, obj) {
 
 function get_order() {
 	var print_order = [];
-
+	// window.status = 'Printing...';
+	swal('Printing report...');
+	
 	$('.panel').each(function() {
 		var model = {};
 		var attrs = [], attrs_inv = [], attrs_srv = [];
@@ -42,6 +44,7 @@ function get_order() {
         '/print_report_in_order',
         { print_order: JSON.stringify(print_order) },
         function(filename) {
+        	// window.status = '';
             window.location = '/download_report/'+filename;
         });
 }

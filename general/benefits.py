@@ -114,14 +114,12 @@ def get_medicalrx_plan(request, employers, num_companies, plan_type=None):
     var_local['quintile_properties_inv'] = json.dumps(quintile_properties_inv)
     var_local['services'] = json.dumps(services)
 
-    log.debug(quintile_properties_inv)
+    # log.debug(quintile_properties_inv)
 
-    num_t = Medical.objects.filter(employer__in=employers, type__in=['PPO', 'POS']).values('employer_id').distinct()
-    var_local['prcnt_ppo'] = '{:,.0f}%'.format(len(num_t) * 100 / num_companies)
-    num_t = Medical.objects.filter(employer__in=employers, type__in=['HMO', 'EPO']).values('employer_id').distinct()
-    var_local['prcnt_hmo'] = '{:,.0f}%'.format(len(num_t) * 100 / num_companies)
-    num_t = Medical.objects.filter(employer__in=employers, type__in=['HDHP']).values('employer_id').distinct()
-    var_local['prcnt_hdhp'] = '{:,.0f}%'.format(len(num_t) * 100 / num_companies)
+    types = ['PPO', 'POS', 'HMO', 'EPO', 'HDHP']
+    for type_ in types:        
+        num_t = Medical.objects.filter(employer__in=employers, type__in=[type_]).values('employer_id').distinct()
+        var_local['prcnt_{}'.format(type_.lower())] = '{:,.0f}%'.format(len(num_t) * 100 / num_companies)
 
     plan_types = get_real_medical_type(plan_type)
     num_tt = Medical.objects.filter(employer__in=employers, type__in=plan_types).count() or 1

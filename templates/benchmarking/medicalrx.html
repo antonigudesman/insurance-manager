@@ -20,16 +20,24 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td class="row-label">PPO/POS</td>
+                                <td class="row-label">PPO</td>
                                 <td>{{ prcnt_ppo }}</td>
                             </tr>
                             <tr>
-                                <td class="row-label">HMO/EPO</td>
+                                <td class="row-label">HMO</td>
                                 <td>{{ prcnt_hmo }}</td>
                             </tr>
                             <tr>
                                 <td class="row-label">HDHP</td>
                                 <td>{{ prcnt_hdhp }}</td>
+                            </tr>
+                            <tr>
+                                <td class="row-label">POS</td>
+                                <td>{{ prcnt_pos }}</td>
+                            </tr>
+                            <tr>
+                                <td class="row-label">EPO</td>
+                                <td>{{ prcnt_epo }}</td>
                             </tr>
                         </tbody>
                     </table> 
@@ -104,12 +112,12 @@
                             <td><span id="prop_in_ded_family"></span></td>
                         </tr>
                         <tr>
-                            <td class="row-label">Out of Pocket Maximum - Individual</td>
+                            <td class="row-label">Maximum - Individual</td>
                             <td>{{ mdn_in_max_single }}</td>
                             <td><span id="prop_in_max_single"></span></td>
                         </tr>
                         <tr>
-                            <td class="row-label">Out of Pocket Maximum - Family</td>
+                            <td class="row-label">Maximum - Family</td>
                             <td>{{ mdn_in_max_family }}</td>
                             <td><span id="prop_in_max_family"></span></td>
                         </tr>

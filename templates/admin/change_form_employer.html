@@ -209,23 +209,13 @@
             <td {% if fieldset.form.address_line_2.errors %} class="errors"{% endif %}>{{ fieldset.form.address_line_2.errors }}{{ fieldset.form.address_line_2.label_tag }}</td>
             <td colspan="3" {% if fieldset.form.address_line_2.errors %} class="errors"{% endif %}>{{ fieldset.form.address_line_2 }}</td>  
         </tr>
-        <tr>   
-            <td {% if fieldset.form.employerurl.errors %} class="errors"{% endif %}>{{ fieldset.form.employerurl.errors }}{{ fieldset.form.employerurl.label_tag }}</td>
-            <td colspan="3"{% if fieldset.form.employerurl.errors %} class="errors"{% endif %}>{{ fieldset.form.employerurl }}</td>     
-        </tr>
-        <tr>   
-            <td {% if fieldset.form.employerbenefitsurl.errors %} class="errors"{% endif %}>{{ fieldset.form.employerbenefitsurl.errors }}{{ fieldset.form.employerbenefitsurl.label_tag }}</td>
-            <td colspan="3" {% if fieldset.form.employerbenefitsurl.errors %} class="errors"{% endif %}>{{ fieldset.form.employerbenefitsurl }}</td>     
-        </tr>
-        <tr>         
-            <td {% if fieldset.form.stock_symbol.errors %} class="errors"{% endif %}>{{ fieldset.form.stock_symbol.errors }}{{ fieldset.form.stock_symbol.label_tag }}</td>
-            <td colspan="3" {% if fieldset.form.stock_symbol.errors %} class="errors"{% endif %}>{{ fieldset.form.stock_symbol }}</td>  
+        <tr>
+            <td {% if fieldset.form.employercity.errors %} class="errors"{% endif %}>{{ fieldset.form.employercity.errors }}{{ fieldset.form.employercity.label_tag }}</td>
+            <td colspan="3" {% if fieldset.form.employercity.errors %} class="errors"{% endif %}>{{ fieldset.form.employercity }}</td>  
         </tr>
         <tr>
             <td {% if fieldset.form.state.errors %} class="errors"{% endif %}>{{ fieldset.form.state.errors }}{{ fieldset.form.state.label_tag }}</td>
             <td {% if fieldset.form.state.errors %} class="errors"{% endif %}>{{ fieldset.form.state }}</td>
-            <td {% if fieldset.form.naics_2012_code.errors %} class="errors"{% endif %}>{{ fieldset.form.naics_2012_code.errors }}{{ fieldset.form.naics_2012_code.label_tag }}</td>
-            <td {% if fieldset.form.naics_2012_code.errors %} class="errors"{% endif %}>{{ fieldset.form.naics_2012_code }}</td>
         </tr>
         <tr>
             <td {% if fieldset.form.zip_code.errors %} class="errors"{% endif %}>{{ fieldset.form.zip_code.errors }}{{ fieldset.form.zip_code.label_tag }}</td>
@@ -239,6 +229,22 @@
             <td {% if fieldset.form.avid.errors %} class="errors"{% endif %}>{{ fieldset.form.avid.errors }}{{ fieldset.form.avid.label_tag }}</td>
             <td {% if fieldset.form.avid.errors %} class="errors"{% endif %}>{{ fieldset.form.avid }}</td>       
         </tr>
+        <tr>
+            <td {% if fieldset.form.naics_2012_code.errors %} class="errors"{% endif %}>{{ fieldset.form.naics_2012_code.errors }}{{ fieldset.form.naics_2012_code.label_tag }}</td>
+            <td {% if fieldset.form.naics_2012_code.errors %} class="errors"{% endif %}>{{ fieldset.form.naics_2012_code }}</td>            
+        </tr>
+        <tr>   
+            <td {% if fieldset.form.employerurl.errors %} class="errors"{% endif %}>{{ fieldset.form.employerurl.errors }}{{ fieldset.form.employerurl.label_tag }}</td>
+            <td colspan="3"{% if fieldset.form.employerurl.errors %} class="errors"{% endif %}>{{ fieldset.form.employerurl }}</td>     
+        </tr>
+        <tr>   
+            <td {% if fieldset.form.employerbenefitsurl.errors %} class="errors"{% endif %}>{{ fieldset.form.employerbenefitsurl.errors }}{{ fieldset.form.employerbenefitsurl.label_tag }}</td>
+            <td colspan="3" {% if fieldset.form.employerbenefitsurl.errors %} class="errors"{% endif %}>{{ fieldset.form.employerbenefitsurl }}</td>     
+        </tr>
+        <tr>         
+            <td {% if fieldset.form.stock_symbol.errors %} class="errors"{% endif %}>{{ fieldset.form.stock_symbol.errors }}{{ fieldset.form.stock_symbol.label_tag }}</td>
+            <td colspan="3" {% if fieldset.form.stock_symbol.errors %} class="errors"{% endif %}>{{ fieldset.form.stock_symbol }}</td>  
+        </tr>        
       </tbody>
     </table>
 </fieldset>
@@ -328,7 +334,8 @@
             {% block submit_buttons_bottom %}
             <div class="submit-row">
                 {% if delete %}
-                <p class="deletelink-box"><a href="/admin/general/life/3084/delete/" class="deletelink">Delete</a></p>
+                {% url opts|admin_urlname:'delete' original.pk|admin_urlquote as delete_url %}
+                <p class="deletelink-box"><a href="{{ delete_url }}" class="deletelink">Delete</a></p>
                 {% endif %}
                 {% url opts|admin_urlname:'history' original.pk|admin_urlquote as history_url %}
                 <a href="{{ history_url }}">{% trans "History" %}</a>

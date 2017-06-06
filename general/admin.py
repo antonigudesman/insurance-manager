@@ -49,7 +49,7 @@ class EmployerAdmin(admin.ModelAdmin):
         'nonprofit', 'govt_contractor', 'new_england', 'med_count', 'mid_atlantic',
         'den_count', 'south_atlantic', 'vis_count', 'south_cental', 'life_count', 
         'east_central', 'std_count', 'west_central', 'ltd_count', 'mountain', 'pacific', 
-        'renewal_date', 'address_line_1', 'address_line_2', 'zip_code', 'phone', 'employerurl',
+        'renewal_date', 'address_line_1', 'address_line_2', 'employercity', 'zip_code', 'phone', 'employerurl',
         'employerbenefitsurl', 'stock_symbol', 'avid', 'naics_2012_code')
     form = EmployerForm
     # actions = ['print_report']
@@ -126,7 +126,7 @@ class MedicalAdmin(admin.ModelAdmin):
         'lx_copay', 'rx3_copay', 'ip_ded_apply', 'rx3_mail_copay', 'ip_copay', 'rx4_ded_apply', 
         'op_ded_apply', 'rx4_copay', 'op_copay', 'rx4_mail_copay', 't1_ee', 't1_gross', 't2_ee', 
         't2_gross', 't3_ee', 't3_gross', 't4_ee', 't4_gross', 't1_ercdhp', 'hsa', 't2_ercdhp', 
-        'hra', 't3_ercdhp', 'age_rated', 't4_ercdhp', 'rx_coin', )
+        'hra', 't3_ercdhp', 'age_rated', 't4_ercdhp', 'rx_coin', 'carrier')
 
     def get_queryset(self, request):
         qs = super(MedicalAdmin, self).get_queryset(request)
@@ -204,7 +204,7 @@ class DentalAdmin(admin.ModelAdmin):
         't4_ee', 't4_gross', 'prev_ded_apply', 'basic_ded_apply', 'in_prev_coin', 
         'in_basic_coin', 'out_prev_coin', 'out_basic_coin', 'in_ortho_coin', 
         'major_ded_apply', 'out_ortho_coin', 'in_major_coin', 'ortho_ded_apply', 
-        'out_major_coin', 'ortho_age_limit')
+        'out_major_coin', 'ortho_age_limit', 'carrier')
 
     def get_ordering(self, request):
         return ['employer__name']
@@ -280,7 +280,7 @@ class VisionAdmin(admin.ModelAdmin):
         'contacts_copay', 'frames_allowance', 'contacts_allowance', 'frames_coinsurance', 
         'contacts_coinsurance', 'frames_frequency', 'contacts_frequency', 'frames_out_allowance', 
         'contacts_out_allowance', 't1_ee', 't1_gross', 't2_ee', 't2_gross', 't3_ee', 
-        't3_gross', 't4_ee', 't4_gross')
+        't3_gross', 't4_ee', 't4_gross', 'carrier')
 
     def get_ordering(self, request):
         return ['employer__name']
@@ -348,7 +348,7 @@ class LifeAdmin(admin.ModelAdmin):
     search_fields = ('employer__name',)
     list_filter = ('type',)
     fields = ('title', 'employer', 'type', 'multiple', 'flat_amount', 
-              'multiple_max', 'add', 'cost_share')
+              'multiple_max', 'add', 'cost_share', 'carrier')
     form = LifeForm
     change_form_template = 'admin/change_form_life.html'
 
@@ -401,7 +401,7 @@ class STDAdmin(admin.ModelAdmin):
                     'formatted_percentage', 'formatted_weekly_max', 'cost_share']
     search_fields = ('employer__name', 'title',)
     fields = ('title', 'employer', 'waiting_days', 'duration_weeks', 'waiting_days_sick', 
-              'percentage', 'weekly_max', 'cost_share', 'salary_cont')
+              'percentage', 'weekly_max', 'cost_share', 'salary_cont', 'carrier')
     change_form_template = 'admin/change_form_std.html'
     
     def get_ordering(self, request):
@@ -452,7 +452,8 @@ class LTDAdmin(admin.ModelAdmin):
     list_display = ['title', 'formatted_employer', 'waiting_weeks', 
                     'formatted_percentage', 'formatted_monthly_max', 'cost_share']
     search_fields = ('employer__name', 'title',)
-    fields = ('title', 'employer', 'waiting_weeks', 'percentage', 'monthly_max', 'cost_share')
+    fields = ('title', 'employer', 'waiting_weeks', 'percentage', 'monthly_max', 
+              'cost_share', 'carrier')
     change_form_template = 'admin/change_form_ltd.html'
     
     def get_ordering(self, request):

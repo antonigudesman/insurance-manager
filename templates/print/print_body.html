@@ -1,5 +1,5 @@
 {% extends 'print/print_base.html' %}
-{% load humanize %}
+{% load humanize bnchmrk_tag %}
 {% load pages_tags mezzanine_tags i18n staticfiles %}
 
 {% block extra_css %}
@@ -20,7 +20,7 @@
         <div class="card section">
             <div class="row">
             <div class="col-md-12 m-t-25"><div class="col-md-12 m-t-25"><div class="col-md-12">
-                <h4>{{ request.session.bnchmrk_benefit }} Benchmarking Analysis</h4>
+                <h4>{{ request.session.bnchmrk_benefit|format_benefit }} Benchmarking Analysis</h4>
                 <h4><span id='prop_client_name'></span></h4>
                 <h4><span id='prop_print_plan_name'></span></h4>
                 <h6>Comparison Set Includes: {{ num_employers|intcomma }} Employers</h6>
