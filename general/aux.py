@@ -339,7 +339,7 @@ def get_boolean_properties(instance, attrs, context):
         if val != None:
             context[attr] = 'Yes' if val else 'No'
         else:
-            context[attr] = 'session.bnchmrk_benefit'
+            context[attr] = '-'
 
 
 def get_boolean_properties_5_states(instance, attrs, context):
