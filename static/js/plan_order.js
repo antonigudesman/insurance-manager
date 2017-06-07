@@ -11,7 +11,11 @@ function down(e, obj) {
 function get_order() {
 	var print_order = [];
 	// window.status = 'Printing...';
-	swal('Printing report...');
+	swal({
+		title: 'Printing report...',
+		type: 'success',
+		showConfirmButton: false
+	});
 	
 	$('.panel').each(function() {
 		var model = {};
@@ -45,6 +49,7 @@ function get_order() {
         { print_order: JSON.stringify(print_order) },
         function(filename) {
         	// window.status = '';
+        	swal.close();
             window.location = '/download_report/'+filename;
         });
 }
