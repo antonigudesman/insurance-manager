@@ -69,6 +69,14 @@ def print_template_header(request):
     request.session['plan'] = p_benefit['plan']
     request.session['plan_type'] = p_benefit['plan_type']
 
+    broker = request.user.groups.first().name.lower()
+    if broker == 'bnchmrk':
+        benefit = p_benefit['benefit'] if p_benefit['benefit'] != 'MEDICALRX' else 'MEDICAL'
+        model = MODEL_MAP[benefit]
+        broker = model.objects.get(id=p_benefit['plan']).employer.broker.lower()
+
+    request.session['broker'] = broker
+
     return get_response_template(request, 
                                  p_benefit['benefit'], 
                                  True,

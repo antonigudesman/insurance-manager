@@ -179,7 +179,6 @@ def get_medical_properties(request, plan, plan_type, quintile_properties, quinti
         medians, var_local, qs = get_medical_plan_(employers, num_companies, plan_type, quintile_properties, quintile_properties_inv)
         instance = Medical.objects.get(id=plan)
         context['plan_info'] = ': {}, {}'.format(instance.employer.name, instance.title)
-        context['client_name'] = instance.employer.name
         context['print_plan_name'] = instance.title
 
         get_dollar_properties(instance, medical_attrs_dollar, context)
@@ -357,7 +356,6 @@ def get_dental_properties(request, plan, plan_type, quintile_properties, quintil
         instance = Dental.objects.get(id=plan)
         medians, var_local, qs = get_dental_plan_(employers, num_companies, instance.type, quintile_properties, quintile_properties_inv)
         context['plan_info'] = ': {}, {}'.format(instance.employer.name, instance.title)
-        context['client_name'] = instance.employer.name
         context['print_plan_name'] = instance.title
 
         get_dollar_properties(instance, dental_attrs_dollar, context)
@@ -450,7 +448,6 @@ def get_vision_properties(request, plan, plan_type, quintile_properties, quintil
         medians, var_local = get_vision_plan_(employers, num_companies, plan_type, quintile_properties, quintile_properties_inv)
         instance = Vision.objects.get(id=plan)
         context['plan_info'] = ': {}, {}'.format(instance.employer.name, instance.title)
-        context['client_name'] = instance.employer.name
         context['print_plan_name'] = instance.title
 
         get_dollar_properties(instance, vision_attrs_dollar, context)
@@ -517,7 +514,6 @@ def get_life_properties(request, plan, plan_type, quintile_properties, quintile_
         medians, var_local, _ = get_life_plan_(employers, num_companies, plan_type, quintile_properties, quintile_properties_inv)
         instance = Life.objects.get(id=plan)
         context['plan_info'] = ': {}, {}'.format(instance.employer.name, instance.title)
-        context['client_name'] = instance.employer.name
         context['print_plan_name'] = instance.title
 
         get_dollar_properties(instance, life_attrs_dollar, context)
@@ -589,7 +585,6 @@ def get_std_properties(request, plan, plan_type, quintile_properties, quintile_p
         medians, var_local, _ = get_std_plan_(employers, num_companies, plan_type, quintile_properties, quintile_properties_inv)
         instance = STD.objects.get(id=plan)
         context['plan_info'] = ': {}, {}'.format(instance.employer.name, instance.title)
-        context['client_name'] = instance.employer.name
         context['print_plan_name'] = instance.title
 
         get_dollar_properties(instance, std_attrs_dollar, context)
@@ -651,7 +646,6 @@ def get_ltd_properties(request, plan, plan_type, quintile_properties, quintile_p
         medians, var_local, _ = get_ltd_plan_(employers, num_companies, plan_type, quintile_properties, quintile_properties_inv)
         instance = LTD.objects.get(id=plan)
         context['plan_info'] = ': {}, {}'.format(instance.employer.name, instance.title)
-        context['client_name'] = instance.employer.name
         context['print_plan_name'] = instance.title
 
         get_dollar_properties(instance, ltd_attrs_dollar, context)
@@ -717,7 +711,6 @@ def get_strategy_properties(request, plan, plan_type, quintile_properties, quint
         medians, var_local, qs = get_strategy_plan_(employers, num_companies)
         instance = Strategy.objects.get(id=plan)
         context['plan_info'] = ': {}'.format(instance.employer.name)
-        context['client_name'] = instance.employer.name
 
         get_dollar_properties(instance, strategy_attrs_dollar, context)
         get_boolean_properties(instance, strategy_attrs_boolean, context)

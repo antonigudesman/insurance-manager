@@ -31,10 +31,14 @@
 /*for print template*/
 .print-container {
 	width: 1500px;
-	border: solid 1px black;
-	height: 560px;
 }
 
-.print-container p.filters {
+.print-container-header {
+	width: 1500px;
+	border: solid 1px black;
+	min-height: 560px;
+}
+
+.print-container-header p.filters {
 	font-size: 17px;
 }

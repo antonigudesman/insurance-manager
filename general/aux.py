@@ -308,6 +308,8 @@ def get_init_properties(attrs, rank_attrs):
 
 
 def get_dollar_properties(instance, attrs, context):
+    context['client_name'] = instance.employer.name
+
     for attr in attrs:
         val = getattr(instance, attr)
         context[attr] = '-'
