@@ -39,7 +39,7 @@ function load_employers() {
         },
         labels: {
             infos: 'Showing {{ctx.start}} to {{ctx.end}} of {{ctx.total}} Employers',
-            noResults: EMPLOYER_THRESHOLD_MESSAGE
+            noResults: 'No Employers Found'
         },
         ajaxSettings: {
             method: "POST",

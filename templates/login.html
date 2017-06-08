@@ -100,7 +100,7 @@
             <form method="POST" onsubmit="return reset_password()">
             {% csrf_token %}
             <div style="color:red;" id="error_reset_msg"></div>
-            <p class="text-left" id="pass_email">Please enter your email below and we'll send you a email to help reset your password.</p>
+            <p id="pass_email">Please enter your email below and we'll send you a email to help reset your password.</p>
             
             <div class="input-group m-b-20">
                 <span class="input-group-addon"><i class="zmdi zmdi-email"></i></span>
@@ -135,7 +135,10 @@
                     { email: $('#pass_email_txt').val() },
                     function(data) {
                         if (data == '202') {
-                            $('#pass_email').html('New password is sent to the email');
+                            $('#pass_email').html('New password has been sent to your email');
+                            $('#pass_email').css('font-weight', 500);
+                            $('#pass_email').css('font-size', 15);
+                            $('#error_reset_msg').html('');
                         } else {
                             $('#pass_email').html('');
                             $('#error_reset_msg').html(data);

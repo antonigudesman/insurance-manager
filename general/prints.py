@@ -172,7 +172,7 @@ def get_pdf(request, print_benefits, download=True):
         
         # build a pdf with images using fpdf
         pdf.add_page()
-        pdf.image(vars_d['img_path_header_{}'.format(uidx)], margin_h, margin_v)
+        pdf.image(vars_d['img_path_header_{}'.format(uidx)], -margin_h, margin_v)
         os.remove(vars_d['img_path_header_{}'.format(uidx)])
 
         if not download:

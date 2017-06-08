@@ -42,7 +42,7 @@
                 <li class="pull-right">
                     <ul class="top-menu">
                         <li>
-                            <a href="//www.bnchmrk.com">Exit App to Main Website <i class="zmdi zmdi-arrow-right"></i></a>
+                            <a href="//www.bnchmrk.com">Exit <i class="zmdi zmdi-arrow-right"></i></a>
                         </li>
                     </ul>
                 </li>
@@ -72,7 +72,12 @@
 <!--                         <li>
                             <a href="profile-about.html"><i class="zmdi zmdi-account"></i> View Profile</a>
                         </li>
- -->                        {% if request.user|has_group:"bnchmrk" %} 
+ -->                    
+                        <li>
+                            <a href="/admin/auth/user/{{ request.user.id }}/password/"><i class="zmdi zmdi-account"></i> Change Password</a>
+                        </li>
+
+                        {% if request.user|has_group:"bnchmrk" %} 
                         <li>
                             <a href="/admin"><i class="zmdi zmdi-settings"></i> Admin</a>
                         </li>

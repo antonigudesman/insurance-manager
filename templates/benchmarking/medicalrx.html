@@ -24,20 +24,20 @@
                                 <td>{{ prcnt_ppo }}</td>
                             </tr>
                             <tr>
-                                <td class="row-label">HMO</td>
-                                <td>{{ prcnt_hmo }}</td>
-                            </tr>
-                            <tr>
-                                <td class="row-label">HDHP</td>
-                                <td>{{ prcnt_hdhp }}</td>
-                            </tr>
-                            <tr>
                                 <td class="row-label">POS</td>
                                 <td>{{ prcnt_pos }}</td>
                             </tr>
                             <tr>
+                                <td class="row-label">HMO</td>
+                                <td>{{ prcnt_hmo }}</td>
+                            </tr>
+                            <tr>
                                 <td class="row-label">EPO</td>
                                 <td>{{ prcnt_epo }}</td>
+                            </tr>
+                            <tr>
+                                <td class="row-label">HDHP</td>
+                                <td>{{ prcnt_hdhp }}</td>
                             </tr>
                         </tbody>
                     </table> 
@@ -757,7 +757,7 @@
         ];        
 
         gh11_data = [{
-            data : [['PPO/POS', {{ prcnt_ppo|cut:'%' }}], ['HMO/EPO', {{ prcnt_hmo|cut:'%' }}], ['HDHP', {{ prcnt_hdhp|cut:'%' }}]],
+            data : [['PPO', {{ prcnt_ppo|cut:'%' }}], ['POS', {{ prcnt_pos|cut:'%' }}], ['HMO', {{ prcnt_hmo|cut:'%' }}], ['EPO', {{ prcnt_epo|cut:'%' }}], ['HDHP', {{ prcnt_hdhp|cut:'%' }}]],
             bars : {
                 show : true,
                 barWidth : 0.30,

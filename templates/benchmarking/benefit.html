@@ -38,7 +38,7 @@
                     <div class="col-sm-3 m-b-15">
                         <p class="f-500 c-black m-b-15">Industry:</p>
                         <select name="industry" multiple="" id="industries" class="selectpicker" data-none-selected-text="All">
-                            <option value="*">All</option>
+                            <!-- <option value="*">All</option> -->
                             {% for item in industries %}
                             <option value="{{ item }}">{{ item }}</option>
                             {% endfor %}
@@ -48,7 +48,7 @@
                     <div class="col-sm-2 m-b-15">
                         <p class="f-500 c-black m-b-15">Region:</p>
                         <select name="" multiple="false" id="regions" class="selectpicker" size="1" data-none-selected-text="All">
-                            <option value="*">All</option>
+                            <!-- <option value="*">All</option> -->
                             <option value="new_england">New England</option>
                             <option value="mid_atlantic">Tri-State Area</option>
                             <option value="south_atlantic">South Atlantic</option>
@@ -62,7 +62,7 @@
                     <div class="col-sm-2 m-b-15">
                         <p class="f-500 c-black m-b-15">HQ State:</p>
                         <select name="" id="states" multiple class="selectpicker" data-none-selected-text="All">
-                            <option value="*">All</option>
+                            <!-- <option value="*">All</option> -->
                             {% for item in STATES %}
                             {% if item.0 %}
                                 <option value="{{ item.0 }}">{{ item.1 }}</option>
@@ -72,8 +72,8 @@
                     </div>
                     <div class="col-sm-2 m-b-15">
                         <p class="f-500 c-black m-b-15">Size:</p>
-                        <select name="head-count" multiple="" id="head-counts" class="selectpicker" data-none-selected-text="All">
-                            <option value="0-2000000">All</option>
+                        <select name="head-count" multiple="" id="head-counts" class="selectpicker" data-none-selected-text="All" data-none-selected-value="*">
+                            <!-- <option value="0-2000000">All</option> -->
                             <option value="0-249">Up to 250</option>
                             <option value="250-499">250 to 499</option>
                             <option value="500-999">500 to 999</option>
@@ -84,7 +84,7 @@
                     <div class="col-sm-2 m-b-15">
                         <p class="f-500 c-black m-b-15">Other:</p>
                         <select name="" multiple="" id="other_filter" class="selectpicker" data-none-selected-text="All">
-                            <option value="*">All</option>
+                            <!-- <option value="*">All</option> -->
                             <option value="nonprofit">Non-Profit</option>
                             <option value="govt_contractor">Gov't Contractor</option>
                         </select>

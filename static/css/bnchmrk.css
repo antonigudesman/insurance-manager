@@ -31,4 +31,10 @@
 /*for print template*/
 .print-container {
 	width: 1500px;
+	border: solid 1px black;
+	height: 560px;
+}
+
+.print-container p.filters {
+	font-size: 17px;
 }
