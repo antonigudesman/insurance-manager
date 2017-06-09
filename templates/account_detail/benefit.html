@@ -1,19 +1,10 @@
 <div class="pmb-block">
-{% if forms %}
-	{% for id, form in forms.items %}
+{% for id, form in forms.items %}
 	<div class="row" id="id_{{ id }}">
 	    {% include include_path %}
 	</div>
 	<div class="row">
 	    <div class="col-md-12"><hr></div>
 	</div>
-
-	{% endfor %}
-{% else %}
-	<div class="row">
-		<div class="col-md-12">
-			<p>No plans in the database.</p>
-		</div>
-	</div>
-{% endif %}
+{% endfor %}
 </div>

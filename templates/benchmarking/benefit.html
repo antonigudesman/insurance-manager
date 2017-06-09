@@ -17,11 +17,13 @@
         <div class="card">
             <div class="card-body card-padding">
                 <div class="row">   
+                    {% if not request.user|has_group:"NTP" %} 
                     <div class="col-sm-9 m-b-15">
                         <p class="f-500 c-black m-b-15">Account Plan:</p>
                         <select name="" id="plans" class="selectpicker" data-none-selected-text="No Comparison">
                         </select>
                     </div>            
+                    {% endif %}
                     <div class="col-sm-2 m-b-15">
                         <p class="f-500 c-black m-b-15">Plan Type:</p>
                         <select name="" id="plan_types" class="selectpicker" data-none-selected-text="All">

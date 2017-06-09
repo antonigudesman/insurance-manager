@@ -13,30 +13,6 @@
             <li class="active">{{ employer.name }}</li>
         </ol>
 
-        <!-- <div class="block-header">
-            <h2>{{ employer.name }} <small>{{ employer.broker }}</small></h2>
-            
-            <ul class="actions m-t-20 hidden-xs">
-                <li class="dropdown">
-                    <a href="" data-toggle="dropdown">
-                        <i class="zmdi zmdi-more-vert"></i>
-                    </a>
-        
-                    <ul class="dropdown-menu dropdown-menu-right">
-                        <li>
-                            <a href="">Privacy Settings</a>
-                        </li>
-                        <li>
-                            <a href="">Account Settings</a>
-                        </li>
-                        <li>
-                            <a href="">Other Settings</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </div> -->
-
         <div class="card" id="profile-main">
             <div class="pm-overview c-overflow">
                 <div class="pmo-block pmo-contact hidden-xs">
@@ -57,17 +33,188 @@
                     </ul>
                 </div>            
             </div>
-            <div class="pm-body clearfix">
-                <ul class="tab-nav tn-justified">
-                    <li class="waves-effect"><a href="javascript::void();">MEDICAL</a></li>
-                    <li class="waves-effect"><a href="javascript::void();">DENTAL</a></li>
-                    <li class="waves-effect"><a href="javascript::void();">VISION</a></li>
-                    <li class="waves-effect"><a href="javascript::void();">LIFE</a></li>
-                    <li class="waves-effect"><a href="javascript::void();">STD</a></li>
-                    <li class="waves-effect"><a href="javascript::void();">LTD</a></li>
-                    <li class="waves-effect"><a href="javascript::void();">STRATEGY</a></li>
-                </ul>
+            <div class="pm-body clearfix">               
                 <div id="card_body">
+                <div class="pmb-block">
+                    <div class="pmbb-header p-l-15"><h2><i class="zmdi zmdi-account m-r-5"></i> Medical / Rx</h2></div>
+                    <table class="data-table-benefit table table-striped table-vmiddle">
+                        <thead>
+                            <tr>
+                                <th data-column-id="title" data-formatter="link">Plan Name</th>
+                                <th data-column-id="id" data-visible="false">ID</th>
+                                <th data-column-id="type">Type</th>
+                                <th data-column-id="in_ded_single">IN Deductible (Ind)</th>
+                                <th data-column-id="in_max_single">IN Maximum (Ind)</th>
+                                <th data-column-id="in_coin">IN Coinsurances</th>
+                                <th data-column-id="benefit" data-visible="false">Benefit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in plans_list.Medical %}
+                            <tr>
+                                <td>{{ item.0 }}</td>
+                                <td>{{ item.1 }}</td>
+                                <td>{{ item.2 }}</td>
+                                <td>{{ item.3 }}</td>
+                                <td>{{ item.4 }}</td>
+                                <td>{{ item.5 }}</td>
+                                <td>MEDICAL</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <div class="clearfix m-t-15"></div>
+                    <div class="pmbb-header p-l-15"><h2><i class="zmdi zmdi-account m-r-5"></i> Dental</h2></div>
+                    <table class="data-table-benefit table table-striped table-vmiddle">
+                        <thead>
+                            <tr>
+                                <th data-column-id="title" data-formatter="link">Plan Name</th>
+                                <th data-column-id="id"  data-visible="false">ID</th>
+                                <th data-column-id="type">Type</th>
+                                <th data-column-id="in_ded_single">IN Deductible (Ind)</th>
+                                <th data-column-id="in_max">IN Maximum (Ind)</th>
+                                <th data-column-id="in_max_ortho">IN Ortho Max (PP)</th>
+                                <th data-column-id="benefit" data-visible="false">Benefit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in plans_list.Dental %}
+                            <tr>
+                                <td>{{ item.0 }}</td>
+                                <td>{{ item.1 }}</td>
+                                <td>{{ item.2 }}</td>
+                                <td>{{ item.3 }}</td>
+                                <td>{{ item.4 }}</td>
+                                <td>{{ item.5 }}</td>
+                                <td>DENTAL</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <div class="clearfix m-t-15"></div>
+                    <div class="pmbb-header p-l-15"><h2><i class="zmdi zmdi-account m-r-5"></i> Vision</h2></div>
+                    <table class="data-table-benefit table table-striped table-vmiddle">
+                        <thead>
+                            <tr>
+                                <th data-column-id="title" data-formatter="link">Plan Name</th>
+                                <th data-column-id="id"  data-visible="false">ID</th>
+                                <th data-column-id="exam_copay">Exam Copay</th>
+                                <th data-column-id="lenses_copay">Lenses Copay</th>
+                                <th data-column-id="frames_allowance">Frames Allowance</th>
+                                <th data-column-id="contacts_allowance">Contacts Allowance</th>
+                                <th data-column-id="benefit" data-visible="false">Benefit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in plans_list.Vision %}
+                            <tr>
+                                <td>{{ item.0 }}</td>
+                                <td>{{ item.1 }}</td>
+                                <td>{{ item.2 }}</td>
+                                <td>{{ item.3 }}</td>
+                                <td>{{ item.4 }}</td>
+                                <td>{{ item.5 }}</td>
+                                <td>VISION</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>         
+
+                    <div class="clearfix m-t-15"></div>
+                    <div class="pmbb-header p-l-15"><h2><i class="zmdi zmdi-account m-r-5"></i> Life</h2></div>
+                    <table class="data-table-benefit table table-striped table-vmiddle">
+                        <thead>
+                            <tr>
+                                <th data-column-id="title" data-formatter="link">Plan Name</th>
+                                <th data-column-id="id"  data-visible="false">ID</th>
+                                <th data-column-id="type">Type</th>
+                                <th data-column-id="multiple">Multiple</th>
+                                <th data-column-id="multiple_max">Multiple Max</th>
+                                <th data-column-id="flat_amount">Flat Amount</th>
+                                <th data-column-id="add">Add</th>
+                                <th data-column-id="cost_share">Cost Share</th>
+                                <th data-column-id="benefit" data-visible="false">Benefit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in plans_list.Life %}
+                            <tr>
+                                <td>{{ item.0 }}</td>
+                                <td>{{ item.1 }}</td>
+                                <td>{{ item.2 }}</td>
+                                <td>{{ item.3 }}</td>
+                                <td>{{ item.4 }}</td>
+                                <td>{{ item.5 }}</td>
+                                <td>{{ item.6 }}</td>
+                                <td>{{ item.7 }}</td>
+                                <td>LIFE</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>  
+
+                    <div class="clearfix m-t-15"></div>
+                    <div class="pmbb-header p-l-15"><h2><i class="zmdi zmdi-account m-r-5"></i> STD</h2></div>
+                    <table class="data-table-benefit table table-striped table-vmiddle">
+                        <thead>
+                            <tr>
+                                <th data-column-id="title" data-formatter="link">Plan Name</th>
+                                <th data-column-id="id"  data-visible="false">ID</th>
+                                <th data-column-id="waiting_days">Waiting Days</th>
+                                <th data-column-id="duration_weeks">Duration Weeks</th>
+                                <th data-column-id="percentage">Percentage</th>
+                                <th data-column-id="weekly_max">Weekly Max</th>
+                                <th data-column-id="cost_share">Cost Share</th>
+                                <th data-column-id="benefit" data-visible="false">Benefit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in plans_list.STD %}
+                            <tr>
+                                <td>{{ item.0 }}</td>
+                                <td>{{ item.1 }}</td>
+                                <td>{{ item.2 }}</td>
+                                <td>{{ item.3 }}</td>
+                                <td>{{ item.4 }}</td>
+                                <td>{{ item.5 }}</td>
+                                <td>{{ item.6 }}</td>
+                                <td>STD</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>        
+
+                    <div class="clearfix m-t-15"></div>
+                    <div class="pmbb-header p-l-15"><h2><i class="zmdi zmdi-account m-r-5"></i> LTD</h2></div>
+                    <table class="data-table-benefit table table-striped table-vmiddle">
+                        <thead>
+                            <tr>
+                                <th data-column-id="title" data-formatter="link">Plan Name</th>
+                                <th data-column-id="id"  data-visible="false">ID</th>
+                                <th data-column-id="waiting_weeks">Waiting Weeks</th>
+                                <th data-column-id="percentage">Percentage</th>
+                                <th data-column-id="monthly_max">Monthly Max</th>
+                                <th data-column-id="cost_share">Cost Share</th>
+                                <th data-column-id="benefit" data-visible="false">Benefit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in plans_list.LTD %}
+                            <tr>
+                                <td>{{ item.0 }}</td>
+                                <td>{{ item.1 }}</td>
+                                <td>{{ item.2 }}</td>
+                                <td>{{ item.3 }}</td>
+                                <td>{{ item.4 }}</td>
+                                <td>{{ item.5 }}</td>
+                                <td>LTD</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>                   
+                </div>                
                 </div>                       
             </div>
         </div>

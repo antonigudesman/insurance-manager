@@ -306,6 +306,15 @@ def get_init_properties(attrs, rank_attrs):
 
     return context
 
+def get_dollar_property(property_):
+    try:
+        return '${:,.0f}'.format(property_)
+    except Exception as e:
+        return '-'
+
+def get_percent_property(property_):
+    if property_ != None:
+        return '{:,.0f}%'.format(property_)
 
 def get_dollar_properties(instance, attrs, context):
     context['client_name'] = instance.employer.name

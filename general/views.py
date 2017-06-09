@@ -438,6 +438,10 @@ def home(request):
 
 @login_required(login_url='/login')
 def accounts(request):            
+    group = request.user.groups.first().name
+    if group == 'NTP':
+        return render(request, 'error/403.html')
+
     return render(request, 'accounts.html', { 
         'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE_ACCOUNT,
         'industries': get_industries(),
@@ -453,7 +457,7 @@ def account_detail(request, id):
     if not employer:
         return render(request, 'error/404.html')
 
-    if group != 'bnchmrk' and group != employer.broker:
+    if group != 'bnchmrk' and group != employer.broker or group == 'NTP':
         return render(request, 'error/403.html')
 
     request.session['benefit'] = request.session.get('benefit', 'MEDICAL')
@@ -490,20 +494,58 @@ def account_detail(request, id):
     for model in [Medical, Dental, Vision, Life, STD, LTD]:
         plans.append((model.__name__, model.objects.filter(employer=employer).count()))
 
+    plans_list = {}
+    for model in [Medical, Dental, Vision, Life, STD, LTD, Strategy]:
+        plans_list[model.__name__] = []
+        for item in model.objects.filter(employer=employer):
+            if model == Medical:
+                plans_list[model.__name__].append([item.title, item.id, 
+                    item.type, get_dollar_property(item.in_ded_single), 
+                    get_dollar_property(item.in_max_single), 
+                    get_percent_property(item.in_coin)])
+            elif model == Dental:
+                plans_list[model.__name__].append([item.title, item.id, 
+                    item.type, get_dollar_property(item.in_ded_single), 
+                    get_dollar_property(item.in_max), 
+                    get_dollar_property(item.in_max_ortho)])
+            elif model == Vision:
+                plans_list[model.__name__].append([item.title, item.id, 
+                    get_dollar_property(item.exam_copay), 
+                    get_dollar_property(item.lenses_copay), 
+                    get_dollar_property(item.frames_allowance), 
+                    get_dollar_property(item.contacts_allowance)])
+            elif model == Life:
+                plans_list[model.__name__].append([item.title, item.id, 
+                    item.type, item.multiple if item.multiple!=None else '-' , 
+                    get_dollar_property(item.multiple_max), 
+                    get_dollar_property(item.flat_amount), item.add, item.cost_share])
+            elif model == STD:
+                plans_list[model.__name__].append([item.title, item.id, 
+                    item.waiting_days, item.duration_weeks, 
+                    get_percent_property(item.percentage), 
+                    get_dollar_property(item.weekly_max), item.cost_share])
+            elif model == LTD:
+                plans_list[model.__name__].append([item.title, item.id, 
+                    item.waiting_weeks, get_percent_property(item.percentage), 
+                    get_dollar_property(item.monthly_max), item.cost_share])
+            else:
+                plans_list[model.__name__].append([item.id, item.spousal_surcharge, 
+                    item.tobacco_surcharge, item.offer_fsa, item.salary_banding])
+                
     return render(request, 'account_detail.html', locals())
 
 
 @csrf_exempt
 def account_detail_benefit(request):
     benefit = request.POST['benefit'];
-    employer_id = request.POST['employer_id'];
+    plan = request.POST['plan'];
     model = MODEL_MAP[benefit]
 
     request.session['benefit'] = benefit
-    qs = model.objects.filter(employer_id=employer_id)
+    item = model.objects.get(id=plan)
 
     form = get_class(model.__name__+'Form') 
-    forms = {item.id:form(instance=item) for item in qs}
+    forms = {item.id:form(instance=item)}
 
     bc = BOOLEAN_CHOICES
     dtc = DEN_TYPE_CHOICES
@@ -521,20 +563,21 @@ def account_detail_benefit(request):
 @csrf_exempt
 def update_benefit(request, instance_id):
     employer_id = request.POST['employer']
-
     benefit = request.session['benefit'];
+
     model = MODEL_MAP[benefit]
     form = get_class(model.__name__+'Form') 
 
     instance = get_object_or_404(model, id=instance_id)
     form = form(request.POST or None, instance=instance)
 
-    if form.is_valid():
+    is_valid = form.is_valid()
+    if is_valid:
         form.save()
 
     benefit = request.session['benefit'];
     template = 'account_detail/form/{}.html'.format(benefit.lower())
-    return render(request, template, { 
+    body = render(request, template, { 
                                         'form': form, 
                                         'id': instance.id,
                                         'bc': BOOLEAN_CHOICES,
@@ -546,6 +589,7 @@ def update_benefit(request, instance_id):
                                         'sbc': STRATEGY_BOOLEAN_CHOICES
                                     })    
 
+    return JsonResponse({ 'body': body.content, 'is_valid': is_valid }, safe=False)
 
 @login_required(login_url='/login')
 def benchmarking(request, benefit):
@@ -632,8 +676,6 @@ def get_response_template(request,
         context['ft_states_label'] = h.unescape(', '.join(request.session.get('ft_states_label', ['All'])))
         context['plan_type'] = plan_type
 
-        group = request.user.groups.first().name
-        context['group'] = group.lower()
     return render(request, template, context)
 
 
@@ -654,6 +696,7 @@ def print_report(request):
         'industries': get_industries(),
         'STATES': STATE_CHOICES
     })    
+
 
 def print_plan_order(request, company_id):
     plans = []

@@ -273,7 +273,7 @@ var plan_type = '{{ request.session.plan_type }}';
     ];        
 
     gh4_data = [{
-        data : [['Multiple of Salary Only', {{ prcnt_type_plan_mul|cut:'%' }}], ['Flat Amount Only', {{ prcnt_type_plan_flat|cut:'%' }}], ['Both Plans', {{ prcnt_type_plan_mul_flat|cut:'%' }}]],
+        data : [['Multiple', {{ prcnt_type_plan_mul|cut:'%' }}], ['Flat', {{ prcnt_type_plan_flat|cut:'%' }}], ['Both', {{ prcnt_type_plan_mul_flat|cut:'%' }}]],
         bars : {
             show : true,
             barWidth : 0.3,

@@ -153,7 +153,7 @@ var plan_type = '{{ request.session.plan_type }}';
     ];        
 
     gh4_data = [{
-        data : [['100% Employer Paid Only', {{ prcnt_paid|cut:'%' }}], ['Employee Cost Share Only', {{ prcnt_share|cut:'%' }}], ['Core & Buy Up Plans', {{ prcnt_paid_share|cut:'%' }}]],
+        data : [['100% Employer', {{ prcnt_paid|cut:'%' }}], ['Employee Share', {{ prcnt_share|cut:'%' }}], ['Core / Buyup', {{ prcnt_paid_share|cut:'%' }}]],
         bars : {
             show : true,
             barWidth : 0.3,
