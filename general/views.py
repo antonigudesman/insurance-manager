@@ -439,7 +439,7 @@ def home(request):
 @login_required(login_url='/login')
 def accounts(request):            
     group = request.user.groups.first().name
-    if group == 'NTP':
+    if group == 'NFP':
         return render(request, 'error/403.html')
 
     return render(request, 'accounts.html', { 
@@ -457,7 +457,7 @@ def account_detail(request, id):
     if not employer:
         return render(request, 'error/404.html')
 
-    if group != 'bnchmrk' and group != employer.broker or group == 'NTP':
+    if group != 'bnchmrk' and group != employer.broker or group == 'NFP':
         return render(request, 'error/403.html')
 
     request.session['benefit'] = request.session.get('benefit', 'MEDICAL')
