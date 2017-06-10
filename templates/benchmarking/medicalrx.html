@@ -756,16 +756,58 @@
             {data: {{ prcnt_plan3_or_more }}, color: '#9E9E9E', label: 'Three or More Plans Offered'},
         ];        
 
-        gh11_data = [{
-            data : [['PPO', {{ prcnt_ppo|cut:'%' }}], ['POS', {{ prcnt_pos|cut:'%' }}], ['HMO', {{ prcnt_hmo|cut:'%' }}], ['EPO', {{ prcnt_epo|cut:'%' }}], ['HDHP', {{ prcnt_hdhp|cut:'%' }}]],
-            bars : {
-                show : true,
-                barWidth : 0.30,
-                order : 1,
-                lineWidth: 0,
-                fillColor: '#607D8B'
-            }
-        }];        
+        gh11_data = [
+            {
+                data : [['PPO', {{ prcnt_ppo|cut:'%' }}]],
+                bars : {
+                    show : true,
+                    barWidth : 0.30,
+                    order : 1,
+                    lineWidth: 0,
+                    fillColor: '#795548'
+                }
+            },
+            {
+                data : [['POS', {{ prcnt_pos|cut:'%' }}]],
+                bars : {
+                    show : true,
+                    barWidth : 0.30,
+                    order : 1,
+                    lineWidth: 0,
+                    fillColor: '#FFC107'
+                }
+            },            
+            {
+                data : [['HMO', {{ prcnt_hmo|cut:'%' }}]],
+                bars : {
+                    show : true,
+                    barWidth : 0.30,
+                    order : 1,
+                    lineWidth: 0,
+                    fillColor: '#009688'
+                }
+            },            
+            {
+                data : [['EPO', {{ prcnt_epo|cut:'%' }}]],
+                bars : {
+                    show : true,
+                    barWidth : 0.30,
+                    order : 1,
+                    lineWidth: 0,
+                    fillColor: '#9E9E9E'
+                }
+            },          
+            {
+                data : [['HDHP', {{ prcnt_hdhp|cut:'%' }}]],
+                bars : {
+                    show : true,
+                    barWidth : 0.30,
+                    order : 1,
+                    lineWidth: 0,
+                    fillColor: '#607D8B'
+                }
+            },           
+        ];        
 
         var attribute_map = [
             {

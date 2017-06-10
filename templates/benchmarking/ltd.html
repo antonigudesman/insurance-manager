@@ -152,16 +152,38 @@ var plan_type = '{{ request.session.plan_type }}';
         {data: {{ prcnt_plan3_or_more }}, color: '#9E9E9E', label: 'Three or More Plans Offered'},
     ];        
 
-    gh4_data = [{
-        data : [['100% Employer', {{ prcnt_paid|cut:'%' }}], ['Employee Share', {{ prcnt_share|cut:'%' }}], ['Core / Buyup', {{ prcnt_paid_share|cut:'%' }}]],
-        bars : {
-            show : true,
-            barWidth : 0.3,
-            order : 1,
-            lineWidth: 0,
-            fillColor: '#607D8B'
-        }
-    }]; 
+    gh4_data = [
+        {
+            data : [['100% Employer', {{ prcnt_paid|cut:'%' }}]],
+            bars : {
+                show : true,
+                barWidth : 0.3,
+                order : 1,
+                lineWidth: 0,
+                fillColor: '#795548'
+            }
+        },
+        {
+            data : [['Employee Share', {{ prcnt_share|cut:'%' }}]],
+            bars : {
+                show : true,
+                barWidth : 0.3,
+                order : 1,
+                lineWidth: 0,
+                fillColor: '#FFC107'
+            }
+        },
+        {
+            data : [['Core / Buyup', {{ prcnt_paid_share|cut:'%' }}]],
+            bars : {
+                show : true,
+                barWidth : 0.3,
+                order : 1,
+                lineWidth: 0,
+                fillColor: '#607D8B'
+            }
+        },
+    ]; 
 
     var attribute_map = [
         {

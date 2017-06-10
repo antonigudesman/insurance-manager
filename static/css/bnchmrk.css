@@ -42,3 +42,12 @@
 .print-container-header p.filters {
 	font-size: 17px;
 }
+
+div#bar-chart .flot-x-axis {
+	margin-left: 9px;
+}
+
+div.dash-widget-item div.row {
+	padding-top: 12px;
+	padding-bottom: 18px; 
+}

@@ -488,16 +488,28 @@ var plan_type = '{{ request.session.plan_type }}';
         {data: {{ prcnt_plan3_or_more }}, color: '#FFC107', label: 'Three or More Plans Offered'},
     ];        
 
-    gh12_data = [{
-        data : [['DPPO', {{ prcnt_dppo|cut:'%' }}], ['DMO', {{ prcnt_dmo|cut:'%' }}]],
-        bars : {
-            show : true,
-            barWidth : 0.30,
-            order : 1,
-            lineWidth: 0,
-            fillColor: '#607D8B'
-        }
-    }];        
+    gh12_data = [
+        {
+            data : [['DPPO', {{ prcnt_dppo|cut:'%' }}]],
+            bars : {
+                show : true,
+                barWidth : 0.30,
+                order : 1,
+                lineWidth: 0,
+                fillColor: '#607D8B'
+            }
+        },
+        {
+            data : [['DMO', {{ prcnt_dmo|cut:'%' }}]],
+            bars : {
+                show : true,
+                barWidth : 0.30,
+                order : 1,
+                lineWidth: 0,
+                fillColor: '#009688'
+            }
+        },
+    ];        
 
     var attribute_map = [
         {

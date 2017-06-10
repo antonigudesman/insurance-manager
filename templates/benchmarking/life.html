@@ -272,16 +272,38 @@ var plan_type = '{{ request.session.plan_type }}';
         {data: {{ prcnt_plan3_or_more }}, color: '#9E9E9E', label: 'Three or More Plans Offered'},
     ];        
 
-    gh4_data = [{
-        data : [['Multiple', {{ prcnt_type_plan_mul|cut:'%' }}], ['Flat', {{ prcnt_type_plan_flat|cut:'%' }}], ['Both', {{ prcnt_type_plan_mul_flat|cut:'%' }}]],
-        bars : {
-            show : true,
-            barWidth : 0.3,
-            order : 1,
-            lineWidth: 0,
-            fillColor: '#607D8B'
-        }
-    }]; 
+    gh4_data = [
+        {
+            data : [['Multiple', {{ prcnt_type_plan_mul|cut:'%' }}]],
+            bars : {
+                show : true,
+                barWidth : 0.3,
+                order : 1,
+                lineWidth: 0,
+                fillColor: '#795548'
+            }
+        },
+        {
+            data : [['Flat', {{ prcnt_type_plan_flat|cut:'%' }}]],
+            bars : {
+                show : true,
+                barWidth : 0.3,
+                order : 1,
+                lineWidth: 0,
+                fillColor: '#009688'
+            }
+        },
+        {
+            data : [['Both', {{ prcnt_type_plan_mul_flat|cut:'%' }}]],
+            bars : {
+                show : true,
+                barWidth : 0.3,
+                order : 1,
+                lineWidth: 0,
+                fillColor: '#607D8B'
+            }
+        },
+    ]; 
 
     var attribute_map = [
         {

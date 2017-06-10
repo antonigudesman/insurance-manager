@@ -150,7 +150,7 @@ function draw_hbar_chart(id, barData, unit) {
                     color: "#9f9f9f"
                 },
                 shadowSize: 0,
-                mode: 'categories'
+                mode: 'categories',
             },
     
             legend:{
