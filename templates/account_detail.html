@@ -45,7 +45,6 @@
                                 <th data-column-id="type">Type</th>
                                 <th data-column-id="in_ded_single">IN Deductible (Ind)</th>
                                 <th data-column-id="in_max_single">IN Maximum (Ind)</th>
-                                <th data-column-id="in_coin">IN Coinsurances</th>
                                 <th data-column-id="benefit" data-visible="false">Benefit</th>
                             </tr>
                         </thead>
@@ -57,7 +56,6 @@
                                 <td>{{ item.2 }}</td>
                                 <td>{{ item.3 }}</td>
                                 <td>{{ item.4 }}</td>
-                                <td>{{ item.5 }}</td>
                                 <td>MEDICAL</td>
                             </tr>
                         {% endfor %}
@@ -74,7 +72,6 @@
                                 <th data-column-id="type">Type</th>
                                 <th data-column-id="in_ded_single">IN Deductible (Ind)</th>
                                 <th data-column-id="in_max">IN Maximum (Ind)</th>
-                                <th data-column-id="in_max_ortho">IN Ortho Max (PP)</th>
                                 <th data-column-id="benefit" data-visible="false">Benefit</th>
                             </tr>
                         </thead>
@@ -86,7 +83,6 @@
                                 <td>{{ item.2 }}</td>
                                 <td>{{ item.3 }}</td>
                                 <td>{{ item.4 }}</td>
-                                <td>{{ item.5 }}</td>
                                 <td>DENTAL</td>
                             </tr>
                         {% endfor %}
@@ -103,7 +99,6 @@
                                 <th data-column-id="exam_copay">Exam Copay</th>
                                 <th data-column-id="lenses_copay">Lenses Copay</th>
                                 <th data-column-id="frames_allowance">Frames Allowance</th>
-                                <th data-column-id="contacts_allowance">Contacts Allowance</th>
                                 <th data-column-id="benefit" data-visible="false">Benefit</th>
                             </tr>
                         </thead>
@@ -115,7 +110,6 @@
                                 <td>{{ item.2 }}</td>
                                 <td>{{ item.3 }}</td>
                                 <td>{{ item.4 }}</td>
-                                <td>{{ item.5 }}</td>
                                 <td>VISION</td>
                             </tr>
                         {% endfor %}
@@ -130,11 +124,8 @@
                                 <th data-column-id="title" data-formatter="link">Plan Name</th>
                                 <th data-column-id="id"  data-visible="false">ID</th>
                                 <th data-column-id="type">Type</th>
-                                <th data-column-id="multiple">Multiple</th>
                                 <th data-column-id="multiple_max">Multiple Max</th>
                                 <th data-column-id="flat_amount">Flat Amount</th>
-                                <th data-column-id="add">Add</th>
-                                <th data-column-id="cost_share">Cost Share</th>
                                 <th data-column-id="benefit" data-visible="false">Benefit</th>
                             </tr>
                         </thead>
@@ -146,9 +137,6 @@
                                 <td>{{ item.2 }}</td>
                                 <td>{{ item.3 }}</td>
                                 <td>{{ item.4 }}</td>
-                                <td>{{ item.5 }}</td>
-                                <td>{{ item.6 }}</td>
-                                <td>{{ item.7 }}</td>
                                 <td>LIFE</td>
                             </tr>
                         {% endfor %}
@@ -163,10 +151,8 @@
                                 <th data-column-id="title" data-formatter="link">Plan Name</th>
                                 <th data-column-id="id"  data-visible="false">ID</th>
                                 <th data-column-id="waiting_days">Waiting Days</th>
-                                <th data-column-id="duration_weeks">Duration Weeks</th>
                                 <th data-column-id="percentage">Percentage</th>
                                 <th data-column-id="weekly_max">Weekly Max</th>
-                                <th data-column-id="cost_share">Cost Share</th>
                                 <th data-column-id="benefit" data-visible="false">Benefit</th>
                             </tr>
                         </thead>
@@ -178,8 +164,6 @@
                                 <td>{{ item.2 }}</td>
                                 <td>{{ item.3 }}</td>
                                 <td>{{ item.4 }}</td>
-                                <td>{{ item.5 }}</td>
-                                <td>{{ item.6 }}</td>
                                 <td>STD</td>
                             </tr>
                         {% endfor %}
@@ -196,7 +180,6 @@
                                 <th data-column-id="waiting_weeks">Waiting Weeks</th>
                                 <th data-column-id="percentage">Percentage</th>
                                 <th data-column-id="monthly_max">Monthly Max</th>
-                                <th data-column-id="cost_share">Cost Share</th>
                                 <th data-column-id="benefit" data-visible="false">Benefit</th>
                             </tr>
                         </thead>
@@ -208,7 +191,6 @@
                                 <td>{{ item.2 }}</td>
                                 <td>{{ item.3 }}</td>
                                 <td>{{ item.4 }}</td>
-                                <td>{{ item.5 }}</td>
                                 <td>LTD</td>
                             </tr>
                         {% endfor %}

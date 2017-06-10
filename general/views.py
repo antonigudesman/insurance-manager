@@ -501,33 +501,30 @@ def account_detail(request, id):
             if model == Medical:
                 plans_list[model.__name__].append([item.title, item.id, 
                     item.type, get_dollar_property(item.in_ded_single), 
-                    get_dollar_property(item.in_max_single), 
-                    get_percent_property(item.in_coin)])
+                    get_dollar_property(item.in_max_single)])
             elif model == Dental:
                 plans_list[model.__name__].append([item.title, item.id, 
                     item.type, get_dollar_property(item.in_ded_single), 
-                    get_dollar_property(item.in_max), 
-                    get_dollar_property(item.in_max_ortho)])
+                    get_dollar_property(item.in_max)])
             elif model == Vision:
                 plans_list[model.__name__].append([item.title, item.id, 
                     get_dollar_property(item.exam_copay), 
                     get_dollar_property(item.lenses_copay), 
-                    get_dollar_property(item.frames_allowance), 
-                    get_dollar_property(item.contacts_allowance)])
+                    get_dollar_property(item.frames_allowance)])
             elif model == Life:
                 plans_list[model.__name__].append([item.title, item.id, 
-                    item.type, item.multiple if item.multiple!=None else '-' , 
+                    item.type, 
                     get_dollar_property(item.multiple_max), 
-                    get_dollar_property(item.flat_amount), item.add, item.cost_share])
+                    get_dollar_property(item.flat_amount)])
             elif model == STD:
                 plans_list[model.__name__].append([item.title, item.id, 
-                    item.waiting_days, item.duration_weeks, 
+                    item.waiting_days,
                     get_percent_property(item.percentage), 
-                    get_dollar_property(item.weekly_max), item.cost_share])
+                    get_dollar_property(item.weekly_max),])
             elif model == LTD:
                 plans_list[model.__name__].append([item.title, item.id, 
                     item.waiting_weeks, get_percent_property(item.percentage), 
-                    get_dollar_property(item.monthly_max), item.cost_share])
+                    get_dollar_property(item.monthly_max)])
             else:
                 plans_list[model.__name__].append([item.id, item.spousal_surcharge, 
                     item.tobacco_surcharge, item.offer_fsa, item.salary_banding])
