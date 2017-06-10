@@ -94,7 +94,7 @@ USE_MODELTRANSLATION = False
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-    "54.148.203.146"
+    "app.bnchmrk.com"
 ]
 
 # Local time zone for this installation. Choices can be found here:
