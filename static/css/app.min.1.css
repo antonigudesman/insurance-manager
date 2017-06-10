@@ -15859,3 +15859,7 @@ body.login-content:before {
   overflow: hidden;
   white-space: nowrap;
 }
+
+li.logo img {
+  height: 30px;
+}
