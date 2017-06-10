@@ -46,7 +46,8 @@
 {% block extra_js %}
     <script type="text/javascript">
         jQuery(function($) {
-            $('ul.stem-menu li').eq(3).addClass('active');
+            var len_li = $('ul.stem-menu li').length;
+            $('ul.stem-menu li').eq(len_li-1).addClass('active');
         });
     </script>
 
