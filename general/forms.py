@@ -306,3 +306,20 @@ class StrategyForm(ModelForm):
             raise forms.ValidationError("If Tobacco Surcharge Amount is provided, the Require Tobacco Surcharge dropdown must be set to Yes.")
 
         return self.cleaned_data
+
+
+class ChangePasswordForm(forms.Form):
+    # current = forms.CharField(widget=forms.TextInput(attrs={'required': True, 'class': 'form-control'}))
+    new = forms.CharField(widget=forms.TextInput(attrs={'required': True, 'class': 'form-control'}))
+    confirm = forms.CharField(widget=forms.TextInput(attrs={'required': True, 'class': 'form-control'}))
+
+    def clean(self):
+        # current = self.cleaned_data.get('current')
+        new = self.cleaned_data.get('new')
+        confirm = self.cleaned_data.get('confirm')
+
+        # add custom validation rules 
+        if new != confirm:
+            raise forms.ValidationError("Password is not correct!")
+            
+        return self.cleaned_data

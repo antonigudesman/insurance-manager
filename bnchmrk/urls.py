@@ -52,6 +52,7 @@ urlpatterns += [
     url(r"^login", user_login, name="login"),
     url(r"^logout", user_logout, name="logout"),
     url(r"^reset_password", reset_password, name="reset_password"),
+    url(r"^change_password", change_password, name="change_password"),
     # main logic
     url(r"^enterprise", enterprise, name="enterprise"), # benchmarking
     # url(r"^_enterprise", ajax_enterprise, name="_enterprise"),
