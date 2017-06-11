@@ -169,22 +169,22 @@ def get_pdf(request, print_benefits, download=True):
         vars_d = {}
         uidx = 0
 
-        # for header
-        url = 'http://{}/25Wfr7r2-3h4X25t?p_benefit={}'.format(request.META.get('HTTP_HOST'), 
-            encode_url(print_benefits[0]))
-        print url, '######################3'
-        driver.get(url)
-        time.sleep(0.8)
-        vars_d['img_path_header_{}'.format(uidx)] = '{}_{}_header.png'.format(base_path, uidx)
-        driver.save_screenshot(vars_d['img_path_header_{}'.format(uidx)])
-        
-        # build a pdf with images using fpdf
-        pdf.add_page()
-        pdf.image(vars_d['img_path_header_{}'.format(uidx)], -margin_h, margin_v)
-        os.remove(vars_d['img_path_header_{}'.format(uidx)])
-
         if not download:
-            # print contents
+            # for header
+            url = 'http://{}/25Wfr7r2-3h4X25t?p_benefit={}'.format(request.META.get('HTTP_HOST'), 
+                encode_url(print_benefits[0]))
+            print url, '######################3'
+            driver.get(url)
+            time.sleep(0.8)
+            vars_d['img_path_header_{}'.format(uidx)] = '{}_{}_header.png'.format(base_path, uidx)
+            driver.save_screenshot(vars_d['img_path_header_{}'.format(uidx)])
+            
+            # build a pdf with images using fpdf
+            pdf.add_page()
+            pdf.image(vars_d['img_path_header_{}'.format(uidx)], -margin_h, margin_v)
+            os.remove(vars_d['img_path_header_{}'.format(uidx)])
+
+            # print contents table
             _page = 1
             contents = []
             for item in print_benefits:

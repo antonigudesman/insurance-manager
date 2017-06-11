@@ -289,8 +289,11 @@ def update_properties(request):
     if benefit == 'MEDICALRX':
         benefit = 'MEDICAL'
 
-    func_name = 'get_{}_properties'.format(benefit.lower())
-    return globals()[func_name](request, plan, plan_type, quintile_properties, quintile_properties_inv, services)
+    if not int(plan):
+        return HttpResponse('') 
+    else:
+        func_name = 'get_{}_properties'.format(benefit.lower())
+        return globals()[func_name](request, plan, plan_type, quintile_properties, quintile_properties_inv, services)
 
 
 @csrf_exempt

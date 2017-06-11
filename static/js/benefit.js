@@ -362,7 +362,7 @@ function update_properties() {
             print_template: print_template
         },
         function(data) {
-            if (plan == 0 || plan == "") {
+            if (plan == 0 || plan == "" || data == '') {
                 $('.toggle_plan').hide();
             } else {
                 $('.toggle_plan').show();
@@ -496,8 +496,8 @@ function update_e_cost(obj) {
 
 
 function show_print_pending_dialog(id) {
-    // swal("Printing Page Confirmation", "Please wait while your $$$ Benchmarking Report is generated. You will be alerted as soon as the report is ready to download.".replace('$$$', bnchmrk_benefit));
-    window.open("/print_page_preview", "myWindow"+$(this).data("row-id"), "width=1400,height=600,left=200,top=200,scrollbars=yes,location=no");
+    swal("Printing Page Confirmation", "Please wait while your $$$ Benchmarking Report is generated. You will be alerted as soon as the report is ready to download.".replace('$$$', bnchmrk_benefit));
+    // window.open("/print_page_preview", "myWindow"+$(this).data("row-id"), "width=1400,height=600,left=200,top=200,scrollbars=yes,location=no");
 }
 
 function show_print_report_pending_dialog() {
