@@ -17,7 +17,7 @@
             <div class="card-body card-padding">    
                 <h2>{{ faq.title }}</h2>
                 <h4>Category: {{ faq.category }}</h4>
-                <div> {{ faq.content }} </div>        
+                <div> {{ faq.content|safe }} </div>        
             </div>
         </div>
             
