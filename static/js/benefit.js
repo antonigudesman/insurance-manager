@@ -422,16 +422,25 @@ function update_properties() {
                     } else if (key.match("^service_")) {
                         var title = '';
 
-                        if (!value)
+                        if (!value) {
                             title = '-';
-                        else if (value[5] == 'FALSE')
+                        } else if (value[5] == 'FALSE') {
                             title = 'No deductible, $' + value[4] + ' copay';
-                        else if (value[5] == 'False/Coin')
-                            title = 'No deductible, then coinsurance';
-                        else if (value[5] == 'TRUE')
+                        } else if (value[5] == 'False/Coin') {
+                            if (value[4]) {
+                                title = '$' + value[4] + ', no deductible, then coinsurance';
+                            } else {
+                                title = 'No deductible, then coinsurance';
+                            }
+                        } else if (value[5] == 'TRUE') {
                             title = 'Deductible, $' + value[4] + ' copay';
-                        else
-                            title = 'Deductible, then coinsurance';
+                        } else {
+                            if (value[4]) {
+                                title = '$' + value[4] + ', deductible, then coinsurance';
+                            } else {
+                                title = 'Deductible, then coinsurance';
+                            }
+                        }
 
                         $('#'+key).html(title);
                     } else {

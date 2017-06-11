@@ -428,7 +428,8 @@ def employee_pricing_medical(plans, service):
             elif _apply == 'False/Coin':
                 ded_cost = 0
                 coin_cost = getattr(instance, 'in_coin') or 0
-                copay_cost = 0
+                # copay_cost = 0
+                copay_cost = getattr(instance, service.lower()+'_copay') or 0
             elif _apply == 'TRUE':
                 ded_cost = getattr(instance, 'in_ded_single') or 0
                 coin_cost = 0
@@ -436,7 +437,8 @@ def employee_pricing_medical(plans, service):
             elif _apply == 'True/Coin':
                 ded_cost = getattr(instance, 'in_ded_single') or 0
                 coin_cost = getattr(instance, 'in_coin') or 0
-                copay_cost = 0
+                # copay_cost = 0
+                copay_cost = getattr(instance, service.lower()+'_copay') or 0
 
             # print service, detail['value'], ded_max, '@@@@@@@@@@@@@@@@@@'
             # print _apply, ded_cost, coin_cost, copay_cost

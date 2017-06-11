@@ -1,9 +1,17 @@
 {% if attr.5 == 'FALSE' %}
     No deductible, ${{ attr.4 }} copay
-{% elif attr.5 == 'False/Coin' %}
-    No deductible, then coinsurance
+{% elif attr.5 == 'False/Coin' %}   
+    {% if attr.4 %}
+        ${{ attr.4 }}, no deductible, then coinsurance
+    {% else %}
+        No deductible, then coinsurance
+    {% endif %}
 {% elif attr.5 == "TRUE" %}
     Deductible, ${{ attr.4 }} copay
 {% else %}
-    Deductible, then coinsurance
+    {% if attr.4 %}
+        ${{ attr.4 }}, deductible, then coinsurance
+    {% else %}
+        Deductible, then coinsurance
+    {% endif %}
 {% endif %}
