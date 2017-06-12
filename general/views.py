@@ -698,8 +698,8 @@ def print_plan_order(request, company_id):
     plans = []
     for model in [Medical, Dental, Vision, Life, STD, LTD, Strategy]:
         # plans[model.__name__] = []
-        attrs = ATTRIBUTE_MAP[model.__name__.upper()]
         for item in model.objects.filter(employer_id=company_id):
+            attrs = ATTRIBUTE_MAP[model.__name__.upper()]
             try:
                 plan_type = getattr(item, 'type')
                 if plan_type in ['PPO', 'POS']:
