@@ -236,7 +236,7 @@ update_content = function(benefit, plan_type) {
         draw_easy_pie_chart();
     } else if ($.inArray(benefit, ["MEDICALRX"]) != -1) {
         if (plan_type == "HMO")
-            $('.out-benefit').remove();
+            $('.out-benefit').hide();
         else if (plan_type == 'HDHP')
             $('.hdhp-benefit').remove();
         else
