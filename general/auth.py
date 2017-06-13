@@ -37,6 +37,7 @@ def user_logout(request):
     logout(request)
     return HttpResponseRedirect('/login') 
 
+
 @csrf_exempt
 def reset_password(request):
     to_email = request.POST['email']
