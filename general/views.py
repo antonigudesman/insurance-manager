@@ -124,6 +124,12 @@ def enterprise(request):
             request.session['ft_regions'] = ft_regions
             request.session['ft_states'] = ft_states
 
+            ft_industries = ['*']
+            ft_head_counts = ['0-2000000']
+            ft_other = []
+            ft_regions = ['*']
+            ft_states = []
+
             request.session['ft_industries_label'] = ft_industries_label
             request.session['ft_head_counts_label'] = ft_head_counts_label
             request.session['ft_other_label'] = ft_other_label

@@ -10,6 +10,7 @@ var regions_label = [];
 var states_label = [];
 
 $(document).ready(function(){
+    get_filters_label();
     load_employers();
 });
 
@@ -57,7 +58,7 @@ function load_employers() {
                 states: states,
                 threshold: 0,
 
-                print: true,
+                print: is_print,
                 industry_label: industries_label,
                 head_counts_label: head_counts_label,
                 others_label: others_label,
