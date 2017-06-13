@@ -542,7 +542,8 @@ class StrategyAdmin(admin.ModelAdmin):
 class FAQAdmin(admin.ModelAdmin):
     list_display = ['title', 'partial_content', 'category', 'created_at']
     search_fields = ('content', 'title',)
-
+    save_as = True
+    
     def partial_content(self, obj):
         return obj.content[:50]
 
@@ -550,6 +551,7 @@ class FAQAdmin(admin.ModelAdmin):
 class FAQCategoryAdmin(admin.ModelAdmin):
     list_display = ['title']
     search_fields = ('title',)
+    save_as = True
 
 
 class PrintHistoryAdmin(admin.ModelAdmin):
