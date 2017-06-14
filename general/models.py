@@ -17,6 +17,7 @@ INDUSTRY_CHOICES = (
     ('Educational Services - Miscellaneous', 'Educational Services - Miscellaneous'),
     ('Educational Services - Primary & Secondary Schools', 'Educational Services - Primary & Secondary Schools'),
     ('Finance & Insurance - Banking', 'Finance & Insurance - Banking'),
+    ('Finance & Insurance - Credit Intermediation and Related Activities', 'Finance & Insurance - Credit Intermediation and Related Activities'),
     ('Finance & Insurance - Insurance Agents & Services', 'Finance & Insurance - Insurance Agents & Services'),
     ('Finance & Insurance - Insurance Carriers', 'Finance & Insurance - Insurance Carriers'),
     ('Finance & Insurance - Investment Services', 'Finance & Insurance - Investment Services'),
