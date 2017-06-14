@@ -142,8 +142,9 @@ def get_medicalrx_plan(request, employers, num_companies, plan_type=None):
     # calculate employee costs
     for service in settings.CPT_COST.keys():
         e_costs, e_stacks = employee_pricing_medical(qs, service)
-        val, idx = get_median_list(e_costs)
-        var_local[service+'_attr'] = e_stacks[idx]
+        if e_costs:
+            val, idx = get_median_list(e_costs)
+            var_local[service+'_attr'] = e_stacks[idx]
 
     return dict(var_local.items() 
               + prcnt_plan_count.items()
