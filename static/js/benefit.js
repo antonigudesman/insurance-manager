@@ -18,10 +18,10 @@ var states_label = [];
 var colors = ['#f8696b', '#f8696b', '#FFE364', '#FFE364', '#bfbfbf', '#bfbfbf', '#B1D480', '#B1D480', '#63be7b', '#63be7b'];
 
 jQuery(function($) {
-    if (print_template) {
+    if (print_template == true) {
         update_properties();
         update_content(bnchmrk_benefit, plan_type);
-    } else {    
+    } else if (print_template == false) {    
     	// mark left menu selected
         $('ul.stem-menu li').eq(2).addClass('active');
 

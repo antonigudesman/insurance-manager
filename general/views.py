@@ -649,15 +649,15 @@ def get_response_template(request,
 
     today = datetime.strftime(datetime.now(), '%B %d, %Y')
     employers, num_companies = get_filtered_employers_session(request)
+    plan_type = request.session.get('plan_type')
 
-    if num_companies < settings.EMPLOYER_THRESHOLD:
+    if num_companies < settings.EMPLOYER_THRESHOLD or is_print_header:
         context =  {
             'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE,
             'num_employers': num_companies,
             'EMPLOYER_THRESHOLD': settings.EMPLOYER_THRESHOLD
         }
     else:
-        plan_type = request.session.get('plan_type')
         func_name = 'get_{}_plan'.format(benefit.lower())
         context = globals()[func_name](request, employers, num_companies, plan_type)
 

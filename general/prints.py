@@ -70,12 +70,15 @@ def print_template_header(request):
     request.session['plan_type'] = p_benefit['plan_type']
 
     broker = request.user.groups.first().name.lower()
+    benefit = p_benefit['benefit'] if p_benefit['benefit'] != 'MEDICALRX' else 'MEDICAL'
+    model = MODEL_MAP[benefit]
+    instance = model.objects.get(id=p_benefit['plan'])
+
     if broker == 'bnchmrk':
-        benefit = p_benefit['benefit'] if p_benefit['benefit'] != 'MEDICALRX' else 'MEDICAL'
-        model = MODEL_MAP[benefit]
-        broker = model.objects.get(id=p_benefit['plan']).employer.broker.id.lower()
+        broker = instance.employer.broker.id.lower()
 
     request.session['broker'] = broker
+    request.session['client_name'] = instance.employer.name
 
     return get_response_template(request, 
                                  p_benefit['benefit'], 
@@ -175,7 +178,7 @@ def get_pdf(request, print_benefits, download=True):
                 encode_url(print_benefits[0]))
             print url, '######################3'
             driver.get(url)
-            time.sleep(0.8)
+            time.sleep(0.1)
             vars_d['img_path_header_{}'.format(uidx)] = '{}_{}_header.png'.format(base_path, uidx)
             driver.save_screenshot(vars_d['img_path_header_{}'.format(uidx)])
             
@@ -201,7 +204,7 @@ def get_pdf(request, print_benefits, download=True):
                 encode_url(contents))
             
             driver.get(url)
-            time.sleep(0.4)
+            time.sleep(0.2)
             driver.save_screenshot(base_path+'_contents.png')
             
             # build a pdf with images using fpdf
@@ -217,7 +220,9 @@ def get_pdf(request, print_benefits, download=True):
 
             print url, '#############3'
             driver.get(url)        
-            time.sleep(1.6) #0.6
+            time.sleep(0.5)
+            if p_benefit['benefit'] in ['MEDICALRX', 'DENTAL']:
+                time.sleep(0.7)
 
             driver.save_screenshot(vars_d['img_path_{}'.format(uidx)])
 

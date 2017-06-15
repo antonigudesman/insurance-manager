@@ -12,7 +12,7 @@
         <div class="clearfix"></div>
         <div class="print-benefit-details p-15" style="margin-top: 50px;">
             <h1>Benchmarking Analysis</h1>
-            <h1><span id='prop_client_name'></span></h1>
+            <h1>{{ request.session.client_name }}</h1>
             <h3>Comparison Set Includes: {{ num_employers|intcomma }} Employers</h3>
             <p class="filters">
                 <b>Industries:</b> <span id='lbl_ft_industries'>{{ ft_industries_label }}</span>, 
@@ -26,4 +26,10 @@
     </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script type="text/javascript">
+        var print_template = 'header';
+    </script>
 {% endblock %}
