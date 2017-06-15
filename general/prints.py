@@ -73,7 +73,7 @@ def print_template_header(request):
     if broker == 'bnchmrk':
         benefit = p_benefit['benefit'] if p_benefit['benefit'] != 'MEDICALRX' else 'MEDICAL'
         model = MODEL_MAP[benefit]
-        broker = model.objects.get(id=p_benefit['plan']).employer.broker.lower()
+        broker = model.objects.get(id=p_benefit['plan']).employer.broker.id.lower()
 
     request.session['broker'] = broker
 

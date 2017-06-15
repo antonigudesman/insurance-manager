@@ -176,11 +176,11 @@ def enterprise(request):
 
             item__ = []
             if item.industry1:
-                item__.append(item.industry1)
+                item__.append(item.industry1.id)
             if item.industry2:
-                item__.append(item.industry2)
+                item__.append(item.industry2.id)
             if item.industry3:
-                item__.append(item.industry3)
+                item__.append(item.industry3.id)
             item_['industry'] = '@'.join(item__)
 
             item__ = []
@@ -208,7 +208,7 @@ def enterprise(request):
                     item_['size'] = key
                     break
 
-            item_['industry'] = item.industry1
+            item_['industry'] = item.industry1.id
             employers_.append(item_)
 
         if num_companies < settings.EMPLOYER_THRESHOLD and threshold:
@@ -462,7 +462,7 @@ def account_detail(request, id):
     if not employer:
         return render(request, 'error/404.html')
 
-    if group != 'bnchmrk' and group != employer.broker or group == 'NFP':
+    if group != 'bnchmrk' and group != employer.broker.id or group == 'NFP':
         return render(request, 'error/403.html')
 
     request.session['benefit'] = request.session.get('benefit', 'MEDICAL')
@@ -488,11 +488,11 @@ def account_detail(request, id):
 
     industries = []
     if employer.industry1:
-        industries.append(employer.industry1)
+        industries.append(employer.industry1.id)
     if employer.industry2:
-        industries.append(employer.industry2)
+        industries.append(employer.industry2.id)
     if employer.industry3:
-        industries.append(employer.industry3)
+        industries.append(employer.industry3.id)
     industry = ', '.join(industries)
 
     plans = []

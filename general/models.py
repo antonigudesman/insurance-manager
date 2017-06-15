@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 
 
 INDUSTRY_CHOICES = (
-    (None, '-'),
+    ('', ''),
     ('Accommodation & Food Services - All', 'Accommodation & Food Services - All'),
     ('Agriculture, Forestry, Fishing & Hunting - All', 'Agriculture, Forestry, Fishing & Hunting - All'),
     ('Arts, Entertainment, & Recreation - All', 'Arts, Entertainment, & Recreation - All'),
@@ -134,6 +134,7 @@ BROKER_CHOICES = (
     ('Ascension', 'Ascension'),
     ('Assurance', 'Assurance'),
     ('Benefit Service Company', 'Benefit Service Company'),
+    ('BSG', 'BSG'),
     ('Core', 'Core'),
     ('Cook Maran', 'Cook Maran'),
     ('Corporate Synergies', 'Corporate Synergies'),
@@ -159,13 +160,31 @@ BROKER_CHOICES = (
 )
 
 
+class Industry(models.Model):
+    id = models.CharField(max_length=150, primary_key=True)
+
+    def __str__(self):
+        return self.id
+
+    class Meta:
+        verbose_name = 'Industry'
+        verbose_name_plural = 'Industries'
+
+
+class Broker(models.Model):
+    id = models.CharField(max_length=150, primary_key=True)
+
+    def __str__(self):
+        return self.id
+
+
 class Employer(models.Model):
     id = models.CharField(max_length=18, primary_key=True)
     name = models.CharField('Name',max_length=100)
-    broker = models.CharField('Account',max_length=75, choices=BROKER_CHOICES) 
-    industry1 = models.CharField('Primary Industry',max_length=75, null=True, blank=True, choices=INDUSTRY_CHOICES)
-    industry2 = models.CharField('Secondary Industry',max_length=75, null=True, blank=True, choices=INDUSTRY_CHOICES) 
-    industry3 = models.CharField('Additional Industry',max_length=75, null=True, blank=True, choices=INDUSTRY_CHOICES) 
+    broker = models.ForeignKey(Broker, verbose_name='Account')
+    industry1 = models.ForeignKey(Industry, verbose_name='Primary Industry', null=True, blank=True, related_name="industry_1")
+    industry2 = models.ForeignKey(Industry, verbose_name='Secondary Industry', null=True, blank=True, related_name="industry_2") 
+    industry3 = models.ForeignKey(Industry, verbose_name='Additional Industry', null=True, blank=True, related_name="industry_3") 
     state = models.CharField('State',max_length=25, null=True, blank=True, choices=STATE_CHOICES)
     size = models.PositiveIntegerField('Size', validators=[MinValueValidator(1)])
     nonprofit = models.BooleanField('Non-Profit Organization')

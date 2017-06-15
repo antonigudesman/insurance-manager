@@ -42,7 +42,7 @@ class EmployerForm(forms.ModelForm):
 class EmployerAdmin(admin.ModelAdmin):
     list_display = ['name','broker','industry1','formatted_size',
                     'med_count','den_count','vis_count', 'life_count','std_count','ltd_count']
-    search_fields = ('name','broker')
+    search_fields = ('name','broker__id')
     list_filter = ('broker',)
     change_form_template = 'admin/change_form_employer.html'
     fields = ('name', 'broker', 'qc', 'industry1', 'state', 'industry2', 'size', 'industry3',
@@ -559,6 +559,16 @@ class PrintHistoryAdmin(admin.ModelAdmin):
     search_fields = ('plan_type',)
 
 
+class IndustryAdmin(admin.ModelAdmin):
+    list_display = ['id']
+    search_fields = ('id',)
+
+
+class BrokerAdmin(admin.ModelAdmin):
+    list_display = ['id']
+    search_fields = ('id',)
+
+
 admin.site.register(Employer, EmployerAdmin)
 admin.site.register(Life, LifeAdmin)
 admin.site.register(STD, STDAdmin)
@@ -570,4 +580,5 @@ admin.site.register(Medical, MedicalAdmin)
 admin.site.register(FAQ, FAQAdmin)
 admin.site.register(FAQCategory, FAQCategoryAdmin)
 admin.site.register(PrintHistory, PrintHistoryAdmin)
-
+admin.site.register(Industry, IndustryAdmin)
+admin.site.register(Broker, BrokerAdmin)
