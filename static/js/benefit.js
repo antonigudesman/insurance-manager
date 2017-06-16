@@ -428,7 +428,7 @@ function update_properties() {
                             title = 'No deductible, $' + value[4] + ' copay';
                         } else if (value[5] == 'False/Coin') {
                             if (value[4]) {
-                                title = '$' + value[4] + ', no deductible, then coinsurance';
+                                title = '$' + value[4] + ', no deductible, coinsurance';
                             } else {
                                 title = 'No deductible, then coinsurance';
                             }
@@ -473,7 +473,7 @@ function update_e_cost(obj) {
             if (data[5] == 'FALSE')
                 title = 'No deductible, $' + data[4] + ' copay ( $' + data[1] + ' )';
             else if (data[5] == 'False/Coin')
-                title = 'No deductible, then coinsurance (Benchmark)';
+                title = 'No deductible, coinsurance (Benchmark)';
             else if (data[5] == 'TRUE')
                 title = 'Deductible, $' + data[4] + ' copay (Benchmark)';
             else

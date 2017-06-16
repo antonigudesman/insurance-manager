@@ -147,9 +147,9 @@ MED_TYPE_CHOICES = (
 MED_BOOL_CHOICES = (
     (None, '-'),
     ('FALSE', 'No Deductible'),
-    ('False/Coin', 'No Deductible, then Coinsurance'),
+    ('False/Coin', 'No Deductible, Coinsurance'),
     ('TRUE', 'Deductible'),
-    ('True/Coin', 'Deductible, then Coinurance')
+    ('True/Coin', 'Deductible, then Coinsurance')
 )
 
 

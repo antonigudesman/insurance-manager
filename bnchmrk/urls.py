@@ -76,6 +76,7 @@ urlpatterns += [
     url(r"^print_report$", print_report, name="print_report"),
     url(r"^print_history$", print_history, name="print_history"),
     url(r"^print_page_preview$", print_page_preview, name="print_page_preview"),
+    url(r"^print_end$", print_end, name="print_end"),
     url(r"^print_history/(?P<id>\d+)$", edit_print_history, name="edit_print_history"),
     url(r"^print_plan_order/(?P<company_id>.*)$", print_plan_order, name="print_plan_order"),
     url(r"^print_report_in_order$", print_report_in_order, name="print_report_in_order"),

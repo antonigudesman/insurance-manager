@@ -94,6 +94,12 @@ def print_contents(request):
 
 
 @login_required(login_url='/admin/login')
+def print_end(request):    
+    request.session['broker'] = 'core'
+    return render(request, 'print/end.html')
+
+
+@login_required(login_url='/admin/login')
 def print_page(request):
     benefit = request.session['bnchmrk_benefit']
     plan = request.session['plan']
@@ -252,6 +258,20 @@ def get_pdf(request, print_benefits, download=True):
             # remove image files
             os.remove(vars_d['img_path_{}'.format(uidx)])
             uidx += 1
+
+        if not download:
+            # for end page
+            url = 'http://{}/print_end'.format(request.META.get('HTTP_HOST'))
+            driver.get(url)
+            time.sleep(0.1)
+            vars_d['img_path_header_{}'.format(uidx)] = '{}_{}_header.png'.format(base_path, uidx)
+            driver.save_screenshot(vars_d['img_path_header_{}'.format(uidx)])
+            
+            # build a pdf with images using fpdf
+            pdf.add_page()
+            pdf.image(vars_d['img_path_header_{}'.format(uidx)], -margin_h, margin_v)
+            os.remove(vars_d['img_path_header_{}'.format(uidx)])
+
     except Exception, e:
         # raise e
         log.debug(str(e))
