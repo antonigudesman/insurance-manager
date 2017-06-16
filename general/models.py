@@ -102,10 +102,6 @@ class Broker1(models.Model):
 class Employer(models.Model):
     id = models.CharField(max_length=18, primary_key=True)
     name = models.CharField('Name',max_length=100)
-    broker = models.ForeignKey(Broker, verbose_name='Account')
-    industry1 = models.ForeignKey(Industry, verbose_name='Primary Industry', null=True, blank=True, related_name="industry_1")
-    industry2 = models.ForeignKey(Industry, verbose_name='Secondary Industry', null=True, blank=True, related_name="industry_2") 
-    industry3 = models.ForeignKey(Industry, verbose_name='Additional Industry', null=True, blank=True, related_name="industry_3") 
     broker1 = models.ForeignKey(Broker1, verbose_name='Account', null=True, blank=True)
     industry11 = models.ForeignKey(Industry1, verbose_name='Primary Industry', null=True, blank=True, related_name="industry1")
     industry21 = models.ForeignKey(Industry1, verbose_name='Secondary Industry', null=True, blank=True, related_name="industry2") 
