@@ -63,22 +63,22 @@ STATE_CHOICES = (
 )
 
 
-class Industry(models.Model):
-    id = models.CharField(max_length=150, primary_key=True)
+# class Industry(models.Model):
+#     id = models.CharField(max_length=150, primary_key=True)
 
-    def __str__(self):
-        return self.id
+#     def __str__(self):
+#         return self.id
 
-    class Meta:
-        verbose_name = 'Industry'
-        verbose_name_plural = 'Industries'
+#     class Meta:
+#         verbose_name = 'Industry'
+#         verbose_name_plural = 'Industries'
 
 
-class Broker(models.Model):
-    id = models.CharField(max_length=150, primary_key=True)
+# class Broker(models.Model):
+#     id = models.CharField(max_length=150, primary_key=True)
 
-    def __str__(self):
-        return self.id
+#     def __str__(self):
+#         return self.id
 
 
 class Industry1(models.Model):
@@ -102,10 +102,10 @@ class Broker1(models.Model):
 class Employer(models.Model):
     id = models.CharField(max_length=18, primary_key=True)
     name = models.CharField('Name',max_length=100)
-    broker1 = models.ForeignKey(Broker1, verbose_name='Account', null=True, blank=True)
-    industry11 = models.ForeignKey(Industry1, verbose_name='Primary Industry', null=True, blank=True, related_name="industry1")
-    industry21 = models.ForeignKey(Industry1, verbose_name='Secondary Industry', null=True, blank=True, related_name="industry2") 
-    industry31 = models.ForeignKey(Industry1, verbose_name='Additional Industry', null=True, blank=True, related_name="industry3") 
+    broker = models.ForeignKey(Broker1, verbose_name='Account', null=True, blank=True)
+    industry1 = models.ForeignKey(Industry1, verbose_name='Primary Industry', null=True, blank=True, related_name="industry1")
+    industry2 = models.ForeignKey(Industry1, verbose_name='Secondary Industry', null=True, blank=True, related_name="industry2") 
+    industry3 = models.ForeignKey(Industry1, verbose_name='Additional Industry', null=True, blank=True, related_name="industry3") 
     state = models.CharField('State',max_length=25, null=True, blank=True, choices=STATE_CHOICES)
     size = models.PositiveIntegerField('Size', validators=[MinValueValidator(1)])
     nonprofit = models.BooleanField('Non-Profit Organization')
