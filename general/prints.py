@@ -95,7 +95,7 @@ def print_contents(request):
 
 @login_required(login_url='/admin/login')
 def print_end(request):    
-    request.session['broker'] = 'core'
+    # request.session['broker'] = 'core'
     return render(request, 'print/end.html')
 
 

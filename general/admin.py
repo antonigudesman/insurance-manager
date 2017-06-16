@@ -1,7 +1,11 @@
+import csv
+import datetime
+
 from django.contrib import admin
 from django import forms
 from django.forms.utils import ErrorList
 from django.db.models.functions import Lower
+from django.forms.models import model_to_dict
 
 from .models import *
 from .forms import *
@@ -52,13 +56,39 @@ class EmployerAdmin(admin.ModelAdmin):
         'renewal_date', 'address_line_1', 'address_line_2', 'employercity', 'zip_code', 'phone', 
         'employerurl', 'employerbenefitsurl', 'stock_symbol', 'avid', 'naics_2012_code')
     form = EmployerForm
-    # actions = ['print_report']
+    actions = ['export_employers']
 
-    def print_report(self, request, queryset):
-        selected = request.POST.getlist(admin.ACTION_CHECKBOX_NAME)
-        ids = ','.join([str(item.id) for item in queryset])
-        # print selected, ids
-        return print_report(request, queryset[0].id)
+    def export_employers(self, request, queryset):
+        path = datetime.now().strftime("/tmp/.bnchmrk_employers_%Y_%m_%d_%H_%M_%S.csv")
+        result_csv_fields = [
+                                f.name
+                                for f in Employer._meta.get_fields()
+                                if f.concrete and (
+                                    not f.is_relation
+                                    or f.one_to_one
+                                    or (f.many_to_one and f.related_model)
+                                ) and not f.name in ['editor']
+                            ]
+
+        result = open(path, 'w')
+        result_csv = csv.DictWriter(result, fieldnames=result_csv_fields)
+        result_csv.writeheader()
+
+        for employer in queryset:
+            employer_ = model_to_dict(employer, fields=result_csv_fields)
+            for key, val in employer_.items():
+                if type(val) not in (float, int, long) and val:
+                    employer_[key] = str(val).encode('utf-8')
+
+            try:
+                result_csv.writerow(employer_)
+            except Exception, e:
+                print employer_        
+        result.close()
+
+        return get_download_response(path)
+
+    export_employers.short_description = "Export employers as a CSV file"
 
     def get_queryset(self, request):
         qs = super(EmployerAdmin, self).get_queryset(request)
