@@ -75,7 +75,7 @@ def print_template_header(request):
     instance = model.objects.get(id=p_benefit['plan'])
 
     if broker == 'bnchmrk':
-        broker = instance.employer.broker.id.lower()
+        broker = instance.employer.broker.name.lower()
 
     request.session['broker'] = broker
     request.session['client_name'] = instance.employer.name

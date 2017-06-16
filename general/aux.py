@@ -20,7 +20,7 @@ def get_filtered_employers(ft_industries,
     # filter for keyword
     q = Q(name__icontains=q)
     if not '*' in ft_industries:
-        q = Q(industry1__in=ft_industries) | Q(industry2__in=ft_industries) | Q(industry3__in=ft_industries)
+        q = Q(industry1__title__in=ft_industries) | Q(industry2__title__in=ft_industries) | Q(industry3__title__in=ft_industries)
 
     # filter for others
     for item in ft_other:
@@ -47,7 +47,7 @@ def get_filtered_employers(ft_industries,
     employers_ = Employer.objects.filter(q & q_).order_by('name')
     # for only accounts
     if group != "bnchmrk" and lend:
-        employers_ = employers_.filter(broker=group)
+        employers_ = employers_.filter(broker__name=group)
     # else:
         # select = {'new_name':
         #     'CASE WHEN broker=\'Core\' THEN name WHEN broker=\'{}\' THEN name ELSE \'De-identified Employer\' END'.format(group)}
@@ -396,15 +396,6 @@ def get_quintile_properties_idx(var_qs, instance, attrs, attrs_inv, context):
 
 def get_industries():
     return [ii.title for ii in Industry.objects.all().order_by('id')]
-    # get valid distinct industries 
-    industries1 = Employer.objects.order_by('industry1').values_list('industry1').distinct()
-    industries1 = [item[0] for item in industries1 if item[0]]
-    industries2 = Employer.objects.order_by('industry2').values_list('industry2').distinct()
-    industries2 = [item[0] for item in industries2 if item[0]]
-    industries3 = Employer.objects.order_by('industry3').values_list('industry3').distinct()
-    industries3 = [item[0] for item in industries3 if item[0]]
-    return sorted(set(industries1 + industries2 + industries3))
-
 
 def employee_pricing_medical(plans, service):
     detail = settings.CPT_COST[service]

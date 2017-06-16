@@ -42,7 +42,7 @@ class EmployerForm(forms.ModelForm):
 class EmployerAdmin(admin.ModelAdmin):
     list_display = ['name','broker','industry1','formatted_size',
                     'med_count','den_count','vis_count', 'life_count','std_count','ltd_count']
-    search_fields = ('name','broker__id')
+    search_fields = ('name','broker__name')
     list_filter = ('broker',)
     change_form_template = 'admin/change_form_employer.html'
     fields = ('name', 'broker', 'qc', 'industry1', 'state', 'industry2', 'size', 'industry3',
@@ -65,7 +65,7 @@ class EmployerAdmin(admin.ModelAdmin):
         group = request.user.groups.first().name
 
         if group != 'bnchmrk':
-            qs = qs.filter(broker=group)
+            qs = qs.filter(broker__name=group)
             
         return qs
 
@@ -137,7 +137,7 @@ class MedicalAdmin(admin.ModelAdmin):
         group = request.user.groups.first().name
 
         if group != 'bnchmrk':
-            qs = qs.filter(employer__broker=group)
+            qs = qs.filter(employer__broker__name=group)
             
         return qs
 
@@ -223,7 +223,7 @@ class DentalAdmin(admin.ModelAdmin):
             qs = qs.filter(type__in=type)
 
         if group != 'bnchmrk':
-            qs = qs.filter(employer__broker=group)
+            qs = qs.filter(employer__broker__name=group)
             
         return qs
 
@@ -296,7 +296,7 @@ class VisionAdmin(admin.ModelAdmin):
         group = request.user.groups.first().name
 
         if group != 'bnchmrk':
-            qs = qs.filter(employer__broker=group)
+            qs = qs.filter(employer__broker__name=group)
             
         return qs
 
@@ -366,7 +366,7 @@ class LifeAdmin(admin.ModelAdmin):
         group = request.user.groups.first().name
 
         if group != 'bnchmrk':
-            qs = qs.filter(employer__broker=group)
+            qs = qs.filter(employer__broker__name=group)
             
         return qs
 
@@ -418,7 +418,7 @@ class STDAdmin(admin.ModelAdmin):
         group = request.user.groups.first().name
 
         if group != 'bnchmrk':
-            qs = qs.filter(employer__broker=group)
+            qs = qs.filter(employer__broker__name=group)
             
         return qs
 
@@ -470,7 +470,7 @@ class LTDAdmin(admin.ModelAdmin):
         group = request.user.groups.first().name
 
         if group != 'bnchmrk':
-            qs = qs.filter(employer__broker=group)
+            qs = qs.filter(employer__broker__name=group)
             
         return qs
 
@@ -525,7 +525,7 @@ class StrategyAdmin(admin.ModelAdmin):
         group = request.user.groups.first().name
 
         if group != 'bnchmrk':
-            qs = qs.filter(employer__broker=group)
+            qs = qs.filter(employer__broker__name=group)
             
         return qs
 

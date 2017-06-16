@@ -176,11 +176,11 @@ def enterprise(request):
 
             item__ = []
             if item.industry1:
-                item__.append(item.industry1.id)
+                item__.append(item.industry1.title)
             if item.industry2:
-                item__.append(item.industry2.id)
+                item__.append(item.industry2.title)
             if item.industry3:
-                item__.append(item.industry3.id)
+                item__.append(item.industry3.title)
             item_['industry'] = '@'.join(item__)
 
             item__ = []
@@ -208,7 +208,7 @@ def enterprise(request):
                     item_['size'] = key
                     break
 
-            item_['industry'] = item.industry1.id
+            item_['industry'] = item.industry1.title
             employers_.append(item_)
 
         if num_companies < settings.EMPLOYER_THRESHOLD and threshold:
@@ -393,7 +393,7 @@ def get_plans_(benefit, group, plan_type):
     if group == 'bnchmrk':
         objects = model.objects.all()
     else:
-        objects = model.objects.filter(employer__broker=group)
+        objects = model.objects.filter(employer__broker__name=group)
 
     if plan_type in ['DPPO', 'DMO']:     # for DPPO, DMO pages
         objects = objects.filter(type=plan_type)
@@ -462,7 +462,7 @@ def account_detail(request, id):
     if not employer:
         return render(request, 'error/404.html')
 
-    if group != 'bnchmrk' and group != employer.broker.id or group == 'NFP':
+    if group != 'bnchmrk' and group != employer.broker.name or group == 'NFP':
         return render(request, 'error/403.html')
 
     request.session['benefit'] = request.session.get('benefit', 'MEDICAL')
@@ -488,11 +488,11 @@ def account_detail(request, id):
 
     industries = []
     if employer.industry1:
-        industries.append(employer.industry1.id)
+        industries.append(employer.industry1.title)
     if employer.industry2:
-        industries.append(employer.industry2.id)
+        industries.append(employer.industry2.title)
     if employer.industry3:
-        industries.append(employer.industry3.id)
+        industries.append(employer.industry3.title)
     industry = ', '.join(industries)
 
     plans = []
