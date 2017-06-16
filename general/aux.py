@@ -395,6 +395,7 @@ def get_quintile_properties_idx(var_qs, instance, attrs, attrs_inv, context):
 
 
 def get_industries():
+    return [ii.title for ii in Industry.objects.all().order_by('id')]
     # get valid distinct industries 
     industries1 = Employer.objects.order_by('industry1').values_list('industry1').distinct()
     industries1 = [item[0] for item in industries1 if item[0]]

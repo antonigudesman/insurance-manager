@@ -81,6 +81,24 @@ class Broker(models.Model):
         return self.id
 
 
+class Industry1(models.Model):
+    title = models.CharField(max_length=150)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'Industry'
+        verbose_name_plural = 'Industries'
+
+
+class Broker1(models.Model):
+    name = models.CharField(max_length=150)
+
+    def __str__(self):
+        return self.name
+
+
 class Employer(models.Model):
     id = models.CharField(max_length=18, primary_key=True)
     name = models.CharField('Name',max_length=100)
@@ -88,6 +106,10 @@ class Employer(models.Model):
     industry1 = models.ForeignKey(Industry, verbose_name='Primary Industry', null=True, blank=True, related_name="industry_1")
     industry2 = models.ForeignKey(Industry, verbose_name='Secondary Industry', null=True, blank=True, related_name="industry_2") 
     industry3 = models.ForeignKey(Industry, verbose_name='Additional Industry', null=True, blank=True, related_name="industry_3") 
+    broker1 = models.ForeignKey(Broker1, verbose_name='Account', null=True, blank=True)
+    industry11 = models.ForeignKey(Industry1, verbose_name='Primary Industry', null=True, blank=True, related_name="industry1")
+    industry21 = models.ForeignKey(Industry1, verbose_name='Secondary Industry', null=True, blank=True, related_name="industry2") 
+    industry31 = models.ForeignKey(Industry1, verbose_name='Additional Industry', null=True, blank=True, related_name="industry3") 
     state = models.CharField('State',max_length=25, null=True, blank=True, choices=STATE_CHOICES)
     size = models.PositiveIntegerField('Size', validators=[MinValueValidator(1)])
     nonprofit = models.BooleanField('Non-Profit Organization')
@@ -119,6 +141,9 @@ class Employer(models.Model):
     employerurl = models.CharField('URL', max_length=150, blank=True, null=True)
     employerbenefitsurl = models.CharField('Benefit URL', max_length=100, blank=True, null=True)
     stock_symbol = models.CharField('Stock Symbol', max_length=5, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    editor = models.ForeignKey(User, blank=True, null=True)
 
     def __unicode__(self):
         return self.name

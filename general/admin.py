@@ -40,17 +40,17 @@ class EmployerForm(forms.ModelForm):
 
 
 class EmployerAdmin(admin.ModelAdmin):
-    list_display = ['name','broker','industry1','formatted_size',
+    list_display = ['name','formatted_size',
                     'med_count','den_count','vis_count', 'life_count','std_count','ltd_count']
     search_fields = ('name','broker__id')
-    list_filter = ('broker',)
+    # list_filter = ('broker',)
     change_form_template = 'admin/change_form_employer.html'
-    fields = ('name', 'broker', 'qc', 'industry1', 'state', 'industry2', 'size', 'industry3',
+    fields = ('name', 'broker', 'qc', 'state', 'size',
         'nonprofit', 'govt_contractor', 'new_england', 'med_count', 'mid_atlantic',
         'den_count', 'south_atlantic', 'vis_count', 'south_cental', 'life_count', 
         'east_central', 'std_count', 'west_central', 'ltd_count', 'mountain', 'pacific', 
-        'renewal_date', 'address_line_1', 'address_line_2', 'employercity', 'zip_code', 'phone', 'employerurl',
-        'employerbenefitsurl', 'stock_symbol', 'avid', 'naics_2012_code')
+        'renewal_date', 'address_line_1', 'address_line_2', 'employercity', 'zip_code', 'phone', 
+        'employerurl', 'employerbenefitsurl', 'stock_symbol', 'avid', 'naics_2012_code')
     form = EmployerForm
     # actions = ['print_report']
 
@@ -560,13 +560,13 @@ class PrintHistoryAdmin(admin.ModelAdmin):
 
 
 class IndustryAdmin(admin.ModelAdmin):
-    list_display = ['id']
-    search_fields = ('id',)
+    list_display = ['title']
+    search_fields = ('title',)
 
 
 class BrokerAdmin(admin.ModelAdmin):
-    list_display = ['id']
-    search_fields = ('id',)
+    list_display = ['name']
+    search_fields = ('name',)
 
 
 admin.site.register(Employer, EmployerAdmin)
@@ -580,5 +580,5 @@ admin.site.register(Medical, MedicalAdmin)
 admin.site.register(FAQ, FAQAdmin)
 admin.site.register(FAQCategory, FAQCategoryAdmin)
 admin.site.register(PrintHistory, PrintHistoryAdmin)
-admin.site.register(Industry, IndustryAdmin)
-admin.site.register(Broker, BrokerAdmin)
+# admin.site.register(Industry, IndustryAdmin)
+# admin.site.register(Broker, BrokerAdmin)
