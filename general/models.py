@@ -63,24 +63,6 @@ STATE_CHOICES = (
 )
 
 
-# class Industry(models.Model):
-#     id = models.CharField(max_length=150, primary_key=True)
-
-#     def __str__(self):
-#         return self.id
-
-#     class Meta:
-#         verbose_name = 'Industry'
-#         verbose_name_plural = 'Industries'
-
-
-# class Broker(models.Model):
-#     id = models.CharField(max_length=150, primary_key=True)
-
-#     def __str__(self):
-#         return self.id
-
-
 class Industry(models.Model):
     title = models.CharField(max_length=150)
 
