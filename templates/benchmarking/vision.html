@@ -88,7 +88,7 @@
         </div>
     </div>
 
-     <div class="card section">
+    <div class="card section">
         <div class="row">
             <div class="col-md-5 section-content">
                 <table class="table table-striped table-content">
@@ -123,6 +123,45 @@
                             <td>{{ mdn_contacts_copay }}</td>
                             <td><span id="prop_contacts_copay"></span></td>
                         </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-md-7 section-graph">
+                <div class="col-sm-12 m-b-15 m-r-25">
+                    <select class="selectpicker property_inv" onchange="update_quintile(this, 'VISION-1', 'prop_rank_exam_copay', true);">
+                        <option type="dollar" value="exam_copay">Exam Copay</option>
+                        <option type="dollar" value="lenses_copay">Lenses Copay</option>
+                        <option type="dollar" value="frames_copay">Frames Copay</option>
+                        <option type="dollar" value="contacts_copay">Contacts Copay</option>
+                    </select>
+                </div>                
+                <div class="col-md-10">
+                    <div id="VISION-1" class="flot-chart"></div>
+                </div>
+                <div class="col-md-2 section-score text-center">
+                    <h5 class="toggle_plan">Percentile Rank</h5>
+                    <p><span id="prop_rank_{{ quintile_properties_inv|parse_list:0 }}" class="prop_rank_exam_copay"></span></p>           
+                </div> 
+            </div>              
+        </div>
+    </div>
+
+    <div class="card section">
+        <div class="row">
+            <div class="col-md-5 section-content">
+                <table class="table table-striped table-content">
+                    <col width="50%">
+                    <col width="25%">
+                    <col width="25%">
+                    <thead>
+                        <tr>
+                            <th class="row-label">Vision Allowance</th>
+                            <th>Benchmark</th>
+                            <th class="toggle_plan">Your Plan</th>
+                        </tr>
+                    </thead>
+                    <tbody>                       
                         <tr>
                             <td class="row-label">Frames Allowance</td>
                             <td>{{ mdn_frames_allowance }}</td>
@@ -139,21 +178,17 @@
 
             <div class="col-md-7 section-graph">
                 <div class="col-sm-12 m-b-15 m-r-25">
-                    <select class="selectpicker property_inv" onchange="update_quintile(this, 'VISION-1', 'prop_rank_exam_copay', true);">
-                        <option type="dollar" value="exam_copay">Exam Copay</option>
-                        <option type="dollar" value="lenses_copay">Lenses Copay</option>
-                        <option type="dollar" value="frames_copay">Frames Copay</option>
-                        <option type="dollar" value="contacts_copay">Contacts Copay</option>
+                    <select class="selectpicker property" onchange="update_quintile(this, 'VISION-2', 'prop_rank_frames_allowance', false);">                      
                         <option type="dollar" value="frames_allowance">Frames Allowance</option>
                         <option type="dollar" value="contacts_allowance">Contacts Allowance</option>
                     </select>
                 </div>                
                 <div class="col-md-10">
-                    <div id="VISION-1" class="flot-chart"></div>
+                    <div id="VISION-2" class="flot-chart"></div>
                 </div>
                 <div class="col-md-2 section-score text-center">
                     <h5 class="toggle_plan">Percentile Rank</h5>
-                    <p><span id="prop_rank_{{ quintile_properties_inv|parse_list:0 }}" class="prop_rank_exam_copay"></span></p>           
+                    <p><span id="prop_rank_{{ quintile_properties|parse_list:0 }}" class="prop_rank_frames_allowance"></span></p>           
                 </div> 
             </div>              
         </div>
@@ -335,9 +370,10 @@ var gh1_data, gh2_data, gh3_data, gh4_data, gh5_data, gh6_data, gh7_data;
 var plan_type = '{{ request.session.plan_type }}';
 
 {% if num_employers >= EMPLOYER_THRESHOLD %}
-    gh1_data = {{ quintile_0 }};
-    gh5_data = {{ quintile_1 }};
-    gh6_data = {{ quintile_2 }};
+    gh1_data = {{ quintile_1 }};
+    gh2_data = {{ quintile_0 }};
+    gh5_data = {{ quintile_2 }};
+    gh6_data = {{ quintile_3 }};
 
     gh7_data = [
         {data: {{ prcnt_plan0 }}, color: '#795548', label: 'No Plans Offered'},
@@ -354,9 +390,14 @@ var plan_type = '{{ request.session.plan_type }}';
             lenses_copay: 'dollar',
             contacts_copay: 'dollar',
             frames_copay: 'dollar',
+            inverse: true
+        },
+        {
+            data: gh2_data,
+            placeholder: 'VISION-2',
             frames_allowance: 'dollar',
             contacts_allowance: 'dollar',
-            inverse: true
+            inverse: false
         },
         {
             data: gh5_data,

@@ -373,6 +373,7 @@ VISION page
 """
 
 vision_quintile_attrs = [
+    'frames_allowance'
 ]
 
 vision_quintile_attrs_inv = [
@@ -769,8 +770,12 @@ ATTRIBUTE_MAP = {
         }],
     'VISION': [
         {
-            'attrs': ['exam_copay', 'lenses_copay', 'contacts_copay', 'frames_copay', 'frames_allowance', 'contacts_allowance'],
+            'attrs': ['exam_copay', 'lenses_copay', 'contacts_copay', 'frames_copay'],
             'class': 'property_inv'
+        },
+        {
+            'attrs': ['frames_allowance', 'contacts_allowance'],
+            'class': 'property'
         },
         {
             'attrs': ['t1_ee', 't2_ee', 't3_ee', 't4_ee'],

@@ -209,10 +209,12 @@ update_content = function(benefit, plan_type) {
         // draw_easy_pie_chart();
     } else if ($.inArray(benefit, ["VISION"]) != -1) {
         gh1_data = generate_quintile_data(gh1_data, true);
+        gh2_data = generate_quintile_data(gh2_data, false);
         gh5_data = generate_quintile_data(gh5_data, true);
         gh6_data = generate_quintile_data(gh6_data, true);        
         
-        draw_bar_chart(benefit+'-1', gh1_data, 'dollar', 7);             
+        draw_bar_chart(benefit+'-1', gh1_data, 'dollar', 7);
+        draw_bar_chart(benefit+'-2', gh2_data, 'dollar', 7);             
         draw_bar_chart(benefit+'-5', gh5_data, 'dollar', 7);        
         draw_bar_chart(benefit+'-6', gh6_data, 'dollar', 7);        
 
