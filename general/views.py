@@ -258,9 +258,7 @@ def faq(request):
 
 
 def faq_detail(request, id):
-    faq = FAQ.objects.filter(id=id).first()
-    if not faq:
-        return render(request, 'error/404.html')
+    faq = get_object_or_404(FAQ, id=id)
 
     return render( request, 'faq_detail.html', locals())
 
@@ -446,7 +444,7 @@ def accounts(request):
     group = request.user.groups.first().name
     if group == 'NFP':
         return render(request, 'error/403.html')
-
+    
     return render(request, 'accounts.html', { 
         'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE_ACCOUNT,
         'industries': get_industries(),
@@ -458,9 +456,7 @@ def accounts(request):
 def account_detail(request, id):
     group = request.user.groups.first().name
 
-    employer = Employer.objects.filter(id=id).first()
-    if not employer:
-        return render(request, 'error/404.html')
+    employer = get_object_or_404(Employer, id=id)
 
     if group != 'bnchmrk' and group != employer.broker.name or group == 'NFP':
         return render(request, 'error/403.html')
@@ -734,3 +730,15 @@ def print_plan_order(request, company_id):
         'plans': plans,
         'company': Employer.objects.get(id=company_id).name
     })
+
+
+def handler404(request):
+    response = render(request, 'error/404.html')
+    response.status_code = 404
+    return response
+
+
+def handler500(request):
+    response = render(request, 'error/500.html')
+    response.status_code = 500
+    return response

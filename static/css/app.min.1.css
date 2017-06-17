@@ -15095,10 +15095,10 @@ a.thumbnail.active {
   color: #fff;
   text-align: center;
   padding: 15px;
-  height: 300px;
-  width: 500px;
+  height: 40%;
+  width: 40%;
   left: 50%;
-  margin-left: -250px;
+  margin-left: -20%;
 }
 
 .four-zero h2 {
