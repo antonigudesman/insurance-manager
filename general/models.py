@@ -5,7 +5,7 @@ import uuid
 from django.db import models
 from django.core.validators import MinValueValidator
 from django.contrib.auth.models import User
-
+from mezzanine.core.fields import RichTextField
 
 STATE_CHOICES = (
     (None, '-'),
@@ -436,7 +436,7 @@ class Strategy(models.Model):
 
 class FAQ(models.Model):
     title = models.CharField(max_length=255)
-    content = models.TextField()
+    content = RichTextField()
     created_at = models.DateTimeField(auto_now_add=True)
     editor = models.ForeignKey(User, blank=True, null=True)
     slug = models.CharField(max_length=255, blank=True, null=True)
