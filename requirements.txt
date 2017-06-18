@@ -4,3 +4,4 @@ selenium
 fpdf
 sendgrid
 psutil
+bleach==1.5

@@ -8,6 +8,9 @@ $(document).ready(function(){
             iconRefresh: 'zmdi-refresh',
             iconUp: 'zmdi-expand-less'
         },
+        labels: {
+            noResults: 'No results found'
+        },
         templates: {
             footer: "",
             header: ''
