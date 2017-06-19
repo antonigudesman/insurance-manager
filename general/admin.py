@@ -11,6 +11,38 @@ from .models import *
 from .forms import *
 from .prints import *
 
+
+def export_objects(model, queryset, excludes):
+    path = datetime.now().strftime("/tmp/.bnchmrk_{}_%Y_%m_%d_%H_%M_%S.csv".format(model.__name__))
+    result_csv_fields = [
+                            f.name
+                            for f in model._meta.get_fields()
+                            if f.concrete and (
+                                not f.is_relation
+                                or f.one_to_one
+                                or (f.many_to_one and f.related_model)
+                            ) and not f.name in excludes
+                        ]
+
+    result = open(path, 'w')
+    result_csv = csv.DictWriter(result, fieldnames=result_csv_fields)
+    result_csv.writeheader()
+
+    for item in queryset:
+        item_ = model_to_dict(item, fields=result_csv_fields)
+        for key, val in item_.items():
+            if type(val) not in (float, int, long) and val:
+                item_[key] = str(val).encode('utf-8')
+
+        try:
+            result_csv.writerow(item_)
+        except Exception, e:
+            print item_        
+    result.close()
+
+    return get_download_response(path)
+
+
 class EmployerForm(forms.ModelForm):
     class Meta:
         model = Employer
@@ -59,34 +91,7 @@ class EmployerAdmin(admin.ModelAdmin):
     actions = ['export_employers']
 
     def export_employers(self, request, queryset):
-        path = datetime.now().strftime("/tmp/.bnchmrk_employers_%Y_%m_%d_%H_%M_%S.csv")
-        result_csv_fields = [
-                                f.name
-                                for f in Employer._meta.get_fields()
-                                if f.concrete and (
-                                    not f.is_relation
-                                    or f.one_to_one
-                                    or (f.many_to_one and f.related_model)
-                                ) and not f.name in ['editor']
-                            ]
-
-        result = open(path, 'w')
-        result_csv = csv.DictWriter(result, fieldnames=result_csv_fields)
-        result_csv.writeheader()
-
-        for employer in queryset:
-            employer_ = model_to_dict(employer, fields=result_csv_fields)
-            for key, val in employer_.items():
-                if type(val) not in (float, int, long) and val:
-                    employer_[key] = str(val).encode('utf-8')
-
-            try:
-                result_csv.writerow(employer_)
-            except Exception, e:
-                print employer_        
-        result.close()
-
-        return get_download_response(path)
+        return export_objects(Employer, queryset, ['editor'])
 
     export_employers.short_description = "Export employers as a CSV file"
 
@@ -157,6 +162,13 @@ class MedicalAdmin(admin.ModelAdmin):
         'op_ded_apply', 'rx4_copay', 'op_copay', 'rx4_mail_copay', 't1_ee', 't1_gross', 't2_ee', 
         't2_gross', 't3_ee', 't3_gross', 't4_ee', 't4_gross', 't1_ercdhp', 'hsa', 't2_ercdhp', 
         'hra', 't3_ercdhp', 'age_rated', 't4_ercdhp', 'rx_coin', 'carrier')
+
+    actions = ['export_medical']
+
+    def export_medical(self, request, queryset):
+        return export_objects(Medical, queryset, [])
+
+    export_medical.short_description = "Export medical plans as a CSV file"
 
     def get_queryset(self, request):
         qs = super(MedicalAdmin, self).get_queryset(request)
@@ -236,6 +248,13 @@ class DentalAdmin(admin.ModelAdmin):
         'major_ded_apply', 'out_ortho_coin', 'in_major_coin', 'ortho_ded_apply', 
         'out_major_coin', 'ortho_age_limit', 'carrier')
 
+    actions = ['export_dental']
+
+    def export_dental(self, request, queryset):
+        return export_objects(Dental, queryset, [])
+
+    export_dental.short_description = "Export dental plans as a CSV file"
+
     def get_ordering(self, request):
         return ['employer__name']
 
@@ -312,6 +331,13 @@ class VisionAdmin(admin.ModelAdmin):
         'contacts_out_allowance', 't1_ee', 't1_gross', 't2_ee', 't2_gross', 't3_ee', 
         't3_gross', 't4_ee', 't4_gross', 'carrier')
 
+    actions = ['export_vision']
+
+    def export_vision(self, request, queryset):
+        return export_objects(Vision, queryset, [])
+
+    export_vision.short_description = "Export vision plans as a CSV file"
+
     def get_ordering(self, request):
         return ['employer__name']
 
@@ -382,6 +408,13 @@ class LifeAdmin(admin.ModelAdmin):
     form = LifeForm
     change_form_template = 'admin/change_form_life.html'
 
+    actions = ['export_life']
+
+    def export_life(self, request, queryset):
+        return export_objects(Life, queryset, [])
+
+    export_life.short_description = "Export life plans as a CSV file"
+
     def get_ordering(self, request):
         return ['employer__name']
 
@@ -433,6 +466,13 @@ class STDAdmin(admin.ModelAdmin):
     fields = ('title', 'employer', 'waiting_days', 'duration_weeks', 'waiting_days_sick', 
               'percentage', 'weekly_max', 'cost_share', 'salary_cont', 'carrier')
     change_form_template = 'admin/change_form_std.html'
+
+    actions = ['export_STD']
+
+    def export_STD(self, request, queryset):
+        return export_objects(STD, queryset, [])
+
+    export_STD.short_description = "Export STD plans as a CSV file"
     
     def get_ordering(self, request):
         return ['employer__name']
@@ -486,6 +526,13 @@ class LTDAdmin(admin.ModelAdmin):
               'cost_share', 'carrier')
     change_form_template = 'admin/change_form_ltd.html'
     
+    actions = ['export_LTD']
+
+    def export_LTD(self, request, queryset):
+        return export_objects(LTD, queryset, [])
+
+    export_LTD.short_description = "Export LTD plans as a CSV file"
+
     def get_ordering(self, request):
         return ['employer__name']
 
@@ -540,6 +587,13 @@ class StrategyAdmin(admin.ModelAdmin):
         'tobacco_surcharge', 'mvp', 'tobacco_surcharge_amount', 'contribution_bundle', 
         'pt_medical', 'defined_contribution', 'pt_dental', 'salary_banding', 'pt_vision', 
         'wellness_banding', 'pt_life', 'pt_std', 'pt_ltd')
+
+    actions = ['export_strategy']
+
+    def export_strategy(self, request, queryset):
+        return export_objects(Strategy, queryset, [])
+
+    export_strategy.short_description = "Export strategy plans as a CSV file"
 
     def get_ordering(self, request):
         return ['employer__name']
