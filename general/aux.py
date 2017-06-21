@@ -11,9 +11,9 @@ def get_filtered_employers(ft_industries,
                            ft_other, 
                            ft_regions, 
                            ft_states,
+                           group='bnchmrk', 
                            lstart=0, 
                            lend=0, 
-                           group='bnchmrk', 
                            q='',
                            threshold=1):
     # filter with factors from UI (industry, head-count, other)
@@ -48,6 +48,10 @@ def get_filtered_employers(ft_industries,
     # for only accounts
     if group != "bnchmrk" and lend:
         employers_ = employers_.filter(broker__name=group)
+    
+    if group.lower() == 'nfp':
+        employers_ = employers_.filter(broker__name__in=['Core', 'NFP'])
+
     # else:
         # select = {'new_name':
         #     'CASE WHEN broker=\'Core\' THEN name WHEN broker=\'{}\' THEN name ELSE \'De-identified Employer\' END'.format(group)}
@@ -73,12 +77,14 @@ def get_filtered_employers_session(request):
     ft_other = request.session.get('ft_other', [])
     ft_regions = request.session.get('ft_regions', ['*'])
     ft_states = request.session.get('ft_states', [])
+    group = request.user.groups.first().name
 
     return get_filtered_employers(ft_industries, 
                                   ft_head_counts, 
                                   ft_other,
                                   ft_regions,
-                                  ft_states)
+                                  ft_states,
+                                  group)
 
 
 EXCEPT_ZERO_FIELDS = [

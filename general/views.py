@@ -153,9 +153,9 @@ def enterprise(request):
                                                           ft_other, 
                                                           ft_regions, 
                                                           ft_states,
+                                                          group,
                                                           lstart, 
                                                           lend,
-                                                          group,
                                                           q,
                                                           threshold)
 
@@ -187,7 +187,9 @@ def enterprise(request):
             if item.new_england:
                 item__.append('New England')
             if item.mid_atlantic:
-                item__.append('Tri-State Area')
+                item__.append('Tri State Area (NY, NJ, CT)')
+            if item.south_east:
+                item__.append('South East Region')
             if item.south_atlantic:
                 item__.append('South Atlantic')
             if item.south_cental:
