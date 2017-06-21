@@ -60,6 +60,7 @@ urlpatterns += [
     url(r"^get_plans", get_plans, name="get_plans"),
     url(r"^update_properties", update_properties, name="update_properties"),  
 
+    url(r"^import_patch", import_patch, name="import_patch"),
     # url(r"^import_employer", import_employer, name="import_employer"),
     # url(r"^import_life", import_life, name="import_life"),
     # url(r"^import_std", import_std, name="import_std"),

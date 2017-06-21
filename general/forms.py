@@ -323,3 +323,20 @@ class ChangePasswordForm(forms.Form):
             raise forms.ValidationError("Password is not correct!")
             
         return self.cleaned_data
+
+
+class ImportForm(forms.Form):
+    benefit = forms.CharField(widget=forms.TextInput(attrs={'required': True, 'class': 'form-control'}))
+    csv_file = forms.FileField()
+
+    def clean(self):
+        benefit = self.cleaned_data.get('benefit')
+        csv_file = self.cleaned_data.get('csv_file')
+
+        if not benefit:
+            raise forms.ValidationError("Choose a benefit.")
+
+        if not csv_file:
+            raise forms.ValidationError("Choose a valid csv file.")
+
+        return self.cleaned_data

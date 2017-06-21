@@ -1,3 +1,4 @@
+import csv
 import json
 import HTMLParser
 from datetime import datetime
@@ -734,6 +735,35 @@ def print_plan_order(request, company_id):
     })
 
 
+@login_required(login_url='/login')
+def import_patch(request):
+    msg = ''
+    if request.method == 'GET':
+        form = ImportForm()
+    else:
+        form = ImportForm(request.POST, request.FILES)
+        if form.is_valid():            
+            model = MODEL_MAP[form.cleaned_data['benefit']]
+            csv_file = form.cleaned_data['csv_file']
+            reader = csv.DictReader(csv_file)
+            result = 0
+
+            for ii in reader:
+                # handle empty value
+                for key, val in ii.items():
+                    if val == '':
+                        ii[key] = None
+
+                try:
+                    result += model.objects.filter(id=ii['id']).update(**ii)            
+                except Exception, e:
+                    print ii['id'], str(e), '#########3'
+            msg = '{} benefits are updated successfully.'.format(result)
+
+    return render(request, 'import_patch.html', { 'form': form, 'msg': msg, 'MODEL_MAP': MODEL_MAP })
+
+
+
 def handler404(request):
     response = render(request, 'error/404.html')
     response.status_code = 404
@@ -744,3 +774,4 @@ def handler500(request):
     response = render(request, 'error/500.html')
     response.status_code = 500
     return response
+
