@@ -36,7 +36,11 @@
                 </li>
 
                 <li class="logo">
+                {% if not request.user|has_group:"NFP" %} 
                     <a href="/"><img src="{% static 'img/bnchmrk_logo.png' %}"></a>
+                {% else %}    
+                    <a href="/"><img src="{% static 'img/nfp_logo.png' %}"></a>
+                {% endif %}
                 </li>
             </ul>
 

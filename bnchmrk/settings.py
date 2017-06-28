@@ -342,7 +342,7 @@ except ImportError:
 else:
     set_dynamic_settings(globals())
 
-EMPLOYER_THRESHOLD = 1
+EMPLOYER_THRESHOLD = 15
 EMPLOYER_THRESHOLD_MESSAGE = 'Too few employers in the comparison set. Please adjust the filters to capture more employers.'
 EMPLOYER_THRESHOLD_MESSAGE_ACCOUNT = 'Could not find employer name in account database'
 MIN_PERCENTILE = 2

@@ -10403,7 +10403,8 @@ h6 small,
 }
 
 #header .logo a {
-  padding: 7px 10px;
+  /*padding: 7px 10px;*/
+  padding-left: 7px;
 }
 
 #top-search-wrap {
@@ -15861,5 +15862,5 @@ body.login-content:before {
 }
 
 li.logo img {
-  height: 30px;
+  height: 35px;
 }

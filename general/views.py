@@ -190,9 +190,9 @@ def enterprise(request):
             if item.mid_atlantic:
                 item__.append('Tri State Area (NY, NJ, CT)')
             if item.south_east:
-                item__.append('South East Region')
+                item__.append('Mid Atlantic Region')
             if item.south_atlantic:
-                item__.append('South Atlantic')
+                item__.append('Southeast')
             if item.south_cental:
                 item__.append('South Central')
             if item.east_central:
