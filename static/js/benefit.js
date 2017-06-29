@@ -221,7 +221,7 @@ update_content = function(benefit, plan_type) {
         draw_donut_chart('donut-chart', gh7_data);
     } else if ($.inArray(benefit, ["DENTAL"]) != -1) {
         if (plan_type == "DMO")
-            $('.out-benefit').remove();
+            $('.out-benefit').hide();
 
         gh1_data = generate_quintile_data(gh1_data, true);
         gh3_data = generate_quintile_data(gh3_data, false);
