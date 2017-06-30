@@ -6,6 +6,8 @@ from django import forms
 from django.forms.utils import ErrorList
 from django.db.models.functions import Lower
 from django.forms.models import model_to_dict
+from django.contrib.admin import SimpleListFilter
+from django.db.models import Q
 
 from .models import *
 from .forms import *
@@ -75,11 +77,28 @@ class EmployerForm(forms.ModelForm):
         return self.cleaned_data
 
 
+class IndustryFilter(SimpleListFilter):
+    title = 'Industry' # or use _('country') for translated title
+    parameter_name = 'industry'
+
+    def lookups(self, request, model_admin):
+        return [(ii.id, ii.title) for ii in Industry.objects.all().order_by('id')]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            q = Q(industry1__id__exact=self.value()) | Q(industry2__id__exact=self.value()) | Q(industry3__id__exact=self.value())
+            return queryset.filter(q)
+        else:
+            return queryset
+
+
 class EmployerAdmin(admin.ModelAdmin):
     list_display = ['name','broker','industry1','formatted_size',
                     'med_count','den_count','vis_count', 'life_count','std_count','ltd_count']
     search_fields = ('name','broker__name')
-    list_filter = ('broker',)
+    list_filter = ('broker', IndustryFilter, 'qc', 'state', 'nonprofit', 'govt_contractor', 
+                   'new_england', 'mid_atlantic', 'south_east', 'south_atlantic', 'south_cental', 
+                   'east_central', 'west_central', 'mountain', 'pacific')
     change_form_template = 'admin/change_form_employer.html'
     fields = ('name', 'broker', 'qc', 'industry1', 'state', 'industry2', 'size', 'industry3',
         'nonprofit', 'govt_contractor', 'new_england', 'med_count', 'mid_atlantic', 'south_east',
