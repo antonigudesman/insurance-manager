@@ -78,7 +78,7 @@ class EmployerForm(forms.ModelForm):
 
 
 class IndustryFilter(SimpleListFilter):
-    title = 'Industry' # or use _('country') for translated title
+    title = 'Industry'
     parameter_name = 'industry'
 
     def lookups(self, request, model_admin):
@@ -92,13 +92,35 @@ class IndustryFilter(SimpleListFilter):
             return queryset
 
 
+class SizeFilter(SimpleListFilter):
+    title = 'Size'
+    parameter_name = 'size'
+
+    def lookups(self, request, model_admin):
+        return  [
+                    ("0-249", "Up to 250"),
+                    ("250-499", "250 to 499"),
+                    ("500-999", "500 to 999"),
+                    ("1000-4999", "1,000 to 4,999"),
+                    ("5000-2000000", "5,000 and Up")
+                ]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            ft_vals = self.value().split('-')
+            q = Q(size__gte=int(ft_vals[0])) & Q(size__lte=int(ft_vals[1]))
+            return queryset.filter(q)
+        else:
+            return queryset
+
+
 class EmployerAdmin(admin.ModelAdmin):
     list_display = ['name','broker','industry1','formatted_size',
                     'med_count','den_count','vis_count', 'life_count','std_count','ltd_count']
     search_fields = ('name','broker__name')
-    list_filter = ('broker', IndustryFilter, 'qc', 'state', 'nonprofit', 'govt_contractor', 
-                   'new_england', 'mid_atlantic', 'south_east', 'south_atlantic', 'south_cental', 
-                   'east_central', 'west_central', 'mountain', 'pacific')
+    list_filter = ('broker', IndustryFilter, SizeFilter, 'qc', 'state', 'nonprofit', 
+                   'govt_contractor', 'new_england', 'mid_atlantic', 'south_east', 'south_atlantic', 
+                   'south_cental', 'east_central', 'west_central', 'mountain', 'pacific')
     change_form_template = 'admin/change_form_employer.html'
     fields = ('name', 'broker', 'qc', 'industry1', 'state', 'industry2', 'size', 'industry3',
         'nonprofit', 'govt_contractor', 'new_england', 'med_count', 'mid_atlantic', 'south_east',
