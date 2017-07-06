@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block page_body %}
+<section id="content">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li><a href="/admin">Admin</a></li>
+            <li class="active">Import Users</li>
+        </ol>
+        
+        <div class="card">            
+        <form class="form-horizontal" role="form" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="card-header">
+                <h2>Import Users</h2>
+            </div>
+            
+            <div class="card-body card-padding">
+                <div class="c-green m-l-25">{{ msg|safe }}</div>
+                <div class="c-red">
+                    {% if form.errors %}
+                    <ul class="errorlist">
+                    {% for error in form.non_field_errors %}<li>{{ error }}</li>{% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+
+                <div class="row">
+                <div class="col-sm-6">
+<!--                 <div class="form-group">
+                    <label class="col-sm-3 control-label">Benefit</label>
+                    <div class="col-sm-7">
+                        <select name="benefit" class="selectpicker" size="1" data-none-selected-text="Choose a benefit">
+                            <option value="">Choose a benefit</option>
+ -->                            {# for key, val in MODEL_MAP.items #}
+                            <!-- <option value="{{ key }}">{{ key }}</option> -->
+                            {# endfor #}
+<!--                         </select>
+                    </div>
+                </div>                 
+ -->                <div class="form-group">
+                    <label class="col-sm-3 control-label">CSV file</label>
+                    <div class="col-sm-7">
+                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                            <span class="btn btn-primary btn-file m-r-10">
+                                <span class="fileinput-new">Select file</span>
+                                <span class="fileinput-exists">Change</span>
+                                <input type="file" name="csv_file">
+                            </span>
+                            <span class="fileinput-filename"></span>
+                            <a href="#" class="close fileinput-exists" data-dismiss="fileinput">&times;</a>
+                        </div>
+                    </div>
+                </div>      
+                <div class="col-sm-10 action">
+                    <div class="m-t-10 pull-right">
+                        <button type="submit" class="btn btn-primary btn-sm">Import</button>
+                        <button type="reset" class="btn btn-link btn-sm">Cancel</button>
+                    </div>    
+                </div>                
+                </div></div>  
+            </div>            
+        </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'vendors/bower_components/chosen/chosen.jquery.min.js' %}"></script>
+    <script src="{% static 'vendors/fileinput/fileinput.min.js' %}"></script>
+    <script src="{% static 'vendors/input-mask/input-mask.min.js' %}"></script>
+    <script src="{% static 'js/common.js' %}"></script>
+{% endblock %}

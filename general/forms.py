@@ -340,3 +340,20 @@ class ImportForm(forms.Form):
             raise forms.ValidationError("Choose a valid csv file.")
 
         return self.cleaned_data
+
+
+class ImportUsersForm(forms.Form):
+    # broker = forms.CharField(widget=forms.TextInput(attrs={'required': True, 'class': 'form-control'}))
+    csv_file = forms.FileField()
+
+    def clean(self):
+        # broker = self.cleaned_data.get('benefit')
+        csv_file = self.cleaned_data.get('csv_file')
+
+        # if not broker:
+        #     raise forms.ValidationError("Choose a broker.")
+
+        if not csv_file:
+            raise forms.ValidationError("Choose a valid csv file.")
+
+        return self.cleaned_data

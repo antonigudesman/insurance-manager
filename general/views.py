@@ -15,6 +15,7 @@ from django.contrib.auth.models import User
 from .models import *
 from .benefits import *
 from .forms import *
+from .utils import *
 
 HEAD_COUNT = {
     'Up to 250': [0, 249],
@@ -762,6 +763,45 @@ def import_patch(request):
 
     return render(request, 'import_patch.html', { 'form': form, 'msg': msg, 'MODEL_MAP': MODEL_MAP })
 
+@login_required(login_url='/login')
+def import_users(request):
+    msg = ''
+    if request.method == 'GET':
+        form = ImportUsersForm()
+    else:
+        form = ImportUsersForm(request.POST, request.FILES)
+        if form.is_valid():            
+            # model = MODEL_MAP[form.cleaned_data['benefit']]
+            csv_file = form.cleaned_data['csv_file']
+            reader = csv.DictReader(csv_file)
+            result = 0
+            msg = ''
+
+            for ii in reader:
+                try:
+                    user = User.objects.create_user(username=ii['Username'], email=ii['Email'], 
+                                     first_name=ii['First Name'],
+                                     last_name=ii['Last Name'])
+                    passwd = User.objects.make_random_password()
+                    user.set_password(passwd)
+                    user.save()
+                except Exception, e:
+                    # raise e
+                    msg += 'Username {} already exists.<br>'.format(ii['Username'])
+
+                try:
+                    from_email = "info@bnchmrk.com"
+                    subject = "Create An Account" 
+                    to_email = ii['Email']                   
+                    content = 'Welcome {} {} <br>This is the credential for app.bnchmrk.com; <br><br>username: {}<br>password: {}</b><br><br>You can login the system with it and change the password again.'.format(user.first_name, user.last_name, user.username, passwd)
+                    response = send_email(from_email, subject, to_email, content)
+                    result += 1
+                except Exception, e:
+                    pass
+                    # raise e
+
+                msg = msg or '{} users are imported successfully.'.format(result)
+    return render(request, 'import_users.html', { 'form': form, 'msg': msg })
 
 
 def handler404(request):
