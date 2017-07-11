@@ -410,12 +410,12 @@ def get_plans_(benefit, group, plan_type):
 
     if benefit in ['LIFE', 'DENTAL', 'MEDICAL']:
         return [
-                   [item.id, '{} - {} - {}'.format(item.employer.name, item.type, item.title)]
+                   [item.id, '{} - {} - {}'.format(item.employer.name.encode('utf-8','ignore'), item.type, item.title.encode('utf-8','ignore'))]
                    for item in objects.order_by('employer__name', 'title')
                ]
     elif benefit in ['STD', 'LTD', 'VISION']:
         return [
-                   [item.id, '{} - {}'.format(item.employer.name, item.title)]
+                   [item.id, '{} - {}'.format(item.employer.name.encode('utf-8','ignore'), item.title.encode('utf-8','ignore'))]
                    for item in objects.order_by('employer__name', 'title')
                ]
     elif benefit in ['STRATEGY']:
