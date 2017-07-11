@@ -17,7 +17,7 @@
         <div class="card">
             <div class="card-body card-padding">
                 <div class="row">   
-                    {% if not request.user|has_group:"NFP" %} 
+                    {% if request.user|permitted %} 
                     <div class="col-sm-9 m-b-15">
                         <p class="f-500 c-black m-b-15">Account Plan:</p>
                         <select name="" id="plans" class="selectpicker" data-none-selected-text="No Comparison">
@@ -116,6 +116,8 @@
     <script type="text/javascript">
         var bnchmrk_benefit = '{{ request.session.bnchmrk_benefit }}';
         var print_template = false;        
+        var broker = '{{ request.user|broker }}';
+
         $('#industries').selectpicker();
         $('#industries').selectpicker('val', {{ request.session.ft_industries|json_dump|safe }});
         $('#regions').selectpicker();

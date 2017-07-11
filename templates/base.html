@@ -36,11 +36,7 @@
                 </li>
 
                 <li class="logo">
-                {% if not request.user|has_group:"NFP" %} 
-                    <a href="/"><img src="{% static 'img/bnchmrk_logo.png' %}"></a>
-                {% else %}    
-                    <a href="/"><img src="{% static 'img/nfp_logo.png' %}"></a>
-                {% endif %}
+                    <a href="/"><img src="{{ request.user|logo_img }}"></a>
                 </li>
             </ul>
 
@@ -87,7 +83,7 @@
                     <li>
                         <a href="/"><i class="zmdi zmdi-home"></i> Home</a>
                     </li>
-                    {% if not request.user|has_group:"NFP" %} 
+                    {% if request.user|permitted %} 
                     <li><a href="/accounts"><i class="zmdi zmdi-receipt"></i> Accounts</a></li>
                     {% endif %}
                     <li class="sub-menu">

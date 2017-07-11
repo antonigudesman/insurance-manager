@@ -14,8 +14,13 @@ var head_counts_label = [];
 var others_label = [];
 var regions_label = [];
 var states_label = [];
+var colors;
 
-var colors = ['#f8696b', '#f8696b', '#FFE364', '#FFE364', '#bfbfbf', '#bfbfbf', '#B1D480', '#B1D480', '#63be7b', '#63be7b'];
+if (broker == 'namely') {
+    colors = ['#D9575A', '#D9575A', '#FF9496', '#FF9496', '#CDC9C2', '#CDC9C2', '#36A9D9', '#36A9D9', '#0061BB', '#0061BB'];
+} else {
+    colors = ['#f8696b', '#f8696b', '#FFE364', '#FFE364', '#bfbfbf', '#bfbfbf', '#B1D480', '#B1D480', '#63be7b', '#63be7b'];
+}
 
 jQuery(function($) {
     if (print_template == true) {

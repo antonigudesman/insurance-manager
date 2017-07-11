@@ -74,3 +74,23 @@ def has_group(user, group_name):
 @register.filter
 def json_dump(llist): # Only one argument.
     return json.dumps(llist)
+
+
+@register.filter(name='logo_img')
+def logo_img(user):
+    img_name = 'bnchmrk'
+    group = user.groups.first().name.lower()
+    if group in ['nfp', 'namely']:
+        img_name = group
+    return '/static/img/{}_logo.png'.format(img_name)
+
+
+@register.filter
+def permitted(user):
+    group = user.groups.first().name.lower()
+    return not group in ['nfp', 'namely']
+
+
+@register.filter
+def broker(user):
+    return user.groups.first().name.lower()
