@@ -59,6 +59,7 @@
         var EMPLOYER_THRESHOLD_MESSAGE = "{{ EMPLOYER_THRESHOLD_MESSAGE }}";
         var print_template = true;
         var bnchmrk_benefit = '{{ request.session.bnchmrk_benefit }}';
+        var broker = '{{ request.user|broker }}';
     </script>
 
     <script src="{% static 'js/benefit.js' %}"></script>
