@@ -447,7 +447,7 @@ def home(request):
 def accounts(request):            
     group = request.user.groups.first().name
     if group == 'NFP':
-        return render(request, 'error/403.html')
+        return handler403(request)
     
     return render(request, 'accounts.html', { 
         'EMPLOYER_THRESHOLD_MESSAGE': settings.EMPLOYER_THRESHOLD_MESSAGE_ACCOUNT,
@@ -463,7 +463,7 @@ def account_detail(request, id):
     employer = get_object_or_404(Employer, id=id)
 
     if group != 'bnchmrk' and group != employer.broker.name or group == 'NFP':
-        return render(request, 'error/403.html')
+        return handler403(request)
 
     request.session['benefit'] = request.session.get('benefit', 'MEDICAL')
 
@@ -694,6 +694,9 @@ def get_plan_type(request):
 
 
 def print_report(request):
+    if not request.user.is_superuser:
+        return handler403(request)
+
     return render(request, 'admin/print_report.html', {
         'industries': get_industries(),
         'STATES': STATE_CHOICES
@@ -738,6 +741,9 @@ def print_plan_order(request, company_id):
 
 @login_required(login_url='/login')
 def import_patch(request):
+    if not request.user.is_superuser:
+        return handler403(request)
+
     msg = ''
     if request.method == 'GET':
         form = ImportForm()
@@ -765,6 +771,9 @@ def import_patch(request):
 
 @login_required(login_url='/login')
 def import_users(request):
+    if not request.user.is_superuser:
+        return handler403(request)
+    
     msg = ''
     if request.method == 'GET':
         form = ImportUsersForm()
@@ -802,6 +811,12 @@ def import_users(request):
 
                 msg = msg or '{} users are imported successfully.'.format(result)
     return render(request, 'import_users.html', { 'form': form, 'msg': msg })
+
+
+def handler403(request):
+    response = render(request, 'error/403.html')
+    response.status_code = 403
+    return response
 
 
 def handler404(request):
