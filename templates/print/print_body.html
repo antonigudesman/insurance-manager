@@ -19,7 +19,7 @@
     <div class="bnchmrk_table">
         <div class="card section">
             <div class="row">
-            <div class="col-md-12 m-t-25"><div class="col-md-12 m-t-25"><div class="col-md-12">
+            <div class="col-md-8 m-t-25"><div class="col-md-12 m-t-25"><div class="col-md-12">
                 <h4>{{ request.session.bnchmrk_benefit|format_benefit }} Benchmarking Analysis</h4>
                 <h4><span id='prop_client_name'></span></h4>
                 <h4><span id='prop_print_plan_name'></span></h4>
@@ -37,6 +37,9 @@
                     {% endif %}
                 </p>
             </div></div></div>
+            <div class="col-md-4" style="margin-top: 60px;">
+                <img src="{{ request.user|logo_img }}">
+            </div>
             </div>
         </div>
 
