@@ -127,25 +127,25 @@ class MedicalForm(ModelForm):
             self._errors['t4_ercdhp'] = ErrorList([''])        
             raise forms.ValidationError("Only plans paired with a HRA or HSA can have employer-funding.")
 
-        if in_ded_single > out_ded_single and out_ded_single:
-            self._errors['in_ded_single'] = ErrorList([''])
-            self._errors['out_ded_single'] = ErrorList([''])
-            raise forms.ValidationError("Out-of-network single deductible should be greater than the in-network single deductible.")
+        # if in_ded_single > out_ded_single and out_ded_single:
+        #     self._errors['in_ded_single'] = ErrorList([''])
+        #     self._errors['out_ded_single'] = ErrorList([''])
+        #     raise forms.ValidationError("Out-of-network single deductible should be greater than the in-network single deductible.")
 
-        if in_ded_family > out_ded_family and out_ded_family:
-            self._errors['in_ded_family'] = ErrorList([''])
-            self._errors['out_ded_family'] = ErrorList([''])
-            raise forms.ValidationError("Out-of-network family deductible should be greater than the in-network family deductible.")
+        # if in_ded_family > out_ded_family and out_ded_family:
+        #     self._errors['in_ded_family'] = ErrorList([''])
+        #     self._errors['out_ded_family'] = ErrorList([''])
+        #     raise forms.ValidationError("Out-of-network family deductible should be greater than the in-network family deductible.")
 
-        if in_max_single > out_max_single and out_max_single:
-            self._errors['in_max_single'] = ErrorList([''])
-            self._errors['out_max_single'] = ErrorList([''])
-            raise forms.ValidationError("Out-of-network single maximum should be greater than the in-network single maximum.")
+        # if in_max_single > out_max_single and out_max_single:
+        #     self._errors['in_max_single'] = ErrorList([''])
+        #     self._errors['out_max_single'] = ErrorList([''])
+        #     raise forms.ValidationError("Out-of-network single maximum should be greater than the in-network single maximum.")
 
-        if in_max_family > out_max_family and out_max_family:
-            self._errors['in_max_family'] = ErrorList([''])
-            self._errors['out_max_family'] = ErrorList([''])
-            raise forms.ValidationError("Out-of-network family maximum should be greater than the in-network family maximum.")
+        # if in_max_family > out_max_family and out_max_family:
+        #     self._errors['in_max_family'] = ErrorList([''])
+        #     self._errors['out_max_family'] = ErrorList([''])
+        #     raise forms.ValidationError("Out-of-network family maximum should be greater than the in-network family maximum.")
 
         return self.cleaned_data
 

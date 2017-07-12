@@ -32,10 +32,10 @@
 
     <!-- Title, Type and Carrier -->
     <div class="pmbb-header p-l-15"><h2><i class="zmdi zmdi-account m-r-5"></i> Basic Information</h2></div>
-    <div class="col-sm-6 p-b-25">
+    <div class="col-sm-6 p-b-25" style="z-index:2000;">
         <div class="pmbb-body p-l-30">
             <div class="pmbb-view">
-                <dl class="dl-horizontal">
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700{% if form.title.errors %} c-red{% endif %}">Plan Name</div>
                     <div class="col-sm-5">                    
                         <div class="form-group">
@@ -44,20 +44,20 @@
                             </div>
                         </div>
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Plan Type</div>
                     <div class="col-sm-5">
                         {% include "includes/dropdown.html" with name="type" data=mtc id="type" select=form.type.value|parse_none extra="disabled" only %}
                     </div>
-                </dl>
+                </div>
             </div>         
         </div>
     </div>
     <div class="col-sm-6 p-b-25">
         <div class="pmbb-body p-l-30">
             <div class="pmbb-view"> 
-                <dl class="dl-horizontal">
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Carrier</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -66,7 +66,7 @@
                             </div>
                         </div>
                     </div>
-                </dl>
+                </div>
             </div>         
         </div>
     </div>
@@ -77,7 +77,7 @@
     <div class="col-sm-6 p-b-25">
         <div class="pmbb-body p-l-30">
             <div class="pmbb-view"> 
-                <dl class="dl-horizontal">
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700 {% if form.in_ded_single.errors %} c-red{% endif %}">Individual Deductible</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -86,8 +86,8 @@
                             </div>
                         </div>
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Family Deductible</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -96,8 +96,8 @@
                             </div>
                         </div>
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700 {% if form.in_max_single.errors %} c-red{% endif %}">Individual Out-of-Pocket Maximum</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -106,8 +106,8 @@
                             </div>
                         </div>
                     </div>
-                </dl>          
-                <dl class="dl-horizontal">
+                </div>          
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Family Out-of-Pocket Maximum</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -116,7 +116,7 @@
                             </div>
                         </div>
                     </div>
-                </dl><dl class="dl-horizontal">
+                </div><div class="col-sm-12">
                     <div class="col-sm-6 f-700">Coinsurance</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -125,20 +125,20 @@
                             </div>
                         </div>
                     </div>
-                </dl>
+                </div>
             </div>         
         </div>
     </div>
     <div class="col-sm-6 p-b-25">
         <div class="pmbb-body p-l-30">
             <div class="pmbb-view">
-                <dl class="dl-horizontal">
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Primary Care Physician</div>
                     <div class="col-sm-5">
                         {% include "includes/dropdown.html" with name="pcp_ded_apply" data=mbc id="pcp_ded_apply" select=form.pcp_ded_apply.value|parse_none extra="disabled" only %}
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">PCP Copay (if required)</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -147,14 +147,14 @@
                             </div>
                         </div>
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Specialist Physician</div>
                     <div class="col-sm-5">
                         {% include "includes/dropdown.html" with name="sp_ded_apply" data=mbc id="sp_ded_apply" select=form.sp_ded_apply.value|parse_none extra="disabled" only %}
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">SP Copay (if required)</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -163,14 +163,14 @@
                             </div>
                         </div>
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Emergency Room</div>
                     <div class="col-sm-5">
                         {% include "includes/dropdown.html" with name="er_ded_apply" data=mbc id="er_ded_apply" select=form.er_ded_apply.value|parse_none extra="disabled" only %}
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">ER Copay (if required)</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -179,14 +179,14 @@
                             </div>
                         </div>
                     </div>
-                </dl>      
-                <dl class="dl-horizontal">
+                </div>      
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Urgent Care</div>
                     <div class="col-sm-5">
                         {% include "includes/dropdown.html" with name="uc_ded_apply" data=mbc id="uc_ded_apply" select=form.uc_ded_apply.value|parse_none extra="disabled" only %}
                     </div>
-                </dl>     
-                <dl class="dl-horizontal">
+                </div>     
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">UC Copay (if required)</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -195,14 +195,14 @@
                             </div>
                         </div>
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Labs & Xray</div>
                     <div class="col-sm-5">
                         {% include "includes/dropdown.html" with name="lx_ded_apply" data=mbc id="lx_ded_apply" select=form.lx_ded_apply.value|parse_none extra="disabled" only %}
                     </div>
-                </dl>     
-                <dl class="dl-horizontal">
+                </div>     
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">LX Copay (if required)</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -211,14 +211,14 @@
                             </div>
                         </div>
                     </div>
-                </dl>  
-                <dl class="dl-horizontal">
+                </div>  
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Outpatient Procedure</div>
                     <div class="col-sm-5">
                         {% include "includes/dropdown.html" with name="op_ded_apply" data=mbc id="op_ded_apply" select=form.op_ded_apply.value|parse_none extra="disabled" only %}
                     </div>
-                </dl>     
-                <dl class="dl-horizontal">
+                </div>     
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">OP Copay (if required)</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -227,14 +227,14 @@
                             </div>
                         </div>
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Inpatient Procedure</div>
                     <div class="col-sm-5">
                         {% include "includes/dropdown.html" with name="ip_ded_apply" data=mbc id="ip_ded_apply" select=form.ip_ded_apply.value|parse_none extra="disabled" only %}
                     </div>
-                </dl>     
-                <dl class="dl-horizontal">
+                </div>     
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">IP Copay (if required)</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -243,7 +243,7 @@
                             </div>
                         </div>
                     </div>
-                </dl>
+                </div>
             </div>         
         </div>
     </div>
@@ -254,7 +254,7 @@
     <div class="col-sm-6 p-b-25">
         <div class="pmbb-body p-l-30">
             <div class="pmbb-view"> 
-                <dl class="dl-horizontal">
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Individual Deductible</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -263,8 +263,8 @@
                             </div>
                         </div>
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Family Deductible</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -273,8 +273,8 @@
                             </div>
                         </div>
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Individual Out-of-Pocket Maximum</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -283,8 +283,8 @@
                             </div>
                         </div>
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Family Out-of-Pocket Maximum</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -293,8 +293,8 @@
                             </div>
                         </div>
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Coinsurance</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -303,8 +303,8 @@
                             </div>
                         </div>
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Ded Cross Accumulate</div>
                     <div class="col-sm-5">
                         <div class="checkbox m-b-15">
@@ -314,8 +314,8 @@
                             </label>
                         </div>
                     </div>
-                </dl> 
-                <dl class="dl-horizontal">
+                </div> 
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Max Cross Accumulate</div>
                     <div class="col-sm-5">
                         <div class="checkbox m-b-15">
@@ -325,7 +325,7 @@
                             </label>
                         </div>
                     </div>
-                </dl> 
+                </div> 
             </div>         
         </div>
     </div>
@@ -343,7 +343,7 @@
     <div class="col-sm-6 p-b-25">
         <div class="pmbb-body p-l-30">
             <div class="pmbb-view"> 
-                <dl class="dl-horizontal">
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Individual Deductible</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -352,8 +352,8 @@
                             </div>
                         </div>
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Family Deductible</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -362,8 +362,8 @@
                             </div>
                         </div>
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Individual Out-of-Pocket Maximum</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -372,8 +372,8 @@
                             </div>
                         </div>
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Family Out-of-Pocket Maximum</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -382,8 +382,8 @@
                             </div>
                         </div>
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Coinsurance</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -392,7 +392,7 @@
                             </div>
                         </div>
                     </div>
-                </dl>
+                </div>
             </div>         
         </div>
     </div>
@@ -400,13 +400,13 @@
         <div class="pmbb-body p-l-30">
             <div class="pmbb-view">
                 
-                <dl class="dl-horizontal">
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Tier 1 Prescriptions</div>
                     <div class="col-sm-5">                    
                         {% include "includes/dropdown.html" with name="rx1_ded_apply" data=mbc id="rx1_ded_apply" select=form.rx1_ded_apply.value|parse_none extra="disabled" only %}
                     </div>
-                </dl>   
-                <dl class="dl-horizontal">
+                </div>   
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Retail Copay (if required)</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -415,8 +415,8 @@
                             </div>
                         </div>
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Mail Order Copay (if required)</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -425,14 +425,14 @@
                             </div>
                         </div>
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Tier 2 Prescriptions</div>
                     <div class="col-sm-5">
                         {% include "includes/dropdown.html" with name="rx2_ded_apply" data=mbc id="rx2_ded_apply" select=form.rx2_ded_apply.value|parse_none extra="disabled" only %}
                     </div>
-                </dl>  
-                <dl class="dl-horizontal">
+                </div>  
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Retail Copay (if required)</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -441,8 +441,8 @@
                             </div>
                         </div>
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Mail Order Copay (if required)</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -451,14 +451,14 @@
                             </div>
                         </div>
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Tier 3 Prescriptions</div>
                     <div class="col-sm-5">
                         {% include "includes/dropdown.html" with name="rx3_ded_apply" data=mbc id="rx3_ded_apply" select=form.rx3_ded_apply.value|parse_none extra="disabled" only %}
                     </div>
-                </dl>     
-                <dl class="dl-horizontal">
+                </div>     
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Retail Copay (if required)</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -467,8 +467,8 @@
                             </div>
                         </div>
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Mail Order Copay (if required)</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -477,14 +477,14 @@
                             </div>
                         </div>
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Tier 4 Prescriptions</div>
                     <div class="col-sm-5">
                         {% include "includes/dropdown.html" with name="rx4_ded_apply" data=mbc id="rx4_ded_apply" select=form.rx4_ded_apply.value|parse_none extra="disabled" only %}
                     </div>
-                </dl> 
-                <dl class="dl-horizontal">
+                </div> 
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Retail Copay (if required)</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -493,8 +493,8 @@
                             </div>
                         </div>
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Mail Order Copay (if required)</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -503,7 +503,7 @@
                             </div>
                         </div>
                     </div>
-                </dl>
+                </div>
             </div>         
         </div>
     </div>
@@ -515,7 +515,7 @@
         <div class="pmbb-header"><h2><i class="zmdi zmdi-account m-r-5"></i> Total Annual Gross Costs</h2></div>
         <div class="pmbb-body p-l-30">
             <div class="pmbb-view">
-                <dl class="dl-horizontal">
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700 {% if form.t1_gross.errors %} c-red{% endif %}">Employee Only</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -524,8 +524,8 @@
                             </div>
                         </div>
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700 {% if form.t2_gross.errors %} c-red{% endif %}">Employee & Spouse</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -534,8 +534,8 @@
                             </div>
                         </div>
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700 {% if form.t3_gross.errors %} c-red{% endif %}">Employee & Child(ren)</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -544,8 +544,8 @@
                             </div>
                         </div>
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700 {% if form.t4_gross.errors %} c-red{% endif %}">Family</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -554,8 +554,8 @@
                             </div>
                         </div>
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Age Banded Rates</div>
                     <div class="col-sm-5">
                         <div class="checkbox m-b-15">
@@ -565,7 +565,7 @@
                             </label>
                         </div>
                     </div>
-                </dl>
+                </div>
             </div>         
         </div>
     </div> 
@@ -574,7 +574,7 @@
         <div class="pmbb-header"><h2><i class="zmdi zmdi-account m-r-5"></i> Employee Annual Contributions</h2></div>
         <div class="pmbb-body p-l-30">
             <div class="pmbb-view">                             
-                <dl class="dl-horizontal">
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700 {% if form.t1_ee.errors %} c-red{% endif %}">Employee Only</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -583,8 +583,8 @@
                             </div>
                         </div>
                     </div>
-                </dl>                
-                <dl class="dl-horizontal">
+                </div>                
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700 {% if form.t2_ee.errors %} c-red{% endif %}">Employee & Spouse</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -593,8 +593,8 @@
                             </div>
                         </div>
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700 {% if form.t3_ee.errors %} c-red{% endif %}">Employee & Child(ren)</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -603,8 +603,8 @@
                             </div>
                         </div>
                     </div>
-                </dl>
-                <dl class="dl-horizontal">
+                </div>
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700 {% if form.t4_ee.errors %} c-red{% endif %}">Family</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -613,7 +613,7 @@
                             </div>
                         </div>
                     </div>
-                </dl>
+                </div>
             </div>
         </div>
     </div>
@@ -625,7 +625,7 @@
     <div class="col-sm-6 p-b-25">
         <div class="pmbb-body p-l-30">
             <div class="pmbb-view"> 
-                <dl class="dl-horizontal">
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Offer HRA</div>
                     <div class="col-sm-5">
                         <div class="checkbox m-b-15">
@@ -635,8 +635,8 @@
                             </label>
                         </div>
                     </div>
-                </dl> 
-                <dl class="dl-horizontal">
+                </div> 
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Offer HSA</div>
                     <div class="col-sm-5">
                         <div class="checkbox m-b-15">
@@ -646,9 +646,9 @@
                             </label>
                         </div>
                     </div>
-                </dl> 
+                </div> 
                 
-                <dl class="dl-horizontal">
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Single</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -657,8 +657,8 @@
                             </div>
                         </div>
                     </div>
-                </dl> 
-                <dl class="dl-horizontal">
+                </div> 
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">EE & Spouse</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -667,8 +667,8 @@
                             </div>
                         </div>
                     </div>
-                </dl> 
-                <dl class="dl-horizontal">
+                </div> 
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">EE & Child(ren)</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -677,8 +677,8 @@
                             </div>
                         </div>
                     </div>
-                </dl> 
-                <dl class="dl-horizontal">
+                </div> 
+                <div class="col-sm-12">
                     <div class="col-sm-6 f-700">Family</div>
                     <div class="col-sm-5">
                         <div class="form-group">
@@ -687,7 +687,7 @@
                             </div>
                         </div>
                     </div>
-                </dl>
+                </div>
             </div>         
         </div>
     </div>
