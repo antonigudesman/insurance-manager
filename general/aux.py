@@ -426,15 +426,22 @@ def employee_pricing_medical(plans, service):
             elif _apply == 'False/Coin':
                 ded_cost = 0
                 coin_cost = getattr(instance, 'in_coin') or 0
-                # copay_cost = 0
+                if service[:2] == 'Rx':
+                    coin_cost = getattr(instance, 'rx_coin') or coin_cost
                 copay_cost = getattr(instance, service.lower()+'_copay') or 0
             elif _apply == 'TRUE':
                 ded_cost = getattr(instance, 'in_ded_single') or 0
+                if service[:2] == 'Rx':
+                    ded_cost = getattr(instance, 'rx_ded_single') or ded_cost
                 coin_cost = 0
                 copay_cost = getattr(instance, service.lower()+'_copay') or 0
             elif _apply == 'True/Coin':
                 ded_cost = getattr(instance, 'in_ded_single') or 0
+                if service[:2] == 'Rx':
+                    ded_cost = getattr(instance, 'rx_ded_single') or ded_cost
                 coin_cost = getattr(instance, 'in_coin') or 0
+                if service[:2] == 'Rx':
+                    coin_cost = getattr(instance, 'rx_coin') or coin_cost
                 # copay_cost = 0
                 copay_cost = getattr(instance, service.lower()+'_copay') or 0
 

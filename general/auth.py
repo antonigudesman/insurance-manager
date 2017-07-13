@@ -43,7 +43,7 @@ def reset_password(request):
     if not user:
         return HttpResponse('There is no such user!<br>Please check your email again.')
     
-    from_email = "info@bnchmrk.com"
+    from_email = "support@bnchmrk.com"
     subject = "Reset Password"
     # path = 'signup.html'
     # temp = codecs.open(path, encoding='utf-8')

@@ -799,8 +799,8 @@ def import_users(request):
                     msg += 'Username {} already exists.<br>'.format(ii['Username'])
 
                 try:
-                    from_email = "info@bnchmrk.com"
-                    subject = "Create An Account" 
+                    from_email = "support@bnchmrk.com"
+                    subject = "bnchmrk Benefits Platform Access" 
                     to_email = ii['Email']                   
                     content = 'Welcome {} {} <br>This is the credential for app.bnchmrk.com; <br><br>username: {}<br>password: {}</b><br><br>You can login the system with it and change the password again.'.format(user.first_name, user.last_name, user.username, passwd)
                     response = send_email(from_email, subject, to_email, content)

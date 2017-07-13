@@ -478,7 +478,7 @@ function update_e_cost(obj) {
             var title = '';
 
             if (data[5] == 'FALSE')
-                title = 'No deductible, $' + data[4] + ' copay ( $' + data[1] + ' )';
+                title = 'No deductible, $' + data[4] + ' copay (Benchmark)';
             else if (data[5] == 'False/Coin')
                 title = 'No deductible, coinsurance (Benchmark)';
             else if (data[5] == 'TRUE')
@@ -492,12 +492,12 @@ function update_e_cost(obj) {
             var coin_percent = data[3] * 100.0 / data[1];
             var copay_percent = data[4] * 100.0 / data[1];
 
-            $(obj).closest('.e-cost-section').find('.progress-bar-success').removeAttr('style');
-            $(obj).closest('.e-cost-section').find('.progress-bar-success').css('width', ded_percent+'%');
+            $(obj).closest('.e-cost-section').find('.progress-bar-blue').removeAttr('style');
+            $(obj).closest('.e-cost-section').find('.progress-bar-blue').css('width', ded_percent+'%');
             $(obj).closest('.e-cost-section').find('.progress-bar-warning').removeAttr('style');
             $(obj).closest('.e-cost-section').find('.progress-bar-warning').css('width', coin_percent+'%');
-            $(obj).closest('.e-cost-section').find('.progress-bar-danger').removeAttr('style');
-            $(obj).closest('.e-cost-section').find('.progress-bar-danger').css('width', copay_percent+'%');
+            $(obj).closest('.e-cost-section').find('.progress-bar-gray').removeAttr('style');
+            $(obj).closest('.e-cost-section').find('.progress-bar-gray').css('width', copay_percent+'%');
             $(obj).closest('.e-cost-section').find('.percentile').attr('id', 'prop_rank_'+service);
 
             var value = data[6];
