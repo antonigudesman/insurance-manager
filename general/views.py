@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.forms.models import model_to_dict
 from django.conf import settings
-from django.contrib.auth.models import User 
+from django.contrib.auth.models import User, Group 
 
 from .models import *
 from .benefits import *
@@ -794,6 +794,9 @@ def import_users(request):
                     passwd = User.objects.make_random_password()
                     user.set_password(passwd)
                     user.save()
+
+                    group = Group.objects.get(name=ii['Group'])
+                    group.user_set.add(user)
                 except Exception, e:
                     # raise e
                     msg += 'Username {} already exists.<br>'.format(ii['Username'])
