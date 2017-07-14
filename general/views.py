@@ -818,7 +818,7 @@ def import_users(request):
                         Once you have logged in, please change your password to something more familiar.<br><br>
                          
                         To contact bnchmrk Customer Support:<br><br>
-                        
+
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email: support@bnchmrk.com<br>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Phone: 1.800.215.2916 (Ext. 1)<br><br>
                          
@@ -834,7 +834,7 @@ def import_users(request):
                     pass
                     # raise e
 
-                msg = msg or '{} users are imported successfully.'.format(result)
+            msg = msg or '{} user(s) are imported successfully.'.format(result)
     return render(request, 'import_users.html', { 'form': form, 'msg': msg })
 
 
