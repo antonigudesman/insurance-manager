@@ -112,7 +112,9 @@
             
             <ul class="f-menu">
                 <li><a href="/">Home</a></li>
+                {% if not request.user|has_group:"NFP" %}
                 <li><a href="/accounts">Accounts</a></li>
+                {% endif %}
                 <li><a href="/benchmarking/medicalrx">Benchmarking</a></li>
                 <li><a href="/support">Support</a></li>
 <!--                 <li><a href="">Terms</a></li>
