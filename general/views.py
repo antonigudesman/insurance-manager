@@ -801,37 +801,37 @@ def import_users(request):
                     # raise e
                     msg += 'Username {} already exists.<br>'.format(ii['Username'])
 
-                try:
-                    from_email = "support@bnchmrk.com"
-                    subject = "bnchmrk Benefits Platform Access" 
-                    to_email = ii['Email']
-                    content = """
-                        Welcome to bnchmrk!<br><br>
-                         
-                        Accessing the Enterprise Platform:<br>
-                        The following unique Username and Password have been created for you to log in and begin accessing the platform:<br><br>
-                         
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Link: http://app.bnchmrk.com<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Username:  {}<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Password:  {} (case sensitive)<br><br>
-                         
-                        Once you have logged in, please change your password to something more familiar.<br><br>
-                         
-                        To contact bnchmrk Customer Support:<br><br>
-                        
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email: support@bnchmrk.com<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Phone: 1.800.215.2916 (Ext. 1)<br><br>
-                         
-                        Important Information:<br>
-                        This agreement with bnchmrk LLC stipulates that the subscription login details are strictly for your personal access only. By using this service you agree not to share your access details with any other individual.<br><br>
-                         
-                        Thank you once again for choosing bnchmrk!<br>                    
-                    """                   
-                    content = content.format(user.username, passwd)
-                    response = send_email(from_email, subject, to_email, content)
-                    result += 1
-                except Exception, e:
-                    pass
+                # try:
+                from_email = "support@bnchmrk.com"
+                subject = "bnchmrk Benefits Platform Access" 
+                to_email = ii['Email']
+                content = """
+                    Welcome to bnchmrk!<br><br>
+                     
+                    Accessing the Enterprise Platform:<br>
+                    The following unique Username and Password have been created for you to log in and begin accessing the platform:<br><br>
+                     
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Link: http://app.bnchmrk.com<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Username:  {}<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Password:  {} (case sensitive)<br><br>
+                     
+                    Once you have logged in, please change your password to something more familiar.<br><br>
+                     
+                    To contact bnchmrk Customer Support:<br><br>
+                    
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email: support@bnchmrk.com<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Phone: 1.800.215.2916 (Ext. 1)<br><br>
+                     
+                    Important Information:<br>
+                    This agreement with bnchmrk LLC stipulates that the subscription login details are strictly for your personal access only. By using this service you agree not to share your access details with any other individual.<br><br>
+                     
+                    Thank you once again for choosing bnchmrk!<br>                    
+                """                   
+                content = content.format(user.username, passwd)
+                response = send_email(from_email, subject, to_email, content)
+                result += 1
+                # except Exception, e:
+                #     pass
                     # raise e
 
                 msg = msg or '{} users are imported successfully.'.format(result)
