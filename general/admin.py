@@ -35,6 +35,8 @@ def export_objects(model, queryset, excludes):
         for key, val in item_.items():
             if type(val) not in (float, int, long, str, unicode) and val:
                 item_[key] = str(val).encode('utf-8')
+            elif type(val) in (unicode,) and val:
+                item_[key] = val.encode('utf-8', 'ignore')
 
         try:
             result_csv.writerow(item_)
