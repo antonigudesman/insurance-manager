@@ -33,8 +33,8 @@ def export_objects(model, queryset, excludes):
     for item in queryset:
         item_ = model_to_dict(item, fields=result_csv_fields)
         for key, val in item_.items():
-            if type(val) not in (float, int, long) and val:
-                item_[key] = str(val).encode('utf-8','ignore')
+            if type(val) not in (float, int, long, str, unicode) and val:
+                item_[key] = str(val).encode('utf-8')
 
         try:
             result_csv.writerow(item_)
