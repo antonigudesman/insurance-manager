@@ -467,6 +467,7 @@ class FAQCategory(models.Model):
         verbose_name = 'FAQ Category'
         verbose_name_plural = 'FAQ Categories'
 
+
 class PrintHistory(models.Model):
     user = models.ForeignKey(User, blank=True, null=True)
     benefit = models.CharField(max_length=50)

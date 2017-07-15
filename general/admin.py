@@ -695,6 +695,7 @@ class BrokerAdmin(admin.ModelAdmin):
     list_display = ['name']
     search_fields = ('name',)
 
+
 class DataIssueAdmin(admin.ModelAdmin):
     list_display = ['id', 'formatted_employer', 'issue', 'resolved']
     search_fields = ('issue',)
@@ -705,6 +706,7 @@ class DataIssueAdmin(admin.ModelAdmin):
 
     formatted_employer.short_description = 'Employer'
     formatted_employer.admin_order_field = 'employer__name' 
+
 
 admin.site.register(Employer, EmployerAdmin)
 admin.site.register(Life, LifeAdmin)
