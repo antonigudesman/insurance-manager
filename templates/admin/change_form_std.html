@@ -152,6 +152,12 @@
             <td {% if fieldset.form.cost_share.errors %} class="errors"{% endif %}>{{ fieldset.form.cost_share.errors }}{{ fieldset.form.cost_share.label_tag }}</td>
             <td {% if fieldset.form.cost_share.errors %} class="errors"{% endif %}>{{ fieldset.form.cost_share }}</td>
         </tr>
+        <tr>
+            <td colspan="4" class="change-header">Notes</td>           
+        </tr> 
+        <tr>
+            <td colspan="4">{{ fieldset.form.notes }}</td>
+        </tr>                  
       </tbody>
     </table>
 </fieldset>

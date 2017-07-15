@@ -386,7 +386,7 @@ class LTD(models.Model):
     cost_share = models.CharField('Cost Share', max_length=19, null=True, blank=True, choices=COSTSHARE_CHOICES)
     carrier = models.CharField(max_length=30, blank=True, null=True)
     notes = models.TextField(null=True, blank=True)
-    
+
     def __unicode__(self):
         return self.employer.name
         
@@ -496,3 +496,8 @@ class DataIssue(models.Model):
     class Meta:
         verbose_name = 'Data Issue'
         verbose_name_plural = 'Data Issues'
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.id = str(uuid.uuid4())[3:18]
+        super(DataIssue, self).save(*args, **kwargs)

@@ -202,7 +202,7 @@ class MedicalAdmin(admin.ModelAdmin):
         'lx_copay', 'rx3_copay', 'ip_ded_apply', 'rx3_mail_copay', 'ip_copay', 'rx4_ded_apply', 
         'op_ded_apply', 'rx4_copay', 'op_copay', 'rx4_mail_copay', 't1_ee', 't1_gross', 't2_ee', 
         't2_gross', 't3_ee', 't3_gross', 't4_ee', 't4_gross', 't1_ercdhp', 'hsa', 't2_ercdhp', 
-        'hra', 't3_ercdhp', 'age_rated', 't4_ercdhp', 'rx_coin', 'carrier')
+        'hra', 't3_ercdhp', 'age_rated', 't4_ercdhp', 'rx_coin', 'carrier', 'notes')
 
     actions = ['export_medical']
 
@@ -287,7 +287,7 @@ class DentalAdmin(admin.ModelAdmin):
         't4_ee', 't4_gross', 'prev_ded_apply', 'basic_ded_apply', 'in_prev_coin', 
         'in_basic_coin', 'out_prev_coin', 'out_basic_coin', 'in_ortho_coin', 
         'major_ded_apply', 'out_ortho_coin', 'in_major_coin', 'ortho_ded_apply', 
-        'out_major_coin', 'ortho_age_limit', 'carrier')
+        'out_major_coin', 'ortho_age_limit', 'carrier', 'notes')
 
     actions = ['export_dental']
 
@@ -370,7 +370,7 @@ class VisionAdmin(admin.ModelAdmin):
         'contacts_copay', 'frames_allowance', 'contacts_allowance', 'frames_coinsurance', 
         'contacts_coinsurance', 'frames_frequency', 'contacts_frequency', 'frames_out_allowance', 
         'contacts_out_allowance', 't1_ee', 't1_gross', 't2_ee', 't2_gross', 't3_ee', 
-        't3_gross', 't4_ee', 't4_gross', 'carrier')
+        't3_gross', 't4_ee', 't4_gross', 'carrier', 'notes')
 
     actions = ['export_vision']
 
@@ -445,7 +445,7 @@ class LifeAdmin(admin.ModelAdmin):
     search_fields = ('employer__name',)
     list_filter = ('type',)
     fields = ('title', 'employer', 'type', 'multiple', 'flat_amount', 
-              'multiple_max', 'add', 'cost_share', 'carrier')
+              'multiple_max', 'add', 'cost_share', 'carrier', 'notes')
     form = LifeForm
     change_form_template = 'admin/change_form_life.html'
 
@@ -505,7 +505,7 @@ class STDAdmin(admin.ModelAdmin):
                     'formatted_percentage', 'formatted_weekly_max', 'cost_share']
     search_fields = ('employer__name', 'title',)
     fields = ('title', 'employer', 'waiting_days', 'duration_weeks', 'waiting_days_sick', 
-              'percentage', 'weekly_max', 'cost_share', 'salary_cont', 'carrier')
+              'percentage', 'weekly_max', 'cost_share', 'salary_cont', 'carrier', 'notes')
     change_form_template = 'admin/change_form_std.html'
 
     actions = ['export_STD']
@@ -564,7 +564,7 @@ class LTDAdmin(admin.ModelAdmin):
                     'formatted_percentage', 'formatted_monthly_max', 'cost_share']
     search_fields = ('employer__name', 'title',)
     fields = ('title', 'employer', 'waiting_weeks', 'percentage', 'monthly_max', 
-              'cost_share', 'carrier')
+              'cost_share', 'carrier', 'notes')
     change_form_template = 'admin/change_form_ltd.html'
     
     actions = ['export_LTD']
@@ -693,6 +693,16 @@ class BrokerAdmin(admin.ModelAdmin):
     list_display = ['name']
     search_fields = ('name',)
 
+class DataIssueAdmin(admin.ModelAdmin):
+    list_display = ['id', 'formatted_employer', 'issue', 'resolved']
+    search_fields = ('issue',)
+    fields = ('employer', 'issue', 'resolved')
+
+    def formatted_employer(self, obj):
+        return obj.employer.name
+
+    formatted_employer.short_description = 'Employer'
+    formatted_employer.admin_order_field = 'employer__name' 
 
 admin.site.register(Employer, EmployerAdmin)
 admin.site.register(Life, LifeAdmin)
@@ -707,3 +717,4 @@ admin.site.register(FAQCategory, FAQCategoryAdmin)
 admin.site.register(PrintHistory, PrintHistoryAdmin)
 admin.site.register(Industry, IndustryAdmin)
 admin.site.register(Broker, BrokerAdmin)
+admin.site.register(DataIssue, DataIssueAdmin)

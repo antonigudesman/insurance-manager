@@ -215,7 +215,13 @@
             <td {% if fieldset.form.t4_gross.errors %} class="errors"{% endif %}>{{ fieldset.form.t4_gross }}</td>
             <td {% if fieldset.form.t4_ee.errors %} class="errors"{% endif %}>{{ fieldset.form.t4_ee.errors }}{{ fieldset.form.t4_ee.label_tag }}</td>
             <td {% if fieldset.form.t4_ee.errors %} class="errors"{% endif %}>{{ fieldset.form.t4_ee }}</td>
-        </tr>         
+        </tr>      
+        <tr>
+            <td colspan="4" class="change-header">Notes</td>           
+        </tr> 
+        <tr>
+            <td colspan="4">{{ fieldset.form.notes }}</td>
+        </tr>                     
       </tbody>
     </table>
 </fieldset>
