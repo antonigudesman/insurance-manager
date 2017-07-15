@@ -224,6 +224,7 @@ class Medical(models.Model):
     t4_ercdhp = models.IntegerField('Family',blank=True, null=True)
     carrier = models.CharField('Carrier', max_length=30, blank=True, null=True)
     per_day_ip = models.NullBooleanField('Per Day IP', choices=BOOLEAN_CHOICES)
+    notes = models.TextField(null=True, blank=True)
 
     def __unicode__(self):
         return self.employer.name
@@ -272,6 +273,7 @@ class Dental(models.Model):
     t3_gross = models.IntegerField('EE & Child(ren)',blank=True, null=True)
     t4_gross = models.IntegerField('Family',blank=True, null=True)
     carrier = models.CharField('Carrier', max_length=30, blank=True, null=True)
+    notes = models.TextField(null=True, blank=True)
 
     def __unicode__(self):
         return self.employer.name
@@ -313,6 +315,7 @@ class Vision(models.Model):
     exam_balance_coinsurance = models.IntegerField('Exam Coinsurance', blank=True, null=True)
     lenses_allowance = models.IntegerField('Lenses Allowance',blank=True, null=True)
     lenses_balance_coinsurance = models.IntegerField('Lenses Coinsurance', blank=True, null=True)
+    notes = models.TextField(null=True, blank=True)
 
     def __unicode__(self):
         return self.employer.name
@@ -343,6 +346,7 @@ class Life(models.Model):
     add = models.BooleanField('ADD')
     cost_share = models.CharField('Cost Share', max_length=19, null=True, blank=True, choices=COSTSHARE_CHOICES)
     carrier = models.CharField(max_length=30, blank=True, null=True)
+    notes = models.TextField(null=True, blank=True)
 
     def __unicode__(self):
         return self.employer.name
@@ -363,6 +367,7 @@ class STD(models.Model):
     weekly_max = models.IntegerField('Weekly Maximum', blank=True, null=True)
     cost_share = models.CharField('Cost Share', max_length=19, null=True, blank=True, choices=COSTSHARE_CHOICES)
     carrier = models.CharField(max_length=30, blank=True, null=True)
+    notes = models.TextField(null=True, blank=True)
 
     def __unicode__(self):
         return self.employer.name
@@ -380,7 +385,8 @@ class LTD(models.Model):
     monthly_max = models.IntegerField('Monthly Maximum', blank=True, null=True)
     cost_share = models.CharField('Cost Share', max_length=19, null=True, blank=True, choices=COSTSHARE_CHOICES)
     carrier = models.CharField(max_length=30, blank=True, null=True)
-
+    notes = models.TextField(null=True, blank=True)
+    
     def __unicode__(self):
         return self.employer.name
         
@@ -480,3 +486,13 @@ class PrintHistory(models.Model):
         verbose_name = 'Print History'
         verbose_name_plural = 'Print Histories'
             
+
+class DataIssue(models.Model):
+    id = models.CharField(max_length=18, primary_key=True)
+    issue = models.TextField(null=True, blank=True)
+    employer = models.ForeignKey(Employer)
+    resolved = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = 'Data Issue'
+        verbose_name_plural = 'Data Issues'
