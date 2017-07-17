@@ -116,6 +116,12 @@ class SizeFilter(SimpleListFilter):
             return queryset
 
 
+class EmployerInline(admin.StackedInline):
+    model = Strategy
+    template = "admin/includes/stacked.html"
+    form = StrategyForm
+
+
 class EmployerAdmin(admin.ModelAdmin):
     list_display = ['name','broker','industry1','formatted_size',
                     'med_count','den_count','vis_count', 'life_count','std_count','ltd_count']
@@ -132,6 +138,7 @@ class EmployerAdmin(admin.ModelAdmin):
         'employerurl', 'employerbenefitsurl', 'stock_symbol', 'avid', 'naics_2012_code')
     form = EmployerForm
     actions = ['export_employers']
+    inlines = (EmployerInline,)
 
     def export_employers(self, request, queryset):
         return export_objects(Employer, queryset, ['editor'])
@@ -159,14 +166,11 @@ class EmployerAdmin(admin.ModelAdmin):
     def change_view(self, request, object_id, form_url='', extra_context=None):
         extra_context = extra_context or {}
         plans = {}
-        for model in [Medical, Dental, Vision, Life, STD, LTD, Strategy]:
+        for model in [Medical, Dental, Vision, Life, STD, LTD]:
             plans[model.__name__] = []
             for item in model.objects.filter(employer_id=object_id):
                 url = '/admin/general/{}/{}/change/'.format(model.__name__.lower(), item.pk)
-                if model == Strategy:
-                    plans[model.__name__].append([item.employer.name, url, model.__name__])
-                else:
-                    plans[model.__name__].append([item.title, url, model.__name__])
+                plans[model.__name__].append([item.title, url, model.__name__])
 
         extra_context['plans'] = plans
         extra_context['broker'] = request.user.groups.first().name
@@ -618,52 +622,6 @@ class LTDAdmin(admin.ModelAdmin):
             return '-'
     formatted_monthly_max.short_description = 'Monthly Max'
     formatted_monthly_max.admin_order_field = 'monthly_max' 
-
-
-class StrategyAdmin(admin.ModelAdmin):
-    list_display = ['formatted_employer', 'spousal_surcharge', 'tobacco_surcharge', 'offer_fsa', 'salary_banding']
-    search_fields = ('employer__name', 'title',)
-    change_form_template = 'admin/change_form_strategy.html'
-    form = StrategyForm
-    fields = ('employer', 'offer_vol_life', 'offer_vol_std', 'offer_vol_ltd', 'offer_fsa', 
-        'spousal_surcharge', 'narrow_network', 'spousal_surcharge_amount', 'mec', 
-        'tobacco_surcharge', 'mvp', 'tobacco_surcharge_amount', 'contribution_bundle', 
-        'pt_medical', 'defined_contribution', 'pt_dental', 'salary_banding', 'pt_vision', 
-        'wellness_banding', 'pt_life', 'pt_std', 'pt_ltd')
-
-    actions = ['export_strategy']
-
-    def export_strategy(self, request, queryset):
-        return export_objects(Strategy, queryset, [])
-
-    export_strategy.short_description = "Export strategy plans as a CSV file"
-
-    def get_ordering(self, request):
-        return ['employer__name']
-
-    def formatted_employer(self, obj):
-        return obj.employer.name
-
-    formatted_employer.short_description = 'Employer'
-    formatted_employer.admin_order_field = 'employer__name' 
-    
-    def get_queryset(self, request):
-        qs = super(StrategyAdmin, self).get_queryset(request)
-        group = request.user.groups.first().name
-
-        if group != 'bnchmrk':
-            qs = qs.filter(employer__broker__name=group)
-            
-        return qs
-
-    def get_actions(self, request):
-        actions = super(StrategyAdmin, self).get_actions(request)
-        group = request.user.groups.first().name
-
-        if group != 'bnchmrk':
-            if 'delete_selected' in actions:
-                del actions['delete_selected']
-        return actions
         
 
 class FAQAdmin(admin.ModelAdmin):
@@ -712,7 +670,6 @@ admin.site.register(Employer, EmployerAdmin)
 admin.site.register(Life, LifeAdmin)
 admin.site.register(STD, STDAdmin)
 admin.site.register(LTD, LTDAdmin)
-admin.site.register(Strategy, StrategyAdmin)
 admin.site.register(Vision, VisionAdmin)
 admin.site.register(Dental, DentalAdmin)
 admin.site.register(Medical, MedicalAdmin)

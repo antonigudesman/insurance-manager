@@ -410,7 +410,7 @@ STRATEGY_BOOLEAN_CHOICES =  (
 )
 
 class Strategy(models.Model):
-    employer = models.ForeignKey(Employer)
+    employer = models.OneToOneField(Employer)
     offer_vol_life = models.NullBooleanField('Offer Voluntary Life')
     offer_vol_std = models.NullBooleanField('Offer Voluntary STD')
     offer_vol_ltd = models.NullBooleanField('Offer Voluntary LTD')
