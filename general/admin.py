@@ -12,26 +12,25 @@ from django.db.models import Q
 from .models import *
 from .forms import *
 from .prints import *
+from .aux import *
 
 
 def export_objects(model, queryset, excludes):
     path = datetime.now().strftime("/tmp/.bnchmrk_{}_%Y_%m_%d_%H_%M_%S.csv".format(model.__name__))
-    result_csv_fields = [
-                            f.name
-                            for f in model._meta.get_fields()
-                            if f.concrete and (
-                                not f.is_relation
-                                or f.one_to_one
-                                or (f.many_to_one and f.related_model)
-                            ) and not f.name in excludes
-                        ]
-
+    result_csv_fields = get_pure_attr_list(model, excludes)
+    fields_extra = get_pure_attr_list(Strategy, ['id', 'employer']) if model == Employer else []
     result = open(path, 'w')
-    result_csv = csv.DictWriter(result, fieldnames=result_csv_fields)
+    result_csv = csv.DictWriter(result, fieldnames=result_csv_fields+fields_extra)
     result_csv.writeheader()
 
     for item in queryset:
         item_ = model_to_dict(item, fields=result_csv_fields)
+        if model == Employer:
+            strategy = Strategy.objects.filter(employer=item).first()
+            if strategy:
+                item__ = model_to_dict(strategy, fields=fields_extra)
+                item_.update(item__)
+
         for key, val in item_.items():
             if type(val) not in (float, int, long, str, unicode) and val:
                 item_[key] = str(val).encode('utf-8')
