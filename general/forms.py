@@ -4,6 +4,38 @@ from django.forms.utils import ErrorList
 
 from .models import *
 
+class EmployerForm(ModelForm):
+    class Meta:
+        model = Employer
+        fields = '__all__'
+
+    def clean(self):
+        industry1 = self.cleaned_data.get('industry1')
+        industry2 = self.cleaned_data.get('industry2')
+        industry3 = self.cleaned_data.get('industry3')
+
+        # add custom validation rules 
+        # for industries
+        if not (industry1 or industry2 or industry3):
+            self._errors['industry1'] = ErrorList([''])
+            self._errors['industry2'] = ErrorList([''])
+            self._errors['industry3'] = ErrorList([''])
+            raise forms.ValidationError("Please select at least one Industry!")
+
+        # for regions
+        regions = ['new_england', 'mid_atlantic', 'south_east', 'south_atlantic', 
+                   'south_cental', 'east_central', 'west_central', 'mountain', 'pacific']
+        region_choosen = ''
+        for region in regions:
+            region_choosen = region_choosen or self.cleaned_data.get(region)
+
+        if not region_choosen:
+            for region in regions:
+                self._errors[region] = ErrorList([''])
+            raise forms.ValidationError("Please select at least one Region!")            
+        return self.cleaned_data
+
+
 class MedicalForm(ModelForm):
     class Meta:
         model = Medical
